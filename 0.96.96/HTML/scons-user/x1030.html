@@ -1,0 +1,263 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<HTML
+><HEAD
+><TITLE
+>The AlwaysBuild Method</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="HOME"
+TITLE="SCons User Guide 0.96.96"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Dependencies"
+HREF="c762.html"><LINK
+REL="PREVIOUS"
+TITLE="Explicit Dependencies:  the Depends Method"
+HREF="x1017.html"><LINK
+REL="NEXT"
+TITLE="Construction Environments"
+HREF="c1051.html"></HEAD
+><BODY
+CLASS="SECTION"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 0.96.96</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x1017.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Dependencies</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="c1051.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECTION"
+><H1
+CLASS="SECTION"
+><A
+NAME="AEN1030"
+>The <TT
+CLASS="FUNCTION"
+>AlwaysBuild</TT
+> Method</A
+></H1
+><P
+>&#13;    How <TT
+CLASS="APPLICATION"
+>SCons</TT
+> handles dependencies can also be affected
+    by the <TT
+CLASS="FUNCTION"
+>AlwaysBuild</TT
+> method.
+    When a file is passed to the <TT
+CLASS="FUNCTION"
+>AlwaysBuild</TT
+> method,
+    like so:
+
+    </P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>      hello = Program('hello.c')
+      AlwaysBuild(hello)
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>&#13;    Then the specified target file (<TT
+CLASS="APPLICATION"
+>hello</TT
+> in our example)
+    will always be considered out-of-date and
+    rebuilt whenever that target file is evaluated
+    while walking the dependency graph:
+
+    </P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>      % <KBD
+CLASS="USERINPUT"
+>scons -Q</KBD
+>
+      cc -o hello.o -c hello.c
+      cc -o hello hello.o
+      % <KBD
+CLASS="USERINPUT"
+>scons -Q</KBD
+>
+      cc -o hello hello.o
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>&#13;    The <TT
+CLASS="FUNCTION"
+>AlwaysBuild</TT
+> function has a somewhat misleading name,
+    because it does not actually mean the target file will
+    be rebuilt every single time <TT
+CLASS="APPLICATION"
+>SCons</TT
+> is invoked.
+    Instead, it means that the target will, in fact,
+    be rebuilt whenever the target file is encountered
+    while evaluating the targets specified on
+    the command line (and their dependencies).
+    So specifying some other target on the command line,
+    a target that does <I
+CLASS="EMPHASIS"
+>not</I
+>
+    itself depend on the <TT
+CLASS="FUNCTION"
+>AlwaysBuild</TT
+> target,
+    will still be rebuilt only if it's out-of-date
+    with respect to its dependencies:
+
+    </P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>      % <KBD
+CLASS="USERINPUT"
+>scons -Q</KBD
+>
+      cc -o hello.o -c hello.c
+      cc -o hello hello.o
+      % <KBD
+CLASS="USERINPUT"
+>scons -Q hello.o</KBD
+>
+      scons: `hello.o' is up to date.
+    </PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x1017.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="c1051.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Explicit Dependencies:  the <TT
+CLASS="FUNCTION"
+>Depends</TT
+> Method</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c762.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Construction Environments</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,118 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>8.2. Separating Compile Arguments into their Variables: the ParseFlags Function</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 2.5.1"><link rel="up" href="ch08.html" title="Chapter 8. Automatically Putting Command-line Options into their Construction Variables"><link rel="prev" href="ch08.html" title="Chapter 8. Automatically Putting Command-line Options into their Construction Variables"><link rel="next" href="ch08s03.html" title="8.3. Finding Installed Library Information: the ParseConfig Function"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">8.2. Separating Compile Arguments into their Variables: the <code class="function">ParseFlags</code> Function</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch08.html">Prev</a> </td><th width="60%" align="center">Chapter 8. Automatically Putting Command-line Options into their Construction Variables</th><td width="20%" align="right"> <a accesskey="n" href="ch08s03.html">Next</a></td></tr></table><hr></div><div class="section" title="8.2. Separating Compile Arguments into their Variables: the ParseFlags Function"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="sect-parseflags"></a>8.2. Separating Compile Arguments into their Variables: the <code class="function">ParseFlags</code> Function</h2></div></div></div><p>
+
+ <span class="application">SCons</span> has a bewildering array of construction variables
+ for different types of options when building programs.
+ Sometimes you may not know exactly which variable
+ should be used for a particular option.
+
+ </p><p>
+
+ <span class="application">SCons</span> construction environments have a <code class="function">ParseFlags</code> method
+ that takes a set of typical command-line options
+ and distrbutes them into the appropriate construction variables.
+ Historically, it was created to support the <code class="function">ParseConfig</code> method,
+ so it focuses on options used by the GNU Compiler Collection (GCC)
+ for the C and C++ toolchains.
+
+ </p><p>
+
+ <code class="function">ParseFlags</code> returns a dictionary containing the options
+ distributed into their respective construction variables.
+ Normally, this dictionary would be passed to <code class="function">MergeFlags</code>
+ to merge the options into a <code class="literal">construction environment</code>,
+ but the dictionary can be edited if desired to provide
+ additional functionality.
+ (Note that if the flags are not going to be edited,
+ calling <code class="function">MergeFlags</code> with the options directly
+ will avoid an additional step.)
+
+ </p><pre class="programlisting">
+env = Environment()
+d = env.ParseFlags("-I/opt/include -L/opt/lib -lfoo")
+for k,v in sorted(d.items()):
+    if v:
+        print k, v
+env.MergeFlags(d)
+env.Program('f1.c')
+   </pre><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+CPPPATH ['/opt/include']
+LIBPATH ['/opt/lib']
+LIBS ['foo']
+cc -o f1.o -c -I/opt/include f1.c
+cc -o f1 f1.o -L/opt/lib -lfoo
+</pre><p>
+
+ Note that if the options are limited to generic types
+ like those above,
+ they will be correctly translated for other platform types:
+
+ </p><pre class="screen">C:\&gt;<strong class="userinput"><code>scons -Q</code></strong>
+CPPPATH ['/opt/include']
+LIBPATH ['/opt/lib']
+LIBS ['foo']
+cl /Fof1.obj /c f1.c /nologo /I\opt\include
+link /nologo /OUT:f1.exe /LIBPATH:\opt\lib foo.lib f1.obj
+embedManifestExeCheck(target, source, env)
+</pre><p>
+
+ Since the assumption is that the flags are used for the GCC toolchain,
+ unrecognized flags are placed in <a class="link" href="apa.html#cv-CCFLAGS"><code class="envar">$CCFLAGS</code></a>
+ so they will be used for both C and C++ compiles:
+
+ </p><pre class="programlisting">
+env = Environment()
+d = env.ParseFlags("-whatever")
+for k,v in sorted(d.items()):
+    if v:
+        print k, v
+env.MergeFlags(d)
+env.Program('f1.c')
+   </pre><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+CCFLAGS -whatever
+cc -o f1.o -c -whatever f1.c
+cc -o f1 f1.o
+</pre><p>
+
+ <code class="function">ParseFlags</code> will also accept a (recursive) list of strings as input;
+ the list is flattened before the strings are processed:
+
+ </p><pre class="programlisting">
+env = Environment()
+d = env.ParseFlags(["-I/opt/include", ["-L/opt/lib", "-lfoo"]])
+for k,v in sorted(d.items()):
+    if v:
+        print k, v
+env.MergeFlags(d)
+env.Program('f1.c')
+   </pre><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+CPPPATH ['/opt/include']
+LIBPATH ['/opt/lib']
+LIBS ['foo']
+cc -o f1.o -c -I/opt/include f1.c
+cc -o f1 f1.o -L/opt/lib -lfoo
+</pre><p>
+
+ If a string begins with a "!" (an exclamation mark, often called a bang),
+ the string is passed to the shell for execution.
+ The output of the command is then parsed:
+
+ </p><pre class="programlisting">
+env = Environment()
+d = env.ParseFlags(["!echo -I/opt/include", "!echo -L/opt/lib", "-lfoo"])
+for k,v in sorted(d.items()):
+    if v:
+        print k, v
+env.MergeFlags(d)
+env.Program('f1.c')
+   </pre><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+CPPPATH ['/opt/include']
+LIBPATH ['/opt/lib']
+LIBS ['foo']
+cc -o f1.o -c -I/opt/include f1.c
+cc -o f1 f1.o -L/opt/lib -lfoo
+</pre><p>
+
+ <code class="function">ParseFlags</code> is regularly updated for new options;
+ consult the man page for details about those currently recognized.
+
+ </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch08.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch08.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch08s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 8. Automatically Putting Command-line Options into their Construction Variables </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 8.3. Finding Installed Library Information: the <code class="function">ParseConfig</code> Function</td></tr></table></div></body></html>

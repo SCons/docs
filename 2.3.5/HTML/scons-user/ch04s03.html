@@ -1,0 +1,63 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>4.3. Finding Libraries: the $LIBPATH Construction Variable</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 2.3.5"><link rel="up" href="ch04.html" title="Chapter 4. Building and Linking with Libraries"><link rel="prev" href="ch04s02.html" title="4.2. Linking with Libraries"><link rel="next" href="ch05.html" title="Chapter 5. Node Objects"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">4.3. Finding Libraries:  the <code class="envar">$LIBPATH</code> Construction Variable</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s02.html">Prev</a> </td><th width="60%" align="center">Chapter 4. Building and Linking with Libraries</th><td width="20%" align="right"> <a accesskey="n" href="ch05.html">Next</a></td></tr></table><hr></div><div class="section" title="4.3. Finding Libraries: the $LIBPATH Construction Variable"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idp1418243100"></a>4.3. Finding Libraries:  the <code class="envar">$LIBPATH</code> Construction Variable</h2></div></div></div><p>
+
+    By default, the linker will only look in
+    certain system-defined directories for libraries.
+    <span class="application">SCons</span> knows how to look for libraries
+    in directories that you specify with the
+    <a class="link" href="apa.html#cv-LIBPATH"><code class="envar">$LIBPATH</code></a> construction variable.
+    <code class="envar">$LIBPATH</code> consists of a list of
+    directory names, like so:
+
+    </p><pre class="programlisting">
+Program('prog.c', LIBS = 'm',
+                  LIBPATH = ['/usr/lib', '/usr/local/lib'])
+      </pre><p>
+
+    Using a Python list is preferred because it's portable
+    across systems.  Alternatively, you could put all of
+    the directory names in a single string, separated by the
+    system-specific path separator character:
+    a colon on POSIX systems:
+
+    </p><pre class="programlisting">
+LIBPATH = '/usr/lib:/usr/local/lib'
+    </pre><p>
+
+    or a semi-colon on Windows systems:
+
+    </p><pre class="programlisting">
+LIBPATH = 'C:\\lib;D:\\lib'
+    </pre><p>
+
+    (Note that Python requires that the backslash
+    separators in a Windows path name
+    be escaped within strings.)
+
+    </p><p>
+
+    When the linker is executed,
+    <span class="application">SCons</span> will create appropriate flags
+    so that the linker will look for
+    libraries in the same directories as <span class="application">SCons</span>.
+    So on a POSIX or Linux system,
+    a build of the above example would look like:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o prog.o -c prog.c
+cc -o prog prog.o -L/usr/lib -L/usr/local/lib -lm
+</pre><p>
+
+    On a Windows system,
+    a build of the above example would look like:
+
+    </p><pre class="screen">C:\&gt;<strong class="userinput"><code>scons -Q</code></strong>
+cl /Foprog.obj /c prog.c /nologo
+link /nologo /OUT:prog.exe /LIBPATH:\usr\lib /LIBPATH:\usr\local\lib m.lib prog.obj
+embedManifestExeCheck(target, source, env)
+</pre><p>
+
+    Note again that <span class="application">SCons</span> has taken care of
+    the system-specific details of creating
+    the right command-line options.
+
+    </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch04s02.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch04.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch05.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">4.2. Linking with Libraries </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 5. Node Objects</td></tr></table></div></body></html>

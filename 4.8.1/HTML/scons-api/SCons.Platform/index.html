@@ -1,0 +1,966 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>SCons.Platform package &#8212; SCons 4.8.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../_static/documentation_options.js?v=f14cce9e"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'SCons.Platform';</script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="SCons.Scanner package" href="../SCons.Scanner/" />
+    <link rel="prev" title="SCons.Node package" href="../SCons.Node/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search/"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SCons 4.8.1 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../SCons/">SCons package</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">SCons.Platform package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Taskmaster/">SCons.Taskmaster package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Util/">SCons.Util package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Variables/">SCons.Variables package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.compat/">SCons.compat package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.compat/">SCons.compat package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">SCons.Platform package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.Taskmaster/">SCons.Taskmaster package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.Util/">SCons.Util package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.Variables/">SCons.Variables package</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/SCons.Platform.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>SCons.Platform package</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Platform">Module contents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.DefaultToolList"><code class="docutils literal notranslate"><span class="pre">DefaultToolList()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.Platform"><code class="docutils literal notranslate"><span class="pre">Platform()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.PlatformSpec"><code class="docutils literal notranslate"><span class="pre">PlatformSpec</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.TempFileMunge"><code class="docutils literal notranslate"><span class="pre">TempFileMunge</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.TempFileMunge._print_cmd_str"><code class="docutils literal notranslate"><span class="pre">TempFileMunge._print_cmd_str()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.platform_default"><code class="docutils literal notranslate"><span class="pre">platform_default()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.platform_module"><code class="docutils literal notranslate"><span class="pre">platform_module()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">Submodules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Platform.aix">SCons.Platform.aix module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.aix.generate"><code class="docutils literal notranslate"><span class="pre">generate()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.aix.get_xlc"><code class="docutils literal notranslate"><span class="pre">get_xlc()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Platform.cygwin">SCons.Platform.cygwin module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.cygwin.generate"><code class="docutils literal notranslate"><span class="pre">generate()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Platform.darwin">SCons.Platform.darwin module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.darwin.generate"><code class="docutils literal notranslate"><span class="pre">generate()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Platform.hpux">SCons.Platform.hpux module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.hpux.generate"><code class="docutils literal notranslate"><span class="pre">generate()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Platform.irix">SCons.Platform.irix module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.irix.generate"><code class="docutils literal notranslate"><span class="pre">generate()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Platform.mingw">SCons.Platform.mingw module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Platform.os2">SCons.Platform.os2 module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.os2.generate"><code class="docutils literal notranslate"><span class="pre">generate()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Platform.posix">SCons.Platform.posix module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.posix.escape"><code class="docutils literal notranslate"><span class="pre">escape()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.posix.exec_popen3"><code class="docutils literal notranslate"><span class="pre">exec_popen3()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.posix.exec_subprocess"><code class="docutils literal notranslate"><span class="pre">exec_subprocess()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.posix.generate"><code class="docutils literal notranslate"><span class="pre">generate()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.posix.piped_env_spawn"><code class="docutils literal notranslate"><span class="pre">piped_env_spawn()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.posix.subprocess_spawn"><code class="docutils literal notranslate"><span class="pre">subprocess_spawn()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Platform.sunos">SCons.Platform.sunos module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.sunos.generate"><code class="docutils literal notranslate"><span class="pre">generate()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Platform.virtualenv">SCons.Platform.virtualenv module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.virtualenv.ImportVirtualenv"><code class="docutils literal notranslate"><span class="pre">ImportVirtualenv()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.virtualenv.IsInVirtualenv"><code class="docutils literal notranslate"><span class="pre">IsInVirtualenv()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.virtualenv.Virtualenv"><code class="docutils literal notranslate"><span class="pre">Virtualenv()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.virtualenv._enable_virtualenv_default"><code class="docutils literal notranslate"><span class="pre">_enable_virtualenv_default()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.virtualenv._ignore_virtualenv_default"><code class="docutils literal notranslate"><span class="pre">_ignore_virtualenv_default()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.virtualenv._inject_venv_path"><code class="docutils literal notranslate"><span class="pre">_inject_venv_path()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.virtualenv._inject_venv_variables"><code class="docutils literal notranslate"><span class="pre">_inject_venv_variables()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.virtualenv._is_path_in"><code class="docutils literal notranslate"><span class="pre">_is_path_in()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.virtualenv._running_in_virtualenv"><code class="docutils literal notranslate"><span class="pre">_running_in_virtualenv()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.virtualenv.select_paths_in_venv"><code class="docutils literal notranslate"><span class="pre">select_paths_in_venv()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Platform.win32">SCons.Platform.win32 module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.win32.ArchDefinition"><code class="docutils literal notranslate"><span class="pre">ArchDefinition</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.win32.escape"><code class="docutils literal notranslate"><span class="pre">escape()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.win32.exec_spawn"><code class="docutils literal notranslate"><span class="pre">exec_spawn()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.win32.generate"><code class="docutils literal notranslate"><span class="pre">generate()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.win32.get_architecture"><code class="docutils literal notranslate"><span class="pre">get_architecture()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.win32.get_program_files_dir"><code class="docutils literal notranslate"><span class="pre">get_program_files_dir()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.win32.get_system_root"><code class="docutils literal notranslate"><span class="pre">get_system_root()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.win32.piped_spawn"><code class="docutils literal notranslate"><span class="pre">piped_spawn()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.win32.spawn"><code class="docutils literal notranslate"><span class="pre">spawn()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.win32.spawnve"><code class="docutils literal notranslate"><span class="pre">spawnve()</span></code></a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="scons-platform-package">
+<h1>SCons.Platform package<a class="headerlink" href="#scons-platform-package" title="Link to this heading">#</a></h1>
+<section id="module-SCons.Platform">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-SCons.Platform" title="Link to this heading">#</a></h2>
+<p>SCons platform selection.</p>
+<p>Looks for modules that define a callable object that can modify a
+construction environment as appropriate for a given platform.</p>
+<p>Note that we take a more simplistic view of “platform” than Python does.
+We’re looking for a single string that determines a set of
+tool-independent variables with which to initialize a construction
+environment.  Consequently, we’ll examine both sys.platform and os.name
+(and anything else that might come in to play) in order to return some
+specification which is unique enough for our purposes.</p>
+<p>Note that because this subsystem just <em>selects</em> a callable that can
+modify a construction environment, it’s possible for people to define
+their own “platform specification” in an arbitrary callable function.
+No one needs to use or tie in to this subsystem in order to roll
+their own platform definition.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.DefaultToolList">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.</span></span><span class="sig-name descname"><span class="pre">DefaultToolList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">platform</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Platform/#DefaultToolList"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.DefaultToolList" title="Link to this definition">#</a></dt>
+<dd><p>Select a default tool list for the specified platform.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.Platform">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.</span></span><span class="sig-name descname"><span class="pre">Platform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'darwin'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Platform/#Platform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.Platform" title="Link to this definition">#</a></dt>
+<dd><p>Select a canned Platform specification.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="SCons.Platform.PlatformSpec">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">SCons.Platform.</span></span><span class="sig-name descname"><span class="pre">PlatformSpec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generate</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Platform/#PlatformSpec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.PlatformSpec" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="SCons.Platform.TempFileMunge">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">SCons.Platform.</span></span><span class="sig-name descname"><span class="pre">TempFileMunge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmdstr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Platform/#TempFileMunge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.TempFileMunge" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Convert long command lines to use a temporary file.</p>
+<p>You can set an Environment variable (usually <code class="docutils literal notranslate"><span class="pre">TEMPFILE</span></code>) to this,
+then call it with a string argument, and it will perform temporary
+file substitution on it.  This is used to circumvent limitations on
+the length of command lines. Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="p">[</span><span class="s2">&quot;TEMPFILE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">TempFileMunge</span>
+<span class="n">env</span><span class="p">[</span><span class="s2">&quot;LINKCOM&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;${TEMPFILE(&#39;$LINK $TARGET $SOURCES&#39;,&#39;$LINKCOMSTR&#39;)}&quot;</span>
+</pre></div>
+</div>
+<p>By default, the name of the temporary file used begins with a
+prefix of ‘&#64;’.  This may be configured for other tool chains by
+setting the <code class="docutils literal notranslate"><span class="pre">TEMPFILEPREFIX</span></code> variable. Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="p">[</span><span class="s2">&quot;TEMPFILEPREFIX&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;-@&#39;</span>        <span class="c1"># diab compiler</span>
+<span class="n">env</span><span class="p">[</span><span class="s2">&quot;TEMPFILEPREFIX&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;-via&#39;</span>      <span class="c1"># arm tool chain</span>
+<span class="n">env</span><span class="p">[</span><span class="s2">&quot;TEMPFILEPREFIX&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>          <span class="c1"># (the empty string) PC Lint</span>
+</pre></div>
+</div>
+<p>You can configure the extension of the temporary file through the
+<code class="docutils literal notranslate"><span class="pre">TEMPFILESUFFIX</span></code> variable, which defaults to ‘.lnk’ (see comments
+in the code below). Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="p">[</span><span class="s2">&quot;TEMPFILESUFFIX&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;.lnt&#39;</span>   <span class="c1"># PC Lint</span>
+</pre></div>
+</div>
+<p>Entries in the temporary file are separated by the value of the
+<code class="docutils literal notranslate"><span class="pre">TEMPFILEARGJOIN</span></code> variable, which defaults to an OS-appropriate value.</p>
+<p>A default argument escape function is <code class="docutils literal notranslate"><span class="pre">SCons.Subst.quote_spaces</span></code>.
+If you need to apply extra operations on a command argument before
+writing to a temporary file(fix Windows slashes, normalize paths, etc.),
+please set <cite>TEMPFILEARGESCFUNC</cite> variable to a custom function. Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">SCons.Subst</span> <span class="kn">import</span> <span class="n">quote_spaces</span>
+
+<span class="n">WINPATHSEP_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\([^&quot;</span><span class="s1">&#39;\]|$)&quot;)</span>
+
+
+<span class="k">def</span> <span class="nf">tempfile_arg_esc_func</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+    <span class="n">arg</span> <span class="o">=</span> <span class="n">quote_spaces</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">!=</span> <span class="s2">&quot;win32&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">arg</span>
+    <span class="c1"># GCC requires double Windows slashes, let&#39;s use UNIX separator</span>
+    <span class="k">return</span> <span class="n">WINPATHSEP_RE</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span>
+
+
+<span class="n">env</span><span class="p">[</span><span class="s2">&quot;TEMPFILEARGESCFUNC&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tempfile_arg_esc_func</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="SCons.Platform.TempFileMunge._print_cmd_str">
+<span class="sig-name descname"><span class="pre">_print_cmd_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmdstr</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/SCons/Platform/#TempFileMunge._print_cmd_str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.TempFileMunge._print_cmd_str" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.platform_default">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.</span></span><span class="sig-name descname"><span class="pre">platform_default</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Platform/#platform_default"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.platform_default" title="Link to this definition">#</a></dt>
+<dd><p>Return the platform string for our execution environment.</p>
+<p>The returned value should map to one of the SCons/Platform/*.py
+files.  Since scons is architecture independent, though, we don’t
+care about the machine architecture.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.platform_module">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.</span></span><span class="sig-name descname"><span class="pre">platform_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'darwin'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Platform/#platform_module"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.platform_module" title="Link to this definition">#</a></dt>
+<dd><p>Return the imported module for the platform.</p>
+<p>This looks for a module name that matches the specified argument.
+If the name is unspecified, we fetch the appropriate default for
+our execution environment.</p>
+</dd></dl>
+
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">#</a></h2>
+</section>
+<section id="module-SCons.Platform.aix">
+<span id="scons-platform-aix-module"></span><h2>SCons.Platform.aix module<a class="headerlink" href="#module-SCons.Platform.aix" title="Link to this heading">#</a></h2>
+<p>Platform-specific initialization for IBM AIX systems.</p>
+<p>There normally shouldn’t be any need to import this module directly.  It
+will usually be imported through the generic SCons.Platform.Platform()
+selection method.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.aix.generate">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.aix.</span></span><span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/SCons/Platform/aix/#generate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.aix.generate" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.aix.get_xlc">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.aix.</span></span><span class="sig-name descname"><span class="pre">get_xlc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">packages</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Platform/aix/#get_xlc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.aix.get_xlc" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-SCons.Platform.cygwin">
+<span id="scons-platform-cygwin-module"></span><h2>SCons.Platform.cygwin module<a class="headerlink" href="#module-SCons.Platform.cygwin" title="Link to this heading">#</a></h2>
+<p>Platform-specific initialization for Cygwin systems.</p>
+<p>There normally shouldn’t be any need to import this module directly.  It
+will usually be imported through the generic SCons.Platform.Platform()
+selection method.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.cygwin.generate">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.cygwin.</span></span><span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/SCons/Platform/cygwin/#generate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.cygwin.generate" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-SCons.Platform.darwin">
+<span id="scons-platform-darwin-module"></span><h2>SCons.Platform.darwin module<a class="headerlink" href="#module-SCons.Platform.darwin" title="Link to this heading">#</a></h2>
+<p>Platform-specific initialization for Mac OS X systems.</p>
+<p>There normally shouldn’t be any need to import this module directly.  It
+will usually be imported through the generic SCons.Platform.Platform()
+selection method.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.darwin.generate">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.darwin.</span></span><span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/SCons/Platform/darwin/#generate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.darwin.generate" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-SCons.Platform.hpux">
+<span id="scons-platform-hpux-module"></span><h2>SCons.Platform.hpux module<a class="headerlink" href="#module-SCons.Platform.hpux" title="Link to this heading">#</a></h2>
+<p>Platform-specific initialization for HP-UX systems.</p>
+<p>There normally shouldn’t be any need to import this module directly.  It
+will usually be imported through the generic SCons.Platform.Platform()
+selection method.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.hpux.generate">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.hpux.</span></span><span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/SCons/Platform/hpux/#generate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.hpux.generate" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-SCons.Platform.irix">
+<span id="scons-platform-irix-module"></span><h2>SCons.Platform.irix module<a class="headerlink" href="#module-SCons.Platform.irix" title="Link to this heading">#</a></h2>
+<p>Platform-specific initialization for SGI IRIX systems.</p>
+<p>There normally shouldn’t be any need to import this module directly.  It
+will usually be imported through the generic SCons.Platform.Platform()
+selection method.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.irix.generate">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.irix.</span></span><span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/SCons/Platform/irix/#generate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.irix.generate" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-SCons.Platform.mingw">
+<span id="scons-platform-mingw-module"></span><h2>SCons.Platform.mingw module<a class="headerlink" href="#module-SCons.Platform.mingw" title="Link to this heading">#</a></h2>
+<p>Platform-specific initialization for the MinGW system.</p>
+</section>
+<section id="module-SCons.Platform.os2">
+<span id="scons-platform-os2-module"></span><h2>SCons.Platform.os2 module<a class="headerlink" href="#module-SCons.Platform.os2" title="Link to this heading">#</a></h2>
+<p>Platform-specific initialization for OS/2 systems.</p>
+<p>There normally shouldn’t be any need to import this module directly.  It
+will usually be imported through the generic SCons.Platform.Platform()
+selection method.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.os2.generate">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.os2.</span></span><span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/SCons/Platform/os2/#generate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.os2.generate" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-SCons.Platform.posix">
+<span id="scons-platform-posix-module"></span><h2>SCons.Platform.posix module<a class="headerlink" href="#module-SCons.Platform.posix" title="Link to this heading">#</a></h2>
+<p>Platform-specific initialization for POSIX (Linux, UNIX, etc.) systems.</p>
+<p>There normally shouldn’t be any need to import this module directly.  It
+will usually be imported through the generic SCons.Platform.Platform()
+selection method.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.posix.escape">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.posix.</span></span><span class="sig-name descname"><span class="pre">escape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Platform/posix/#escape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.posix.escape" title="Link to this definition">#</a></dt>
+<dd><p>escape shell special characters</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.posix.exec_popen3">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.posix.</span></span><span class="sig-name descname"><span class="pre">exec_popen3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stdout</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stderr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Platform/posix/#exec_popen3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.posix.exec_popen3" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.posix.exec_subprocess">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.posix.</span></span><span class="sig-name descname"><span class="pre">exec_subprocess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Platform/posix/#exec_subprocess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.posix.exec_subprocess" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.posix.generate">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.posix.</span></span><span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/SCons/Platform/posix/#generate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.posix.generate" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.posix.piped_env_spawn">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.posix.</span></span><span class="sig-name descname"><span class="pre">piped_env_spawn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">escape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stdout</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stderr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Platform/posix/#piped_env_spawn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.posix.piped_env_spawn" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.posix.subprocess_spawn">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.posix.</span></span><span class="sig-name descname"><span class="pre">subprocess_spawn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">escape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Platform/posix/#subprocess_spawn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.posix.subprocess_spawn" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-SCons.Platform.sunos">
+<span id="scons-platform-sunos-module"></span><h2>SCons.Platform.sunos module<a class="headerlink" href="#module-SCons.Platform.sunos" title="Link to this heading">#</a></h2>
+<p>Platform-specific initialization for Sun systems.</p>
+<p>There normally shouldn’t be any need to import this module directly.  It
+will usually be imported through the generic SCons.Platform.Platform()
+selection method.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.sunos.generate">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.sunos.</span></span><span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/SCons/Platform/sunos/#generate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.sunos.generate" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-SCons.Platform.virtualenv">
+<span id="scons-platform-virtualenv-module"></span><h2>SCons.Platform.virtualenv module<a class="headerlink" href="#module-SCons.Platform.virtualenv" title="Link to this heading">#</a></h2>
+<p>‘Platform” support for a Python virtualenv.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.virtualenv.ImportVirtualenv">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.virtualenv.</span></span><span class="sig-name descname"><span class="pre">ImportVirtualenv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/SCons/Platform/virtualenv/#ImportVirtualenv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.virtualenv.ImportVirtualenv" title="Link to this definition">#</a></dt>
+<dd><p>Copies virtualenv-related environment variables from OS environment
+to <code class="docutils literal notranslate"><span class="pre">env['ENV']</span></code> and prepends virtualenv’s PATH to <code class="docutils literal notranslate"><span class="pre">env['ENV']['PATH']</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.virtualenv.IsInVirtualenv">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.virtualenv.</span></span><span class="sig-name descname"><span class="pre">IsInVirtualenv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Platform/virtualenv/#IsInVirtualenv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.virtualenv.IsInVirtualenv" title="Link to this definition">#</a></dt>
+<dd><p>Returns True, if <strong>path</strong> is under virtualenv’s home directory. If not,
+or if we don’t use virtualenv, returns False.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.virtualenv.Virtualenv">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.virtualenv.</span></span><span class="sig-name descname"><span class="pre">Virtualenv</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Platform/virtualenv/#Virtualenv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.virtualenv.Virtualenv" title="Link to this definition">#</a></dt>
+<dd><p>Returns path to the virtualenv home if scons is executing within a
+virtualenv or None, if not.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.virtualenv._enable_virtualenv_default">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.virtualenv.</span></span><span class="sig-name descname"><span class="pre">_enable_virtualenv_default</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Platform/virtualenv/#_enable_virtualenv_default"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.virtualenv._enable_virtualenv_default" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.virtualenv._ignore_virtualenv_default">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.virtualenv.</span></span><span class="sig-name descname"><span class="pre">_ignore_virtualenv_default</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Platform/virtualenv/#_ignore_virtualenv_default"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.virtualenv._ignore_virtualenv_default" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.virtualenv._inject_venv_path">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.virtualenv.</span></span><span class="sig-name descname"><span class="pre">_inject_venv_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/SCons/Platform/virtualenv/#_inject_venv_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.virtualenv._inject_venv_path" title="Link to this definition">#</a></dt>
+<dd><p>Modify environment such that SCons will take into account its virtualenv
+when running external tools.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.virtualenv._inject_venv_variables">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.virtualenv.</span></span><span class="sig-name descname"><span class="pre">_inject_venv_variables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/SCons/Platform/virtualenv/#_inject_venv_variables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.virtualenv._inject_venv_variables" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.virtualenv._is_path_in">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.virtualenv.</span></span><span class="sig-name descname"><span class="pre">_is_path_in</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/SCons/Platform/virtualenv/#_is_path_in"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.virtualenv._is_path_in" title="Link to this definition">#</a></dt>
+<dd><p>Returns true if <strong>path</strong> is located under the <strong>base</strong> directory.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.virtualenv._running_in_virtualenv">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.virtualenv.</span></span><span class="sig-name descname"><span class="pre">_running_in_virtualenv</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Platform/virtualenv/#_running_in_virtualenv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.virtualenv._running_in_virtualenv" title="Link to this definition">#</a></dt>
+<dd><p>Returns True if scons is executed within a virtualenv</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.virtualenv.select_paths_in_venv">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.virtualenv.</span></span><span class="sig-name descname"><span class="pre">select_paths_in_venv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Platform/virtualenv/#select_paths_in_venv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.virtualenv.select_paths_in_venv" title="Link to this definition">#</a></dt>
+<dd><p>Returns a list of paths from <strong>path_list</strong> which are under virtualenv’s
+home directory.</p>
+</dd></dl>
+
+</section>
+<section id="module-SCons.Platform.win32">
+<span id="scons-platform-win32-module"></span><h2>SCons.Platform.win32 module<a class="headerlink" href="#module-SCons.Platform.win32" title="Link to this heading">#</a></h2>
+<p>Platform-specific initialization for Win32 systems.</p>
+<p>There normally shouldn’t be any need to import this module directly.  It
+will usually be imported through the generic SCons.Platform.Platform()
+selection method.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="SCons.Platform.win32.ArchDefinition">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">SCons.Platform.win32.</span></span><span class="sig-name descname"><span class="pre">ArchDefinition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">synonyms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Platform/win32/#ArchDefinition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.win32.ArchDefinition" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Determine which windows CPU were running on.
+A class for defining architecture-specific settings and logic.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.win32.escape">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.win32.</span></span><span class="sig-name descname"><span class="pre">escape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Platform/win32/#escape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.win32.escape" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.win32.exec_spawn">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.win32.</span></span><span class="sig-name descname"><span class="pre">exec_spawn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Platform/win32/#exec_spawn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.win32.exec_spawn" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.win32.generate">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.win32.</span></span><span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Platform/win32/#generate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.win32.generate" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.win32.get_architecture">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.win32.</span></span><span class="sig-name descname"><span class="pre">get_architecture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Platform/win32/#get_architecture"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.win32.get_architecture" title="Link to this definition">#</a></dt>
+<dd><p>Returns the definition for the specified architecture string.</p>
+<p>If no string is specified, the system default is returned (as defined
+by the registry PROCESSOR_ARCHITECTURE value, PROCESSOR_ARCHITEW6432
+environment variable, PROCESSOR_ARCHITECTURE environment variable, or
+the platform machine).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.win32.get_program_files_dir">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.win32.</span></span><span class="sig-name descname"><span class="pre">get_program_files_dir</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Platform/win32/#get_program_files_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.win32.get_program_files_dir" title="Link to this definition">#</a></dt>
+<dd><p>Get the location of the program files directory</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.win32.get_system_root">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.win32.</span></span><span class="sig-name descname"><span class="pre">get_system_root</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Platform/win32/#get_system_root"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.win32.get_system_root" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.win32.piped_spawn">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.win32.</span></span><span class="sig-name descname"><span class="pre">piped_spawn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">escape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stdout</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stderr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Platform/win32/#piped_spawn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.win32.piped_spawn" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.win32.spawn">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.win32.</span></span><span class="sig-name descname"><span class="pre">spawn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">escape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Platform/win32/#spawn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.win32.spawn" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Platform.win32.spawnve">
+<span class="sig-prename descclassname"><span class="pre">SCons.Platform.win32.</span></span><span class="sig-name descname"><span class="pre">spawnve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Platform/win32/#spawnve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Platform.win32.spawnve" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../SCons.Node/"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">SCons.Node package</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../SCons.Scanner/"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">SCons.Scanner package</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Platform">Module contents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.DefaultToolList"><code class="docutils literal notranslate"><span class="pre">DefaultToolList()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.Platform"><code class="docutils literal notranslate"><span class="pre">Platform()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.PlatformSpec"><code class="docutils literal notranslate"><span class="pre">PlatformSpec</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.TempFileMunge"><code class="docutils literal notranslate"><span class="pre">TempFileMunge</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.TempFileMunge._print_cmd_str"><code class="docutils literal notranslate"><span class="pre">TempFileMunge._print_cmd_str()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.platform_default"><code class="docutils literal notranslate"><span class="pre">platform_default()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.platform_module"><code class="docutils literal notranslate"><span class="pre">platform_module()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">Submodules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Platform.aix">SCons.Platform.aix module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.aix.generate"><code class="docutils literal notranslate"><span class="pre">generate()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.aix.get_xlc"><code class="docutils literal notranslate"><span class="pre">get_xlc()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Platform.cygwin">SCons.Platform.cygwin module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.cygwin.generate"><code class="docutils literal notranslate"><span class="pre">generate()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Platform.darwin">SCons.Platform.darwin module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.darwin.generate"><code class="docutils literal notranslate"><span class="pre">generate()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Platform.hpux">SCons.Platform.hpux module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.hpux.generate"><code class="docutils literal notranslate"><span class="pre">generate()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Platform.irix">SCons.Platform.irix module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.irix.generate"><code class="docutils literal notranslate"><span class="pre">generate()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Platform.mingw">SCons.Platform.mingw module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Platform.os2">SCons.Platform.os2 module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.os2.generate"><code class="docutils literal notranslate"><span class="pre">generate()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Platform.posix">SCons.Platform.posix module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.posix.escape"><code class="docutils literal notranslate"><span class="pre">escape()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.posix.exec_popen3"><code class="docutils literal notranslate"><span class="pre">exec_popen3()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.posix.exec_subprocess"><code class="docutils literal notranslate"><span class="pre">exec_subprocess()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.posix.generate"><code class="docutils literal notranslate"><span class="pre">generate()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.posix.piped_env_spawn"><code class="docutils literal notranslate"><span class="pre">piped_env_spawn()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.posix.subprocess_spawn"><code class="docutils literal notranslate"><span class="pre">subprocess_spawn()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Platform.sunos">SCons.Platform.sunos module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.sunos.generate"><code class="docutils literal notranslate"><span class="pre">generate()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Platform.virtualenv">SCons.Platform.virtualenv module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.virtualenv.ImportVirtualenv"><code class="docutils literal notranslate"><span class="pre">ImportVirtualenv()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.virtualenv.IsInVirtualenv"><code class="docutils literal notranslate"><span class="pre">IsInVirtualenv()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.virtualenv.Virtualenv"><code class="docutils literal notranslate"><span class="pre">Virtualenv()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.virtualenv._enable_virtualenv_default"><code class="docutils literal notranslate"><span class="pre">_enable_virtualenv_default()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.virtualenv._ignore_virtualenv_default"><code class="docutils literal notranslate"><span class="pre">_ignore_virtualenv_default()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.virtualenv._inject_venv_path"><code class="docutils literal notranslate"><span class="pre">_inject_venv_path()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.virtualenv._inject_venv_variables"><code class="docutils literal notranslate"><span class="pre">_inject_venv_variables()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.virtualenv._is_path_in"><code class="docutils literal notranslate"><span class="pre">_is_path_in()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.virtualenv._running_in_virtualenv"><code class="docutils literal notranslate"><span class="pre">_running_in_virtualenv()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.virtualenv.select_paths_in_venv"><code class="docutils literal notranslate"><span class="pre">select_paths_in_venv()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Platform.win32">SCons.Platform.win32 module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.win32.ArchDefinition"><code class="docutils literal notranslate"><span class="pre">ArchDefinition</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.win32.escape"><code class="docutils literal notranslate"><span class="pre">escape()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.win32.exec_spawn"><code class="docutils literal notranslate"><span class="pre">exec_spawn()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.win32.generate"><code class="docutils literal notranslate"><span class="pre">generate()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.win32.get_architecture"><code class="docutils literal notranslate"><span class="pre">get_architecture()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.win32.get_program_files_dir"><code class="docutils literal notranslate"><span class="pre">get_program_files_dir()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.win32.get_system_root"><code class="docutils literal notranslate"><span class="pre">get_system_root()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.win32.piped_spawn"><code class="docutils literal notranslate"><span class="pre">piped_spawn()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.win32.spawn"><code class="docutils literal notranslate"><span class="pre">spawn()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Platform.win32.spawnve"><code class="docutils literal notranslate"><span class="pre">spawnve()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SCons Project Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022, SCons Project.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

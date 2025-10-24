@@ -1,0 +1,479 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>SCons.Node.Alias &mdash; SCons 4.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../" class="icon icon-home"> SCons
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                4.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons/">SCons package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../SCons.Variables/">SCons.Variables package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../SCons.compat/">SCons.compat package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Action">SCons.Action module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Builder">SCons.Builder module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.CacheDir">SCons.CacheDir module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Conftest">SCons.Conftest module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Debug">SCons.Debug module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Defaults">SCons.Defaults module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Environment">SCons.Environment module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Errors">SCons.Errors module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Executor">SCons.Executor module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Job">SCons.Job module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Memoize">SCons.Memoize module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.PathList">SCons.PathList module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.SConf">SCons.SConf module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.SConsign">SCons.SConsign module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Subst">SCons.Subst module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Taskmaster">SCons.Taskmaster module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../SCons/#generic-taskmaster-module-for-the-scons-build-engine">Generic Taskmaster module for the SCons build engine.</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Util">SCons.Util module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Warnings">SCons.Warnings module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.cpp">SCons.cpp module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.dblite">SCons.dblite module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.exitfuncs">SCons.exitfuncs module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.compat/">SCons.compat package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.compat/#module-SCons.compat">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Node/">SCons.Node package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Node/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Node/#module-SCons.Node.Alias">SCons.Node.Alias module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Node/#module-SCons.Node.FS">SCons.Node.FS module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Node/#module-SCons.Node.Python">SCons.Node.Python module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Node/#module-SCons.Node">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Platform/">SCons.Platform package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform.aix">SCons.Platform.aix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform.cygwin">SCons.Platform.cygwin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform.darwin">SCons.Platform.darwin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform.hpux">SCons.Platform.hpux module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform.irix">SCons.Platform.irix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform.mingw">SCons.Platform.mingw module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform.os2">SCons.Platform.os2 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform.posix">SCons.Platform.posix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform.sunos">SCons.Platform.sunos module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform.virtualenv">SCons.Platform.virtualenv module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform.win32">SCons.Platform.win32 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Scanner/">SCons.Scanner package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/#module-SCons.Scanner.C">SCons.Scanner.C module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/#module-SCons.Scanner.D">SCons.Scanner.D module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/#module-SCons.Scanner.Dir">SCons.Scanner.Dir module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/#module-SCons.Scanner.Fortran">SCons.Scanner.Fortran module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/#module-SCons.Scanner.IDL">SCons.Scanner.IDL module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/#module-SCons.Scanner.LaTeX">SCons.Scanner.LaTeX module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/#module-SCons.Scanner.Prog">SCons.Scanner.Prog module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/#module-SCons.Scanner.RC">SCons.Scanner.RC module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/#module-SCons.Scanner.SWIG">SCons.Scanner.SWIG module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/#module-SCons.Scanner">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Script/">SCons.Script package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Script/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Script/#module-SCons.Script.Interactive">SCons.Script.Interactive module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Script/#module-SCons.Script.Main">SCons.Script.Main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Script/#module-SCons.Script.SConsOptions">SCons.Script.SConsOptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Script/#module-SCons.Script.SConscript">SCons.Script.SConscript module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Script/#module-SCons.Script">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Tool/">SCons.Tool package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Tool/#module-SCons.Tool">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Variables/">SCons.Variables package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Variables/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Variables/#module-SCons.Variables.BoolVariable">SCons.Variables.BoolVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Variables/#module-SCons.Variables.EnumVariable">SCons.Variables.EnumVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Variables/#module-SCons.Variables.ListVariable">SCons.Variables.ListVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Variables/#module-SCons.Variables.PackageVariable">SCons.Variables.PackageVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Variables/#module-SCons.Variables.PathVariable">SCons.Variables.PathVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Variables/#module-SCons.Variables">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../">SCons</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../">Module code</a> &raquo;</li>
+        
+          <li><a href="../">SCons.Node</a> &raquo;</li>
+        
+      <li>SCons.Node.Alias</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for SCons.Node.Alias</h1><div class="highlight"><pre>
+<span></span>
+<span class="sd">&quot;&quot;&quot;scons.Node.Alias</span>
+
+<span class="sd">Alias nodes.</span>
+
+<span class="sd">This creates a hash of global Aliases (dummy targets).</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1">#</span>
+<span class="c1"># __COPYRIGHT__</span>
+<span class="c1">#</span>
+<span class="c1"># Permission is hereby granted, free of charge, to any person obtaining</span>
+<span class="c1"># a copy of this software and associated documentation files (the</span>
+<span class="c1"># &quot;Software&quot;), to deal in the Software without restriction, including</span>
+<span class="c1"># without limitation the rights to use, copy, modify, merge, publish,</span>
+<span class="c1"># distribute, sublicense, and/or sell copies of the Software, and to</span>
+<span class="c1"># permit persons to whom the Software is furnished to do so, subject to</span>
+<span class="c1"># the following conditions:</span>
+<span class="c1">#</span>
+<span class="c1"># The above copyright notice and this permission notice shall be included</span>
+<span class="c1"># in all copies or substantial portions of the Software.</span>
+<span class="c1">#</span>
+<span class="c1"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY</span>
+<span class="c1"># KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND</span>
+<span class="c1"># NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE</span>
+<span class="c1"># LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION</span>
+<span class="c1"># OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</span>
+<span class="c1"># WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</span>
+<span class="c1">#</span>
+
+<span class="n">__revision__</span> <span class="o">=</span> <span class="s2">&quot;__FILE__ __REVISION__ __DATE__ __DEVELOPER__&quot;</span>
+
+<span class="kn">import</span> <span class="nn">collections</span>
+
+<span class="kn">import</span> <span class="nn">SCons.Errors</span>
+<span class="kn">import</span> <span class="nn">SCons.Node</span>
+<span class="kn">import</span> <span class="nn">SCons.Util</span>
+<span class="kn">from</span> <span class="nn">SCons.Util</span> <span class="kn">import</span> <span class="n">MD5signature</span>
+
+<div class="viewcode-block" id="AliasNameSpace"><a class="viewcode-back" href="../../../../SCons.Node/#SCons.Node.Alias.AliasNameSpace">[docs]</a><span class="k">class</span> <span class="nc">AliasNameSpace</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">UserDict</span><span class="p">):</span>
+<div class="viewcode-block" id="AliasNameSpace.Alias"><a class="viewcode-back" href="../../../../SCons.Node/#SCons.Node.Alias.AliasNameSpace.Alias">[docs]</a>    <span class="k">def</span> <span class="nf">Alias</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">Alias</span><span class="o">.</span><span class="n">Alias</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">name</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">Alias</span><span class="o">.</span><span class="n">Alias</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+            <span class="bp">self</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span>
+        <span class="k">return</span> <span class="n">a</span></div>
+
+<div class="viewcode-block" id="AliasNameSpace.lookup"><a class="viewcode-back" href="../../../../SCons.Node/#SCons.Node.Alias.AliasNameSpace.lookup">[docs]</a>    <span class="k">def</span> <span class="nf">lookup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div></div>
+
+<div class="viewcode-block" id="AliasNodeInfo"><a class="viewcode-back" href="../../../../SCons.Node/#SCons.Node.Alias.AliasNodeInfo">[docs]</a><span class="k">class</span> <span class="nc">AliasNodeInfo</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">NodeInfoBase</span><span class="p">):</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;csig&#39;</span><span class="p">,)</span>
+    <span class="n">current_version_id</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">field_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;csig&#39;</span><span class="p">]</span>
+<div class="viewcode-block" id="AliasNodeInfo.str_to_node"><a class="viewcode-back" href="../../../../SCons.Node/#SCons.Node.Alias.AliasNodeInfo.str_to_node">[docs]</a>    <span class="k">def</span> <span class="nf">str_to_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">default_ans</span><span class="o">.</span><span class="n">Alias</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return all fields that shall be pickled. Walk the slots in the class</span>
+<span class="sd">        hierarchy and add those to the state dictionary. If a &#39;__dict__&#39; slot is</span>
+<span class="sd">        available, copy all entries to the dictionary. Also include the version</span>
+<span class="sd">        id, which is fixed for all instances of a class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;__dict__&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">mro</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="s1">&#39;__slots__&#39;</span><span class="p">,()):</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+                    <span class="n">state</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+        <span class="n">state</span><span class="p">[</span><span class="s1">&#39;_version_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_version_id</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">del</span> <span class="n">state</span><span class="p">[</span><span class="s1">&#39;__weakref__&#39;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="k">return</span> <span class="n">state</span>
+
+    <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Restore the attributes from a pickled state.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO check or discard version</span>
+        <span class="k">del</span> <span class="n">state</span><span class="p">[</span><span class="s1">&#39;_version_id&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">state</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;__weakref__&#39;</span><span class="p">,):</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></div>
+          
+
+<div class="viewcode-block" id="AliasBuildInfo"><a class="viewcode-back" href="../../../../SCons.Node/#SCons.Node.Alias.AliasBuildInfo">[docs]</a><span class="k">class</span> <span class="nc">AliasBuildInfo</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">BuildInfoBase</span><span class="p">):</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">current_version_id</span> <span class="o">=</span> <span class="mi">2</span></div>
+
+<div class="viewcode-block" id="Alias"><a class="viewcode-back" href="../../../../SCons.Node/#SCons.Node.Alias.Alias">[docs]</a><span class="k">class</span> <span class="nc">Alias</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">Node</span><span class="p">):</span>
+
+    <span class="n">NodeInfo</span> <span class="o">=</span> <span class="n">AliasNodeInfo</span>
+    <span class="n">BuildInfo</span> <span class="o">=</span> <span class="n">AliasBuildInfo</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="n">SCons</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">changed_since_last_build</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">store_info</span> <span class="o">=</span> <span class="mi">0</span>
+        
+<div class="viewcode-block" id="Alias.str_for_display"><a class="viewcode-back" href="../../../../SCons.Node/#SCons.Node.Alias.Alias.str_for_display">[docs]</a>    <span class="k">def</span> <span class="nf">str_for_display</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;&quot;&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span></div>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+<div class="viewcode-block" id="Alias.make_ready"><a class="viewcode-back" href="../../../../SCons.Node/#SCons.Node.Alias.Alias.make_ready">[docs]</a>    <span class="k">def</span> <span class="nf">make_ready</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_csig</span><span class="p">()</span></div>
+
+    <span class="n">really_build</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">build</span>
+    <span class="n">is_up_to_date</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">children_are_up_to_date</span>
+
+<div class="viewcode-block" id="Alias.is_under"><a class="viewcode-back" href="../../../../SCons.Node/#SCons.Node.Alias.Alias.is_under">[docs]</a>    <span class="k">def</span> <span class="nf">is_under</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">dir</span><span class="p">):</span>
+        <span class="c1"># Make Alias nodes get built regardless of</span>
+        <span class="c1"># what directory scons was run from. Alias nodes</span>
+        <span class="c1"># are outside the filesystem:</span>
+        <span class="k">return</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Alias.get_contents"><a class="viewcode-back" href="../../../../SCons.Node/#SCons.Node.Alias.Alias.get_contents">[docs]</a>    <span class="k">def</span> <span class="nf">get_contents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The contents of an alias is the concatenation</span>
+<span class="sd">        of the content signatures of all its sources.&quot;&quot;&quot;</span>
+        <span class="n">childsigs</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span><span class="o">.</span><span class="n">get_csig</span><span class="p">()</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">()]</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">childsigs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Alias.sconsign"><a class="viewcode-back" href="../../../../SCons.Node/#SCons.Node.Alias.Alias.sconsign">[docs]</a>    <span class="k">def</span> <span class="nf">sconsign</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;An Alias is not recorded in .sconsign files&quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+    <span class="c1">#</span>
+    <span class="c1">#</span>
+    <span class="c1">#</span>
+
+<div class="viewcode-block" id="Alias.build"><a class="viewcode-back" href="../../../../SCons.Node/#SCons.Node.Alias.Alias.build">[docs]</a>    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A &quot;builder&quot; for aliases.&quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Alias.convert"><a class="viewcode-back" href="../../../../SCons.Node/#SCons.Node.Alias.Alias.convert">[docs]</a>    <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span> <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span> <span class="k">pass</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_executor</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">build</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">really_build</span></div>
+
+<div class="viewcode-block" id="Alias.get_csig"><a class="viewcode-back" href="../../../../SCons.Node/#SCons.Node.Alias.Alias.get_csig">[docs]</a>    <span class="k">def</span> <span class="nf">get_csig</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate a node&#39;s content signature, the digested signature</span>
+<span class="sd">        of its content.</span>
+
+<span class="sd">        node - the node</span>
+<span class="sd">        cache - alternate node to use for the signature cache</span>
+<span class="sd">        returns - the content signature</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ninfo</span><span class="o">.</span><span class="n">csig</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="n">contents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_contents</span><span class="p">()</span>
+        <span class="n">csig</span> <span class="o">=</span> <span class="n">MD5signature</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_ninfo</span><span class="p">()</span><span class="o">.</span><span class="n">csig</span> <span class="o">=</span> <span class="n">csig</span>
+        <span class="k">return</span> <span class="n">csig</span></div></div>
+
+<span class="n">default_ans</span> <span class="o">=</span> <span class="n">AliasNameSpace</span><span class="p">()</span>
+
+<span class="n">SCons</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">arg2nodes_lookups</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">default_ans</span><span class="o">.</span><span class="n">lookup</span><span class="p">)</span>
+
+<span class="c1"># Local Variables:</span>
+<span class="c1"># tab-width:4</span>
+<span class="c1"># indent-tabs-mode:nil</span>
+<span class="c1"># End:</span>
+<span class="c1"># vim: set expandtab tabstop=4 shiftwidth=4:</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, SCons Project
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,1414 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>SCons.Variables package &#8212; SCons 4.10.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=e28746fb"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'SCons.Variables';</script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="prev" title="SCons.Util package" href="../SCons.Util/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search/"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SCons 4.10.0 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../SCons/">SCons package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.compat/">SCons.compat package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.Taskmaster/">SCons.Taskmaster package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.Util/">SCons.Util package</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">SCons.Variables package</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/SCons.Variables.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>SCons.Variables package</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Variables">Module contents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.BoolVariable"><code class="docutils literal notranslate"><span class="pre">BoolVariable()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.EnumVariable"><code class="docutils literal notranslate"><span class="pre">EnumVariable()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable"><code class="docutils literal notranslate"><span class="pre">ListVariable()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.PackageVariable"><code class="docutils literal notranslate"><span class="pre">PackageVariable()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variable"><code class="docutils literal notranslate"><span class="pre">Variable</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variable.aliases"><code class="docutils literal notranslate"><span class="pre">Variable.aliases</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variable.converter"><code class="docutils literal notranslate"><span class="pre">Variable.converter</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variable.default"><code class="docutils literal notranslate"><span class="pre">Variable.default</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variable.do_subst"><code class="docutils literal notranslate"><span class="pre">Variable.do_subst</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variable.help"><code class="docutils literal notranslate"><span class="pre">Variable.help</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variable.key"><code class="docutils literal notranslate"><span class="pre">Variable.key</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variable.validator"><code class="docutils literal notranslate"><span class="pre">Variable.validator</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variables"><code class="docutils literal notranslate"><span class="pre">Variables</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variables.Add"><code class="docutils literal notranslate"><span class="pre">Variables.Add()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variables.AddVariables"><code class="docutils literal notranslate"><span class="pre">Variables.AddVariables()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variables.FormatVariableHelpText"><code class="docutils literal notranslate"><span class="pre">Variables.FormatVariableHelpText()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variables.GenerateHelpText"><code class="docutils literal notranslate"><span class="pre">Variables.GenerateHelpText()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variables.Save"><code class="docutils literal notranslate"><span class="pre">Variables.Save()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variables.UnknownVariables"><code class="docutils literal notranslate"><span class="pre">Variables.UnknownVariables()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variables.Update"><code class="docutils literal notranslate"><span class="pre">Variables.Update()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variables.__str__"><code class="docutils literal notranslate"><span class="pre">Variables.__str__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variables._do_add"><code class="docutils literal notranslate"><span class="pre">Variables._do_add()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variables.aliasfmt"><code class="docutils literal notranslate"><span class="pre">Variables.aliasfmt</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variables.fmt"><code class="docutils literal notranslate"><span class="pre">Variables.fmt</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variables.keys"><code class="docutils literal notranslate"><span class="pre">Variables.keys()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">Submodules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Variables.BoolVariable">SCons.Variables.BoolVariable module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.BoolVariable.BoolVariable"><code class="docutils literal notranslate"><span class="pre">BoolVariable()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.BoolVariable._text2bool"><code class="docutils literal notranslate"><span class="pre">_text2bool()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.BoolVariable._validator"><code class="docutils literal notranslate"><span class="pre">_validator()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Variables.EnumVariable">SCons.Variables.EnumVariable module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.EnumVariable.EnumVariable"><code class="docutils literal notranslate"><span class="pre">EnumVariable()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.EnumVariable._validator"><code class="docutils literal notranslate"><span class="pre">_validator()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Variables.ListVariable">SCons.Variables.ListVariable module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable.ListVariable"><code class="docutils literal notranslate"><span class="pre">ListVariable()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable._ListVariable"><code class="docutils literal notranslate"><span class="pre">_ListVariable</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable._ListVariable._abc_impl"><code class="docutils literal notranslate"><span class="pre">_ListVariable._abc_impl</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable._ListVariable.append"><code class="docutils literal notranslate"><span class="pre">_ListVariable.append()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable._ListVariable.clear"><code class="docutils literal notranslate"><span class="pre">_ListVariable.clear()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable._ListVariable.copy"><code class="docutils literal notranslate"><span class="pre">_ListVariable.copy()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable._ListVariable.count"><code class="docutils literal notranslate"><span class="pre">_ListVariable.count()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable._ListVariable.extend"><code class="docutils literal notranslate"><span class="pre">_ListVariable.extend()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable._ListVariable.index"><code class="docutils literal notranslate"><span class="pre">_ListVariable.index()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable._ListVariable.insert"><code class="docutils literal notranslate"><span class="pre">_ListVariable.insert()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable._ListVariable.pop"><code class="docutils literal notranslate"><span class="pre">_ListVariable.pop()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable._ListVariable.prepare_to_store"><code class="docutils literal notranslate"><span class="pre">_ListVariable.prepare_to_store()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable._ListVariable.remove"><code class="docutils literal notranslate"><span class="pre">_ListVariable.remove()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable._ListVariable.reverse"><code class="docutils literal notranslate"><span class="pre">_ListVariable.reverse()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable._ListVariable.sort"><code class="docutils literal notranslate"><span class="pre">_ListVariable.sort()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable._converter"><code class="docutils literal notranslate"><span class="pre">_converter()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable._validator"><code class="docutils literal notranslate"><span class="pre">_validator()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Variables.PackageVariable">SCons.Variables.PackageVariable module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.PackageVariable.PackageVariable"><code class="docutils literal notranslate"><span class="pre">PackageVariable()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.PackageVariable._converter"><code class="docutils literal notranslate"><span class="pre">_converter()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.PackageVariable._validator"><code class="docutils literal notranslate"><span class="pre">_validator()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Variables.PathVariable">SCons.Variables.PathVariable module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.PathVariable._PathVariableClass"><code class="docutils literal notranslate"><span class="pre">_PathVariableClass</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.PathVariable._PathVariableClass.PathAccept"><code class="docutils literal notranslate"><span class="pre">_PathVariableClass.PathAccept()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.PathVariable._PathVariableClass.PathExists"><code class="docutils literal notranslate"><span class="pre">_PathVariableClass.PathExists()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.PathVariable._PathVariableClass.PathIsDir"><code class="docutils literal notranslate"><span class="pre">_PathVariableClass.PathIsDir()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.PathVariable._PathVariableClass.PathIsDirCreate"><code class="docutils literal notranslate"><span class="pre">_PathVariableClass.PathIsDirCreate()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.PathVariable._PathVariableClass.PathIsFile"><code class="docutils literal notranslate"><span class="pre">_PathVariableClass.PathIsFile()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.PathVariable._PathVariableClass.__call__"><code class="docutils literal notranslate"><span class="pre">_PathVariableClass.__call__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="scons-variables-package">
+<h1>SCons.Variables package<a class="headerlink" href="#scons-variables-package" title="Link to this heading">#</a></h1>
+<section id="module-SCons.Variables">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-SCons.Variables" title="Link to this heading">#</a></h2>
+<p>Adds user-friendly customizable variables to an SCons build.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Variables.BoolVariable">
+<span class="sig-prename descclassname"><span class="pre">SCons.Variables.</span></span><span class="sig-name descname"><span class="pre">BoolVariable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">help</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/SCons/Variables/BoolVariable/#BoolVariable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.BoolVariable" title="Link to this definition">#</a></dt>
+<dd><p>Return a tuple describing a boolean SCons Variable.</p>
+<p>The input parameters describe a boolean variable, using a string
+value as described by <code class="xref py py-const docutils literal notranslate"><span class="pre">TRUE_STRINGS</span></code> and <code class="xref py py-const docutils literal notranslate"><span class="pre">FALSE_STRINGS</span></code>.
+Returns a tuple including the correct converter and validator.
+The <em>help</em> text will have <code class="docutils literal notranslate"><span class="pre">(yes|no)</span></code> automatically appended to
+show the valid values. The result is usable as input to
+<a class="reference internal" href="#SCons.Variables.Variables.Add" title="SCons.Variables.Variables.Add"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Add()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Variables.EnumVariable">
+<span class="sig-prename descclassname"><span class="pre">SCons.Variables.</span></span><span class="sig-name descname"><span class="pre">EnumVariable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">help</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allowed_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignorecase</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/SCons/Variables/EnumVariable/#EnumVariable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.EnumVariable" title="Link to this definition">#</a></dt>
+<dd><p>Return a tuple describing an enumaration SCons Variable.</p>
+<p>An Enum Variable is an abstraction that allows choosing one
+value from a provided list of possibilities (<em>allowed_values</em>).
+The value of <em>ignorecase</em> defines the behavior of the
+validator and converter: if <code class="docutils literal notranslate"><span class="pre">0</span></code>, the validator/converter are
+case-sensitive; if <code class="docutils literal notranslate"><span class="pre">1</span></code>, the validator/converter are case-insensitive;
+if <code class="docutils literal notranslate"><span class="pre">2</span></code>, the validator/converter are case-insensitive and the
+converted value will always be lower-case.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> – the name of the variable.</p></li>
+<li><p><strong>default</strong> – default value, passed directly through to the return tuple.</p></li>
+<li><p><strong>help</strong> – descriptive part of the help text,
+will have the allowed values automatically appended.</p></li>
+<li><p><strong>allowed_values</strong> – the values for the choice.</p></li>
+<li><p><strong>map</strong> – optional dictionary which may be used for converting the
+input value into canonical values (e.g. for aliases).</p></li>
+<li><p><strong>ignorecase</strong> – defines the behavior of the validator and converter.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple including an appropriate converter and validator.
+The result is usable as input to <a class="reference internal" href="#SCons.Variables.Variables.Add" title="SCons.Variables.Variables.Add"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Add()</span></code></a>.
+and <a class="reference internal" href="#SCons.Variables.Variables.AddVariables" title="SCons.Variables.Variables.AddVariables"><code class="xref py py-meth docutils literal notranslate"><span class="pre">AddVariables()</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Variables.ListVariable">
+<span class="sig-prename descclassname"><span class="pre">SCons.Variables.</span></span><span class="sig-name descname"><span class="pre">ListVariable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">help</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/SCons/Variables/ListVariable/#ListVariable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.ListVariable" title="Link to this definition">#</a></dt>
+<dd><p>Return a tuple describing a list variable.</p>
+<p>A List Variable is an abstraction that allows choosing one or more
+values from a provided list of possibilities (<em>names</em>). The special terms
+“all” and “none” are also provided to help make the selection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> – the name of the list variable.</p></li>
+<li><p><strong>help</strong> – the basic help message.  Will have text appended indicating
+the allowed values (not including any extra names from <em>map</em>).</p></li>
+<li><p><strong>default</strong> – the default value(s) for the list variable. Can be given
+as string (use commas to -separated multiple values), or as a list
+of strings.  “all” or “none” are allowed as <em>default</em>.
+A must-specify list variable can be simulated by giving a value
+that is not part of <em>names</em>, which will cause validation to fail
+if the variable is not supplied in the input sources.</p></li>
+<li><p><strong>names</strong> – the values to choose from. Must be a list of strings.</p></li>
+<li><p><strong>map</strong> – optional dictionary to map alternative names to the ones in
+<em>names</em>, providing a form of alias. The converter will perform
+the replacement. Names from <em>map</em> are not stored, and will
+not appear in the help message.</p></li>
+<li><p><strong>validator</strong> – optional callback to validate supplied values.
+The default validator is used if not specified.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple including the correct converter and validator.  The
+result is usable as input to <a class="reference internal" href="#SCons.Variables.Variables.Add" title="SCons.Variables.Variables.Add"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Add()</span></code></a>.</p>
+</dd>
+</dl>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 4.8.0: </span>The validation step was split from the converter to allow for
+custom validators.  The <em>validator</em> keyword argument was added.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Variables.PackageVariable">
+<span class="sig-prename descclassname"><span class="pre">SCons.Variables.</span></span><span class="sig-name descname"><span class="pre">PackageVariable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">help</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">searchfunc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/SCons/Variables/PackageVariable/#PackageVariable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.PackageVariable" title="Link to this definition">#</a></dt>
+<dd><p>Return a tuple describing a package list SCons Variable.</p>
+<p>The input parameters describe a ‘package list’ variable. Returns
+a tuple with the correct converter and validator appended.
+The result is usable as input to <a class="reference internal" href="#SCons.Variables.Variables.Add" title="SCons.Variables.Variables.Add"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Add()</span></code></a>.</p>
+<p>A ‘package list’ variable may be specified as a truthy string from
+<code class="xref py py-const docutils literal notranslate"><span class="pre">ENABLE_STRINGS</span></code>, a falsy string from
+<code class="xref py py-const docutils literal notranslate"><span class="pre">DISABLE_STRINGS</span></code>, or as a pathname string.
+This information is appended to <em>help</em> using only one string
+each for truthy/falsy.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="SCons.Variables.Variable">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">SCons.Variables.</span></span><span class="sig-name descname"><span class="pre">Variable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aliases</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">help</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">converter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_subst</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Variables/#Variable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.Variable" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A Build Variable.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="SCons.Variables.Variable.aliases">
+<span class="sig-name descname"><span class="pre">aliases</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#SCons.Variables.Variable.aliases" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="SCons.Variables.Variable.converter">
+<span class="sig-name descname"><span class="pre">converter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#SCons.Variables.Variable.converter" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="SCons.Variables.Variable.default">
+<span class="sig-name descname"><span class="pre">default</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Any</span></em><a class="headerlink" href="#SCons.Variables.Variable.default" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="SCons.Variables.Variable.do_subst">
+<span class="sig-name descname"><span class="pre">do_subst</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#SCons.Variables.Variable.do_subst" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="SCons.Variables.Variable.help">
+<span class="sig-name descname"><span class="pre">help</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#SCons.Variables.Variable.help" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="SCons.Variables.Variable.key">
+<span class="sig-name descname"><span class="pre">key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#SCons.Variables.Variable.key" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="SCons.Variables.Variable.validator">
+<span class="sig-name descname"><span class="pre">validator</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#SCons.Variables.Variable.validator" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="SCons.Variables.Variables">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">SCons.Variables.</span></span><span class="sig-name descname"><span class="pre">Variables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">files</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_global</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Variables/#Variables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.Variables" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A container for Build Variables.</p>
+<p>Includes a method to populate the variables with values into a
+construction envirionment, and methods to render the help text.</p>
+<p>Note that the pubic API for creating a <code class="docutils literal notranslate"><span class="pre">Variables</span></code> object is
+<a class="reference internal" href="../SCons.Script/#SCons.Script.Variables" title="SCons.Script.Variables"><code class="xref py py-func docutils literal notranslate"><span class="pre">SCons.Script.Variables()</span></code></a>, a kind of factory function, which
+defaults to supplying the contents of <code class="xref py py-attr docutils literal notranslate"><span class="pre">ARGUMENTS</span></code>
+as the <em>args</em> parameter if it was not otherwise given. That is the
+behavior documented in the manpage for <code class="docutils literal notranslate"><span class="pre">Variables</span></code> - and different
+from the default if you instantiate this directly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>files</strong> – string or list of strings naming variable config scripts
+(default <code class="docutils literal notranslate"><span class="pre">None</span></code>)</p></li>
+<li><p><strong>args</strong> – dictionary to override values set from <em>files</em>.  (default <code class="docutils literal notranslate"><span class="pre">None</span></code>)</p></li>
+<li><p><strong>is_global</strong> – if true, return a global singleton <a class="reference internal" href="#SCons.Variables.Variables" title="SCons.Variables.Variables"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variables</span></code></a> object
+instead of a fresh instance. Currently inoperable (default <code class="docutils literal notranslate"><span class="pre">False</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 4.8.0: </span>The default for <em>is_global</em> changed to <code class="docutils literal notranslate"><span class="pre">False</span></code> (the previous
+default <code class="docutils literal notranslate"><span class="pre">True</span></code> had no effect due to an implementation error).</p>
+</div>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 4.8.0: </span><em>is_global</em> is deprecated.</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.9.0: </span>The <code class="xref py py-attr docutils literal notranslate"><span class="pre">defaulted</span></code> attribute now lists those variables which
+were filled in from default values.</p>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="SCons.Variables.Variables.Add">
+<span class="sig-name descname"><span class="pre">Add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/SCons/Variables/#Variables.Add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.Variables.Add" title="Link to this definition">#</a></dt>
+<dd><p>Add a Build Variable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> – the name of the variable, or a 5-tuple (or other sequence).
+If <em>key</em> is a tuple, and there are no additional arguments
+except the <em>help</em>, <em>default</em>, <em>validator</em> and <em>converter</em>
+keyword arguments, <em>key</em> is unpacked into the variable name
+plus the <em>help</em>, <em>default</em>, <em>validator</em> and <em>converter</em>
+arguments; if there are additional arguments, the first
+elements of <em>key</em> is taken as the variable name, and the
+remainder as aliases.</p></li>
+<li><p><strong>args</strong> – optional positional arguments, corresponding to the
+<em>help</em>, <em>default</em>, <em>validator</em> and <em>converter</em> keyword args.</p></li>
+<li><p><strong>kwargs</strong> – arbitrary keyword arguments used by the variable itself.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Keyword Arguments<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>help</strong> – help text for the variable (default: empty string)</p></li>
+<li><p><strong>default</strong> – default value for variable (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)</p></li>
+<li><p><strong>validator</strong> – function called to validate the value (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)</p></li>
+<li><p><strong>converter</strong> – function to be called to convert the variable’s
+value before putting it in the environment. (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)</p></li>
+<li><p><strong>subst</strong> – perform substitution on the value before the converter
+and validator functions (if any) are called (default: <code class="docutils literal notranslate"><span class="pre">True</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.8.0: </span>The <em>subst</em> keyword argument is now specially recognized.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SCons.Variables.Variables.AddVariables">
+<span class="sig-name descname"><span class="pre">AddVariables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">optlist</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/SCons/Variables/#Variables.AddVariables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.Variables.AddVariables" title="Link to this definition">#</a></dt>
+<dd><p>Add Build Variables.</p>
+<p>Each <em>optlist</em> element is a sequence of arguments to be passed on
+to the underlying method for adding variables.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">opt</span> <span class="o">=</span> <span class="n">Variables</span><span class="p">()</span>
+<span class="n">opt</span><span class="o">.</span><span class="n">AddVariables</span><span class="p">(</span>
+    <span class="p">(</span><span class="s1">&#39;debug&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;CC&#39;</span><span class="p">,</span> <span class="s1">&#39;The C compiler&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;VALIDATE&#39;</span><span class="p">,</span> <span class="s1">&#39;An option for testing validation&#39;</span><span class="p">,</span> <span class="s1">&#39;notset&#39;</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SCons.Variables.Variables.FormatVariableHelpText">
+<span class="sig-name descname"><span class="pre">FormatVariableHelpText</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">help</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aliases</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/SCons/Variables/#Variables.FormatVariableHelpText"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.Variables.FormatVariableHelpText" title="Link to this definition">#</a></dt>
+<dd><p>Format the help text for a single variable.</p>
+<p>The caller is responsible for obtaining all the values,
+although now the <a class="reference internal" href="#SCons.Variables.Variable" title="SCons.Variables.Variable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variable</span></code></a> class is more publicly exposed,
+this method could easily do most of that work - however
+that would change the existing published API.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SCons.Variables.Variables.GenerateHelpText">
+<span class="sig-name descname"><span class="pre">GenerateHelpText</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/SCons/Variables/#Variables.GenerateHelpText"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.Variables.GenerateHelpText" title="Link to this definition">#</a></dt>
+<dd><p>Generate the help text for the Variables object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>env</strong> – an environment that is used to get the current values
+of the variables.</p></li>
+<li><p><strong>sort</strong> – Either a comparison function used for sorting
+(must take two arguments and return <code class="docutils literal notranslate"><span class="pre">-1</span></code>, <code class="docutils literal notranslate"><span class="pre">0</span></code> or <code class="docutils literal notranslate"><span class="pre">1</span></code>)
+or a boolean to indicate if it should be sorted.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SCons.Variables.Variables.Save">
+<span class="sig-name descname"><span class="pre">Save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/SCons/Variables/#Variables.Save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.Variables.Save" title="Link to this definition">#</a></dt>
+<dd><p>Save the variables to a script.</p>
+<p>Saves all the variables which have non-default settings
+to the given file as Python expressions.  This script can
+then be used to load the variables for a subsequent run.
+This can be used to create a build variable “cache” or
+capture different configurations for selection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> – Name of the file to save into</p></li>
+<li><p><strong>env</strong> – the environment to get the option values from</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SCons.Variables.Variables.UnknownVariables">
+<span class="sig-name descname"><span class="pre">UnknownVariables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/SCons/Variables/#Variables.UnknownVariables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.Variables.UnknownVariables" title="Link to this definition">#</a></dt>
+<dd><p>Return dict of unknown variables.</p>
+<p>Identifies variables that were not recognized in this object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SCons.Variables.Variables.Update">
+<span class="sig-name descname"><span class="pre">Update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/SCons/Variables/#Variables.Update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.Variables.Update" title="Link to this definition">#</a></dt>
+<dd><p>Update an environment with the Build Variables.</p>
+<p>This is where the work of adding variables to the environment
+happens, The input sources saved at init time are scanned for
+variables to add, though if <em>args</em> is passed, then it is used
+instead of the saved one. If any variable description set up
+a callback for a validator and/or converter, those are called.
+Variables from the input sources which do not match a variable
+description in this object are ignored for purposes of adding
+to <em>env</em>, but are saved in the <code class="xref py py-attr docutils literal notranslate"><span class="pre">unknown</span></code> dict attribute.
+Variables which are set in <em>env</em> from the default in a variable
+description and not from the input sources are saved in the
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">defaulted</span></code> list attribute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>env</strong> – the environment to update.</p></li>
+<li><p><strong>args</strong> – a dictionary of keys and values to update in <em>env</em>.
+If omitted, uses the saved <code class="xref py py-attr docutils literal notranslate"><span class="pre">args</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SCons.Variables.Variables.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/SCons/Variables/#Variables.__str__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.Variables.__str__" title="Link to this definition">#</a></dt>
+<dd><p>Provide a way to “print” a <a class="reference internal" href="#SCons.Variables.Variables" title="SCons.Variables.Variables"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variables</span></code></a> object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SCons.Variables.Variables._do_add">
+<span class="sig-name descname"><span class="pre">_do_add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">help</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">converter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/SCons/Variables/#Variables._do_add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.Variables._do_add" title="Link to this definition">#</a></dt>
+<dd><p>Create a <a class="reference internal" href="#SCons.Variables.Variable" title="SCons.Variables.Variable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variable</span></code></a> and add it to the list.</p>
+<p>This is the internal implementation for <a class="reference internal" href="#SCons.Variables.Variables.Add" title="SCons.Variables.Variables.Add"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Add()</span></code></a> and
+<a class="reference internal" href="#SCons.Variables.Variables.AddVariables" title="SCons.Variables.Variables.AddVariables"><code class="xref py py-meth docutils literal notranslate"><span class="pre">AddVariables()</span></code></a>. Not part of the public API.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.8.0: </span><em>subst</em> keyword argument is now recognized.</p>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="SCons.Variables.Variables.aliasfmt">
+<span class="sig-name descname"><span class="pre">aliasfmt</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\n%s:</span> <span class="pre">%s\n</span>&#160;&#160;&#160; <span class="pre">default:</span> <span class="pre">%s\n</span>&#160;&#160;&#160; <span class="pre">actual:</span> <span class="pre">%s\n</span>&#160;&#160;&#160; <span class="pre">aliases:</span> <span class="pre">%s\n'</span></em><a class="headerlink" href="#SCons.Variables.Variables.aliasfmt" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="SCons.Variables.Variables.fmt">
+<span class="sig-name descname"><span class="pre">fmt</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\n%s:</span> <span class="pre">%s\n</span>&#160;&#160;&#160; <span class="pre">default:</span> <span class="pre">%s\n</span>&#160;&#160;&#160; <span class="pre">actual:</span> <span class="pre">%s\n'</span></em><a class="headerlink" href="#SCons.Variables.Variables.fmt" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SCons.Variables.Variables.keys">
+<span class="sig-name descname"><span class="pre">keys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="../_modules/SCons/Variables/#Variables.keys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.Variables.keys" title="Link to this definition">#</a></dt>
+<dd><p>Return the variable names.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">#</a></h2>
+</section>
+<section id="module-SCons.Variables.BoolVariable">
+<span id="scons-variables-boolvariable-module"></span><h2>SCons.Variables.BoolVariable module<a class="headerlink" href="#module-SCons.Variables.BoolVariable" title="Link to this heading">#</a></h2>
+<p>Variable type for true/false Variables.</p>
+<p>Usage example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">opts</span> <span class="o">=</span> <span class="n">Variables</span><span class="p">()</span>
+<span class="n">opts</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">BoolVariable</span><span class="p">(</span><span class="s1">&#39;embedded&#39;</span><span class="p">,</span> <span class="s1">&#39;build for an embedded system&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">(</span><span class="n">variables</span><span class="o">=</span><span class="n">opts</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">env</span><span class="p">[</span><span class="s1">&#39;embedded&#39;</span><span class="p">]:</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Variables.BoolVariable.BoolVariable">
+<span class="sig-prename descclassname"><span class="pre">SCons.Variables.BoolVariable.</span></span><span class="sig-name descname"><span class="pre">BoolVariable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">help</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/SCons/Variables/BoolVariable/#BoolVariable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.BoolVariable.BoolVariable" title="Link to this definition">#</a></dt>
+<dd><p>Return a tuple describing a boolean SCons Variable.</p>
+<p>The input parameters describe a boolean variable, using a string
+value as described by <code class="xref py py-const docutils literal notranslate"><span class="pre">TRUE_STRINGS</span></code> and <code class="xref py py-const docutils literal notranslate"><span class="pre">FALSE_STRINGS</span></code>.
+Returns a tuple including the correct converter and validator.
+The <em>help</em> text will have <code class="docutils literal notranslate"><span class="pre">(yes|no)</span></code> automatically appended to
+show the valid values. The result is usable as input to
+<a class="reference internal" href="#SCons.Variables.Variables.Add" title="SCons.Variables.Variables.Add"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Add()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Variables.BoolVariable._text2bool">
+<span class="sig-prename descclassname"><span class="pre">SCons.Variables.BoolVariable.</span></span><span class="sig-name descname"><span class="pre">_text2bool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/SCons/Variables/BoolVariable/#_text2bool"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.BoolVariable._text2bool" title="Link to this definition">#</a></dt>
+<dd><p>Convert boolean-like string to boolean.</p>
+<p>If <em>val</em> looks like it expresses a bool-like value, based on
+the <code class="xref py py-const docutils literal notranslate"><span class="pre">TRUE_STRINGS</span></code> and <code class="xref py py-const docutils literal notranslate"><span class="pre">FALSE_STRINGS</span></code> tuples,
+return the appropriate value.</p>
+<p>This is usable as a converter function for SCons Variables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – if <em>val</em> cannot be converted to boolean.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Variables.BoolVariable._validator">
+<span class="sig-prename descclassname"><span class="pre">SCons.Variables.BoolVariable.</span></span><span class="sig-name descname"><span class="pre">_validator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/SCons/Variables/BoolVariable/#_validator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.BoolVariable._validator" title="Link to this definition">#</a></dt>
+<dd><p>Validate that the value of <em>key</em> in <em>env</em> is a boolean.</p>
+<p>Parameter <em>val</em> is not used in the check.</p>
+<p>Usable as a validator function for SCons Variables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>KeyError</strong> – if <em>key</em> is not set in <em>env</em></p></li>
+<li><p><a class="reference internal" href="../SCons/#SCons.Errors.UserError" title="SCons.Errors.UserError"><strong>UserError</strong></a> – if the value of <em>key</em> is not <code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-SCons.Variables.EnumVariable">
+<span id="scons-variables-enumvariable-module"></span><h2>SCons.Variables.EnumVariable module<a class="headerlink" href="#module-SCons.Variables.EnumVariable" title="Link to this heading">#</a></h2>
+<p>Variable type for enumeration Variables.</p>
+<p>Enumeration variables allow selection of one from a specified set of values.</p>
+<p>Usage example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">opts</span> <span class="o">=</span> <span class="n">Variables</span><span class="p">()</span>
+<span class="n">opts</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span>
+    <span class="n">EnumVariable</span><span class="p">(</span>
+        <span class="s1">&#39;debug&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;debug output and symbols&#39;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s1">&#39;no&#39;</span><span class="p">,</span>
+        <span class="n">allowed_values</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">,</span> <span class="s1">&#39;full&#39;</span><span class="p">),</span>
+        <span class="nb">map</span><span class="o">=</span><span class="p">{},</span>
+        <span class="n">ignorecase</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">(</span><span class="n">variables</span><span class="o">=</span><span class="n">opts</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">env</span><span class="p">[</span><span class="s1">&#39;debug&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;full&#39;</span><span class="p">:</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Variables.EnumVariable.EnumVariable">
+<span class="sig-prename descclassname"><span class="pre">SCons.Variables.EnumVariable.</span></span><span class="sig-name descname"><span class="pre">EnumVariable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">help</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allowed_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignorecase</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/SCons/Variables/EnumVariable/#EnumVariable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.EnumVariable.EnumVariable" title="Link to this definition">#</a></dt>
+<dd><p>Return a tuple describing an enumaration SCons Variable.</p>
+<p>An Enum Variable is an abstraction that allows choosing one
+value from a provided list of possibilities (<em>allowed_values</em>).
+The value of <em>ignorecase</em> defines the behavior of the
+validator and converter: if <code class="docutils literal notranslate"><span class="pre">0</span></code>, the validator/converter are
+case-sensitive; if <code class="docutils literal notranslate"><span class="pre">1</span></code>, the validator/converter are case-insensitive;
+if <code class="docutils literal notranslate"><span class="pre">2</span></code>, the validator/converter are case-insensitive and the
+converted value will always be lower-case.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> – the name of the variable.</p></li>
+<li><p><strong>default</strong> – default value, passed directly through to the return tuple.</p></li>
+<li><p><strong>help</strong> – descriptive part of the help text,
+will have the allowed values automatically appended.</p></li>
+<li><p><strong>allowed_values</strong> – the values for the choice.</p></li>
+<li><p><strong>map</strong> – optional dictionary which may be used for converting the
+input value into canonical values (e.g. for aliases).</p></li>
+<li><p><strong>ignorecase</strong> – defines the behavior of the validator and converter.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple including an appropriate converter and validator.
+The result is usable as input to <a class="reference internal" href="#SCons.Variables.Variables.Add" title="SCons.Variables.Variables.Add"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Add()</span></code></a>.
+and <a class="reference internal" href="#SCons.Variables.Variables.AddVariables" title="SCons.Variables.Variables.AddVariables"><code class="xref py py-meth docutils literal notranslate"><span class="pre">AddVariables()</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Variables.EnumVariable._validator">
+<span class="sig-prename descclassname"><span class="pre">SCons.Variables.EnumVariable.</span></span><span class="sig-name descname"><span class="pre">_validator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vals</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/SCons/Variables/EnumVariable/#_validator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.EnumVariable._validator" title="Link to this definition">#</a></dt>
+<dd><p>Validate that val is in vals.</p>
+<p>Usable as the base for <a class="reference internal" href="#SCons.Variables.EnumVariable.EnumVariable" title="SCons.Variables.EnumVariable.EnumVariable"><code class="xref py py-class docutils literal notranslate"><span class="pre">EnumVariable</span></code></a> validators.</p>
+</dd></dl>
+
+</section>
+<section id="module-SCons.Variables.ListVariable">
+<span id="scons-variables-listvariable-module"></span><h2>SCons.Variables.ListVariable module<a class="headerlink" href="#module-SCons.Variables.ListVariable" title="Link to this heading">#</a></h2>
+<p>Variable type for List Variables.</p>
+<p>A list variable allows selecting one or more from a supplied set of
+allowable values, as well as from an optional mapping of alternate names
+(such as aliases and abbreviations) and the special names “all” and
+“none”.  Specified values are converted during processing into values
+only from the allowable values set.</p>
+<p>Usage example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">list_of_libs</span> <span class="o">=</span> <span class="n">Split</span><span class="p">(</span><span class="s1">&#39;x11 gl qt ical&#39;</span><span class="p">)</span>
+
+<span class="n">opts</span> <span class="o">=</span> <span class="n">Variables</span><span class="p">()</span>
+<span class="n">opts</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span>
+    <span class="n">ListVariable</span><span class="p">(</span>
+        <span class="s1">&#39;shared&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;libraries to build as shared libraries&#39;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span>
+        <span class="n">elems</span><span class="o">=</span><span class="n">list_of_libs</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">(</span><span class="n">variables</span><span class="o">=</span><span class="n">opts</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">lib</span> <span class="ow">in</span> <span class="n">list_of_libs</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">lib</span> <span class="ow">in</span> <span class="n">env</span><span class="p">[</span><span class="s1">&#39;shared&#39;</span><span class="p">]:</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">SharedObject</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">Object</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Variables.ListVariable.ListVariable">
+<span class="sig-prename descclassname"><span class="pre">SCons.Variables.ListVariable.</span></span><span class="sig-name descname"><span class="pre">ListVariable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">help</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/SCons/Variables/ListVariable/#ListVariable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.ListVariable.ListVariable" title="Link to this definition">#</a></dt>
+<dd><p>Return a tuple describing a list variable.</p>
+<p>A List Variable is an abstraction that allows choosing one or more
+values from a provided list of possibilities (<em>names</em>). The special terms
+“all” and “none” are also provided to help make the selection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> – the name of the list variable.</p></li>
+<li><p><strong>help</strong> – the basic help message.  Will have text appended indicating
+the allowed values (not including any extra names from <em>map</em>).</p></li>
+<li><p><strong>default</strong> – the default value(s) for the list variable. Can be given
+as string (use commas to -separated multiple values), or as a list
+of strings.  “all” or “none” are allowed as <em>default</em>.
+A must-specify list variable can be simulated by giving a value
+that is not part of <em>names</em>, which will cause validation to fail
+if the variable is not supplied in the input sources.</p></li>
+<li><p><strong>names</strong> – the values to choose from. Must be a list of strings.</p></li>
+<li><p><strong>map</strong> – optional dictionary to map alternative names to the ones in
+<em>names</em>, providing a form of alias. The converter will perform
+the replacement. Names from <em>map</em> are not stored, and will
+not appear in the help message.</p></li>
+<li><p><strong>validator</strong> – optional callback to validate supplied values.
+The default validator is used if not specified.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple including the correct converter and validator.  The
+result is usable as input to <a class="reference internal" href="#SCons.Variables.Variables.Add" title="SCons.Variables.Variables.Add"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Add()</span></code></a>.</p>
+</dd>
+</dl>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 4.8.0: </span>The validation step was split from the converter to allow for
+custom validators.  The <em>validator</em> keyword argument was added.</p>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="SCons.Variables.ListVariable._ListVariable">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">SCons.Variables.ListVariable.</span></span><span class="sig-name descname"><span class="pre">_ListVariable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initlist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allowedElems</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Variables/ListVariable/#_ListVariable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.ListVariable._ListVariable" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">UserList</span></code></p>
+<p>Internal class holding the data for a List Variable.</p>
+<p>This is normally not directly instantiated, rather the ListVariable
+converter callback “converts” string input (or the default value
+if none) into an instance and stores it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>initlist</strong> – the list of actual values given.</p></li>
+<li><p><strong>allowedElems</strong> – the list of allowable values.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="SCons.Variables.ListVariable._ListVariable._abc_impl">
+<span class="sig-name descname"><span class="pre">_abc_impl</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;_abc._abc_data</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#SCons.Variables.ListVariable._ListVariable._abc_impl" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SCons.Variables.ListVariable._ListVariable.append">
+<span class="sig-name descname"><span class="pre">append</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Variables.ListVariable._ListVariable.append" title="Link to this definition">#</a></dt>
+<dd><p>S.append(value) – append value to the end of the sequence</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SCons.Variables.ListVariable._ListVariable.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span> <span class="pre">--</span> <span class="pre">remove</span> <span class="pre">all</span> <span class="pre">items</span> <span class="pre">from</span> <span class="pre">S</span></span></span><a class="headerlink" href="#SCons.Variables.ListVariable._ListVariable.clear" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SCons.Variables.ListVariable._ListVariable.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Variables.ListVariable._ListVariable.copy" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SCons.Variables.ListVariable._ListVariable.count">
+<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">integer</span> <span class="pre">--</span> <span class="pre">return</span> <span class="pre">number</span> <span class="pre">of</span> <span class="pre">occurrences</span> <span class="pre">of</span> <span class="pre">value</span></span></span><a class="headerlink" href="#SCons.Variables.ListVariable._ListVariable.count" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SCons.Variables.ListVariable._ListVariable.extend">
+<span class="sig-name descname"><span class="pre">extend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Variables.ListVariable._ListVariable.extend" title="Link to this definition">#</a></dt>
+<dd><p>S.extend(iterable) – extend sequence by appending elements from the iterable</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SCons.Variables.ListVariable._ListVariable.index">
+<span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">integer</span> <span class="pre">--</span> <span class="pre">return</span> <span class="pre">first</span> <span class="pre">index</span> <span class="pre">of</span> <span class="pre">value.</span></span></span><a class="headerlink" href="#SCons.Variables.ListVariable._ListVariable.index" title="Link to this definition">#</a></dt>
+<dd><p>Raises ValueError if the value is not present.</p>
+<p>Supporting start and stop arguments is optional, but
+recommended.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SCons.Variables.ListVariable._ListVariable.insert">
+<span class="sig-name descname"><span class="pre">insert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Variables.ListVariable._ListVariable.insert" title="Link to this definition">#</a></dt>
+<dd><p>S.insert(index, value) – insert value before index</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SCons.Variables.ListVariable._ListVariable.pop">
+<span class="sig-name descname"><span class="pre">pop</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="optional">]</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">item</span> <span class="pre">--</span> <span class="pre">remove</span> <span class="pre">and</span> <span class="pre">return</span> <span class="pre">item</span> <span class="pre">at</span> <span class="pre">index</span> <span class="pre">(default</span> <span class="pre">last).</span></span></span><a class="headerlink" href="#SCons.Variables.ListVariable._ListVariable.pop" title="Link to this definition">#</a></dt>
+<dd><p>Raise IndexError if list is empty or index is out of range.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SCons.Variables.ListVariable._ListVariable.prepare_to_store">
+<span class="sig-name descname"><span class="pre">prepare_to_store</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Variables/ListVariable/#_ListVariable.prepare_to_store"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.ListVariable._ListVariable.prepare_to_store" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SCons.Variables.ListVariable._ListVariable.remove">
+<span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Variables.ListVariable._ListVariable.remove" title="Link to this definition">#</a></dt>
+<dd><p>S.remove(value) – remove first occurrence of value.
+Raise ValueError if the value is not present.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SCons.Variables.ListVariable._ListVariable.reverse">
+<span class="sig-name descname"><span class="pre">reverse</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Variables.ListVariable._ListVariable.reverse" title="Link to this definition">#</a></dt>
+<dd><p>S.reverse() – reverse <em>IN PLACE</em></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SCons.Variables.ListVariable._ListVariable.sort">
+<span class="sig-name descname"><span class="pre">sort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Variables.ListVariable._ListVariable.sort" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Variables.ListVariable._converter">
+<span class="sig-prename descclassname"><span class="pre">SCons.Variables.ListVariable.</span></span><span class="sig-name descname"><span class="pre">_converter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allowedElems</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mapdict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#SCons.Variables.ListVariable._ListVariable" title="SCons.Variables.ListVariable._ListVariable"><span class="pre">_ListVariable</span></a></span></span><a class="reference internal" href="../_modules/SCons/Variables/ListVariable/#_converter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.ListVariable._converter" title="Link to this definition">#</a></dt>
+<dd><p>Callback to convert list variables into a suitable form.</p>
+<p>The arguments <em>allowedElems</em> and <em>mapdict</em> are non-standard
+for a <code class="xref py py-class docutils literal notranslate"><span class="pre">Variables</span></code> converter: the lambda in the
+<a class="reference internal" href="#SCons.Variables.ListVariable.ListVariable" title="SCons.Variables.ListVariable.ListVariable"><code class="xref py py-func docutils literal notranslate"><span class="pre">ListVariable()</span></code></a> function arranges for us to be called correctly.</p>
+<p>Incoming values “all” and “none” are recognized and converted
+into their expanded form.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Variables.ListVariable._validator">
+<span class="sig-prename descclassname"><span class="pre">SCons.Variables.ListVariable.</span></span><span class="sig-name descname"><span class="pre">_validator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/SCons/Variables/ListVariable/#_validator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.ListVariable._validator" title="Link to this definition">#</a></dt>
+<dd><p>Callback to validate supplied value(s) for a ListVariable.</p>
+<p>Validation means “is <em>val</em> in the allowed list”? <em>val</em> has
+been subject to substitution before the validator is called. The
+converter created a <a class="reference internal" href="#SCons.Variables.ListVariable._ListVariable" title="SCons.Variables.ListVariable._ListVariable"><code class="xref py py-class docutils literal notranslate"><span class="pre">_ListVariable</span></code></a> container which is stored
+in <em>env</em> after it runs; this includes the allowable elements list.
+Substitution makes a string made out of the values (only),
+so we need to fish the allowed elements list out of the environment
+to complete the validation.</p>
+<p>Note that since 18b45e456, whether <code class="docutils literal notranslate"><span class="pre">subst</span></code> has been
+called is conditional on the value of the <em>subst</em> argument to
+<a class="reference internal" href="#SCons.Variables.Variables.Add" title="SCons.Variables.Variables.Add"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Add()</span></code></a>, so we have to account for
+possible different types of <em>val</em>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../SCons/#SCons.Errors.UserError" title="SCons.Errors.UserError"><strong>UserError</strong></a> – if validation failed.</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.8.0: </span><code class="docutils literal notranslate"><span class="pre">_validator</span></code> split off from <a class="reference internal" href="#SCons.Variables.ListVariable._converter" title="SCons.Variables.ListVariable._converter"><code class="xref py py-func docutils literal notranslate"><span class="pre">_converter()</span></code></a> with an additional
+check  for whether <em>val</em> has been substituted before the call.</p>
+</div>
+</dd></dl>
+
+</section>
+<section id="module-SCons.Variables.PackageVariable">
+<span id="scons-variables-packagevariable-module"></span><h2>SCons.Variables.PackageVariable module<a class="headerlink" href="#module-SCons.Variables.PackageVariable" title="Link to this heading">#</a></h2>
+<p>Variable type for package Variables.</p>
+<p>To be used whenever a ‘package’ may be enabled/disabled and the
+package path may be specified.</p>
+<p>Given these options</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x11</span><span class="o">=</span><span class="n">no</span>   <span class="p">(</span><span class="n">disables</span> <span class="n">X11</span> <span class="n">support</span><span class="p">)</span>
+<span class="n">x11</span><span class="o">=</span><span class="n">yes</span>  <span class="p">(</span><span class="n">will</span> <span class="n">search</span> <span class="k">for</span> <span class="n">the</span> <span class="n">package</span> <span class="n">installation</span> <span class="nb">dir</span><span class="p">)</span>
+<span class="n">x11</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">X11</span> <span class="p">(</span><span class="n">will</span> <span class="n">check</span> <span class="n">this</span> <span class="n">path</span> <span class="k">for</span> <span class="n">existence</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Can be used as a replacement for autoconf’s <code class="docutils literal notranslate"><span class="pre">--with-xxx=yyy</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">opts</span> <span class="o">=</span> <span class="n">Variables</span><span class="p">()</span>
+<span class="n">opts</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span>
+    <span class="n">PackageVariable</span><span class="p">(</span>
+        <span class="n">key</span><span class="o">=</span><span class="s1">&#39;x11&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;use X11 installed here (yes = search some places)&#39;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s1">&#39;yes&#39;</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">(</span><span class="n">variables</span><span class="o">=</span><span class="n">opts</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">env</span><span class="p">[</span><span class="s1">&#39;x11&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="nb">dir</span> <span class="o">=</span> <span class="o">...</span>  <span class="c1"># search X11 in some standard places ...</span>
+    <span class="n">env</span><span class="p">[</span><span class="s1">&#39;x11&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dir</span>
+<span class="k">if</span> <span class="n">env</span><span class="p">[</span><span class="s1">&#39;x11&#39;</span><span class="p">]:</span>
+    <span class="o">...</span>  <span class="c1"># build with x11 ...</span>
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Variables.PackageVariable.PackageVariable">
+<span class="sig-prename descclassname"><span class="pre">SCons.Variables.PackageVariable.</span></span><span class="sig-name descname"><span class="pre">PackageVariable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">help</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">searchfunc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/SCons/Variables/PackageVariable/#PackageVariable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.PackageVariable.PackageVariable" title="Link to this definition">#</a></dt>
+<dd><p>Return a tuple describing a package list SCons Variable.</p>
+<p>The input parameters describe a ‘package list’ variable. Returns
+a tuple with the correct converter and validator appended.
+The result is usable as input to <a class="reference internal" href="#SCons.Variables.Variables.Add" title="SCons.Variables.Variables.Add"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Add()</span></code></a>.</p>
+<p>A ‘package list’ variable may be specified as a truthy string from
+<code class="xref py py-const docutils literal notranslate"><span class="pre">ENABLE_STRINGS</span></code>, a falsy string from
+<code class="xref py py-const docutils literal notranslate"><span class="pre">DISABLE_STRINGS</span></code>, or as a pathname string.
+This information is appended to <em>help</em> using only one string
+each for truthy/falsy.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Variables.PackageVariable._converter">
+<span class="sig-prename descclassname"><span class="pre">SCons.Variables.PackageVariable.</span></span><span class="sig-name descname"><span class="pre">_converter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/SCons/Variables/PackageVariable/#_converter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.PackageVariable._converter" title="Link to this definition">#</a></dt>
+<dd><p>Convert a package variable.</p>
+<p>Returns <em>val</em> if it looks like a path string, and <code class="docutils literal notranslate"><span class="pre">False</span></code> if it
+is a disabling string. If <em>val</em> is an enabling string, returns
+<em>default</em> unless <em>default</em> is an enabling or disabling string,
+in which case ignore <em>default</em> and return <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SCons.Variables.PackageVariable._validator">
+<span class="sig-prename descclassname"><span class="pre">SCons.Variables.PackageVariable.</span></span><span class="sig-name descname"><span class="pre">_validator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">searchfunc</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/SCons/Variables/PackageVariable/#_validator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.PackageVariable._validator" title="Link to this definition">#</a></dt>
+<dd><p>Validate package variable for valid path.</p>
+<p>Checks that if a path is given as the value, that pathname actually exists.</p>
+</dd></dl>
+
+</section>
+<section id="module-SCons.Variables.PathVariable">
+<span id="scons-variables-pathvariable-module"></span><h2>SCons.Variables.PathVariable module<a class="headerlink" href="#module-SCons.Variables.PathVariable" title="Link to this heading">#</a></h2>
+<p>Variable type for path Variables.</p>
+<p>To be used whenever a user-specified path override setting should be allowed.</p>
+<dl>
+<dt>Arguments to PathVariable are:</dt><dd><ul class="simple">
+<li><p><em>key</em> - name of this variable on the command line (e.g. “prefix”)</p></li>
+<li><p><em>help</em> - help string for variable</p></li>
+<li><p><em>default</em> - default value for this variable</p></li>
+<li><p><em>validator</em> - [optional] validator for variable value.  Predefined are:</p>
+<ul>
+<li><p><em>PathAccept</em> - accepts any path setting; no validation</p></li>
+<li><p><em>PathIsDir</em> - path must be an existing directory</p></li>
+<li><p><em>PathIsDirCreate</em> - path must be a dir; will create</p></li>
+<li><p><em>PathIsFile</em> - path must be a file</p></li>
+<li><p><em>PathExists</em> - path must exist (any type) [default]</p></li>
+</ul>
+</li>
+</ul>
+<p>The <em>validator</em> is a function that is called and which should return
+True or False to indicate if the path is valid.  The arguments
+to the validator function are: (<em>key</em>, <em>val</em>, <em>env</em>).  <em>key</em> is the
+name of the variable, <em>val</em> is the path specified for the variable,
+and <em>env</em> is the environment to which the Variables have been added.</p>
+</dd>
+</dl>
+<p>Usage example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">opts</span> <span class="o">=</span> <span class="n">Variables</span><span class="p">()</span>
+<span class="n">opts</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span>
+    <span class="n">PathVariable</span><span class="p">(</span>
+        <span class="s1">&#39;qtdir&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;where the root of Qt is installed&#39;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">qtdir</span><span class="p">,</span>
+        <span class="n">validator</span><span class="o">=</span><span class="n">PathIsDir</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="n">opts</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span>
+    <span class="n">PathVariable</span><span class="p">(</span>
+        <span class="s1">&#39;qt_includes&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;where the Qt includes are installed&#39;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s1">&#39;$qtdir/includes&#39;</span><span class="p">,</span>
+        <span class="n">validator</span><span class="o">=</span><span class="n">PathIsDirCreate</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="n">opts</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span>
+    <span class="n">PathVariable</span><span class="p">(</span>
+        <span class="s1">&#39;qt_libraries&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;where the Qt library is installed&#39;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s1">&#39;$qtdir/lib&#39;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="SCons.Variables.PathVariable._PathVariableClass">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">SCons.Variables.PathVariable.</span></span><span class="sig-name descname"><span class="pre">_PathVariableClass</span></span><a class="reference internal" href="../_modules/SCons/Variables/PathVariable/#_PathVariableClass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.PathVariable._PathVariableClass" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class implementing path variables.</p>
+<p>This class exists mainly to expose the validators without code having
+to import the names: they will appear as methods of <code class="docutils literal notranslate"><span class="pre">PathVariable</span></code>,
+a statically created instance of this class, which is placed in
+the SConscript namespace.</p>
+<p>Instances are callable to produce a suitable variable tuple.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="SCons.Variables.PathVariable._PathVariableClass.PathAccept">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PathAccept</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/SCons/Variables/PathVariable/#_PathVariableClass.PathAccept"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.PathVariable._PathVariableClass.PathAccept" title="Link to this definition">#</a></dt>
+<dd><p>Validate path with no checking.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SCons.Variables.PathVariable._PathVariableClass.PathExists">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PathExists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/SCons/Variables/PathVariable/#_PathVariableClass.PathExists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.PathVariable._PathVariableClass.PathExists" title="Link to this definition">#</a></dt>
+<dd><p>Validate path exists.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SCons.Variables.PathVariable._PathVariableClass.PathIsDir">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PathIsDir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/SCons/Variables/PathVariable/#_PathVariableClass.PathIsDir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.PathVariable._PathVariableClass.PathIsDir" title="Link to this definition">#</a></dt>
+<dd><p>Validate path is a directory.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SCons.Variables.PathVariable._PathVariableClass.PathIsDirCreate">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PathIsDirCreate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/SCons/Variables/PathVariable/#_PathVariableClass.PathIsDirCreate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.PathVariable._PathVariableClass.PathIsDirCreate" title="Link to this definition">#</a></dt>
+<dd><p>Validate path is a directory, creating if needed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SCons.Variables.PathVariable._PathVariableClass.PathIsFile">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PathIsFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/SCons/Variables/PathVariable/#_PathVariableClass.PathIsFile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.PathVariable._PathVariableClass.PathIsFile" title="Link to this definition">#</a></dt>
+<dd><p>Validate path is a file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SCons.Variables.PathVariable._PathVariableClass.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">help</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/SCons/Variables/PathVariable/#_PathVariableClass.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SCons.Variables.PathVariable._PathVariableClass.__call__" title="Link to this definition">#</a></dt>
+<dd><p>Return a tuple describing a path list SCons Variable.</p>
+<p>The input parameters describe a ‘path list’ variable. Returns
+a tuple with the correct converter and validator appended. The
+result is usable for input to <code class="xref py py-meth docutils literal notranslate"><span class="pre">Add()</span></code>.</p>
+<p>The <em>default</em> parameter specifies the default path to use if the
+user does not specify an override with this variable.</p>
+<p><em>validator</em> is a validator, see this file for examples</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../SCons.Util/"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">SCons.Util package</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Variables">Module contents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.BoolVariable"><code class="docutils literal notranslate"><span class="pre">BoolVariable()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.EnumVariable"><code class="docutils literal notranslate"><span class="pre">EnumVariable()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable"><code class="docutils literal notranslate"><span class="pre">ListVariable()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.PackageVariable"><code class="docutils literal notranslate"><span class="pre">PackageVariable()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variable"><code class="docutils literal notranslate"><span class="pre">Variable</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variable.aliases"><code class="docutils literal notranslate"><span class="pre">Variable.aliases</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variable.converter"><code class="docutils literal notranslate"><span class="pre">Variable.converter</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variable.default"><code class="docutils literal notranslate"><span class="pre">Variable.default</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variable.do_subst"><code class="docutils literal notranslate"><span class="pre">Variable.do_subst</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variable.help"><code class="docutils literal notranslate"><span class="pre">Variable.help</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variable.key"><code class="docutils literal notranslate"><span class="pre">Variable.key</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variable.validator"><code class="docutils literal notranslate"><span class="pre">Variable.validator</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variables"><code class="docutils literal notranslate"><span class="pre">Variables</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variables.Add"><code class="docutils literal notranslate"><span class="pre">Variables.Add()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variables.AddVariables"><code class="docutils literal notranslate"><span class="pre">Variables.AddVariables()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variables.FormatVariableHelpText"><code class="docutils literal notranslate"><span class="pre">Variables.FormatVariableHelpText()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variables.GenerateHelpText"><code class="docutils literal notranslate"><span class="pre">Variables.GenerateHelpText()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variables.Save"><code class="docutils literal notranslate"><span class="pre">Variables.Save()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variables.UnknownVariables"><code class="docutils literal notranslate"><span class="pre">Variables.UnknownVariables()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variables.Update"><code class="docutils literal notranslate"><span class="pre">Variables.Update()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variables.__str__"><code class="docutils literal notranslate"><span class="pre">Variables.__str__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variables._do_add"><code class="docutils literal notranslate"><span class="pre">Variables._do_add()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variables.aliasfmt"><code class="docutils literal notranslate"><span class="pre">Variables.aliasfmt</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variables.fmt"><code class="docutils literal notranslate"><span class="pre">Variables.fmt</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.Variables.keys"><code class="docutils literal notranslate"><span class="pre">Variables.keys()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">Submodules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Variables.BoolVariable">SCons.Variables.BoolVariable module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.BoolVariable.BoolVariable"><code class="docutils literal notranslate"><span class="pre">BoolVariable()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.BoolVariable._text2bool"><code class="docutils literal notranslate"><span class="pre">_text2bool()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.BoolVariable._validator"><code class="docutils literal notranslate"><span class="pre">_validator()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Variables.EnumVariable">SCons.Variables.EnumVariable module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.EnumVariable.EnumVariable"><code class="docutils literal notranslate"><span class="pre">EnumVariable()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.EnumVariable._validator"><code class="docutils literal notranslate"><span class="pre">_validator()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Variables.ListVariable">SCons.Variables.ListVariable module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable.ListVariable"><code class="docutils literal notranslate"><span class="pre">ListVariable()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable._ListVariable"><code class="docutils literal notranslate"><span class="pre">_ListVariable</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable._ListVariable._abc_impl"><code class="docutils literal notranslate"><span class="pre">_ListVariable._abc_impl</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable._ListVariable.append"><code class="docutils literal notranslate"><span class="pre">_ListVariable.append()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable._ListVariable.clear"><code class="docutils literal notranslate"><span class="pre">_ListVariable.clear()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable._ListVariable.copy"><code class="docutils literal notranslate"><span class="pre">_ListVariable.copy()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable._ListVariable.count"><code class="docutils literal notranslate"><span class="pre">_ListVariable.count()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable._ListVariable.extend"><code class="docutils literal notranslate"><span class="pre">_ListVariable.extend()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable._ListVariable.index"><code class="docutils literal notranslate"><span class="pre">_ListVariable.index()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable._ListVariable.insert"><code class="docutils literal notranslate"><span class="pre">_ListVariable.insert()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable._ListVariable.pop"><code class="docutils literal notranslate"><span class="pre">_ListVariable.pop()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable._ListVariable.prepare_to_store"><code class="docutils literal notranslate"><span class="pre">_ListVariable.prepare_to_store()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable._ListVariable.remove"><code class="docutils literal notranslate"><span class="pre">_ListVariable.remove()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable._ListVariable.reverse"><code class="docutils literal notranslate"><span class="pre">_ListVariable.reverse()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable._ListVariable.sort"><code class="docutils literal notranslate"><span class="pre">_ListVariable.sort()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable._converter"><code class="docutils literal notranslate"><span class="pre">_converter()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.ListVariable._validator"><code class="docutils literal notranslate"><span class="pre">_validator()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Variables.PackageVariable">SCons.Variables.PackageVariable module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.PackageVariable.PackageVariable"><code class="docutils literal notranslate"><span class="pre">PackageVariable()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.PackageVariable._converter"><code class="docutils literal notranslate"><span class="pre">_converter()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.PackageVariable._validator"><code class="docutils literal notranslate"><span class="pre">_validator()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-SCons.Variables.PathVariable">SCons.Variables.PathVariable module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.PathVariable._PathVariableClass"><code class="docutils literal notranslate"><span class="pre">_PathVariableClass</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.PathVariable._PathVariableClass.PathAccept"><code class="docutils literal notranslate"><span class="pre">_PathVariableClass.PathAccept()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.PathVariable._PathVariableClass.PathExists"><code class="docutils literal notranslate"><span class="pre">_PathVariableClass.PathExists()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.PathVariable._PathVariableClass.PathIsDir"><code class="docutils literal notranslate"><span class="pre">_PathVariableClass.PathIsDir()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.PathVariable._PathVariableClass.PathIsDirCreate"><code class="docutils literal notranslate"><span class="pre">_PathVariableClass.PathIsDirCreate()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.PathVariable._PathVariableClass.PathIsFile"><code class="docutils literal notranslate"><span class="pre">_PathVariableClass.PathIsFile()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#SCons.Variables.PathVariable._PathVariableClass.__call__"><code class="docutils literal notranslate"><span class="pre">_PathVariableClass.__call__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SCons Project Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022, SCons Project.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

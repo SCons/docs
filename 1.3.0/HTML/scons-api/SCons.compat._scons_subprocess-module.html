@@ -1,0 +1,858 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>SCons.compat._scons_subprocess</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="SCons-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://www.scons.org/">SCons</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="SCons-module.html">Package&nbsp;SCons</a> ::
+        <a href="SCons.compat-module.html">Package&nbsp;compat</a> ::
+        Module&nbsp;_scons_subprocess
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="SCons.compat._scons_subprocess-module.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== MODULE DESCRIPTION ==================== -->
+<h1 class="epydoc">Module _scons_subprocess</h1><span class="codelink"><a href="SCons.compat._scons_subprocess-pysrc.html">source&nbsp;code</a></span><br /><br />
+<pre class="literalblock">
+subprocess - Subprocesses with accessible I/O streams
+
+This module allows you to spawn processes, connect to their
+input/output/error pipes, and obtain their return codes.  This module
+intends to replace several other, older modules and functions, like:
+
+os.system
+os.spawn*
+os.popen*
+popen2.*
+commands.*
+
+Information about how the subprocess module can be used to replace these
+modules and functions can be found below.
+
+
+
+Using the subprocess module
+===========================
+This module defines one class called Popen:
+
+class Popen(args, bufsize=0, executable=None,
+            stdin=None, stdout=None, stderr=None,
+            preexec_fn=None, close_fds=False, shell=False,
+            cwd=None, env=None, universal_newlines=False,
+            startupinfo=None, creationflags=0):
+
+
+Arguments are:
+
+args should be a string, or a sequence of program arguments.  The
+program to execute is normally the first item in the args sequence or
+string, but can be explicitly set by using the executable argument.
+
+On UNIX, with shell=False (default): In this case, the Popen class
+uses os.execvp() to execute the child program.  args should normally
+be a sequence.  A string will be treated as a sequence with the string
+as the only item (the program to execute).
+
+On UNIX, with shell=True: If args is a string, it specifies the
+command string to execute through the shell.  If args is a sequence,
+the first item specifies the command string, and any additional items
+will be treated as additional shell arguments.
+
+On Windows: the Popen class uses CreateProcess() to execute the child
+program, which operates on strings.  If args is a sequence, it will be
+converted to a string using the list2cmdline method.  Please note that
+not all MS Windows applications interpret the command line the same
+way: The list2cmdline is designed for applications using the same
+rules as the MS C runtime.
+
+bufsize, if given, has the same meaning as the corresponding argument
+to the built-in open() function: 0 means unbuffered, 1 means line
+buffered, any other positive value means use a buffer of
+(approximately) that size.  A negative bufsize means to use the system
+default, which usually means fully buffered.  The default value for
+bufsize is 0 (unbuffered).
+
+stdin, stdout and stderr specify the executed programs' standard
+input, standard output and standard error file handles, respectively.
+Valid values are PIPE, an existing file descriptor (a positive
+integer), an existing file object, and None.  PIPE indicates that a
+new pipe to the child should be created.  With None, no redirection
+will occur; the child's file handles will be inherited from the
+parent.  Additionally, stderr can be STDOUT, which indicates that the
+stderr data from the applications should be captured into the same
+file handle as for stdout.
+
+If preexec_fn is set to a callable object, this object will be called
+in the child process just before the child is executed.
+
+If close_fds is true, all file descriptors except 0, 1 and 2 will be
+closed before the child process is executed.
+
+if shell is true, the specified command will be executed through the
+shell.
+
+If cwd is not None, the current directory will be changed to cwd
+before the child is executed.
+
+If env is not None, it defines the environment variables for the new
+process.
+
+If universal_newlines is true, the file objects stdout and stderr are
+opened as a text files, but lines may be terminated by any of '\n',
+the Unix end-of-line convention, '\r', the Macintosh convention or
+'\r\n', the Windows convention.  All of these external representations
+are seen as '\n' by the Python program.  Note: This feature is only
+available if Python is built with universal newline support (the
+default).  Also, the newlines attribute of the file objects stdout,
+stdin and stderr are not updated by the communicate() method.
+
+The startupinfo and creationflags, if given, will be passed to the
+underlying CreateProcess() function.  They can specify things such as
+appearance of the main window and priority for the new process.
+(Windows only)
+
+
+This module also defines two shortcut functions:
+
+call(*popenargs, **kwargs):
+    Run command with arguments.  Wait for command to complete, then
+    return the returncode attribute.
+
+    The arguments are the same as for the Popen constructor.  Example:
+
+    retcode = call([&quot;ls&quot;, &quot;-l&quot;])
+
+check_call(*popenargs, **kwargs):
+    Run command with arguments.  Wait for command to complete.  If the
+    exit code was zero then return, otherwise raise
+    CalledProcessError.  The CalledProcessError object will have the
+    return code in the returncode attribute.
+
+    The arguments are the same as for the Popen constructor.  Example:
+
+    check_call([&quot;ls&quot;, &quot;-l&quot;])
+
+Exceptions
+----------
+Exceptions raised in the child process, before the new program has
+started to execute, will be re-raised in the parent.  Additionally,
+the exception object will have one extra attribute called
+'child_traceback', which is a string containing traceback information
+from the childs point of view.
+
+The most common exception raised is OSError.  This occurs, for
+example, when trying to execute a non-existent file.  Applications
+should prepare for OSErrors.
+
+A ValueError will be raised if Popen is called with invalid arguments.
+
+check_call() will raise CalledProcessError, if the called process
+returns a non-zero return code.
+
+
+Security
+--------
+Unlike some other popen functions, this implementation will never call
+/bin/sh implicitly.  This means that all characters, including shell
+metacharacters, can safely be passed to child processes.
+
+
+Popen objects
+=============
+Instances of the Popen class have the following methods:
+
+poll()
+    Check if child process has terminated.  Returns returncode
+    attribute.
+
+wait()
+    Wait for child process to terminate.  Returns returncode attribute.
+
+communicate(input=None)
+    Interact with process: Send data to stdin.  Read data from stdout
+    and stderr, until end-of-file is reached.  Wait for process to
+    terminate.  The optional stdin argument should be a string to be
+    sent to the child process, or None, if no data should be sent to
+    the child.
+
+    communicate() returns a tuple (stdout, stderr).
+
+    Note: The data read is buffered in memory, so do not use this
+    method if the data size is large or unlimited.
+
+The following attributes are also available:
+
+stdin
+    If the stdin argument is PIPE, this attribute is a file object
+    that provides input to the child process.  Otherwise, it is None.
+
+stdout
+    If the stdout argument is PIPE, this attribute is a file object
+    that provides output from the child process.  Otherwise, it is
+    None.
+
+stderr
+    If the stderr argument is PIPE, this attribute is file object that
+    provides error output from the child process.  Otherwise, it is
+    None.
+
+pid
+    The process ID of the child process.
+
+returncode
+    The child return code.  A None value indicates that the process
+    hasn't terminated yet.  A negative value -N indicates that the
+    child was terminated by signal N (UNIX only).
+
+
+Replacing older functions with the subprocess module
+====================================================
+In this section, &quot;a ==&gt; b&quot; means that b can be used as a replacement
+for a.
+
+Note: All functions in this section fail (more or less) silently if
+the executed program cannot be found; this module raises an OSError
+exception.
+
+In the following examples, we assume that the subprocess module is
+imported with &quot;from subprocess import *&quot;.
+
+
+Replacing /bin/sh shell backquote
+---------------------------------
+output=`mycmd myarg`
+==&gt;
+output = Popen([&quot;mycmd&quot;, &quot;myarg&quot;], stdout=PIPE).communicate()[0]
+
+
+Replacing shell pipe line
+-------------------------
+output=`dmesg | grep hda`
+==&gt;
+p1 = Popen([&quot;dmesg&quot;], stdout=PIPE)
+p2 = Popen([&quot;grep&quot;, &quot;hda&quot;], stdin=p1.stdout, stdout=PIPE)
+output = p2.communicate()[0]
+
+
+Replacing os.system()
+---------------------
+sts = os.system(&quot;mycmd&quot; + &quot; myarg&quot;)
+==&gt;
+p = Popen(&quot;mycmd&quot; + &quot; myarg&quot;, shell=True)
+pid, sts = os.waitpid(p.pid, 0)
+
+Note:
+
+* Calling the program through the shell is usually not required.
+
+* It's easier to look at the returncode attribute than the
+  exitstatus.
+
+A more real-world example would look like this:
+
+try:
+    retcode = call(&quot;mycmd&quot; + &quot; myarg&quot;, shell=True)
+    if retcode &lt; 0:
+        print &gt;&gt;sys.stderr, &quot;Child was terminated by signal&quot;, -retcode
+    else:
+        print &gt;&gt;sys.stderr, &quot;Child returned&quot;, retcode
+except OSError, e:
+    print &gt;&gt;sys.stderr, &quot;Execution failed:&quot;, e
+
+
+Replacing os.spawn*
+-------------------
+P_NOWAIT example:
+
+pid = os.spawnlp(os.P_NOWAIT, &quot;/bin/mycmd&quot;, &quot;mycmd&quot;, &quot;myarg&quot;)
+==&gt;
+pid = Popen([&quot;/bin/mycmd&quot;, &quot;myarg&quot;]).pid
+
+
+P_WAIT example:
+
+retcode = os.spawnlp(os.P_WAIT, &quot;/bin/mycmd&quot;, &quot;mycmd&quot;, &quot;myarg&quot;)
+==&gt;
+retcode = call([&quot;/bin/mycmd&quot;, &quot;myarg&quot;])
+
+
+Vector example:
+
+os.spawnvp(os.P_NOWAIT, path, args)
+==&gt;
+Popen([path] + args[1:])
+
+
+Environment example:
+
+os.spawnlpe(os.P_NOWAIT, &quot;/bin/mycmd&quot;, &quot;mycmd&quot;, &quot;myarg&quot;, env)
+==&gt;
+Popen([&quot;/bin/mycmd&quot;, &quot;myarg&quot;], env={&quot;PATH&quot;: &quot;/usr/bin&quot;})
+
+
+Replacing os.popen*
+-------------------
+pipe = os.popen(cmd, mode='r', bufsize)
+==&gt;
+pipe = Popen(cmd, shell=True, bufsize=bufsize, stdout=PIPE).stdout
+
+pipe = os.popen(cmd, mode='w', bufsize)
+==&gt;
+pipe = Popen(cmd, shell=True, bufsize=bufsize, stdin=PIPE).stdin
+
+
+(child_stdin, child_stdout) = os.popen2(cmd, mode, bufsize)
+==&gt;
+p = Popen(cmd, shell=True, bufsize=bufsize,
+          stdin=PIPE, stdout=PIPE, close_fds=True)
+(child_stdin, child_stdout) = (p.stdin, p.stdout)
+
+
+(child_stdin,
+ child_stdout,
+ child_stderr) = os.popen3(cmd, mode, bufsize)
+==&gt;
+p = Popen(cmd, shell=True, bufsize=bufsize,
+          stdin=PIPE, stdout=PIPE, stderr=PIPE, close_fds=True)
+(child_stdin,
+ child_stdout,
+ child_stderr) = (p.stdin, p.stdout, p.stderr)
+
+
+(child_stdin, child_stdout_and_stderr) = os.popen4(cmd, mode, bufsize)
+==&gt;
+p = Popen(cmd, shell=True, bufsize=bufsize,
+          stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
+(child_stdin, child_stdout_and_stderr) = (p.stdin, p.stdout)
+
+
+Replacing popen2.*
+------------------
+Note: If the cmd argument to popen2 functions is a string, the command
+is executed through /bin/sh.  If it is a list, the command is directly
+executed.
+
+(child_stdout, child_stdin) = popen2.popen2(&quot;somestring&quot;, bufsize, mode)
+==&gt;
+p = Popen([&quot;somestring&quot;], shell=True, bufsize=bufsize
+          stdin=PIPE, stdout=PIPE, close_fds=True)
+(child_stdout, child_stdin) = (p.stdout, p.stdin)
+
+
+(child_stdout, child_stdin) = popen2.popen2([&quot;mycmd&quot;, &quot;myarg&quot;], bufsize, mode)
+==&gt;
+p = Popen([&quot;mycmd&quot;, &quot;myarg&quot;], bufsize=bufsize,
+          stdin=PIPE, stdout=PIPE, close_fds=True)
+(child_stdout, child_stdin) = (p.stdout, p.stdin)
+
+The popen2.Popen3 and popen3.Popen4 basically works as subprocess.Popen,
+except that:
+
+* subprocess.Popen raises an exception if the execution fails
+* the capturestderr argument is replaced with the stderr argument.
+* stdin=PIPE and stdout=PIPE must be specified.
+* popen2 closes all filedescriptors by default, but you have to specify
+  close_fds=True with subprocess.Popen.
+
+</pre><br /><br />
+
+<!-- ==================== CLASSES ==================== -->
+<a name="section-Classes"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Classes"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="SCons.compat._scons_subprocess.CalledProcessError-class.html" class="summary-name">CalledProcessError</a><br />
+      This exception is raised when a process run by check_call() returns
+a non-zero exit status.
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="SCons.compat._scons_subprocess.object-class.html" class="summary-name">object</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="SCons.compat._scons_subprocess.Popen-class.html" class="summary-name">Popen</a>
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTIONS ==================== -->
+<a name="section-Functions"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Functions</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Functions"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="is_int"></a><span class="summary-sig-name">is_int</span>(<span class="summary-sig-arg">obj</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.compat._scons_subprocess-pysrc.html#is_int">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="is_int_or_long"></a><span class="summary-sig-name">is_int_or_long</span>(<span class="summary-sig-arg">obj</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.compat._scons_subprocess-pysrc.html#is_int_or_long">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="is_string"></a><span class="summary-sig-name">is_string</span>(<span class="summary-sig-arg">obj</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.compat._scons_subprocess-pysrc.html#is_string">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_cleanup"></a><span class="summary-sig-name">_cleanup</span>()</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.compat._scons_subprocess-pysrc.html#_cleanup">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="SCons.compat._scons_subprocess-module.html#call" class="summary-sig-name">call</a>(<span class="summary-sig-arg">*popenargs</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Run command with arguments.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.compat._scons_subprocess-pysrc.html#call">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="SCons.compat._scons_subprocess-module.html#check_call" class="summary-sig-name">check_call</a>(<span class="summary-sig-arg">*popenargs</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Run command with arguments.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.compat._scons_subprocess-pysrc.html#check_call">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="SCons.compat._scons_subprocess-module.html#list2cmdline" class="summary-sig-name">list2cmdline</a>(<span class="summary-sig-arg">seq</span>)</span><br />
+      Translate a sequence of arguments into a command line
+string, using the same rules as the MS C runtime:
+
+1) Arguments are delimited by white space, which is either a
+   space or a tab.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.compat._scons_subprocess-pysrc.html#list2cmdline">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_demo_posix"></a><span class="summary-sig-name">_demo_posix</span>()</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.compat._scons_subprocess-pysrc.html#_demo_posix">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_demo_windows"></a><span class="summary-sig-name">_demo_windows</span>()</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.compat._scons_subprocess-pysrc.html#_demo_windows">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== VARIABLES ==================== -->
+<a name="section-Variables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Variables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="mswindows"></a><span class="summary-name">mswindows</span> = <code title="False">False</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="MAXFD"></a><span class="summary-name">MAXFD</span> = <code title="1024">1024</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="False"></a><span class="summary-name">False</span> = <code title="0">0</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="True"></a><span class="summary-name">True</span> = <code title="1">1</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_active"></a><span class="summary-name">_active</span> = <code title="[]"><code class="variable-group">[</code><code class="variable-group">]</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="PIPE"></a><span class="summary-name">PIPE</span> = <code title="-1">-1</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="STDOUT"></a><span class="summary-name">STDOUT</span> = <code title="-2">-2</code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTION DETAILS ==================== -->
+<a name="section-FunctionDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Function Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-FunctionDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="call"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">call</span>(<span class="sig-arg">*popenargs</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="SCons.compat._scons_subprocess-pysrc.html#call">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <pre class="literalblock">
+Run command with arguments.  Wait for command to complete, then
+return the returncode attribute.
+
+The arguments are the same as for the Popen constructor.  Example:
+
+retcode = call([&quot;ls&quot;, &quot;-l&quot;])
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="check_call"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">check_call</span>(<span class="sig-arg">*popenargs</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="SCons.compat._scons_subprocess-pysrc.html#check_call">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <pre class="literalblock">
+Run command with arguments.  Wait for command to complete.  If
+the exit code was zero then return, otherwise raise
+CalledProcessError.  The CalledProcessError object will have the
+return code in the returncode attribute.
+
+The arguments are the same as for the Popen constructor.  Example:
+
+check_call([&quot;ls&quot;, &quot;-l&quot;])
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="list2cmdline"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">list2cmdline</span>(<span class="sig-arg">seq</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="SCons.compat._scons_subprocess-pysrc.html#list2cmdline">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <pre class="literalblock">
+
+Translate a sequence of arguments into a command line
+string, using the same rules as the MS C runtime:
+
+1) Arguments are delimited by white space, which is either a
+   space or a tab.
+
+2) A string surrounded by double quotation marks is
+   interpreted as a single argument, regardless of white space
+   contained within.  A quoted string can be embedded in an
+   argument.
+
+3) A double quotation mark preceded by a backslash is
+   interpreted as a literal double quotation mark.
+
+4) Backslashes are interpreted literally, unless they
+   immediately precede a double quotation mark.
+
+5) If backslashes immediately precede a double quotation mark,
+   every pair of backslashes is interpreted as a literal
+   backslash.  If the number of backslashes is odd, the last
+   backslash escapes the next double quotation mark as
+   described in rule 3.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="SCons-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://www.scons.org/">SCons</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0beta1 on Wed Mar 24 03:16:01 2010
+    </td>
+    <td align="right" class="footer">
+      <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie()
+  // -->
+</script>
+  
+</body>
+</html>

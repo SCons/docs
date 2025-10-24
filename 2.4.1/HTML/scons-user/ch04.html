@@ -1,0 +1,130 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Chapter 4. Building and Linking with Libraries</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 2.4.1"><link rel="up" href="index.html" title="SCons 2.4.1"><link rel="prev" href="ch03s08.html" title="3.8. Sharing Source Files Between Multiple Programs"><link rel="next" href="ch04s02.html" title="4.2. Linking with Libraries"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 4. Building and Linking with Libraries</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch03s08.html">Prev</a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="ch04s02.html">Next</a></td></tr></table><hr></div><div class="chapter" title="Chapter 4. Building and Linking with Libraries"><div class="titlepage"><div><div><h2 class="title"><a name="chap-libraries"></a>Chapter 4. Building and Linking with Libraries</h2></div></div></div><p>
+
+  It's often useful to organize large software projects
+  by collecting parts of the software into one or more libraries.
+  <span class="application">SCons</span> makes it easy to create libraries
+  and to use them in the programs.
+
+  </p><div class="section" title="4.1. Building Libraries"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idp1399580564"></a>4.1. Building Libraries</h2></div></div></div><p>
+
+    You build your own libraries by specifying <a class="link" href="apb.html#b-Library"><code class="function">Library</code></a>
+    instead of <a class="link" href="apb.html#b-Program"><code class="function">Program</code></a>:
+
+    </p><pre class="programlisting">
+Library('foo', ['f1.c', 'f2.c', 'f3.c'])
+      </pre><p>
+
+    <span class="application">SCons</span> uses the appropriate library prefix and suffix for your system.
+    So on POSIX or Linux systems,
+    the above example would build as follows
+    (although <span class="application">ranlib</span> may not be called on all systems):
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o f1.o -c f1.c
+cc -o f2.o -c f2.c
+cc -o f3.o -c f3.c
+ar rc libfoo.a f1.o f2.o f3.o
+ranlib libfoo.a
+</pre><p>
+
+    On a Windows system,
+    a build of the above example would look like:
+
+    </p><pre class="screen">C:\&gt;<strong class="userinput"><code>scons -Q</code></strong>
+cl /Fof1.obj /c f1.c /nologo
+cl /Fof2.obj /c f2.c /nologo
+cl /Fof3.obj /c f3.c /nologo
+lib /nologo /OUT:foo.lib f1.obj f2.obj f3.obj
+</pre><p>
+
+    The rules for the target name of the library
+    are similar to those for programs:
+    if you don't explicitly specify a target library name,
+    <span class="application">SCons</span> will deduce one from the
+    name of the first source file specified,
+    and <span class="application">SCons</span> will add an appropriate
+    file prefix and suffix if you leave them off.
+
+    </p><div class="section" title="4.1.1. Building Libraries From Source Code or Object Files"><div class="titlepage"><div><div><h3 class="title"><a name="idp1399587100"></a>4.1.1. Building Libraries From Source Code or Object Files</h3></div></div></div><p>
+
+      The previous example shows building a library from a
+      list of source files.
+      You can, however, also give the <a class="link" href="apb.html#b-Library"><code class="function">Library</code></a> call
+      object files,
+      and it will correctly realize they are object files.
+      In fact, you can arbitrarily mix source code files
+      and object files in the source list:
+
+      </p><pre class="programlisting">
+Library('foo', ['f1.c', 'f2.o', 'f3.c', 'f4.o'])
+        </pre><p>
+
+      And SCons realizes that only the source code files
+      must be compiled into object files
+      before creating the final library:
+
+      </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o f1.o -c f1.c
+cc -o f3.o -c f3.c
+ar rc libfoo.a f1.o f2.o f3.o f4.o
+ranlib libfoo.a
+</pre><p>
+
+      Of course, in this example, the object files
+      must already exist for the build to succeed.
+      See <a class="xref" href="ch05.html" title="Chapter 5. Node Objects">Chapter 5, <i>Node Objects</i></a>, below,
+      for information about how you can
+      build object files explicitly
+      and include the built files in a library.
+
+      </p></div><div class="section" title="4.1.2. Building Static Libraries Explicitly: the StaticLibrary Builder"><div class="titlepage"><div><div><h3 class="title"><a name="idp1399594652"></a>4.1.2. Building Static Libraries Explicitly:  the <code class="function">StaticLibrary</code> Builder</h3></div></div></div><p>
+
+      The <a class="link" href="apb.html#b-Library"><code class="function">Library</code></a> function builds a traditional static library.
+      If you want to be explicit about the type of library being built,
+      you can use the synonym <a class="link" href="apb.html#b-StaticLibrary"><code class="function">StaticLibrary</code></a> function
+      instead of <code class="function">Library</code>:
+
+      </p><pre class="programlisting">
+StaticLibrary('foo', ['f1.c', 'f2.c', 'f3.c'])
+        </pre><p>
+
+      There is no functional difference between the
+      <a class="link" href="apb.html#b-StaticLibrary"><code class="function">StaticLibrary</code></a> and <code class="function">Library</code> functions.
+
+      </p></div><div class="section" title="4.1.3. Building Shared (DLL) Libraries: the SharedLibrary Builder"><div class="titlepage"><div><div><h3 class="title"><a name="idp1399597692"></a>4.1.3. Building Shared (DLL) Libraries:  the <code class="function">SharedLibrary</code> Builder</h3></div></div></div><p>
+
+      If you want to build a shared library (on POSIX systems)
+      or a DLL file (on Windows systems),
+      you use the <a class="link" href="apb.html#b-SharedLibrary"><code class="function">SharedLibrary</code></a> function:
+
+      </p><pre class="programlisting">
+SharedLibrary('foo', ['f1.c', 'f2.c', 'f3.c'])
+        </pre><p>
+
+      The output on POSIX:
+
+      </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o f1.os -c f1.c
+cc -o f2.os -c f2.c
+cc -o f3.os -c f3.c
+cc -o libfoo.so -shared f1.os f2.os f3.os
+</pre><p>
+
+      And the output on Windows:
+
+      </p><pre class="screen">C:\&gt;<strong class="userinput"><code>scons -Q</code></strong>
+cl /Fof1.obj /c f1.c /nologo
+cl /Fof2.obj /c f2.c /nologo
+cl /Fof3.obj /c f3.c /nologo
+link /nologo /dll /out:foo.dll /implib:foo.lib f1.obj f2.obj f3.obj
+RegServerFunc(target, source, env)
+embedManifestDllCheck(target, source, env)
+</pre><p>
+
+      Notice again that <span class="application">SCons</span> takes care of
+      building the output file correctly,
+      adding the <code class="literal">-shared</code> option
+      for a POSIX compilation,
+      and the <code class="literal">/dll</code> option on Windows.
+
+      </p></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch03s08.html">Prev</a> </td><td width="20%" align="center"> </td><td width="40%" align="right"> <a accesskey="n" href="ch04s02.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">3.8. Sharing Source Files Between Multiple Programs </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 4.2. Linking with Libraries</td></tr></table></div></body></html>

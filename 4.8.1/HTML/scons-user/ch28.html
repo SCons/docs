@@ -1,0 +1,162 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Chapter 28. Troubleshooting</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.8.1"><link rel="up" href="index.html" title="SCons 4.8.1"><link rel="prev" href="ch27s02.html" title="27.2. Ninja Build Generator"><link rel="next" href="ch28s02.html" title="28.2. What's in That Construction Environment? the Dump Method"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 28. Troubleshooting</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch27s02.html">Prev</a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="ch28s02.html">Next</a></td></tr></table><hr></div><div class="chapter" title="Chapter 28. Troubleshooting"><div class="titlepage"><div><div><h2 class="title"><a name="chap-troubleshooting"></a>Chapter 28. Troubleshooting</h2></div></div></div><p>
+
+  The experience of configuring any
+  software build tool to build a large code base
+  usually, at some point,
+  involves trying to figure out why
+  the tool is behaving a certain way,
+  and how to get it to behave the way you want.
+  <span class="application">SCons</span> is no different.
+  This appendix contains a number of
+  different ways in which you can
+  get some additional insight into <span class="application">SCons</span>' behavior.
+
+  </p><p>
+
+  Note that we're always interested in trying to
+  improve how you can troubleshoot configuration problems.
+  If you run into a problem that has
+  you scratching your head,
+  and which there just doesn't seem to be a good way to debug,
+  odds are pretty good that someone else will run into
+  the same problem, too.
+  If so, please let the SCons development team know
+  using the contact information at
+  <a class="ulink" href="https://scons.org/contact.html" target="_top">https://scons.org/contact.html</a>
+  so that we can use your feedback
+  to try to come up with a better way to help you,
+  and others, get the necessary insight into <span class="application">SCons</span> behavior
+  to help identify and fix configuration issues.
+
+  </p><div class="section" title="28.1. Why is That Target Being Rebuilt? the --debug=explain Option"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id1455"></a>28.1. Why is That Target Being Rebuilt?  the <code class="option">--debug=explain</code> Option</h2></div></div></div><p>
+
+    Let's look at a simple example of
+    a misconfigured build
+    that causes a target to be rebuilt
+    every time <span class="application">SCons</span> is run:
+
+    </p><pre class="programlisting">
+# Intentionally misspell the output file name in the
+# command used to create the file:
+Command('file.out', 'file.in', 'cp $SOURCE file.oout')
+      </pre><p>
+
+    (Note to Windows users:  The POSIX <span class="application">cp</span> command
+    copies the first file named on the command line
+    to the second file.
+    In our example, it copies the <code class="filename">file.in</code> file
+    to the <code class="filename">file.out</code> file.)
+
+    </p><p>
+
+    Now if we run <span class="application">SCons</span> multiple times on this example,
+    we see that it re-runs the <span class="application">cp</span>
+    command every time:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cp file.in file.oout
+% <strong class="userinput"><code>scons -Q</code></strong>
+cp file.in file.oout
+% <strong class="userinput"><code>scons -Q</code></strong>
+cp file.in file.oout
+</pre><p>
+
+    In this example,
+    the underlying cause is obvious:
+    we've intentionally misspelled the output file name
+    in the <span class="application">cp</span> command,
+    so the command doesn't actually
+    build the <code class="filename">file.out</code> file that we've told <span class="application">SCons</span> to expect.
+    But if the problem weren't obvious,
+    it would be helpful
+    to specify the <code class="option">--debug=explain</code> option
+    on the command line
+    to have <span class="application">SCons</span> tell us very specifically
+    why it's decided to rebuild the target:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q --debug=explain</code></strong>
+scons: building `file.out' because it doesn't exist
+cp file.in file.oout
+</pre><p>
+
+    If this had been a more complicated example
+    involving a lot of build output,
+    having <span class="application">SCons</span> tell us that
+    it's trying to rebuild the target file
+    because it doesn't exist
+    would be an important clue
+    that something was wrong with
+    the command that we invoked to build it.
+
+    </p><p>
+    Note that you can also use
+    <code class="option">--warn=target-not-built</code> which checks
+    whether or not expected targets exist after a build rule is
+    executed.
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q --warn=target-not-built</code></strong>
+cp file.in file.oout
+
+scons: warning: Cannot find target file.out after building
+File "/Users/bdbaddog/devel/scons/git/as_scons/scripts/scons.py", line 97, in &lt;module&gt;
+</pre><p>
+
+    The <code class="option">--debug=explain</code> option also comes in handy
+    to help figure out what input file changed.
+    Given a simple configuration that builds
+    a program from three source files,
+    changing one of the source files
+    and rebuilding with the <code class="option">--debug=explain</code>
+    option shows very specifically
+    why <span class="application">SCons</span> rebuilds the files that it does:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o file1.o -c file1.c
+cc -o file2.o -c file2.c
+cc -o file3.o -c file3.c
+cc -o prog file1.o file2.o file3.o
+%     [CHANGE THE CONTENTS OF file2.c]
+% <strong class="userinput"><code>scons -Q --debug=explain</code></strong>
+scons: rebuilding `file2.o' because `file2.c' changed
+cc -o file2.o -c file2.c
+scons: rebuilding `prog' because `file2.o' changed
+cc -o prog file1.o file2.o file3.o
+</pre><p>
+
+    This becomes even more helpful
+    in identifying when a file is rebuilt
+    due to a change in an implicit dependency,
+    such as an incuded <code class="filename">.h</code> file.
+    If the <code class="filename">file1.c</code>
+    and <code class="filename">file3.c</code> files
+    in our example
+    both included a <code class="filename">hello.h</code> file,
+    then changing that included file
+    and re-running <span class="application">SCons</span> with the <code class="option">--debug=explain</code> option
+    will pinpoint that it's the change to the included file
+    that starts the chain of rebuilds:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o file1.o -c -I. file1.c
+cc -o file2.o -c -I. file2.c
+cc -o file3.o -c -I. file3.c
+cc -o prog file1.o file2.o file3.o
+%     [CHANGE THE CONTENTS OF hello.h]
+% <strong class="userinput"><code>scons -Q --debug=explain</code></strong>
+scons: rebuilding `file1.o' because `hello.h' changed
+cc -o file1.o -c -I. file1.c
+scons: rebuilding `file3.o' because `hello.h' changed
+cc -o file3.o -c -I. file3.c
+scons: rebuilding `prog' because:
+           `file1.o' changed
+           `file3.o' changed
+cc -o prog file1.o file2.o file3.o
+</pre><p>
+
+    (Note that the <code class="option">--debug=explain</code> option will only tell you
+    why <span class="application">SCons</span> decided to rebuild necessary targets.
+    It does not tell you what files it examined
+    when deciding <span class="emphasis"><em>not</em></span>
+    to rebuild a target file,
+    which is often a more valuable question to answer.)
+
+    </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch27s02.html">Prev</a> </td><td width="20%" align="center"> </td><td width="40%" align="right"> <a accesskey="n" href="ch28s02.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">27.2. Ninja Build Generator </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 28.2. What's in That Construction Environment?  the <code class="function">Dump</code> Method</td></tr></table></div></body></html>

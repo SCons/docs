@@ -1,0 +1,61 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>3.2. Compiling Multiple Source Files</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.8.1"><link rel="up" href="ch03.html" title="Chapter 3. Less Simple Things to Do With Builds"><link rel="prev" href="ch03.html" title="Chapter 3. Less Simple Things to Do With Builds"><link rel="next" href="ch03s03.html" title="3.3. Making a list of files with Glob"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">3.2. Compiling Multiple Source Files</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch03.html">Prev</a> </td><th width="60%" align="center">Chapter 3. Less Simple Things to Do With Builds</th><td width="20%" align="right"> <a accesskey="n" href="ch03s03.html">Next</a></td></tr></table><hr></div><div class="section" title="3.2. Compiling Multiple Source Files"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="sect-multi-source"></a>3.2. Compiling Multiple Source Files</h2></div></div></div><p>
+
+    You've just seen how to configure <span class="application">SCons</span>
+    to compile a program from a single source file.
+    It's more common, of course,
+    that you'll need to build a program from
+    many input source files, not just one.
+    To do this, you need to put the
+    source files in a <span class="application">Python</span> list
+    (enclosed in square brackets),
+    like so:
+
+    </p><pre class="programlisting">
+Program(['prog.c', 'file1.c', 'file2.c'])
+       </pre><p>
+
+    A build of the above example would look like:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o file1.o -c file1.c
+cc -o file2.o -c file2.c
+cc -o prog.o -c prog.c
+cc -o prog prog.o file1.o file2.o
+</pre><p>
+
+    Notice that <span class="application">SCons</span>
+    deduces the output program name
+    from the first source file specified
+    in the list--that is,
+    because the first source file was <code class="filename">prog.c</code>,
+    <span class="application">SCons</span> will name the resulting program <code class="filename">prog</code>
+    (or <code class="filename">prog.exe</code> on a Windows system).
+    If you want to specify a different program name,
+    then (as described in the previous section)
+    you slide the list of source files
+    over to the right
+    to make room for the output program file name.
+    Here is the updated example:
+
+    </p><pre class="programlisting">
+Program('program', ['prog.c', 'file1.c', 'file2.c'])
+       </pre><p>
+
+    On Linux, a build of this example would look like:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o file1.o -c file1.c
+cc -o file2.o -c file2.c
+cc -o prog.o -c prog.c
+cc -o program prog.o file1.o file2.o
+</pre><p>
+
+    Or on Windows:
+
+    </p><pre class="screen">C:\&gt;<strong class="userinput"><code>scons -Q</code></strong>
+cl /Fofile1.obj /c file1.c /nologo
+cl /Fofile2.obj /c file2.c /nologo
+cl /Foprog.obj /c prog.c /nologo
+link /nologo /OUT:program.exe prog.obj file1.obj file2.obj
+embedManifestExeCheck(target, source, env)
+</pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch03.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch03.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch03s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 3. Less Simple Things to Do With Builds </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 3.3. Making a list of files with <code class="function">Glob</code></td></tr></table></div></body></html>

@@ -1,0 +1,38 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>27.7. Virtual environments (virtualenvs)</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.0.1"><link rel="up" href="ch27.html" title="Chapter 27. Miscellaneous Functionality"><link rel="prev" href="ch27s06.html" title="27.6. Finding the Invocation Directory: the GetLaunchDir Function"><link rel="next" href="ch28.html" title="Chapter 28. Using SCons with other build tools"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">27.7. Virtual environments (virtualenvs)</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch27s06.html">Prev</a> </td><th width="60%" align="center">Chapter 27. Miscellaneous Functionality</th><td width="20%" align="right"> <a accesskey="n" href="ch28.html">Next</a></td></tr></table><hr></div><div class="section" title="27.7. Virtual environments (virtualenvs)"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idp140667215576728"></a>27.7. Virtual environments (virtualenvs)</h2></div></div></div><p>
+
+      Virtualenv is a tool to create isolated Python environments.
+      A python application (such as SCons) may be executed within
+      an activated virtualenv. The activation of virtualenv modifies
+      current environment by defining some virtualenv-specific variables
+      and modifying search PATH, such that executables installed within
+      virtualenv's home directory are preferred over the ones installed
+      outside of it.
+
+    </p><p>
+
+      Normally, SCons uses hard-coded PATH when searching for external
+      executables, so it always picks-up executables from these pre-defined
+      locations. This applies also to python interpreter, which is invoked
+      by some custom SCons tools or test suites. This means, when running
+      SCons in a virtualenv, an eventual invocation of python interpreter from
+      SCons script will most probably jump out of virtualenv and execute
+      python executable found in hard-coded SCons PATH, not the one which is
+      executing SCons. Some users may consider this as an inconsistency.
+
+    </p><p>
+      This issue may be overcome by using the
+      <code class="option">--enable-virtualenv</code>
+      option. The option automatically imports virtualenv-related environment
+      variables to all created construction environment <code class="literal">env['ENV']</code>,
+      and modifies SCons PATH appropriately to prefer virtualenv's executables.
+      Setting environment variable <code class="envar">SCONS_ENABLE_VIRTUALENV=1</code>
+      will have same effect. If virtualenv support is enabled system-vide
+      by the environment variable, it may be suppressed with the
+      <code class="option">--ignore-virtualenv</code> option.
+    </p><p>
+      Inside of <code class="filename">SConscript</code>, a global function <code class="literal">Virtualenv</code> is
+      available. It returns a path to virtualenv's home directory, or
+      <code class="literal">None</code> if <span class="command"><strong>scons</strong></span> is not running from virtualenv. Note
+      that this function returns a path even if <span class="command"><strong>scons</strong></span> is run from an
+      unactivated virtualenv.
+    </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch27s06.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch27.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch28.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">27.6. Finding the Invocation Directory:  the <code class="function">GetLaunchDir</code> Function </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 28. Using SCons with other build tools</td></tr></table></div></body></html>

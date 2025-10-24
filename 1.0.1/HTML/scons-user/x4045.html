@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Checking for the Availability of a typedef</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 1.0.1"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Multi-Platform Configuration (Autoconf Functionality)"
+HREF="c3990.html"><LINK
+REL="PREVIOUS"
+TITLE="Checking for the Availability of a Library"
+HREF="x4030.html"><LINK
+REL="NEXT"
+TITLE="Adding Your Own Custom Checks"
+HREF="x4056.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 1.0.1</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x4030.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 24. Multi-Platform Configuration (<SPAN
+CLASS="application"
+>Autoconf</SPAN
+> Functionality)</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x4056.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN4045"
+>24.5. Checking for the Availability of a <TT
+CLASS="literal"
+>typedef</TT
+></A
+></H1
+><P
+>&#13;
+    Check for the availability of a <TT
+CLASS="literal"
+>typedef</TT
+>
+    by using the <CODE
+CLASS="function"
+>CheckType</CODE
+> method:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;    env = Environment()
+    conf = Configure(env)
+    if not conf.CheckType('off_t'):
+        print 'Did not find off_t typedef, assuming int'
+        conf.env.Append(CCFLAGS = '-Doff_t=int')
+    env = conf.Finish()
+    </PRE
+><P
+>&#13;
+    You can also add a string that will be
+    placed at the beginning of the test file
+    that will be used to check for the <TT
+CLASS="literal"
+>typedef</TT
+>.
+    This provide a way to specify
+    files that must be included to find the <TT
+CLASS="literal"
+>typedef</TT
+>:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;    env = Environment()
+    conf = Configure(env)
+    if not conf.CheckType('off_t', '#include &#60;sys/types.h&#62;\n'):
+        print 'Did not find off_t typedef, assuming int'
+        conf.env.Append(CCFLAGS = '-Doff_t=int')
+    env = conf.Finish()
+    </PRE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x4030.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x4056.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Checking for the Availability of a Library</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c3990.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Adding Your Own Custom Checks</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

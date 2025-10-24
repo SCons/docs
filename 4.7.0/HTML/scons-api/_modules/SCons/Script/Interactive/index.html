@@ -1,0 +1,721 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SCons.Script.Interactive &#8212; SCons 4.7.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/sphinx-book-theme.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/scripts/sphinx-book-theme.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/SCons/Script/Interactive';</script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search/"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../../">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SCons 4.7.0 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../SCons/">SCons package</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Taskmaster/">SCons.Taskmaster package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Util/">SCons.Util package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Variables/">SCons.Variables package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.compat/">SCons.compat package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.compat/">SCons.compat package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Taskmaster/">SCons.Taskmaster package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Util/">SCons.Util package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Variables/">SCons.Variables package</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for SCons.Script.Interactive</h1><div class="highlight"><pre>
+<span></span><span class="c1"># MIT License</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright The SCons Foundation</span>
+<span class="c1">#</span>
+<span class="c1"># Permission is hereby granted, free of charge, to any person obtaining</span>
+<span class="c1"># a copy of this software and associated documentation files (the</span>
+<span class="c1"># &quot;Software&quot;), to deal in the Software without restriction, including</span>
+<span class="c1"># without limitation the rights to use, copy, modify, merge, publish,</span>
+<span class="c1"># distribute, sublicense, and/or sell copies of the Software, and to</span>
+<span class="c1"># permit persons to whom the Software is furnished to do so, subject to</span>
+<span class="c1"># the following conditions:</span>
+<span class="c1">#</span>
+<span class="c1"># The above copyright notice and this permission notice shall be included</span>
+<span class="c1"># in all copies or substantial portions of the Software.</span>
+<span class="c1">#</span>
+<span class="c1"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY</span>
+<span class="c1"># KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND</span>
+<span class="c1"># NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE</span>
+<span class="c1"># LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION</span>
+<span class="c1"># OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</span>
+<span class="c1"># WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</span>
+
+<span class="sd">&quot;&quot;&quot;SCons interactive mode. &quot;&quot;&quot;</span>
+
+<span class="c1"># TODO:</span>
+<span class="c1">#</span>
+<span class="c1"># This has the potential to grow into something with a really big life</span>
+<span class="c1"># of its own, which might or might not be a good thing.  Nevertheless,</span>
+<span class="c1"># here are some enhancements that will probably be requested some day</span>
+<span class="c1"># and are worth keeping in mind (assuming this takes off):</span>
+<span class="c1">#</span>
+<span class="c1"># - A command to re-read / re-load the SConscript files.  This may</span>
+<span class="c1">#   involve allowing people to specify command-line options (e.g. -f,</span>
+<span class="c1">#   -I, --no-site-dir) that affect how the SConscript files are read.</span>
+<span class="c1">#</span>
+<span class="c1"># - Additional command-line options on the &quot;build&quot; command.</span>
+<span class="c1">#</span>
+<span class="c1">#   Of the supported options that seemed to make sense (after a quick</span>
+<span class="c1">#   pass through the list), the ones that seemed likely enough to be</span>
+<span class="c1">#   used are listed in the man page and have explicit test scripts.</span>
+<span class="c1">#</span>
+<span class="c1">#   These had code changed in Script/Main.py to support them, but didn&#39;t</span>
+<span class="c1">#   seem likely to be used regularly, so had no test scripts added:</span>
+<span class="c1">#</span>
+<span class="c1">#       build --diskcheck=*</span>
+<span class="c1">#       build --implicit-cache=*</span>
+<span class="c1">#       build --implicit-deps-changed=*</span>
+<span class="c1">#       build --implicit-deps-unchanged=*</span>
+<span class="c1">#</span>
+<span class="c1">#   These look like they should &quot;just work&quot; with no changes to the</span>
+<span class="c1">#   existing code, but like those above, look unlikely to be used and</span>
+<span class="c1">#   therefore had no test scripts added:</span>
+<span class="c1">#</span>
+<span class="c1">#       build --random</span>
+<span class="c1">#</span>
+<span class="c1">#   These I&#39;m not sure about.  They might be useful for individual</span>
+<span class="c1">#   &quot;build&quot; commands, and may even work, but they seem unlikely enough</span>
+<span class="c1">#   that we&#39;ll wait until they&#39;re requested before spending any time on</span>
+<span class="c1">#   writing test scripts for them, or investigating whether they work.</span>
+<span class="c1">#</span>
+<span class="c1">#       build -q [???  is there a useful analog to the exit status?]</span>
+<span class="c1">#       build --duplicate=</span>
+<span class="c1">#       build --profile=</span>
+<span class="c1">#       build --max-drift=</span>
+<span class="c1">#       build --warn=*</span>
+<span class="c1">#       build --Y</span>
+<span class="c1">#</span>
+<span class="c1"># - Most of the SCons command-line options that the &quot;build&quot; command</span>
+<span class="c1">#   supports should be settable as default options that apply to all</span>
+<span class="c1">#   subsequent &quot;build&quot; commands.  Maybe a &quot;set {option}&quot; command that</span>
+<span class="c1">#   maps to &quot;SetOption(&#39;{option}&#39;)&quot;.</span>
+<span class="c1">#</span>
+<span class="c1"># - Need something in the &#39;help&#39; command that prints the -h output.</span>
+<span class="c1">#</span>
+<span class="c1"># - A command to run the configure subsystem separately (must see how</span>
+<span class="c1">#   this interacts with the new automake model).</span>
+<span class="c1">#</span>
+<span class="c1"># - Command-line completion of target names; maybe even of SCons options?</span>
+<span class="c1">#   Completion is something that&#39;s supported by the Python cmd module,</span>
+<span class="c1">#   so this should be doable without too much trouble.</span>
+<span class="c1">#</span>
+
+<span class="kn">import</span> <span class="nn">cmd</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">shlex</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">readline</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+<div class="viewcode-block" id="SConsInteractiveCmd"><a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.Interactive.SConsInteractiveCmd">[docs]</a><span class="k">class</span> <span class="nc">SConsInteractiveCmd</span><span class="p">(</span><span class="n">cmd</span><span class="o">.</span><span class="n">Cmd</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;\</span>
+
+<span class="sd">build [TARGETS]         Build the specified TARGETS and their dependencies. &#39;b&#39; is a synonym.</span>
+<span class="sd">clean [TARGETS]         Clean (remove) the specified TARGETS and their dependencies.  &#39;c&#39; is a synonym.</span>
+<span class="sd">exit                    Exit SCons interactive mode.</span>
+<span class="sd">help [COMMAND]          Prints help for the specified COMMAND.  &#39;h&#39; and &#39;?&#39; are synonyms.</span>
+<span class="sd">shell [COMMANDLINE]     Execute COMMANDLINE in a subshell.  &#39;sh&#39; and &#39;!&#39; are synonyms.</span>
+<span class="sd">version                 Prints SCons version information.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+    <span class="n">synonyms</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;b&#39;</span>     <span class="p">:</span> <span class="s1">&#39;build&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;c&#39;</span>     <span class="p">:</span> <span class="s1">&#39;clean&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;h&#39;</span>     <span class="p">:</span> <span class="s1">&#39;help&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;scons&#39;</span> <span class="p">:</span> <span class="s1">&#39;build&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;sh&#39;</span>    <span class="p">:</span> <span class="s1">&#39;shell&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cmd</span><span class="o">.</span><span class="n">Cmd</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">kw</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s1">&#39;win32&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shell_variable</span> <span class="o">=</span> <span class="s1">&#39;COMSPEC&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shell_variable</span> <span class="o">=</span> <span class="s1">&#39;SHELL&#39;</span>
+
+<div class="viewcode-block" id="SConsInteractiveCmd.default"><a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.Interactive.SConsInteractiveCmd.default">[docs]</a>    <span class="k">def</span> <span class="nf">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">argv</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;*** Unknown command: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="SConsInteractiveCmd.onecmd"><a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.Interactive.SConsInteractiveCmd.onecmd">[docs]</a>    <span class="k">def</span> <span class="nf">onecmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lastcmd</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">emptyline</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lastcmd</span> <span class="o">=</span> <span class="n">line</span>
+        <span class="k">if</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;!&#39;</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="s1">&#39;shell &#39;</span> <span class="o">+</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="k">elif</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;?&#39;</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="s1">&#39;help &#39;</span> <span class="o">+</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">==</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\\\\</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">argv</span> <span class="o">=</span> <span class="n">shlex</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">synonyms</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">func</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;do_&#39;</span> <span class="o">+</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SConsInteractiveCmd.do_build"><a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.Interactive.SConsInteractiveCmd.do_build">[docs]</a>    <span class="k">def</span> <span class="nf">do_build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">argv</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;\</span>
+<span class="sd">        build [TARGETS]         Build the specified TARGETS and their</span>
+<span class="sd">                                dependencies.  &#39;b&#39; is a synonym.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">SCons.Node</span>
+        <span class="kn">import</span> <span class="nn">SCons.SConsign</span>
+        <span class="kn">import</span> <span class="nn">SCons.Script.Main</span>
+
+        <span class="n">options</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">)</span>
+
+        <span class="n">options</span><span class="p">,</span> <span class="n">targets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">values</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+
+        <span class="n">SCons</span><span class="o">.</span><span class="n">Script</span><span class="o">.</span><span class="n">COMMAND_LINE_TARGETS</span> <span class="o">=</span> <span class="n">targets</span>
+
+        <span class="k">if</span> <span class="n">targets</span><span class="p">:</span>
+            <span class="n">SCons</span><span class="o">.</span><span class="n">Script</span><span class="o">.</span><span class="n">BUILD_TARGETS</span> <span class="o">=</span> <span class="n">targets</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># If the user didn&#39;t specify any targets on the command line,</span>
+            <span class="c1"># use the list of default targets.</span>
+            <span class="n">SCons</span><span class="o">.</span><span class="n">Script</span><span class="o">.</span><span class="n">BUILD_TARGETS</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Script</span><span class="o">.</span><span class="n">_build_plus_default</span>
+
+        <span class="n">nodes</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Script</span><span class="o">.</span><span class="n">Main</span><span class="o">.</span><span class="n">_build_targets</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fs</span><span class="p">,</span>
+                                                 <span class="n">options</span><span class="p">,</span>
+                                                 <span class="n">targets</span><span class="p">,</span>
+                                                 <span class="bp">self</span><span class="o">.</span><span class="n">target_top</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">nodes</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Call each of the Node&#39;s alter_targets() methods, which may</span>
+        <span class="c1"># provide additional targets that ended up as part of the build</span>
+        <span class="c1"># (the canonical example being a VariantDir() when we&#39;re building</span>
+        <span class="c1"># from a source directory) and which we therefore need their</span>
+        <span class="c1"># state cleared, too.</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+            <span class="n">x</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">alter_targets</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">nodes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="c1"># Clean up so that we can perform the next build correctly.</span>
+        <span class="c1">#</span>
+        <span class="c1"># We do this by walking over all the children of the targets,</span>
+        <span class="c1"># and clearing their state.</span>
+        <span class="c1">#</span>
+        <span class="c1"># We currently have to re-scan each node to find their</span>
+        <span class="c1"># children, because built nodes have already been partially</span>
+        <span class="c1"># cleared and don&#39;t remember their children.  (In scons</span>
+        <span class="c1"># 0.96.1 and earlier, this wasn&#39;t the case, and we didn&#39;t</span>
+        <span class="c1"># have to re-scan the nodes.)</span>
+        <span class="c1">#</span>
+        <span class="c1"># Because we have to re-scan each node, we can&#39;t clear the</span>
+        <span class="c1"># nodes as we walk over them, because we may end up rescanning</span>
+        <span class="c1"># a cleared node as we scan a later node.  Therefore, only</span>
+        <span class="c1"># store the list of nodes that need to be cleared as we walk</span>
+        <span class="c1"># the tree, and clear them in a separate pass.</span>
+        <span class="c1">#</span>
+        <span class="c1"># XXX: Someone more familiar with the inner workings of scons</span>
+        <span class="c1"># may be able to point out a more efficient way to do this.</span>
+
+        <span class="n">SCons</span><span class="o">.</span><span class="n">Script</span><span class="o">.</span><span class="n">Main</span><span class="o">.</span><span class="n">progress_display</span><span class="p">(</span><span class="s2">&quot;scons: Clearing cached node information ...&quot;</span><span class="p">)</span>
+
+        <span class="n">seen_nodes</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">def</span> <span class="nf">get_unseen_children</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">seen_nodes</span><span class="o">=</span><span class="n">seen_nodes</span><span class="p">):</span>
+            <span class="k">def</span> <span class="nf">is_unseen</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">seen_nodes</span><span class="o">=</span><span class="n">seen_nodes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen_nodes</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">child</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">children</span><span class="p">(</span><span class="n">scan</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">is_unseen</span><span class="p">(</span><span class="n">child</span><span class="p">)]</span>
+
+        <span class="k">def</span> <span class="nf">add_to_seen_nodes</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">seen_nodes</span><span class="o">=</span><span class="n">seen_nodes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">seen_nodes</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+            <span class="c1"># If this file is in a VariantDir and has a</span>
+            <span class="c1"># corresponding source file in the source tree, remember the</span>
+            <span class="c1"># node in the source tree, too.  This is needed in</span>
+            <span class="c1"># particular to clear cached implicit dependencies on the</span>
+            <span class="c1"># source file, since the scanner will scan it if the</span>
+            <span class="c1"># VariantDir was created with duplicate=0.</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">rfile_method</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">rfile</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">rfile</span> <span class="o">=</span> <span class="n">rfile_method</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">rfile</span> <span class="o">!=</span> <span class="n">node</span><span class="p">:</span>
+                <span class="n">seen_nodes</span><span class="p">[</span><span class="n">rfile</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+            <span class="n">walker</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">Walker</span><span class="p">(</span><span class="n">node</span><span class="p">,</span>
+                                        <span class="n">kids_func</span><span class="o">=</span><span class="n">get_unseen_children</span><span class="p">,</span>
+                                        <span class="n">eval_func</span><span class="o">=</span><span class="n">add_to_seen_nodes</span><span class="p">)</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">walker</span><span class="o">.</span><span class="n">get_next</span><span class="p">()</span>
+            <span class="k">while</span> <span class="n">n</span><span class="p">:</span>
+                <span class="n">n</span> <span class="o">=</span> <span class="n">walker</span><span class="o">.</span><span class="n">get_next</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">seen_nodes</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="c1"># Call node.clear() to clear most of the state</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="c1"># node.clear() doesn&#39;t reset node.state, so call</span>
+            <span class="c1"># node.set_state() to reset it manually</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">set_state</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">no_state</span><span class="p">)</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">implicit</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="c1"># Debug:  Uncomment to verify that all Taskmaster reference</span>
+            <span class="c1"># counts have been reset to zero.</span>
+            <span class="c1">#if node.ref_count != 0:</span>
+            <span class="c1">#    from SCons.Debug import Trace</span>
+            <span class="c1">#    Trace(&#39;node %s, ref_count %s !!!\n&#39; % (node, node.ref_count))</span>
+
+        <span class="c1"># TODO: REMOVE WPD DEBUG 02/14/2022</span>
+        <span class="c1"># This call was clearing the list of sconsign files to be written, so it would</span>
+        <span class="c1"># only write the results of the first build command. All others wouldn&#39;t be written</span>
+        <span class="c1"># to .SConsign.</span>
+        <span class="c1"># Pretty sure commenting this out is the correct fix.</span>
+        <span class="c1"># SCons.SConsign.Reset()</span>
+        <span class="n">SCons</span><span class="o">.</span><span class="n">Script</span><span class="o">.</span><span class="n">Main</span><span class="o">.</span><span class="n">progress_display</span><span class="p">(</span><span class="s2">&quot;scons: done clearing node information.&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SConsInteractiveCmd.do_clean"><a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.Interactive.SConsInteractiveCmd.do_clean">[docs]</a>    <span class="k">def</span> <span class="nf">do_clean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">argv</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;\</span>
+<span class="sd">        clean [TARGETS]         Clean (remove) the specified TARGETS</span>
+<span class="sd">                                and their dependencies.  &#39;c&#39; is a synonym.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_build</span><span class="p">([</span><span class="s1">&#39;build&#39;</span><span class="p">,</span> <span class="s1">&#39;--clean&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span></div>
+
+<div class="viewcode-block" id="SConsInteractiveCmd.do_EOF"><a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.Interactive.SConsInteractiveCmd.do_EOF">[docs]</a>    <span class="k">def</span> <span class="nf">do_EOF</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">argv</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_exit</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SConsInteractiveCmd._do_one_help"><a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.Interactive.SConsInteractiveCmd._do_one_help">[docs]</a>    <span class="k">def</span> <span class="nf">_do_one_help</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># If help_&lt;arg&gt;() exists, then call it.</span>
+            <span class="n">func</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;help_&#39;</span> <span class="o">+</span> <span class="n">arg</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">func</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;do_&#39;</span> <span class="o">+</span> <span class="n">arg</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="n">doc</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">doc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_doc_to_help</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">doc</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">doc</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">doc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">strip_initial_spaces</span><span class="p">(</span><span class="n">func</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">doc</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">doc</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SConsInteractiveCmd._doc_to_help"><a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.Interactive.SConsInteractiveCmd._doc_to_help">[docs]</a>    <span class="k">def</span> <span class="nf">_doc_to_help</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="n">doc</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__doc__</span>
+        <span class="k">if</span> <span class="n">doc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_strip_initial_spaces</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SConsInteractiveCmd._strip_initial_spaces"><a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.Interactive.SConsInteractiveCmd._strip_initial_spaces">[docs]</a>    <span class="k">def</span> <span class="nf">_strip_initial_spaces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">spaces</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39; *&#39;</span><span class="p">,</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">strip_spaces</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">spaces</span><span class="o">=</span><span class="n">spaces</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">l</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">spaces</span><span class="p">)]</span> <span class="o">==</span> <span class="n">spaces</span><span class="p">:</span>
+                <span class="n">l</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">spaces</span><span class="p">):]</span>
+            <span class="k">return</span> <span class="n">l</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">strip_spaces</span><span class="p">,</span> <span class="n">lines</span><span class="p">))</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SConsInteractiveCmd.do_exit"><a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.Interactive.SConsInteractiveCmd.do_exit">[docs]</a>    <span class="k">def</span> <span class="nf">do_exit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">argv</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;\</span>
+<span class="sd">        exit                    Exit SCons interactive mode.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SConsInteractiveCmd.do_help"><a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.Interactive.SConsInteractiveCmd.do_help">[docs]</a>    <span class="k">def</span> <span class="nf">do_help</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">argv</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;\</span>
+<span class="sd">        help [COMMAND]          Prints help for the specified COMMAND.  &#39;h&#39;</span>
+<span class="sd">                                and &#39;?&#39; are synonyms.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_one_help</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+                    <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># If bare &#39;help&#39; is called, print this class&#39;s doc</span>
+            <span class="c1"># string (if it has one).</span>
+            <span class="n">doc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_doc_to_help</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">doc</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">doc</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SConsInteractiveCmd.do_shell"><a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.Interactive.SConsInteractiveCmd.do_shell">[docs]</a>    <span class="k">def</span> <span class="nf">do_shell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">argv</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;\</span>
+<span class="sd">        shell [COMMANDLINE]     Execute COMMANDLINE in a subshell.  &#39;sh&#39; and</span>
+<span class="sd">                                &#39;!&#39; are synonyms.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">subprocess</span>
+        <span class="n">argv</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">argv</span><span class="p">:</span>
+            <span class="n">argv</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">shell_variable</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Per &quot;[Python-Dev] subprocess insufficiently platform-independent?&quot;</span>
+            <span class="c1"># https://mail.python.org/pipermail/python-dev/2008-August/081979.html &quot;+</span>
+            <span class="c1"># Doing the right thing with an argument list currently</span>
+            <span class="c1"># requires different shell= values on Windows and Linux.</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">argv</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">platform</span><span class="o">==</span><span class="s1">&#39;win32&#39;</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;scons: </span><span class="si">%s</span><span class="s1">: </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">e</span><span class="o">.</span><span class="n">strerror</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SConsInteractiveCmd.do_version"><a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.Interactive.SConsInteractiveCmd.do_version">[docs]</a>    <span class="k">def</span> <span class="nf">do_version</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">argv</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;\</span>
+<span class="sd">        version                 Prints SCons version information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">version</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="interact"><a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.Interactive.interact">[docs]</a><span class="k">def</span> <span class="nf">interact</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">target_top</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">SConsInteractiveCmd</span><span class="p">(</span><span class="n">prompt</span> <span class="o">=</span> <span class="s1">&#39;scons&gt;&gt;&gt; &#39;</span><span class="p">,</span>
+                            <span class="n">fs</span> <span class="o">=</span> <span class="n">fs</span><span class="p">,</span>
+                            <span class="n">parser</span> <span class="o">=</span> <span class="n">parser</span><span class="p">,</span>
+                            <span class="n">options</span> <span class="o">=</span> <span class="n">options</span><span class="p">,</span>
+                            <span class="n">targets</span> <span class="o">=</span> <span class="n">targets</span><span class="p">,</span>
+                            <span class="n">target_top</span> <span class="o">=</span> <span class="n">target_top</span><span class="p">)</span>
+    <span class="n">c</span><span class="o">.</span><span class="n">cmdloop</span><span class="p">()</span></div>
+
+<span class="c1"># Local Variables:</span>
+<span class="c1"># tab-width:4</span>
+<span class="c1"># indent-tabs-mode:nil</span>
+<span class="c1"># End:</span>
+<span class="c1"># vim: set expandtab tabstop=4 shiftwidth=4:</span>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SCons Project Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022, SCons Project.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

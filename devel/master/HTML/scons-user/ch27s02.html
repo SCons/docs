@@ -1,0 +1,38 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>27.2. Ninja Build Generator</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.2.0"><link rel="up" href="ch27.html" title="Chapter 27. Using SCons with other build tools"><link rel="prev" href="ch27.html" title="Chapter 27. Using SCons with other build tools"><link rel="next" href="ch28.html" title="Chapter 28. Troubleshooting"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">27.2. Ninja Build Generator</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch27.html">Prev</a> </td><th width="60%" align="center">Chapter 27. Using SCons with other build tools</th><td width="20%" align="right"> <a accesskey="n" href="ch28.html">Next</a></td></tr></table><hr></div><div class="section" title="27.2. Ninja Build Generator"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idp140721285519072"></a>27.2. Ninja Build Generator</h2></div></div></div><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+                This is an experimental new feature. It is subject to change and/or removal without depreciation cycle
+            </p><p>
+                To use this tool you must install pypi's <a class="ulink" href="https://pypi.org/project/ninja/" target="_top">ninja
+                package</a>.
+                This can be done via
+                <span class="command"><strong>pip install ninja</strong></span>
+            </p><p>
+                To enable this feature you'll need to use one of the following
+            </p><pre class="screen">
+                # On the command line
+                --experimental=ninja
+
+                # Or in your SConstruct
+                SetOption('experimental', 'ninja')
+            </pre></div><p>
+            This tool will enabled creating a ninja build file from your SCons based build system. It can then invoke
+            ninja to run your build. For most builds ninja will be significantly faster, but you may have to give up
+            some accuracy. You are NOT advised to use this for production builds. It can however significantly speed up
+            your build/debug/compile iterations.
+        </p><p>
+            It's not expected that the ninja builder will work for all builds at this point. It's still under active
+            development. If you find that your build doesn't work with ninja please bring this to the users mailing list
+            or devel channel on our discord server.
+        </p><p>
+            Specifically if your build has many (or even any) python function actions you may find that the ninja build
+            will be slower as it will run ninja, which will then run SCons for each target created by a python action.
+            To alleviate some of these, especially those python based actions built into SCons there is special logic to
+            implement those actions via shell commands in the ninja build file.
+        </p><p>
+            <a class="ulink" href="https://ninja-build.org/" target="_top">
+                <em class="citetitle">Ninja Build System</em>
+            </a>
+        </p><p>
+            <a class="ulink" href="https://ninja-build.org/manual.html#ref_ninja_file" target="_top">
+                <em class="citetitle">Ninja File Format Specification</em>
+            </a>
+        </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch27.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch27.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch28.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 27. Using SCons with other build tools </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 28. Troubleshooting</td></tr></table></div></body></html>

@@ -1,0 +1,218 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<HTML
+><HEAD
+><TITLE
+>Not Using the Shared Cache for Specific Files</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="HOME"
+TITLE="SCons User Guide 0.96.96"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Caching Built Files"
+HREF="c2908.html"><LINK
+REL="PREVIOUS"
+TITLE="Keeping Build Output Consistent"
+HREF="x2928.html"><LINK
+REL="NEXT"
+TITLE="Disabling the Shared Cache"
+HREF="x2953.html"></HEAD
+><BODY
+CLASS="SECTION"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 0.96.96</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x2928.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Caching Built Files</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x2953.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECTION"
+><H1
+CLASS="SECTION"
+><A
+NAME="AEN2942"
+>Not Using the Shared Cache for Specific Files</A
+></H1
+><P
+>&#13;    You may want to disable caching for certain
+    specific files in your configuration.
+    For example, if you only want to put
+    executable files in a central cache,
+    but not the intermediate object files,
+    you can use the <TT
+CLASS="FUNCTION"
+>NoCache</TT
+>
+    function to specify that the
+    object files should not be cached:
+
+    </P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>       env = Environment()
+       obj = env.Object('hello.c')
+       env.Program('hello.c')
+       CacheDir('cache')
+       NoCache('hello.o')
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>&#13;    Then when you run <TT
+CLASS="APPLICATION"
+>scons</TT
+> after cleaning
+    the built targets,
+    it will recompile the object file locally
+    (since it doesn't exist in the shared cache directory),
+    but still realize that the shared cache directory
+    contains an up-to-date executable program
+    that can be retrieved instead of re-linking:
+
+    </P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>      % <KBD
+CLASS="USERINPUT"
+>scons -Q</KBD
+>
+      cc -o hello.o -c hello.c
+      cc -o hello hello.o
+      % <KBD
+CLASS="USERINPUT"
+>scons -Q -c</KBD
+>
+      Removed hello.o
+      Removed hello
+      % <KBD
+CLASS="USERINPUT"
+>scons -Q</KBD
+>
+      cc -o hello.o -c hello.c
+      Retrieved `hello' from cache
+    </PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x2928.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x2953.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Keeping Build Output Consistent</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c2908.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Disabling the Shared Cache</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

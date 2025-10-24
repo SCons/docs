@@ -1,0 +1,575 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>SCons.dblite &mdash; SCons 4.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex/" />
+    <link rel="search" title="Search" href="../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../" class="icon icon-home"> SCons
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                4.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons/">SCons package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Variables/">SCons.Variables package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.compat/">SCons.compat package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Action">SCons.Action module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Builder">SCons.Builder module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.CacheDir">SCons.CacheDir module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Conftest">SCons.Conftest module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Debug">SCons.Debug module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Defaults">SCons.Defaults module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Environment">SCons.Environment module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Errors">SCons.Errors module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Executor">SCons.Executor module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Job">SCons.Job module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Memoize">SCons.Memoize module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.PathList">SCons.PathList module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.SConf">SCons.SConf module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.SConsign">SCons.SConsign module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Subst">SCons.Subst module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Taskmaster">SCons.Taskmaster module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons/#generic-taskmaster-module-for-the-scons-build-engine">Generic Taskmaster module for the SCons build engine.</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Util">SCons.Util module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Warnings">SCons.Warnings module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.cpp">SCons.cpp module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.dblite">SCons.dblite module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.exitfuncs">SCons.exitfuncs module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.compat/">SCons.compat package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.compat/#module-SCons.compat">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Node/">SCons.Node package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#module-SCons.Node.Alias">SCons.Node.Alias module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#module-SCons.Node.FS">SCons.Node.FS module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#module-SCons.Node.Python">SCons.Node.Python module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#module-SCons.Node">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Platform/">SCons.Platform package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.aix">SCons.Platform.aix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.cygwin">SCons.Platform.cygwin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.darwin">SCons.Platform.darwin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.hpux">SCons.Platform.hpux module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.irix">SCons.Platform.irix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.mingw">SCons.Platform.mingw module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.os2">SCons.Platform.os2 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.posix">SCons.Platform.posix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.sunos">SCons.Platform.sunos module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.virtualenv">SCons.Platform.virtualenv module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.win32">SCons.Platform.win32 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Scanner/">SCons.Scanner package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.C">SCons.Scanner.C module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.D">SCons.Scanner.D module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.Dir">SCons.Scanner.Dir module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.Fortran">SCons.Scanner.Fortran module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.IDL">SCons.Scanner.IDL module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.LaTeX">SCons.Scanner.LaTeX module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.Prog">SCons.Scanner.Prog module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.RC">SCons.Scanner.RC module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.SWIG">SCons.Scanner.SWIG module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Script/">SCons.Script package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script.Interactive">SCons.Script.Interactive module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script.Main">SCons.Script.Main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script.SConsOptions">SCons.Script.SConsOptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script.SConscript">SCons.Script.SConscript module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Tool/">SCons.Tool package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Tool/#module-SCons.Tool">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Variables/">SCons.Variables package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.BoolVariable">SCons.Variables.BoolVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.EnumVariable">SCons.Variables.EnumVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.ListVariable">SCons.Variables.ListVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.PackageVariable">SCons.Variables.PackageVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.PathVariable">SCons.Variables.PathVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../">SCons</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../">Docs</a> &raquo;</li>
+        
+          <li><a href="../../">Module code</a> &raquo;</li>
+        
+      <li>SCons.dblite</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for SCons.dblite</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">dblite.py module contributed by Ralf W. Grosse-Kunstleve.</span>
+<span class="sd">Extended for Unicode by Steven Knight.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">from</span> <span class="nn">SCons.compat</span> <span class="kn">import</span> <span class="n">PICKLE_PROTOCOL</span>
+
+<span class="n">keep_all_files</span> <span class="o">=</span> <span class="mi">00000</span>
+<span class="n">ignore_corrupt_dbfiles</span> <span class="o">=</span> <span class="mi">0</span>
+
+
+<span class="k">def</span> <span class="nf">corruption_warning</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warning: Discarding corrupt database:&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+
+
+<span class="n">dblite_suffix</span> <span class="o">=</span> <span class="s1">&#39;.dblite&#39;</span>
+
+<span class="c1"># TODO: Does commenting this out break switching from py2/3?</span>
+<span class="c1"># if bytes is not str:</span>
+<span class="c1">#     dblite_suffix += &#39;.p3&#39;</span>
+<span class="n">tmp_suffix</span> <span class="o">=</span> <span class="s1">&#39;.tmp&#39;</span>
+
+
+<div class="viewcode-block" id="dblite"><a class="viewcode-back" href="../../../SCons/#SCons.dblite.dblite">[docs]</a><span class="k">class</span> <span class="nc">dblite</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Squirrel away references to the functions in various modules</span>
+<span class="sd">    that we&#39;ll use when our __del__() method calls our sync() method</span>
+<span class="sd">    during shutdown.  We might get destroyed when Python is in the midst</span>
+<span class="sd">    of tearing down the different modules we import in an essentially</span>
+<span class="sd">    arbitrary order, and some of the various modules&#39;s global attributes</span>
+<span class="sd">    may already be wiped out from under us.</span>
+
+<span class="sd">    See the discussion at:</span>
+<span class="sd">      http://mail.python.org/pipermail/python-bugs-list/2003-March/016877.html</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_open</span> <span class="o">=</span> <span class="nb">open</span>
+    <span class="n">_pickle_dump</span> <span class="o">=</span> <span class="nb">staticmethod</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">)</span>
+    <span class="n">_pickle_protocol</span> <span class="o">=</span> <span class="n">PICKLE_PROTOCOL</span>
+    <span class="n">_os_chmod</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">chmod</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">_os_chown</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">chown</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="n">_os_chown</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">_os_rename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">rename</span>
+    <span class="n">_os_unlink</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">unlink</span>
+    <span class="n">_shutil_copyfile</span> <span class="o">=</span> <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span>
+    <span class="n">_time_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_base_name</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">flag</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;n&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">flag</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">flag</span> <span class="o">=</span> <span class="s2">&quot;r&quot;</span>
+
+        <span class="n">base</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">file_base_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span> <span class="n">dblite_suffix</span><span class="p">:</span>
+            <span class="c1"># There&#39;s already a suffix on the file name, don&#39;t add one.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_file_name</span> <span class="o">=</span> <span class="n">file_base_name</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_tmp_name</span> <span class="o">=</span> <span class="n">base</span> <span class="o">+</span> <span class="n">tmp_suffix</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_file_name</span> <span class="o">=</span> <span class="n">file_base_name</span> <span class="o">+</span> <span class="n">dblite_suffix</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_tmp_name</span> <span class="o">=</span> <span class="n">file_base_name</span> <span class="o">+</span> <span class="n">tmp_suffix</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_flag</span> <span class="o">=</span> <span class="n">flag</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">=</span> <span class="n">mode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_needs_sync</span> <span class="o">=</span> <span class="mi">00000</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_os_chown</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">geteuid</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">getuid</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="c1"># running as root; chown back to current owner/group when done</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">statinfo</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_name</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_chown_to</span> <span class="o">=</span> <span class="n">statinfo</span><span class="o">.</span><span class="n">st_uid</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_chgrp_to</span> <span class="o">=</span> <span class="n">statinfo</span><span class="o">.</span><span class="n">st_gid</span>
+            <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="c1"># db file doesn&#39;t exist yet.</span>
+                <span class="c1"># Check os.environ for SUDO_UID, use if set</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_chown_to</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;SUDO_UID&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_chgrp_to</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;SUDO_GID&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_chown_to</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>  <span class="c1"># don&#39;t chown</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_chgrp_to</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>  <span class="c1"># don&#39;t chgrp</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flag</span> <span class="o">==</span> <span class="s2">&quot;n&quot;</span><span class="p">:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_name</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span><span class="p">):</span>
+                <span class="k">pass</span>  <span class="c1"># just make sure it exists</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_name</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flag</span> <span class="o">!=</span> <span class="s2">&quot;c&quot;</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">e</span>
+                <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_name</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span><span class="p">):</span>
+                    <span class="k">pass</span>  <span class="c1"># just make sure it exists</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="nb">bytes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">str</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_dict</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;bytes&#39;</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_dict</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">UnpicklingError</span><span class="p">,</span> <span class="ne">EOFError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">):</span>
+                        <span class="c1"># Note how we catch KeyErrors too here, which might happen</span>
+                        <span class="c1"># when we don&#39;t have cPickle available (default pickle</span>
+                        <span class="c1"># throws it).</span>
+                        <span class="k">if</span> <span class="n">ignore_corrupt_dbfiles</span><span class="p">:</span>
+                            <span class="n">corruption_warning</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_name</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">raise</span>
+
+<div class="viewcode-block" id="dblite.close"><a class="viewcode-back" href="../../../SCons/#SCons.dblite.dblite.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_needs_sync</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sync</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<div class="viewcode-block" id="dblite.sync"><a class="viewcode-back" href="../../../SCons/#SCons.dblite.dblite.sync">[docs]</a>    <span class="k">def</span> <span class="nf">sync</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_writable</span><span class="p">()</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tmp_name</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pickle_dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dict</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pickle_protocol</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="c1"># Windows doesn&#39;t allow renaming if the file exists, so unlink</span>
+        <span class="c1"># it first, chmod&#39;ing it to make sure we can do so.  On UNIX, we</span>
+        <span class="c1"># may not be able to chmod the file if it&#39;s owned by someone else</span>
+        <span class="c1"># (e.g. from a previous run as root).  We should still be able to</span>
+        <span class="c1"># unlink() the file if the directory&#39;s writable, though, so ignore</span>
+        <span class="c1"># any OSError exception  thrown by the chmod() call.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_os_chmod</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_name</span><span class="p">,</span> <span class="mo">0o777</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_os_unlink</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_os_rename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tmp_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_os_chown</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chown_to</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># don&#39;t chown to root or -1</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_os_chown</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chown_to</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chgrp_to</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_needs_sync</span> <span class="o">=</span> <span class="mi">00000</span>
+        <span class="k">if</span> <span class="n">keep_all_files</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_shutil_copyfile</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_file_name</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_file_name</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_time_time</span><span class="p">())))</span></div>
+
+<div class="viewcode-block" id="dblite._check_writable"><a class="viewcode-back" href="../../../SCons/#SCons.dblite.dblite._check_writable">[docs]</a>    <span class="k">def</span> <span class="nf">_check_writable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flag</span> <span class="o">==</span> <span class="s2">&quot;r&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Read-only database: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_name</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_writable</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;key `</span><span class="si">%s</span><span class="s2">&#39; must be a string but is </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">key</span><span class="p">)))</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;value `</span><span class="si">%s</span><span class="s2">&#39; must be a bytes but is </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_needs_sync</span> <span class="o">=</span> <span class="mo">0o001</span>
+
+<div class="viewcode-block" id="dblite.keys"><a class="viewcode-back" href="../../../SCons/#SCons.dblite.dblite.keys">[docs]</a>    <span class="k">def</span> <span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="dblite.has_key"><a class="viewcode-back" href="../../../SCons/#SCons.dblite.dblite.has_key">[docs]</a>    <span class="k">def</span> <span class="nf">has_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dict</span></div>
+
+    <span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dict</span>
+
+<div class="viewcode-block" id="dblite.iterkeys"><a class="viewcode-back" href="../../../SCons/#SCons.dblite.dblite.iterkeys">[docs]</a>    <span class="k">def</span> <span class="nf">iterkeys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Wrapping name in () prevents fixer from &quot;fixing&quot; this</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dict</span><span class="o">.</span><span class="n">iterkeys</span><span class="p">)()</span></div>
+
+    <span class="fm">__iter__</span> <span class="o">=</span> <span class="n">iterkeys</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dict</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="open"><a class="viewcode-back" href="../../../SCons/#SCons.dblite.open">[docs]</a><span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">flag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mo">0o666</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">dblite</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="_exercise"><a class="viewcode-back" href="../../../SCons/#SCons.dblite._exercise">[docs]</a><span class="k">def</span> <span class="nf">_exercise</span><span class="p">():</span>
+    <span class="n">db</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;tmp&quot;</span><span class="p">,</span> <span class="s2">&quot;n&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">db</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="n">db</span><span class="p">[</span><span class="s2">&quot;foo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;bar&quot;</span>
+    <span class="k">assert</span> <span class="n">db</span><span class="p">[</span><span class="s2">&quot;foo&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="sa">b</span><span class="s2">&quot;bar&quot;</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">sync</span><span class="p">()</span>
+
+    <span class="n">db</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;tmp&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">db</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">db</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">db</span><span class="p">[</span><span class="s2">&quot;foo&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="sa">b</span><span class="s2">&quot;bar&quot;</span>
+    <span class="n">db</span><span class="p">[</span><span class="s2">&quot;bar&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;foo&quot;</span>
+    <span class="k">assert</span> <span class="n">db</span><span class="p">[</span><span class="s2">&quot;bar&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="sa">b</span><span class="s2">&quot;foo&quot;</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">sync</span><span class="p">()</span>
+
+    <span class="n">db</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;tmp&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">db</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">db</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">db</span><span class="p">[</span><span class="s2">&quot;foo&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="sa">b</span><span class="s2">&quot;bar&quot;</span>
+    <span class="k">assert</span> <span class="n">db</span><span class="p">[</span><span class="s2">&quot;bar&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="sa">b</span><span class="s2">&quot;foo&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">sync</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;Read-only database: tmp.dblite&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;IOError expected.&quot;</span><span class="p">)</span>
+    <span class="n">db</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;tmp&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">db</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">db</span><span class="p">)</span>
+    <span class="n">db</span><span class="p">[</span><span class="s2">&quot;ping&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;pong&quot;</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">sync</span><span class="p">()</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">db</span><span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]</span> <span class="o">=</span> <span class="s2">&quot;tuple&quot;</span>
+    <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;key `(1, 2)&#39; must be a string but is &lt;class &#39;tuple&#39;&gt;&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;TypeError exception expected&quot;</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">db</span><span class="p">[</span><span class="s2">&quot;list&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;value `[1, 2]&#39; must be a bytes but is &lt;class &#39;list&#39;&gt;&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;TypeError exception expected&quot;</span><span class="p">)</span>
+
+    <span class="n">db</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;tmp&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">db</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">db</span><span class="p">)</span>
+
+    <span class="n">db</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;tmp&quot;</span><span class="p">,</span> <span class="s2">&quot;n&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">db</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">db</span><span class="p">)</span>
+    <span class="n">dblite</span><span class="o">.</span><span class="n">_open</span><span class="p">(</span><span class="s2">&quot;tmp.dblite&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+
+    <span class="n">db</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;tmp&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+    <span class="n">dblite</span><span class="o">.</span><span class="n">_open</span><span class="p">(</span><span class="s2">&quot;tmp.dblite&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;tmp&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">pickle</span><span class="o">.</span><span class="n">UnpicklingError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;pickle exception expected.&quot;</span><span class="p">)</span>
+
+    <span class="k">global</span> <span class="n">ignore_corrupt_dbfiles</span>
+    <span class="n">ignore_corrupt_dbfiles</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">db</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;tmp&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">db</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">db</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="s2">&quot;tmp.dblite&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;tmp&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;[Errno 2] No such file or directory: &#39;tmp.dblite&#39;&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;IOError expected.&quot;</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Completed _exercise()&quot;</span><span class="p">)</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">_exercise</span><span class="p">()</span>
+
+<span class="c1"># Local Variables:</span>
+<span class="c1"># tab-width:4</span>
+<span class="c1"># indent-tabs-mode:nil</span>
+<span class="c1"># End:</span>
+<span class="c1"># vim: set expandtab tabstop=4 shiftwidth=4:</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, SCons Project
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,4349 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Builders</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 2.2.0"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Construction Variables"
+HREF="a5025.html"><LINK
+REL="NEXT"
+TITLE="Tools"
+HREF="a9600.html"></HEAD
+><BODY
+CLASS="appendix"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 2.2.0</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="a5025.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="a9600.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="appendix"
+><H1
+><A
+NAME="app-builders"
+></A
+>Appendix B. Builders</H1
+><P
+>&#13;
+This appendix contains descriptions of all of the
+Builders that are <SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>potentially</I
+></SPAN
+>
+available "out of the box" in this version of SCons.
+
+</P
+><P
+></P
+><DIV
+CLASS="variablelist"
+><DL
+><DT
+><A
+NAME="b-CFile"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>CFile()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.CFile()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;Builds a C source file given a lex (<TT
+CLASS="filename"
+>.l</TT
+>)
+or yacc (<TT
+CLASS="filename"
+>.y</TT
+>) input file.
+The suffix specified by the <A
+HREF="a5025.html#cv-CFILESUFFIX"
+><CODE
+CLASS="envar"
+>$CFILESUFFIX</CODE
+></A
+> construction variable
+(<TT
+CLASS="filename"
+>.c</TT
+> by default)
+is automatically added to the target
+if it is not already present.
+Example:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;# builds foo.c
+env.CFile(target = 'foo.c', source = 'foo.l')
+# builds bar.c
+env.CFile(target = 'bar', source = 'bar.y')
+</PRE
+></DD
+><DT
+><A
+NAME="b-Command"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>Command()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.Command()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;The <CODE
+CLASS="function"
+>Command</CODE
+> "Builder" is actually implemented
+as a function that looks like a Builder,
+but actually takes an additional argument of the action
+from which the Builder should be made.
+See the <A
+HREF="a11700.html#f-Command"
+><CODE
+CLASS="function"
+>Command</CODE
+></A
+> function description
+for the calling syntax and details.
+</P
+></DD
+><DT
+><A
+NAME="b-CXXFile"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>CXXFile()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.CXXFile()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;Builds a C++ source file given a lex (<TT
+CLASS="filename"
+>.ll</TT
+>)
+or yacc (<TT
+CLASS="filename"
+>.yy</TT
+>)
+input file.
+The suffix specified by the <A
+HREF="a5025.html#cv-CXXFILESUFFIX"
+><CODE
+CLASS="envar"
+>$CXXFILESUFFIX</CODE
+></A
+> construction variable
+(<TT
+CLASS="filename"
+>.cc</TT
+> by default)
+is automatically added to the target
+if it is not already present.
+Example:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;# builds foo.cc
+env.CXXFile(target = 'foo.cc', source = 'foo.ll')
+# builds bar.cc
+env.CXXFile(target = 'bar', source = 'bar.yy')
+</PRE
+></DD
+><DT
+><A
+NAME="b-DVI"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>DVI()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.DVI()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;Builds a <TT
+CLASS="filename"
+>.dvi</TT
+> file
+from a <TT
+CLASS="filename"
+>.tex</TT
+>,
+<TT
+CLASS="filename"
+>.ltx</TT
+> or <TT
+CLASS="filename"
+>.latex</TT
+> input file.
+If the source file suffix is <TT
+CLASS="filename"
+>.tex</TT
+>,
+<TT
+CLASS="filename"
+>scons</TT
+>
+will examine the contents of the file;
+if the string
+<TT
+CLASS="literal"
+>\documentclass</TT
+>
+or
+<TT
+CLASS="literal"
+>\documentstyle</TT
+>
+is found, the file is assumed to be a LaTeX file and
+the target is built by invoking the <A
+HREF="a5025.html#cv-LATEXCOM"
+><CODE
+CLASS="envar"
+>$LATEXCOM</CODE
+></A
+> command line;
+otherwise, the <A
+HREF="a5025.html#cv-TEXCOM"
+><CODE
+CLASS="envar"
+>$TEXCOM</CODE
+></A
+> command line is used.
+If the file is a LaTeX file,
+the
+<CODE
+CLASS="function"
+>DVI</CODE
+>
+builder method will also examine the contents
+of the
+<TT
+CLASS="filename"
+>.aux</TT
+>
+file and invoke the <A
+HREF="a5025.html#cv-BIBTEX"
+><CODE
+CLASS="envar"
+>$BIBTEX</CODE
+></A
+> command line
+if the string
+<TT
+CLASS="literal"
+>bibdata</TT
+>
+is found,
+start <A
+HREF="a5025.html#cv-MAKEINDEX"
+><CODE
+CLASS="envar"
+>$MAKEINDEX</CODE
+></A
+> to generate an index if a
+<TT
+CLASS="filename"
+>.ind</TT
+>
+file is found
+and will examine the contents
+<TT
+CLASS="filename"
+>.log</TT
+>
+file and re-run the <A
+HREF="a5025.html#cv-LATEXCOM"
+><CODE
+CLASS="envar"
+>$LATEXCOM</CODE
+></A
+> command
+if the log file says it is necessary.</P
+><P
+>The suffix <TT
+CLASS="filename"
+>.dvi</TT
+>
+(hard-coded within TeX itself)
+is automatically added to the target
+if it is not already present.
+Examples:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;# builds from aaa.tex
+env.DVI(target = 'aaa.dvi', source = 'aaa.tex')
+# builds bbb.dvi
+env.DVI(target = 'bbb', source = 'bbb.ltx')
+# builds from ccc.latex
+env.DVI(target = 'ccc.dvi', source = 'ccc.latex')
+</PRE
+></DD
+><DT
+><A
+NAME="b-Install"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>Install()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.Install()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;Installs one or more source files or directories
+in the specified target,
+which must be a directory.
+The names of the specified source files or directories
+remain the same within the destination directory.
+</P
+><PRE
+CLASS="programlisting"
+>&#13;env.Install('/usr/local/bin', source = ['foo', 'bar'])
+</PRE
+></DD
+><DT
+><A
+NAME="b-InstallAs"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>InstallAs()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.InstallAs()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;Installs one or more source files or directories
+to specific names,
+allowing changing a file or directory name
+as part of the installation.
+It is an error if the
+target
+and
+source
+arguments list different numbers of files or directories.
+</P
+><PRE
+CLASS="programlisting"
+>&#13;env.InstallAs(target = '/usr/local/bin/foo',
+              source = 'foo_debug')
+env.InstallAs(target = ['../lib/libfoo.a', '../lib/libbar.a'],
+              source = ['libFOO.a', 'libBAR.a'])
+</PRE
+></DD
+><DT
+><A
+NAME="b-Jar"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>Jar()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.Jar()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;Builds a Java archive (<TT
+CLASS="filename"
+>.jar</TT
+>) file
+from the specified list of sources.
+Any directories in the source list
+will be searched for <TT
+CLASS="filename"
+>.class</TT
+> files).
+Any <TT
+CLASS="filename"
+>.java</TT
+> files in the source list
+will be compiled  to <TT
+CLASS="filename"
+>.class</TT
+> files
+by calling the <A
+HREF="a8580.html#b-Java"
+><CODE
+CLASS="function"
+>Java</CODE
+></A
+> Builder.</P
+><P
+>If the <A
+HREF="a5025.html#cv-JARCHDIR"
+><CODE
+CLASS="envar"
+>$JARCHDIR</CODE
+></A
+> value is set, the
+<SPAN
+CLASS="application"
+>jar</SPAN
+>
+command will change to the specified directory using the
+<CODE
+CLASS="option"
+>-C</CODE
+>
+option.
+If <CODE
+CLASS="envar"
+>$JARCHDIR</CODE
+> is not set explicitly,
+<SPAN
+CLASS="application"
+>SCons</SPAN
+> will use the top of any subdirectory tree
+in which Java <TT
+CLASS="filename"
+>.class</TT
+>
+were built by the <A
+HREF="a8580.html#b-Java"
+><CODE
+CLASS="function"
+>Java</CODE
+></A
+> Builder.</P
+><P
+>If the contents any of the source files begin with the string
+<TT
+CLASS="literal"
+>Manifest-Version</TT
+>,
+the file is assumed to be a manifest
+and is passed to the
+<SPAN
+CLASS="application"
+>jar</SPAN
+>
+command with the
+<CODE
+CLASS="option"
+>m</CODE
+>
+option set.
+</P
+><PRE
+CLASS="programlisting"
+>&#13;env.Jar(target = 'foo.jar', source = 'classes')
+
+env.Jar(target = 'bar.jar',
+        source = ['bar1.java', 'bar2.java'])
+</PRE
+></DD
+><DT
+><A
+NAME="b-Java"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>Java()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.Java()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;Builds one or more Java class files.
+The sources may be any combination of explicit
+<TT
+CLASS="filename"
+>.java</TT
+> files,
+or directory trees which will be scanned
+for <TT
+CLASS="filename"
+>.java</TT
+> files.</P
+><P
+>SCons will parse each source <TT
+CLASS="filename"
+>.java</TT
+> file
+to find the classes
+(including inner classes)
+defined within that file,
+and from that figure out the
+target <TT
+CLASS="filename"
+>.class</TT
+> files that will be created.
+The class files will be placed underneath
+the specified target directory.</P
+><P
+>SCons will also search each Java file
+for the Java package name,
+which it assumes can be found on a line
+beginning with the string
+<TT
+CLASS="literal"
+>package</TT
+>
+in the first column;
+the resulting <TT
+CLASS="filename"
+>.class</TT
+> files
+will be placed in a directory reflecting
+the specified package name.
+For example,
+the file
+<TT
+CLASS="filename"
+>Foo.java</TT
+>
+defining a single public
+<CODE
+CLASS="classname"
+>Foo</CODE
+>
+class and
+containing a package name of
+<CODE
+CLASS="classname"
+>sub.dir</CODE
+>
+will generate a corresponding
+<TT
+CLASS="filename"
+>sub/dir/Foo.class</TT
+>
+class file.</P
+><P
+>Examples:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;env.Java(target = 'classes', source = 'src')
+env.Java(target = 'classes', source = ['src1', 'src2'])
+env.Java(target = 'classes', source = ['File1.java', 'File2.java'])
+</PRE
+><P
+>&#13;Java source files can use the native encoding for the underlying OS.
+Since SCons compiles in simple ASCII mode by default,
+the compiler will generate warnings about unmappable characters,
+which may lead to errors as the file is processed further.
+In this case, the user must specify the <TT
+CLASS="literal"
+>LANG</TT
+>
+environment variable to tell the compiler what encoding is used.
+For portibility, it's best if the encoding is hard-coded
+so that the compile will work if it is done on a system
+with a different encoding.
+</P
+><PRE
+CLASS="programlisting"
+>&#13;env = Environment()
+env['ENV']['LANG'] = 'en_GB.UTF-8'
+</PRE
+></DD
+><DT
+><A
+NAME="b-JavaH"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>JavaH()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.JavaH()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;Builds C header and source files for
+implementing Java native methods.
+The target can be either a directory
+in which the header files will be written,
+or a header file name which
+will contain all of the definitions.
+The source can be the names of <TT
+CLASS="filename"
+>.class</TT
+> files,
+the names of <TT
+CLASS="filename"
+>.java</TT
+> files
+to be compiled into <TT
+CLASS="filename"
+>.class</TT
+> files
+by calling the <A
+HREF="a8580.html#b-Java"
+><CODE
+CLASS="function"
+>Java</CODE
+></A
+> builder method,
+or the objects returned from the
+<CODE
+CLASS="function"
+>Java</CODE
+>
+builder method.</P
+><P
+>If the construction variable
+<A
+HREF="a5025.html#cv-JAVACLASSDIR"
+><CODE
+CLASS="envar"
+>$JAVACLASSDIR</CODE
+></A
+>
+is set, either in the environment
+or in the call to the
+<CODE
+CLASS="function"
+>JavaH</CODE
+>
+builder method itself,
+then the value of the variable
+will be stripped from the
+beginning of any <TT
+CLASS="filename"
+>.class</TT
+> file names.</P
+><P
+>Examples:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;# builds java_native.h
+classes = env.Java(target = 'classdir', source = 'src')
+env.JavaH(target = 'java_native.h', source = classes)
+
+# builds include/package_foo.h and include/package_bar.h
+env.JavaH(target = 'include',
+          source = ['package/foo.class', 'package/bar.class'])
+
+# builds export/foo.h and export/bar.h
+env.JavaH(target = 'export',
+          source = ['classes/foo.class', 'classes/bar.class'],
+          JAVACLASSDIR = 'classes')
+</PRE
+></DD
+><DT
+><A
+NAME="b-Library"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>Library()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.Library()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;A synonym for the
+<CODE
+CLASS="function"
+>StaticLibrary</CODE
+>
+builder method.
+</P
+></DD
+><DT
+><A
+NAME="b-LoadableModule"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>LoadableModule()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.LoadableModule()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;On most systems,
+this is the same as
+<CODE
+CLASS="function"
+>SharedLibrary</CODE
+>.
+On Mac OS X (Darwin) platforms,
+this creates a loadable module bundle.
+</P
+></DD
+><DT
+><A
+NAME="b-M4"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>M4()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.M4()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;Builds an output file from an M4 input file.
+This uses a default <A
+HREF="a5025.html#cv-M4FLAGS"
+><CODE
+CLASS="envar"
+>$M4FLAGS</CODE
+></A
+> value of
+<CODE
+CLASS="option"
+>-E</CODE
+>,
+which considers all warnings to be fatal
+and stops on the first warning
+when using the GNU version of m4.
+Example:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;env.M4(target = 'foo.c', source = 'foo.c.m4')
+</PRE
+></DD
+><DT
+><A
+NAME="b-Moc"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>Moc()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.Moc()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;Builds an output file from a moc input file. Moc input files are either
+header files or cxx files. This builder is only available after using the
+tool 'qt'. See the <A
+HREF="a5025.html#cv-QTDIR"
+><CODE
+CLASS="envar"
+>$QTDIR</CODE
+></A
+> variable for more information.
+Example:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;env.Moc('foo.h') # generates moc_foo.cc
+env.Moc('foo.cpp') # generates foo.moc
+</PRE
+></DD
+><DT
+><A
+NAME="b-MOFiles"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>MOFiles()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.MOFiles()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;This builder belongs to <A
+HREF="a9600.html#t-msgfmt"
+><TT
+CLASS="literal"
+>msgfmt</TT
+></A
+> tool. The builder compiles
+<TT
+CLASS="literal"
+>PO</TT
+> files to <TT
+CLASS="literal"
+>MO</TT
+> files.</P
+><P
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>Example 1</I
+></SPAN
+>.
+Create <TT
+CLASS="filename"
+>pl.mo</TT
+> and <TT
+CLASS="filename"
+>en.mo</TT
+> by compiling
+<TT
+CLASS="filename"
+>pl.po</TT
+> and <TT
+CLASS="filename"
+>en.po</TT
+>:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;  # ...
+  env.MOFiles(['pl', 'en'])
+</PRE
+><P
+>&#13;<SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>Example 2</I
+></SPAN
+>.
+Compile files for languages defined in <TT
+CLASS="filename"
+>LINGUAS</TT
+> file:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;  # ...
+  env.MOFiles(LINGUAS_FILE = 1)
+</PRE
+><P
+>&#13;<SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>Example 3</I
+></SPAN
+>.
+Create <TT
+CLASS="filename"
+>pl.mo</TT
+> and <TT
+CLASS="filename"
+>en.mo</TT
+> by compiling
+<TT
+CLASS="filename"
+>pl.po</TT
+> and <TT
+CLASS="filename"
+>en.po</TT
+> plus files for
+languages defined in <TT
+CLASS="filename"
+>LINGUAS</TT
+> file:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;  # ...
+  env.MOFiles(['pl', 'en'], LINGUAS_FILE = 1)
+</PRE
+><P
+>&#13;<SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>Example 4</I
+></SPAN
+>.
+Compile files for languages defined in <TT
+CLASS="filename"
+>LINGUAS</TT
+> file 
+(another version):
+</P
+><PRE
+CLASS="programlisting"
+>&#13;  # ...
+  env['LINGUAS_FILE'] = 1
+  env.MOFiles()
+</PRE
+></DD
+><DT
+><A
+NAME="b-MSVSProject"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>MSVSProject()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.MSVSProject()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;Builds a Microsoft Visual Studio project file,
+and by default builds a solution file as well.</P
+><P
+>This builds a Visual Studio project file, based on the version of
+Visual Studio that is configured (either the latest installed version,
+or the version specified by
+<A
+HREF="a5025.html#cv-MSVS_VERSION"
+><CODE
+CLASS="envar"
+>$MSVS_VERSION</CODE
+></A
+>
+in the Environment constructor).
+For Visual Studio 6, it will generate a
+<TT
+CLASS="filename"
+>.dsp</TT
+>
+file.
+For Visual Studio 7 (.NET) and later versions, it will generate a
+<TT
+CLASS="filename"
+>.vcproj</TT
+>
+file.</P
+><P
+>By default,
+this also generates a solution file
+for the specified project,
+a
+<TT
+CLASS="filename"
+>.dsw</TT
+>
+file for Visual Studio 6
+or a
+<TT
+CLASS="filename"
+>.sln</TT
+>
+file for Visual Studio 7 (.NET).
+This behavior may be disabled by specifying
+<TT
+CLASS="literal"
+>auto_build_solution=0</TT
+>
+when you call
+<CODE
+CLASS="function"
+>MSVSProject</CODE
+>,
+in which case you presumably want to
+build the solution file(s)
+by calling the
+<CODE
+CLASS="function"
+>MSVSSolution</CODE
+>
+Builder (see below).</P
+><P
+>The <CODE
+CLASS="function"
+>MSVSProject</CODE
+> builder
+takes several lists of filenames
+to be placed into the project file.
+These are currently limited to
+<TT
+CLASS="literal"
+>srcs</TT
+>,
+<TT
+CLASS="literal"
+>incs</TT
+>,
+<TT
+CLASS="literal"
+>localincs</TT
+>,
+<TT
+CLASS="literal"
+>resources</TT
+>,
+and
+<TT
+CLASS="literal"
+>misc</TT
+>.
+These are pretty self-explanatory, but it should be noted that these
+lists are added to the <A
+HREF="a5025.html#cv-SOURCES"
+><CODE
+CLASS="envar"
+>$SOURCES</CODE
+></A
+> construction variable as strings,
+NOT as SCons File Nodes.  This is because they represent file
+names to be added to the project file, not the source files used to
+build the project file.</P
+><P
+>The above filename lists are all optional,
+although at least one must be specified
+for the resulting project file to be non-empty.</P
+><P
+>In addition to the above lists of values,
+the following values may be specified:</P
+><P
+><TT
+CLASS="literal"
+>target</TT
+>:
+The name of the target
+<TT
+CLASS="filename"
+>.dsp</TT
+>
+or
+<TT
+CLASS="filename"
+>.vcproj</TT
+>
+file.
+The correct
+suffix for the version of Visual Studio must be used,
+but the
+<A
+HREF="a5025.html#cv-MSVSPROJECTSUFFIX"
+><CODE
+CLASS="envar"
+>$MSVSPROJECTSUFFIX</CODE
+></A
+>
+construction variable
+will be defined to the correct value (see example below).</P
+><P
+><TT
+CLASS="literal"
+>variant</TT
+>:
+The name of this particular variant.
+For Visual Studio 7 projects,
+this can also be a list of variant names.
+These are typically things like "Debug" or "Release", but really
+can be anything you want.
+For Visual Studio 7 projects,
+they may also specify a target platform
+separated from the variant name by a
+<TT
+CLASS="literal"
+>|</TT
+>
+(vertical pipe)
+character:
+<TT
+CLASS="literal"
+>Debug|Xbox</TT
+>.
+The default target platform is Win32.
+Multiple calls to
+<CODE
+CLASS="function"
+>MSVSProject</CODE
+>
+with different variants are allowed;
+all variants will be added to the project file with their appropriate
+build targets and sources.</P
+><P
+><TT
+CLASS="literal"
+>buildtarget</TT
+>:
+An optional string, node, or list of strings or nodes
+(one per build variant), to tell the Visual Studio debugger
+what output target to use in what build variant.
+The number of
+<TT
+CLASS="literal"
+>buildtarget</TT
+>
+entries must match the number of
+<TT
+CLASS="literal"
+>variant</TT
+>
+entries.</P
+><P
+><TT
+CLASS="literal"
+>runfile</TT
+>:
+The name of the file that Visual Studio 7 and later
+will run and debug.
+This appears as the value of the
+<TT
+CLASS="literal"
+>Output</TT
+>
+field in the resutling Visual Studio project file.
+If this is not specified,
+the default is the same as the specified
+<TT
+CLASS="literal"
+>buildtarget</TT
+>
+value.</P
+><P
+>Note that because <SPAN
+CLASS="application"
+>SCons</SPAN
+> always executes its build commands
+from the directory in which the <TT
+CLASS="filename"
+>SConstruct</TT
+> file is located,
+if you generate a project file in a different directory
+than the <TT
+CLASS="filename"
+>SConstruct</TT
+> directory,
+users will not be able to double-click
+on the file name in compilation error messages
+displayed in the Visual Studio console output window.
+This can be remedied by adding the
+Visual C/C++
+<TT
+CLASS="literal"
+>/FC</TT
+>
+compiler option to the <A
+HREF="a5025.html#cv-CCFLAGS"
+><CODE
+CLASS="envar"
+>$CCFLAGS</CODE
+></A
+>  variable
+so that the compiler will print
+the full path name of any
+files that cause compilation errors.</P
+><P
+>Example usage:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;barsrcs = ['bar.cpp'],
+barincs = ['bar.h'],
+barlocalincs = ['StdAfx.h']
+barresources = ['bar.rc','resource.h']
+barmisc = ['bar_readme.txt']
+
+dll = env.SharedLibrary(target = 'bar.dll',
+                        source = barsrcs)
+
+env.MSVSProject(target = 'Bar' + env['MSVSPROJECTSUFFIX'],
+                srcs = barsrcs,
+                incs = barincs,
+                localincs = barlocalincs,
+                resources = barresources,
+                misc = barmisc,
+                buildtarget = dll,
+                variant = 'Release')
+</PRE
+></DD
+><DT
+><A
+NAME="b-MSVSSolution"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>MSVSSolution()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.MSVSSolution()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;Builds a Microsoft Visual Studio solution file.</P
+><P
+>This builds a Visual Studio solution file,
+based on the version of Visual Studio that is configured
+(either the latest installed version,
+or the version specified by
+<A
+HREF="a5025.html#cv-MSVS_VERSION"
+><CODE
+CLASS="envar"
+>$MSVS_VERSION</CODE
+></A
+>
+in the construction environment).
+For Visual Studio 6, it will generate a
+<TT
+CLASS="filename"
+>.dsw</TT
+>
+file.
+For Visual Studio 7 (.NET), it will
+generate a
+<TT
+CLASS="filename"
+>.sln</TT
+>
+file.</P
+><P
+>The following values must be specified:</P
+><P
+><TT
+CLASS="literal"
+>target</TT
+>:
+The name of the target .dsw or .sln file.  The correct
+suffix for the version of Visual Studio must be used, but the value
+<A
+HREF="a5025.html#cv-MSVSSOLUTIONSUFFIX"
+><CODE
+CLASS="envar"
+>$MSVSSOLUTIONSUFFIX</CODE
+></A
+>
+will be defined to the correct value (see example below).</P
+><P
+><TT
+CLASS="literal"
+>variant</TT
+>:
+The name of this particular variant, or a list of variant
+names (the latter is only supported for MSVS 7 solutions). These are
+typically things like "Debug" or "Release", but really can be anything
+you want. For MSVS 7 they may also specify target platform, like this
+"Debug|Xbox". Default platform is Win32.</P
+><P
+><TT
+CLASS="literal"
+>projects</TT
+>:
+A list of project file names, or Project nodes returned by calls to the
+<CODE
+CLASS="function"
+>MSVSProject</CODE
+>
+Builder,
+to be placed into the solution file.
+It should be noted that these file names are NOT added to the $SOURCES
+environment variable in form of files, but rather as strings.   This
+is because they represent file names to be added to the solution file,
+not the source files used to build the solution file.</P
+><P
+>Example Usage:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;env.MSVSSolution(target = 'Bar' + env['MSVSSOLUTIONSUFFIX'],
+                 projects = ['bar' + env['MSVSPROJECTSUFFIX']],
+                 variant = 'Release')
+</PRE
+></DD
+><DT
+><A
+NAME="b-Object"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>Object()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.Object()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;A synonym for the
+<CODE
+CLASS="function"
+>StaticObject</CODE
+>
+builder method.
+</P
+></DD
+><DT
+><A
+NAME="b-Package"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>Package()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.Package()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;Builds software distribution packages.
+Packages consist of files to install and packaging information.
+The former may be specified with the <CODE
+CLASS="varname"
+>source</CODE
+> parameter and may be left out,
+in which case the <CODE
+CLASS="function"
+>FindInstalledFiles</CODE
+> function will collect
+all files that have an <CODE
+CLASS="function"
+>Install</CODE
+> or <CODE
+CLASS="function"
+>InstallAs</CODE
+> Builder attached.
+If the <CODE
+CLASS="varname"
+>target</CODE
+> is not specified
+it will be deduced from additional information given to this Builder.</P
+><P
+>The packaging information is specified
+with the help of construction variables documented below.
+This information is called a tag to stress that
+some of them can also be attached to files with the <CODE
+CLASS="function"
+>Tag</CODE
+> function.
+The mandatory ones will complain if they were not specified.
+They vary depending on chosen target packager.</P
+><P
+>The target packager may be selected with the "PACKAGETYPE" command line
+option or with the <CODE
+CLASS="envar"
+>$PACKAGETYPE</CODE
+> construction variable. Currently
+the following packagers available:</P
+><P
+> * msi - Microsoft Installer
+ * rpm - Redhat Package Manger
+ * ipkg - Itsy Package Management System
+ * tarbz2 - compressed tar
+ * targz - compressed tar
+ * zip - zip file
+ * src_tarbz2 - compressed tar source
+ * src_targz - compressed tar source
+ * src_zip - zip file source</P
+><P
+>An updated list is always available under the "package_type" option when
+running "scons --help" on a project that has packaging activated.
+</P
+><PRE
+CLASS="programlisting"
+>&#13;env = Environment(tools=['default', 'packaging'])
+env.Install('/bin/', 'my_program')
+env.Package( NAME           = 'foo',
+             VERSION        = '1.2.3',
+             PACKAGEVERSION = 0,
+             PACKAGETYPE    = 'rpm',
+             LICENSE        = 'gpl',
+             SUMMARY        = 'balalalalal',
+             DESCRIPTION    = 'this should be really really long',
+             X_RPM_GROUP    = 'Application/fu',
+             SOURCE_URL     = 'http://foo.org/foo-1.2.3.tar.gz'
+        )
+</PRE
+></DD
+><DT
+><A
+NAME="b-PCH"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>PCH()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.PCH()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;Builds a Microsoft Visual C++ precompiled header.
+Calling this builder method
+returns a list of two targets: the PCH as the first element, and the object
+file as the second element. Normally the object file is ignored.
+This builder method is only
+provided when Microsoft Visual C++ is being used as the compiler.
+The PCH builder method is generally used in
+conjuction with the PCH construction variable to force object files to use
+the precompiled header:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;env['PCH'] = env.PCH('StdAfx.cpp')[0]
+</PRE
+></DD
+><DT
+><A
+NAME="b-PDF"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>PDF()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.PDF()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;Builds a <TT
+CLASS="filename"
+>.pdf</TT
+> file
+from a <TT
+CLASS="filename"
+>.dvi</TT
+> input file
+(or, by extension, a <TT
+CLASS="filename"
+>.tex</TT
+>,
+<TT
+CLASS="filename"
+>.ltx</TT
+>,
+or
+<TT
+CLASS="filename"
+>.latex</TT
+> input file).
+The suffix specified by the <A
+HREF="a5025.html#cv-PDFSUFFIX"
+><CODE
+CLASS="envar"
+>$PDFSUFFIX</CODE
+></A
+> construction variable
+(<TT
+CLASS="filename"
+>.pdf</TT
+> by default)
+is added automatically to the target
+if it is not already present.  Example:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;# builds from aaa.tex
+env.PDF(target = 'aaa.pdf', source = 'aaa.tex')
+# builds bbb.pdf from bbb.dvi
+env.PDF(target = 'bbb', source = 'bbb.dvi')
+</PRE
+></DD
+><DT
+><A
+NAME="b-POInit"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>POInit()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.POInit()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;This builder belongs to <A
+HREF="a9600.html#t-msginit"
+><TT
+CLASS="literal"
+>msginit</TT
+></A
+> tool. The builder initializes missing
+<TT
+CLASS="literal"
+>PO</TT
+> file(s) if <A
+HREF="a5025.html#cv-POAUTOINIT"
+><CODE
+CLASS="envar"
+>$POAUTOINIT</CODE
+></A
+> is set.  If
+<A
+HREF="a5025.html#cv-POAUTOINIT"
+><CODE
+CLASS="envar"
+>$POAUTOINIT</CODE
+></A
+> is not set (default), <CODE
+CLASS="function"
+>POInit</CODE
+> prints instruction for
+user (that is supposed to be a translator), telling how the
+<TT
+CLASS="literal"
+>PO</TT
+> file should be initialized. In normal projects
+<SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>you should not use <CODE
+CLASS="function"
+>POInit</CODE
+> and use <A
+HREF="a8580.html#b-POUpdate"
+><CODE
+CLASS="function"
+>POUpdate</CODE
+></A
+>
+instead</I
+></SPAN
+>. <A
+HREF="a8580.html#b-POUpdate"
+><CODE
+CLASS="function"
+>POUpdate</CODE
+></A
+> chooses intelligently between
+<B
+CLASS="command"
+>msgmerge(1)</B
+> and <B
+CLASS="command"
+>msginit(1)</B
+>. <CODE
+CLASS="function"
+>POInit</CODE
+>
+always uses <B
+CLASS="command"
+>msginit(1)</B
+> and should be regarded as builder for
+special purposes or for temporary use (e.g. for quick, one time initialization
+of a bunch of <TT
+CLASS="literal"
+>PO</TT
+> files) or for tests.</P
+><P
+>Target nodes defined through <CODE
+CLASS="function"
+>POInit</CODE
+> are not built by default (they're
+<TT
+CLASS="literal"
+>Ignore</TT
+>d from <TT
+CLASS="literal"
+>'.'</TT
+> node) but are added to
+special <TT
+CLASS="literal"
+>Alias</TT
+> (<TT
+CLASS="literal"
+>'po-create'</TT
+> by default).
+The alias name may be changed through the <A
+HREF="a5025.html#cv-POCREATE_ALIAS"
+><CODE
+CLASS="envar"
+>$POCREATE_ALIAS</CODE
+></A
+>
+construction variable. All <TT
+CLASS="literal"
+>PO</TT
+> files defined through
+<CODE
+CLASS="function"
+>POInit</CODE
+> may be easily initialized by <B
+CLASS="command"
+>scons po-create</B
+>.</P
+><P
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>Example 1</I
+></SPAN
+>.
+Initialize <TT
+CLASS="filename"
+>en.po</TT
+> and <TT
+CLASS="filename"
+>pl.po</TT
+> from
+<TT
+CLASS="filename"
+>messages.pot</TT
+>:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;  # ...
+  env.POInit(['en', 'pl']) # messages.pot --&#62; [en.po, pl.po] 
+</PRE
+><P
+>&#13;<SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>Example 2</I
+></SPAN
+>.
+Initialize <TT
+CLASS="filename"
+>en.po</TT
+> and <TT
+CLASS="filename"
+>pl.po</TT
+> from
+<TT
+CLASS="filename"
+>foo.pot</TT
+>:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;  # ...
+  env.POInit(['en', 'pl'], ['foo']) # foo.pot --&#62; [en.po, pl.po] 
+</PRE
+><P
+>&#13;<SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>Example 3</I
+></SPAN
+>.
+Initialize <TT
+CLASS="filename"
+>en.po</TT
+> and <TT
+CLASS="filename"
+>pl.po</TT
+> from
+<TT
+CLASS="filename"
+>foo.pot</TT
+> but using <A
+HREF="a5025.html#cv-POTDOMAIN"
+><CODE
+CLASS="envar"
+>$POTDOMAIN</CODE
+></A
+> construction
+variable:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;  # ...
+  env.POInit(['en', 'pl'], POTDOMAIN='foo') # foo.pot --&#62; [en.po, pl.po] 
+</PRE
+><P
+>&#13;<SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>Example 4</I
+></SPAN
+>.
+Initialize <TT
+CLASS="literal"
+>PO</TT
+> files for languages defined in
+<TT
+CLASS="filename"
+>LINGUAS</TT
+> file. The files will be initialized from template
+<TT
+CLASS="filename"
+>messages.pot</TT
+>:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;  # ...
+  env.POInit(LINGUAS_FILE = 1) # needs 'LINGUAS' file
+</PRE
+><P
+>&#13;<SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>Example 5</I
+></SPAN
+>.
+Initialize <TT
+CLASS="filename"
+>en.po</TT
+> and <TT
+CLASS="filename"
+>pl.pl</TT
+>
+<TT
+CLASS="literal"
+>PO</TT
+> files plus files for languages defined in
+<TT
+CLASS="filename"
+>LINGUAS</TT
+> file. The files will be initialized from template
+<TT
+CLASS="filename"
+>messages.pot</TT
+>:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;  # ...
+  env.POInit(['en', 'pl'], LINGUAS_FILE = 1)
+</PRE
+><P
+>&#13;<SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>Example 6</I
+></SPAN
+>.
+You may preconfigure your environment first, and then initialize
+<TT
+CLASS="literal"
+>PO</TT
+> files:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;  # ...
+  env['POAUTOINIT'] = 1
+  env['LINGUAS_FILE'] = 1
+  env['POTDOMAIN'] = 'foo'
+  env.POInit()
+</PRE
+><P
+>&#13;which has same efect as:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;  # ...
+  env.POInit(POAUTOINIT = 1, LINGUAS_FILE = 1, POTDOMAIN = 'foo')
+</PRE
+></DD
+><DT
+><A
+NAME="b-PostScript"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>PostScript()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.PostScript()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;Builds a <TT
+CLASS="filename"
+>.ps</TT
+> file
+from a <TT
+CLASS="filename"
+>.dvi</TT
+> input file
+(or, by extension, a <TT
+CLASS="filename"
+>.tex</TT
+>,
+<TT
+CLASS="filename"
+>.ltx</TT
+>,
+or
+<TT
+CLASS="filename"
+>.latex</TT
+> input file).
+The suffix specified by the <A
+HREF="a5025.html#cv-PSSUFFIX"
+><CODE
+CLASS="envar"
+>$PSSUFFIX</CODE
+></A
+> construction variable
+(<TT
+CLASS="filename"
+>.ps</TT
+> by default)
+is added automatically to the target
+if it is not already present.  Example:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;# builds from aaa.tex
+env.PostScript(target = 'aaa.ps', source = 'aaa.tex')
+# builds bbb.ps from bbb.dvi
+env.PostScript(target = 'bbb', source = 'bbb.dvi')
+</PRE
+></DD
+><DT
+><A
+NAME="b-POTUpdate"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>POTUpdate()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.POTUpdate()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;The builder belongs to <A
+HREF="a9600.html#t-xgettext"
+><TT
+CLASS="literal"
+>xgettext</TT
+></A
+> tool. The builder updates target
+<TT
+CLASS="literal"
+>POT</TT
+> file if exists or creates one if it doesn't. The node is
+not built by default (i.e. it is <TT
+CLASS="literal"
+>Ignore</TT
+>d from
+<TT
+CLASS="literal"
+>'.'</TT
+>), but only on demand (i.e.  when given
+<TT
+CLASS="literal"
+>POT</TT
+> file is required or when special alias is invoked). This
+builder adds its targe node (<TT
+CLASS="filename"
+>messages.pot</TT
+>, say) to a
+special alias (<TT
+CLASS="literal"
+>pot-update</TT
+> by default, see
+<A
+HREF="a5025.html#cv-POTUPDATE_ALIAS"
+><CODE
+CLASS="envar"
+>$POTUPDATE_ALIAS</CODE
+></A
+>) so you can update/create them easily with
+<B
+CLASS="command"
+>scons pot-update</B
+>. The file is not written until there is no
+real change in internationalized messages (or in comments that enter
+<TT
+CLASS="literal"
+>POT</TT
+> file). </P
+><P
+><DIV
+CLASS="note"
+><P
+></P
+><TABLE
+CLASS="note"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/note.gif"
+HSPACE="5"
+ALT="Note"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>You may see <B
+CLASS="command"
+>xgettext(1)</B
+> being invoked by the
+<A
+HREF="a9600.html#t-xgettext"
+><TT
+CLASS="literal"
+>xgettext</TT
+></A
+> tool even if there is no real change in internationalized
+messages (so the <TT
+CLASS="literal"
+>POT</TT
+> file is not being updated).  This
+happens every time  a source file has changed. In such case we invoke
+<B
+CLASS="command"
+>xgettext(1)</B
+> and compare its output with the content of
+<TT
+CLASS="literal"
+>POT</TT
+> file to decide whether the file should be updated or
+not.</P
+></TD
+></TR
+></TABLE
+></DIV
+></P
+><P
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>Example 1.</I
+></SPAN
+>
+Let's create <TT
+CLASS="filename"
+>po/</TT
+> directory and place following
+<TT
+CLASS="filename"
+>SConstruct</TT
+> script there:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;  # SConstruct in 'po/' subdir
+  env = Environment( tools = ['default', 'xgettext'] )
+  env.POTUpdate(['foo'], ['../a.cpp', '../b.cpp'])
+  env.POTUpdate(['bar'], ['../c.cpp', '../d.cpp'])
+</PRE
+><P
+>      
+Then invoke scons few times:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;  user@host:$ scons             # Does not create foo.pot nor bar.pot
+  user@host:$ scons foo.pot     # Updates or creates foo.pot
+  user@host:$ scons pot-update  # Updates or creates foo.pot and bar.pot
+  user@host:$ scons -c          # Does not clean foo.pot nor bar.pot.
+</PRE
+><P
+>&#13;the results shall be as the comments above say.</P
+><P
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>Example 2.</I
+></SPAN
+>
+The <CODE
+CLASS="function"
+>POTUpdate</CODE
+> builder may be used with no target specified, in which
+case default target <TT
+CLASS="filename"
+>messages.pot</TT
+> will be used. The
+default target may also be overriden by setting <A
+HREF="a5025.html#cv-POTDOMAIN"
+><CODE
+CLASS="envar"
+>$POTDOMAIN</CODE
+></A
+> construction
+variable or providing it as an override to <CODE
+CLASS="function"
+>POTUpdate</CODE
+> builder:
+</P
+><PRE
+CLASS="programlisting"
+>    
+  # SConstruct script
+  env = Environment( tools = ['default', 'xgettext'] )
+  env['POTDOMAIN'] = "foo"
+  env.POTUpdate(source = ["a.cpp", "b.cpp"]) # Creates foo.pot ...
+  env.POTUpdate(POTDOMAIN = "bar", source = ["c.cpp", "d.cpp"]) # and bar.pot
+</PRE
+><P
+>&#13;<SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>Example 3.</I
+></SPAN
+>
+The sources may be specified within separate file, for example
+<TT
+CLASS="filename"
+>POTFILES.in</TT
+>:
+</P
+><PRE
+CLASS="programlisting"
+>      
+  # POTFILES.in in 'po/' subdirectory
+  ../a.cpp
+  ../b.cpp
+  # end of file
+</PRE
+><P
+>    
+The name of the file (<TT
+CLASS="filename"
+>POTFILES.in</TT
+>) containing the list of
+sources is provided via <A
+HREF="a5025.html#cv-XGETTEXTFROM"
+><CODE
+CLASS="envar"
+>$XGETTEXTFROM</CODE
+></A
+>:
+</P
+><PRE
+CLASS="programlisting"
+>      
+  # SConstruct file in 'po/' subdirectory
+  env = Environment( tools = ['default', 'xgettext'] )
+  env.POTUpdate(XGETTEXTFROM = 'POTFILES.in')
+</PRE
+><P
+>    </P
+><P
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>Example 4.</I
+></SPAN
+>
+You may use <A
+HREF="a5025.html#cv-XGETTEXTPATH"
+><CODE
+CLASS="envar"
+>$XGETTEXTPATH</CODE
+></A
+> to define source search path. Assume, for
+example, that you have files <TT
+CLASS="filename"
+>a.cpp</TT
+>,
+<TT
+CLASS="filename"
+>b.cpp</TT
+>, <TT
+CLASS="filename"
+>po/SConstruct</TT
+>,
+<TT
+CLASS="filename"
+>po/POTFILES.in</TT
+>. Then your <TT
+CLASS="literal"
+>POT</TT
+>-related
+files could look as below:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;  # POTFILES.in in 'po/' subdirectory
+  a.cpp
+  b.cpp
+  # end of file
+</PRE
+><P
+>&#13;</P
+><PRE
+CLASS="programlisting"
+>&#13;  # SConstruct file in 'po/' subdirectory
+  env = Environment( tools = ['default', 'xgettext'] )
+  env.POTUpdate(XGETTEXTFROM = 'POTFILES.in', XGETTEXTPATH='../')
+</PRE
+><P
+>&#13;<SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>Example 5.</I
+></SPAN
+>
+Multiple search directories may be defined within a list, i.e.
+<TT
+CLASS="literal"
+>XGETTEXTPATH = ['dir1', 'dir2', ...]</TT
+>. The order in the list
+determines the search order of source files. The path to the first file found
+is used.</P
+><P
+>Let's create <TT
+CLASS="filename"
+>0/1/po/SConstruct</TT
+> script:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;  # SConstruct file in '0/1/po/' subdirectory
+  env = Environment( tools = ['default', 'xgettext'] )
+  env.POTUpdate(XGETTEXTFROM = 'POTFILES.in', XGETTEXTPATH=['../', '../../'])
+</PRE
+><P
+>&#13;and <TT
+CLASS="filename"
+>0/1/po/POTFILES.in</TT
+>:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;  # POTFILES.in in '0/1/po/' subdirectory
+  a.cpp
+  # end of file
+</PRE
+><P
+>&#13;Write two <TT
+CLASS="filename"
+>*.cpp</TT
+> files, the first one is
+<TT
+CLASS="filename"
+>0/a.cpp</TT
+>:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;  /* 0/a.cpp */
+  gettext("Hello from ../../a.cpp")
+</PRE
+><P
+>&#13;and the second is <TT
+CLASS="filename"
+>0/1/a.cpp</TT
+>:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;  /* 0/1/a.cpp */
+  gettext("Hello from ../a.cpp")
+</PRE
+><P
+>&#13;then run scons. You'll obtain <TT
+CLASS="literal"
+>0/1/po/messages.pot</TT
+> with the
+message <TT
+CLASS="literal"
+>"Hello from ../a.cpp"</TT
+>. When you reverse order in
+<CODE
+CLASS="varname"
+>$XGETTEXTFOM</CODE
+>, i.e. when you write SConscript as
+</P
+><PRE
+CLASS="programlisting"
+>&#13;  # SConstruct file in '0/1/po/' subdirectory
+  env = Environment( tools = ['default', 'xgettext'] )
+  env.POTUpdate(XGETTEXTFROM = 'POTFILES.in', XGETTEXTPATH=['../../', '../'])
+</PRE
+><P
+> then the <TT
+CLASS="filename"
+>messages.pot</TT
+> will contain
+<TT
+CLASS="literal"
+>msgid "Hello from ../../a.cpp"</TT
+> line and not 
+<TT
+CLASS="literal"
+>msgid "Hello from ../a.cpp"</TT
+>.
+</P
+></DD
+><DT
+><A
+NAME="b-POUpdate"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>POUpdate()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.POUpdate()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;The builder belongs to <A
+HREF="a9600.html#t-msgmerge"
+><TT
+CLASS="literal"
+>msgmerge</TT
+></A
+> tool. The builder updates
+<TT
+CLASS="literal"
+>PO</TT
+> files with <B
+CLASS="command"
+>msgmerge(1)</B
+>, or initializes
+missing <TT
+CLASS="literal"
+>PO</TT
+> files as described in documentation of
+<A
+HREF="a9600.html#t-msginit"
+><TT
+CLASS="literal"
+>msginit</TT
+></A
+> tool and <A
+HREF="a8580.html#b-POInit"
+><CODE
+CLASS="function"
+>POInit</CODE
+></A
+> builder (see also
+<A
+HREF="a5025.html#cv-POAUTOINIT"
+><CODE
+CLASS="envar"
+>$POAUTOINIT</CODE
+></A
+>). Note, that <CODE
+CLASS="function"
+>POUpdate</CODE
+> <SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>does not add its
+targets to <TT
+CLASS="literal"
+>po-create</TT
+> alias</I
+></SPAN
+> as <A
+HREF="a8580.html#b-POInit"
+><CODE
+CLASS="function"
+>POInit</CODE
+></A
+>
+does.</P
+><P
+>Target nodes defined through <CODE
+CLASS="function"
+>POUpdate</CODE
+> are not built by default
+(they're <TT
+CLASS="literal"
+>Ignore</TT
+>d from <TT
+CLASS="literal"
+>'.'</TT
+> node). Instead,
+they are added automatically to special <TT
+CLASS="literal"
+>Alias</TT
+> 
+(<TT
+CLASS="literal"
+>'po-update'</TT
+> by default). The alias name may be changed
+through the <A
+HREF="a5025.html#cv-POUPDATE_ALIAS"
+><CODE
+CLASS="envar"
+>$POUPDATE_ALIAS</CODE
+></A
+> construction variable.  You can easilly 
+update <TT
+CLASS="literal"
+>PO</TT
+> files in your project by <B
+CLASS="command"
+>scons
+po-update</B
+>.</P
+><P
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>Example 1.</I
+></SPAN
+>
+Update <TT
+CLASS="filename"
+>en.po</TT
+> and <TT
+CLASS="filename"
+>pl.po</TT
+> from
+<TT
+CLASS="filename"
+>messages.pot</TT
+> template (see also <A
+HREF="a5025.html#cv-POTDOMAIN"
+><CODE
+CLASS="envar"
+>$POTDOMAIN</CODE
+></A
+>),
+assuming that the later one exists or there is rule to build it (see
+<A
+HREF="a8580.html#b-POTUpdate"
+><CODE
+CLASS="function"
+>POTUpdate</CODE
+></A
+>):
+</P
+><PRE
+CLASS="programlisting"
+>&#13;  # ...
+  env.POUpdate(['en','pl']) # messages.pot --&#62; [en.po, pl.po]
+</PRE
+><P
+>&#13;<SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>Example 2.</I
+></SPAN
+>
+Update <TT
+CLASS="filename"
+>en.po</TT
+> and <TT
+CLASS="filename"
+>pl.po</TT
+> from
+<TT
+CLASS="filename"
+>foo.pot</TT
+> template:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;  # ...
+  env.POUpdate(['en', 'pl'], ['foo']) # foo.pot --&#62;  [en.po, pl.pl]
+</PRE
+><P
+>&#13;<SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>Example 3.</I
+></SPAN
+>
+Update <TT
+CLASS="filename"
+>en.po</TT
+> and <TT
+CLASS="filename"
+>pl.po</TT
+> from
+<TT
+CLASS="filename"
+>foo.pot</TT
+> (another version):
+</P
+><PRE
+CLASS="programlisting"
+>&#13;  # ...
+  env.POUpdate(['en', 'pl'], POTDOMAIN='foo') # foo.pot -- &#62; [en.po, pl.pl]
+</PRE
+><P
+>&#13;<SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>Example 4.</I
+></SPAN
+>
+Update files for languages defined in <TT
+CLASS="filename"
+>LINGUAS</TT
+> file. The
+files are updated from <TT
+CLASS="filename"
+>messages.pot</TT
+> template:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;  # ...
+  env.POUpdate(LINGUAS_FILE = 1) # needs 'LINGUAS' file
+</PRE
+><P
+>&#13;<SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>Example 5.</I
+></SPAN
+>
+Same as above, but update from <TT
+CLASS="filename"
+>foo.pot</TT
+> template:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;  # ...
+  env.POUpdate(LINGUAS_FILE = 1, source = ['foo'])
+</PRE
+><P
+>&#13;<SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>Example 6.</I
+></SPAN
+>
+Update <TT
+CLASS="filename"
+>en.po</TT
+> and <TT
+CLASS="filename"
+>pl.po</TT
+> plus files for
+languages defined in <TT
+CLASS="filename"
+>LINGUAS</TT
+> file. The files are updated
+from <TT
+CLASS="filename"
+>messages.pot</TT
+> template:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;  # produce 'en.po', 'pl.po' + files defined in 'LINGUAS':
+  env.POUpdate(['en', 'pl' ], LINGUAS_FILE = 1) 
+</PRE
+><P
+>&#13;<SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>Example 7.</I
+></SPAN
+>
+Use <A
+HREF="a5025.html#cv-POAUTOINIT"
+><CODE
+CLASS="envar"
+>$POAUTOINIT</CODE
+></A
+> to automatically initialize <TT
+CLASS="literal"
+>PO</TT
+> file
+if it doesn't exist:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;  # ...
+  env.POUpdate(LINGUAS_FILE = 1, POAUTOINIT = 1)
+</PRE
+><P
+>&#13;<SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>Example 8.</I
+></SPAN
+>
+Update <TT
+CLASS="literal"
+>PO</TT
+> files for languages defined in
+<TT
+CLASS="filename"
+>LINGUAS</TT
+> file. The files are updated from
+<TT
+CLASS="filename"
+>foo.pot</TT
+> template. All necessary settings are
+pre-configured via environment.
+</P
+><PRE
+CLASS="programlisting"
+>&#13;  # ...
+  env['POAUTOINIT'] = 1
+  env['LINGUAS_FILE'] = 1
+  env['POTDOMAIN'] = 'foo'
+  env.POUpdate()
+</PRE
+><P
+>&#13;</P
+></DD
+><DT
+><A
+NAME="b-Program"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>Program()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.Program()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;Builds an executable given one or more object files
+or C, C++, D, or Fortran source files.
+If any C, C++, D or Fortran source files are specified,
+then they will be automatically
+compiled to object files using the
+<CODE
+CLASS="function"
+>Object</CODE
+>
+builder method;
+see that builder method's description for
+a list of legal source file suffixes
+and how they are interpreted.
+The target executable file prefix
+(specified by the <A
+HREF="a5025.html#cv-PROGPREFIX"
+><CODE
+CLASS="envar"
+>$PROGPREFIX</CODE
+></A
+> construction variable; nothing by default)
+and suffix
+(specified by the <A
+HREF="a5025.html#cv-PROGSUFFIX"
+><CODE
+CLASS="envar"
+>$PROGSUFFIX</CODE
+></A
+> construction variable;
+by default, <TT
+CLASS="filename"
+>.exe</TT
+> on Windows systems,
+nothing on POSIX systems)
+are automatically added to the target if not already present.
+Example:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;env.Program(target = 'foo', source = ['foo.o', 'bar.c', 'baz.f'])
+</PRE
+></DD
+><DT
+><A
+NAME="b-RES"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>RES()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.RES()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;Builds a Microsoft Visual C++ resource file.
+This builder method is only provided
+when Microsoft Visual C++ or MinGW is being used as the compiler. The
+<TT
+CLASS="filename"
+>.res</TT
+>
+(or
+<TT
+CLASS="filename"
+>.o</TT
+>
+for MinGW) suffix is added to the target name if no other suffix is given.
+The source
+file is scanned for implicit dependencies as though it were a C file.
+Example:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;env.RES('resource.rc')
+</PRE
+></DD
+><DT
+><A
+NAME="b-RMIC"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>RMIC()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.RMIC()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;Builds stub and skeleton class files
+for remote objects
+from Java <TT
+CLASS="filename"
+>.class</TT
+> files.
+The target is a directory
+relative to which the stub
+and skeleton class files will be written.
+The source can be the names of <TT
+CLASS="filename"
+>.class</TT
+> files,
+or the objects return from the
+<CODE
+CLASS="function"
+>Java</CODE
+>
+builder method.</P
+><P
+>If the construction variable
+<A
+HREF="a5025.html#cv-JAVACLASSDIR"
+><CODE
+CLASS="envar"
+>$JAVACLASSDIR</CODE
+></A
+>
+is set, either in the environment
+or in the call to the
+<CODE
+CLASS="function"
+>RMIC</CODE
+>
+builder method itself,
+then the value of the variable
+will be stripped from the
+beginning of any <TT
+CLASS="filename"
+>.class </TT
+>
+file names.
+</P
+><PRE
+CLASS="programlisting"
+>&#13;classes = env.Java(target = 'classdir', source = 'src')
+env.RMIC(target = 'outdir1', source = classes)
+
+env.RMIC(target = 'outdir2',
+         source = ['package/foo.class', 'package/bar.class'])
+
+env.RMIC(target = 'outdir3',
+         source = ['classes/foo.class', 'classes/bar.class'],
+         JAVACLASSDIR = 'classes')
+</PRE
+></DD
+><DT
+><A
+NAME="b-RPCGenClient"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>RPCGenClient()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.RPCGenClient()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;Generates an RPC client stub (<TT
+CLASS="filename"
+>_clnt.c</TT
+>) file
+from a specified RPC (<TT
+CLASS="filename"
+>.x</TT
+>) source file.
+Because rpcgen only builds output files
+in the local directory,
+the command will be executed
+in the source file's directory by default.
+</P
+><PRE
+CLASS="programlisting"
+>&#13;# Builds src/rpcif_clnt.c
+env.RPCGenClient('src/rpcif.x')
+</PRE
+></DD
+><DT
+><A
+NAME="b-RPCGenHeader"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>RPCGenHeader()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.RPCGenHeader()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;Generates an RPC header (<TT
+CLASS="filename"
+>.h</TT
+>) file
+from a specified RPC (<TT
+CLASS="filename"
+>.x</TT
+>) source file.
+Because rpcgen only builds output files
+in the local directory,
+the command will be executed
+in the source file's directory by default.
+</P
+><PRE
+CLASS="programlisting"
+>&#13;# Builds src/rpcif.h
+env.RPCGenHeader('src/rpcif.x')
+</PRE
+></DD
+><DT
+><A
+NAME="b-RPCGenService"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>RPCGenService()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.RPCGenService()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;Generates an RPC server-skeleton (<TT
+CLASS="filename"
+>_svc.c</TT
+>) file
+from a specified RPC (<TT
+CLASS="filename"
+>.x</TT
+>) source file.
+Because rpcgen only builds output files
+in the local directory,
+the command will be executed
+in the source file's directory by default.
+</P
+><PRE
+CLASS="programlisting"
+>&#13;# Builds src/rpcif_svc.c
+env.RPCGenClient('src/rpcif.x')
+</PRE
+></DD
+><DT
+><A
+NAME="b-RPCGenXDR"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>RPCGenXDR()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.RPCGenXDR()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;Generates an RPC XDR routine (<TT
+CLASS="filename"
+>_xdr.c</TT
+>) file
+from a specified RPC (<TT
+CLASS="filename"
+>.x</TT
+>) source file.
+Because rpcgen only builds output files
+in the local directory,
+the command will be executed
+in the source file's directory by default.
+</P
+><PRE
+CLASS="programlisting"
+>&#13;# Builds src/rpcif_xdr.c
+env.RPCGenClient('src/rpcif.x')
+</PRE
+></DD
+><DT
+><A
+NAME="b-SharedLibrary"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>SharedLibrary()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.SharedLibrary()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;Builds a shared library
+(<TT
+CLASS="filename"
+>.so</TT
+> on a POSIX system,
+<TT
+CLASS="filename"
+>.dll</TT
+> on Windows)
+given one or more object files
+or C, C++, D or Fortran source files.
+If any source files are given,
+then they will be automatically
+compiled to object files.
+The static library prefix and suffix (if any)
+are automatically added to the target.
+The target library file prefix
+(specified by the <A
+HREF="a5025.html#cv-SHLIBPREFIX"
+><CODE
+CLASS="envar"
+>$SHLIBPREFIX</CODE
+></A
+> construction variable;
+by default, <TT
+CLASS="filename"
+>lib</TT
+> on POSIX systems,
+nothing on Windows systems)
+and suffix
+(specified by the <A
+HREF="a5025.html#cv-SHLIBSUFFIX"
+><CODE
+CLASS="envar"
+>$SHLIBSUFFIX</CODE
+></A
+> construction variable;
+by default, <TT
+CLASS="filename"
+>.dll</TT
+> on Windows systems,
+<TT
+CLASS="filename"
+>.so</TT
+> on POSIX systems)
+are automatically added to the target if not already present.
+Example:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;env.SharedLibrary(target = 'bar', source = ['bar.c', 'foo.o'])
+</PRE
+><P
+>&#13;On Windows systems, the
+<CODE
+CLASS="function"
+>SharedLibrary</CODE
+>
+builder method will always build an import
+(<TT
+CLASS="filename"
+>.lib</TT
+>) library
+in addition to the shared (<TT
+CLASS="filename"
+>.dll</TT
+>) library,
+adding a <TT
+CLASS="filename"
+>.lib</TT
+> library with the same basename
+if there is not already a <TT
+CLASS="filename"
+>.lib</TT
+> file explicitly
+listed in the targets.</P
+><P
+>Any object files listed in the
+<TT
+CLASS="literal"
+>source</TT
+>
+must have been built for a shared library
+(that is, using the
+<CODE
+CLASS="function"
+>SharedObject</CODE
+>
+builder method).
+<TT
+CLASS="filename"
+>scons</TT
+>
+will raise an error if there is any mismatch.</P
+><P
+>On some platforms, there is a distinction between a shared library
+(loaded automatically by the system to resolve external references)
+and a loadable module (explicitly loaded by user action).
+For maximum portability, use the <CODE
+CLASS="function"
+>LoadableModule</CODE
+> builder for the latter.</P
+><P
+>On Windows systems, specifying
+<TT
+CLASS="literal"
+>register=1</TT
+>
+will cause the <TT
+CLASS="filename"
+>.dll</TT
+> to be
+registered after it is built using REGSVR32.
+The command that is run
+("regsvr32" by default) is determined by <A
+HREF="a5025.html#cv-REGSVR"
+><CODE
+CLASS="envar"
+>$REGSVR</CODE
+></A
+> construction
+variable, and the flags passed are determined by <A
+HREF="a5025.html#cv-REGSVRFLAGS"
+><CODE
+CLASS="envar"
+>$REGSVRFLAGS</CODE
+></A
+>.  By
+default, <A
+HREF="a5025.html#cv-REGSVRFLAGS"
+><CODE
+CLASS="envar"
+>$REGSVRFLAGS</CODE
+></A
+> includes the <CODE
+CLASS="option"
+>/s</CODE
+> option,
+to prevent dialogs from popping
+up and requiring user attention when it is run.  If you change
+<A
+HREF="a5025.html#cv-REGSVRFLAGS"
+><CODE
+CLASS="envar"
+>$REGSVRFLAGS</CODE
+></A
+>, be sure to include the <CODE
+CLASS="option"
+>/s</CODE
+> option.
+For example,
+</P
+><PRE
+CLASS="programlisting"
+>&#13;env.SharedLibrary(target = 'bar',
+                  source = ['bar.cxx', 'foo.obj'],
+                  register=1)
+</PRE
+><P
+>&#13;will register <TT
+CLASS="filename"
+>bar.dll</TT
+> as a COM object
+when it is done linking it.
+</P
+></DD
+><DT
+><A
+NAME="b-SharedObject"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>SharedObject()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.SharedObject()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;Builds an object file for
+inclusion in a shared library.
+Source files must have one of the same set of extensions
+specified above for the
+<CODE
+CLASS="function"
+>StaticObject</CODE
+>
+builder method.
+On some platforms building a shared object requires additional
+compiler option
+(e.g. <CODE
+CLASS="option"
+>-fPIC</CODE
+> for gcc)
+in addition to those needed to build a
+normal (static) object, but on some platforms there is no difference between a
+shared object and a normal (static) one. When there is a difference, SCons
+will only allow shared objects to be linked into a shared library, and will
+use a different suffix for shared objects. On platforms where there is no
+difference, SCons will allow both normal (static)
+and shared objects to be linked into a
+shared library, and will use the same suffix for shared and normal
+(static) objects.
+The target object file prefix
+(specified by the <A
+HREF="a5025.html#cv-SHOBJPREFIX"
+><CODE
+CLASS="envar"
+>$SHOBJPREFIX</CODE
+></A
+> construction variable;
+by default, the same as <A
+HREF="a5025.html#cv-OBJPREFIX"
+><CODE
+CLASS="envar"
+>$OBJPREFIX</CODE
+></A
+>)
+and suffix
+(specified by the <A
+HREF="a5025.html#cv-SHOBJSUFFIX"
+><CODE
+CLASS="envar"
+>$SHOBJSUFFIX</CODE
+></A
+> construction variable)
+are automatically added to the target if not already present.
+Examples:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;env.SharedObject(target = 'ddd', source = 'ddd.c')
+env.SharedObject(target = 'eee.o', source = 'eee.cpp')
+env.SharedObject(target = 'fff.obj', source = 'fff.for')
+</PRE
+><P
+>&#13;Note that the source files will be scanned
+according to the suffix mappings in the
+<TT
+CLASS="literal"
+>SourceFileScanner</TT
+>
+object.
+See the section "Scanner Objects,"
+below, for more information.
+</P
+></DD
+><DT
+><A
+NAME="b-StaticLibrary"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>StaticLibrary()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.StaticLibrary()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;Builds a static library given one or more object files
+or C, C++, D or Fortran source files.
+If any source files are given,
+then they will be automatically
+compiled to object files.
+The static library prefix and suffix (if any)
+are automatically added to the target.
+The target library file prefix
+(specified by the <A
+HREF="a5025.html#cv-LIBPREFIX"
+><CODE
+CLASS="envar"
+>$LIBPREFIX</CODE
+></A
+> construction variable;
+by default, <TT
+CLASS="filename"
+>lib</TT
+> on POSIX systems,
+nothing on Windows systems)
+and suffix
+(specified by the <A
+HREF="a5025.html#cv-LIBSUFFIX"
+><CODE
+CLASS="envar"
+>$LIBSUFFIX</CODE
+></A
+> construction variable;
+by default, <TT
+CLASS="filename"
+>.lib</TT
+> on Windows systems,
+<TT
+CLASS="filename"
+>.a</TT
+> on POSIX systems)
+are automatically added to the target if not already present.
+Example:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;env.StaticLibrary(target = 'bar', source = ['bar.c', 'foo.o'])
+</PRE
+><P
+>&#13;Any object files listed in the
+<TT
+CLASS="literal"
+>source</TT
+>
+must have been built for a static library
+(that is, using the
+<CODE
+CLASS="function"
+>StaticObject</CODE
+>
+builder method).
+<TT
+CLASS="filename"
+>scons</TT
+>
+will raise an error if there is any mismatch.
+</P
+></DD
+><DT
+><A
+NAME="b-StaticObject"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>StaticObject()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.StaticObject()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;Builds a static object file
+from one or more C, C++, D, or Fortran source files.
+Source files must have one of the following extensions:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;  .asm    assembly language file
+  .ASM    assembly language file
+  .c      C file
+  .C      Windows:  C file
+          POSIX:  C++ file
+  .cc     C++ file
+  .cpp    C++ file
+  .cxx    C++ file
+  .cxx    C++ file
+  .c++    C++ file
+  .C++    C++ file
+  .d      D file
+  .f      Fortran file
+  .F      Windows:  Fortran file
+          POSIX:  Fortran file + C pre-processor
+  .for    Fortran file
+  .FOR    Fortran file
+  .fpp    Fortran file + C pre-processor
+  .FPP    Fortran file + C pre-processor
+  .m      Object C file
+  .mm     Object C++ file
+  .s      assembly language file
+  .S      Windows:  assembly language file
+          ARM: CodeSourcery Sourcery Lite
+  .sx     assembly language file + C pre-processor
+          POSIX:  assembly language file + C pre-processor
+  .spp    assembly language file + C pre-processor
+  .SPP    assembly language file + C pre-processor
+</PRE
+><P
+>&#13;The target object file prefix
+(specified by the <A
+HREF="a5025.html#cv-OBJPREFIX"
+><CODE
+CLASS="envar"
+>$OBJPREFIX</CODE
+></A
+> construction variable; nothing by default)
+and suffix
+(specified by the <A
+HREF="a5025.html#cv-OBJSUFFIX"
+><CODE
+CLASS="envar"
+>$OBJSUFFIX</CODE
+></A
+> construction variable;
+<TT
+CLASS="filename"
+>.obj</TT
+> on Windows systems,
+<TT
+CLASS="filename"
+>.o</TT
+> on POSIX systems)
+are automatically added to the target if not already present.
+Examples:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;env.StaticObject(target = 'aaa', source = 'aaa.c')
+env.StaticObject(target = 'bbb.o', source = 'bbb.c++')
+env.StaticObject(target = 'ccc.obj', source = 'ccc.f')
+</PRE
+><P
+>&#13;Note that the source files will be scanned
+according to the suffix mappings in
+<TT
+CLASS="literal"
+>SourceFileScanner</TT
+>
+object.
+See the section "Scanner Objects,"
+below, for more information.
+</P
+></DD
+><DT
+><A
+NAME="b-Substfile"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>Substfile()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.Substfile()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;The <CODE
+CLASS="function"
+>Substfile</CODE
+> builder generates a single text file
+by concatenating the source files.
+Nested lists of sources are flattened. 
+<CODE
+CLASS="envar"
+>$LINESEPARATOR</CODE
+> is used to separate the source files;
+see the description of <CODE
+CLASS="function"
+>Textfile</CODE
+> for details.</P
+><P
+>If a single source file is present with an <TT
+CLASS="filename"
+>.in</TT
+> suffix,
+the suffix is stripped and the remainder is used as the default target name.</P
+><P
+>The prefix and suffix specified by the <CODE
+CLASS="envar"
+>$SUBSTFILEPREFIX</CODE
+>
+and <CODE
+CLASS="envar"
+>$SUBSTFILESUFFIX</CODE
+> construction variables
+(the null string by default in both cases)
+are automatically added to the target if they are not already present.</P
+><P
+>If a construction variable named <CODE
+CLASS="envar"
+>$SUBST_DICT</CODE
+> is present,
+it may be either a Python dictionary or a sequence of (key,value) tuples.
+If the former,
+the dictionary is converted into a list of tuples in an arbitrary order,
+so if one key is a prefix of another key
+or if one substitution could be further expanded by another subsitition,
+it is unpredictible whether the expansion will occur.</P
+><P
+>Any occurences in the source of a key
+are replaced by the corresponding value,
+which may be a Python callable function or a string.
+If a value is a function,
+it is first called (with no arguments) to produce a string.
+The string is <SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>subst</I
+></SPAN
+>-expanded
+and the result replaces the key.
+</P
+><PRE
+CLASS="programlisting"
+>&#13;env = Environment(tools = ['default', 'textfile'])
+
+env['prefix'] = '/usr/bin'
+script_dict = {'@prefix@': '/bin', @exec_prefix@: '$prefix'}
+env.Substfile('script.in', SUBST_DICT = script_dict)
+
+conf_dict = {'%VERSION%': '1.2.3', '%BASE%': 'MyProg'}
+env.Substfile('config.h.in', conf_dict, SUBST_DICT = conf_dict)
+
+# UNPREDICTABLE - one key is a prefix of another
+bad_foo = {'$foo': '$foo', '$foobar': '$foobar'}
+env.Substfile('foo.in', SUBST_DICT = bad_foo)
+
+# PREDICTABLE - keys are applied longest first
+good_foo = [('$foobar', '$foobar'), ('$foo', '$foo')]
+env.Substfile('foo.in', SUBST_DICT = good_foo)
+
+# UNPREDICTABLE - one substitution could be futher expanded
+bad_bar = {'@bar@': '@soap@', '@soap@': 'lye'}
+env.Substfile('bar.in', SUBST_DICT = bad_bar)
+
+# PREDICTABLE - substitutions are expanded in order
+good_bar = (('@bar@', '@soap@'), ('@soap@', 'lye'))
+env.Substfile('bar.in', SUBST_DICT = good_bar)
+
+# the SUBST_DICT may be in common (and not an override)
+substutions = {}
+subst = Environment(tools = ['textfile'], SUBST_DICT = substitutions)
+substitutions['@foo@'] = 'foo'
+subst['SUBST_DICT']['@bar@'] = 'bar'
+subst.Substfile('pgm1.c', [Value('#include "@foo@.h"'),
+                           Value('#include "@bar@.h"'),
+                           "common.in",
+                           "pgm1.in"
+                          ])
+subst.Substfile('pgm2.c', [Value('#include "@foo@.h"'),
+                           Value('#include "@bar@.h"'),
+                           "common.in",
+                           "pgm2.in"
+                          ])
+
+</PRE
+></DD
+><DT
+><A
+NAME="b-Tar"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>Tar()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.Tar()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;Builds a tar archive of the specified files
+and/or directories.
+Unlike most builder methods,
+the
+<CODE
+CLASS="function"
+>Tar</CODE
+>
+builder method may be called multiple times
+for a given target;
+each additional call
+adds to the list of entries
+that will be built into the archive.
+Any source directories will
+be scanned for changes to
+any on-disk files,
+regardless of whether or not
+<TT
+CLASS="filename"
+>scons</TT
+>
+knows about them from other Builder or function calls.
+</P
+><PRE
+CLASS="programlisting"
+>&#13;env.Tar('src.tar', 'src')
+
+# Create the stuff.tar file.
+env.Tar('stuff', ['subdir1', 'subdir2'])
+# Also add "another" to the stuff.tar file.
+env.Tar('stuff', 'another')
+
+# Set TARFLAGS to create a gzip-filtered archive.
+env = Environment(TARFLAGS = '-c -z')
+env.Tar('foo.tar.gz', 'foo')
+
+# Also set the suffix to .tgz.
+env = Environment(TARFLAGS = '-c -z',
+                  TARSUFFIX = '.tgz')
+env.Tar('foo')
+</PRE
+></DD
+><DT
+><A
+NAME="b-Textfile"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>Textfile()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.Textfile()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;The <CODE
+CLASS="function"
+>Textfile</CODE
+> builder generates a single text file.
+The source strings constitute the lines;
+nested lists of sources are flattened. 
+<CODE
+CLASS="envar"
+>$LINESEPARATOR</CODE
+> is used to separate the strings.</P
+><P
+>If present, the <CODE
+CLASS="envar"
+>$SUBST_DICT</CODE
+> construction variable
+is used to modify the strings before they are written;
+see the <CODE
+CLASS="function"
+>Substfile</CODE
+> description for details.</P
+><P
+>The prefix and suffix specified by the <CODE
+CLASS="envar"
+>$TEXTFILEPREFIX</CODE
+>
+and <CODE
+CLASS="envar"
+>$TEXTFILESUFFIX</CODE
+> construction variables
+(the null string and <TT
+CLASS="filename"
+>.txt</TT
+> by default, respectively)
+are automatically added to the target if they are not already present.
+Examples:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;# builds/writes foo.txt
+env.Textfile(target = 'foo.txt', source = ['Goethe', 42, 'Schiller'])
+
+# builds/writes bar.txt
+env.Textfile(target = 'bar',
+             source = ['lalala', 'tanteratei'],
+             LINESEPARATOR='|*')
+
+# nested lists are flattened automatically
+env.Textfile(target = 'blob', 
+             source = ['lalala', ['Goethe', 42 'Schiller'], 'tanteratei'])
+
+# files may be used as input by wraping them in File()
+env.Textfile(target = 'concat',  # concatenate files with a marker between
+             source = [File('concat1'), File('concat2')],
+             LINESEPARATOR = '====================\n')
+
+Results are:
+foo.txt
+  ....8&#60;----
+  Goethe
+  42
+  Schiller
+  ....8&#60;---- (no linefeed at the end)
+
+bar.txt:
+  ....8&#60;----
+  lalala|*tanteratei
+  ....8&#60;---- (no linefeed at the end)
+
+blob.txt
+  ....8&#60;----
+  lalala
+  Goethe
+  42
+  Schiller
+  tanteratei
+  ....8&#60;---- (no linefeed at the end)
+</PRE
+></DD
+><DT
+><A
+NAME="b-Translate"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>Translate()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.Translate()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;This pseudo-builder belongs to <A
+HREF="a9600.html#t-gettext"
+><TT
+CLASS="literal"
+>gettext</TT
+></A
+> toolset. The builder extracts
+internationalized messages from source files, updates <TT
+CLASS="literal"
+>POT</TT
+>
+template (if necessary) and then updates <TT
+CLASS="literal"
+>PO</TT
+> translations (if
+necessary). If <A
+HREF="a5025.html#cv-POAUTOINIT"
+><CODE
+CLASS="envar"
+>$POAUTOINIT</CODE
+></A
+> is set, missing <TT
+CLASS="literal"
+>PO</TT
+> files
+will be automatically created (i.e. without translator person intervention).
+The variables <A
+HREF="a5025.html#cv-LINGUAS_FILE"
+><CODE
+CLASS="envar"
+>$LINGUAS_FILE</CODE
+></A
+> and <A
+HREF="a5025.html#cv-POTDOMAIN"
+><CODE
+CLASS="envar"
+>$POTDOMAIN</CODE
+></A
+> are taken into
+acount too. All other construction variables used by <A
+HREF="a8580.html#b-POTUpdate"
+><CODE
+CLASS="function"
+>POTUpdate</CODE
+></A
+>, and
+<A
+HREF="a8580.html#b-POUpdate"
+><CODE
+CLASS="function"
+>POUpdate</CODE
+></A
+> work here too.</P
+><P
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>Example 1</I
+></SPAN
+>.
+The simplest way is to specify input files and output languages inline in
+a SCons script when invoking <CODE
+CLASS="function"
+>Translate</CODE
+>
+</P
+><PRE
+CLASS="programlisting"
+>&#13;# SConscript in 'po/' directory
+env = Environment( tools = ["default", "gettext"] )
+env['POAUTOINIT'] = 1
+env.Translate(['en','pl'], ['../a.cpp','../b.cpp']) 
+</PRE
+><P
+>&#13;<SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>Example 2</I
+></SPAN
+>.
+If you wish, you may also stick to conventional style known from
+<SPAN
+CLASS="productname"
+>autotools</SPAN
+>, i.e. using
+<TT
+CLASS="filename"
+>POTFILES.in</TT
+> and <TT
+CLASS="filename"
+>LINGUAS</TT
+> files
+</P
+><PRE
+CLASS="programlisting"
+>&#13;# LINGUAS
+en pl 
+#end
+</PRE
+><P
+>&#13;</P
+><PRE
+CLASS="programlisting"
+>&#13;# POTFILES.in
+a.cpp
+b.cpp
+# end
+</PRE
+><P
+>&#13;</P
+><PRE
+CLASS="programlisting"
+>&#13;# SConscript
+env = Environment( tools = ["default", "gettext"] )
+env['POAUTOINIT'] = 1
+env['XGETTEXTPATH'] = ['../']
+env.Translate(LINGUAS_FILE = 1, XGETTEXTFROM = 'POTFILES.in') 
+</PRE
+><P
+>&#13;The last approach is perhaps the recommended one. It allows easily split
+internationalization/localization onto separate SCons scripts, where a script
+in source tree is responsible for translations (from sources to
+<TT
+CLASS="literal"
+>PO</TT
+> files) and script(s) under variant directories are
+responsible for compilation of <TT
+CLASS="literal"
+>PO</TT
+> to <TT
+CLASS="literal"
+>MO</TT
+>
+files to and for installation of <TT
+CLASS="literal"
+>MO</TT
+> files. The "gluing
+factor" synchronizing these two scripts is then the content of
+<TT
+CLASS="filename"
+>LINGUAS</TT
+> file.  Note, that the updated
+<TT
+CLASS="literal"
+>POT</TT
+> and <TT
+CLASS="literal"
+>PO</TT
+> files are usually going to be
+committed back to the repository, so they must be updated within the source
+directory (and not in variant directories). Additionaly, the file listing of
+<TT
+CLASS="filename"
+>po/</TT
+> directory contains <TT
+CLASS="filename"
+>LINGUAS</TT
+> file,
+so the source tree looks familiar to translators, and they may work with the
+project in their usual way.</P
+><P
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>Example 3</I
+></SPAN
+>.
+Let's prepare a development tree as below
+</P
+><PRE
+CLASS="programlisting"
+>&#13; project/
+  + SConstruct
+  + build/        
+  + src/
+      + po/
+          + SConscript
+          + SConscript.i18n
+          + POTFILES.in
+          + LINGUAS
+</PRE
+><P
+>&#13;with <TT
+CLASS="filename"
+>build</TT
+> being variant directory. Write the top-level
+<TT
+CLASS="filename"
+>SConstruct</TT
+> script as follows
+</P
+><PRE
+CLASS="programlisting"
+>&#13;  # SConstruct
+  env = Environment( tools = ["default", "gettext"] )
+  VariantDir('build', 'src', duplicate = 0)
+  env['POAUTOINIT'] = 1
+  SConscript('src/po/SConscript.i18n', exports = 'env')
+  SConscript('build/po/SConscript', exports = 'env')
+</PRE
+><P
+>&#13;the <TT
+CLASS="filename"
+>src/po/SConscript.i18n</TT
+> as
+</P
+><PRE
+CLASS="programlisting"
+>&#13;  # src/po/SConscript.i18n
+  Import('env')
+  env.Translate(LINGUAS_FILE=1, XGETTEXTFROM='POTFILES.in', XGETTEXTPATH=['../'])
+</PRE
+><P
+>&#13;and the <TT
+CLASS="filename"
+>src/po/SConscript</TT
+>
+</P
+><PRE
+CLASS="programlisting"
+>&#13;  # src/po/SConscript
+  Import('env')
+  env.MOFiles(LINGUAS_FILE = 1)
+</PRE
+><P
+>&#13;Such setup produces <TT
+CLASS="literal"
+>POT</TT
+> and <TT
+CLASS="literal"
+>PO</TT
+> files
+under source tree in <TT
+CLASS="filename"
+>src/po/</TT
+> and binary
+<TT
+CLASS="literal"
+>MO</TT
+> files under variant tree in
+<TT
+CLASS="filename"
+>build/po/</TT
+>. This way the <TT
+CLASS="literal"
+>POT</TT
+> and
+<TT
+CLASS="literal"
+>PO</TT
+> files are separated from other output files, which must
+not be committed back to source repositories (e.g. <TT
+CLASS="literal"
+>MO</TT
+>
+files).</P
+><P
+><DIV
+CLASS="note"
+><P
+></P
+><TABLE
+CLASS="note"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/note.gif"
+HSPACE="5"
+ALT="Note"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>In above example, the <TT
+CLASS="literal"
+>PO</TT
+> files are not updated,
+nor created automatically when you issue <B
+CLASS="command"
+>scons '.'</B
+> command.
+The files must be updated (created) by hand via <B
+CLASS="command"
+>scons
+po-update</B
+> and then <TT
+CLASS="literal"
+>MO</TT
+> files can be compiled by
+running <B
+CLASS="command"
+>scons '.'</B
+>.</P
+></TD
+></TR
+></TABLE
+></DIV
+>
+</P
+></DD
+><DT
+><A
+NAME="b-TypeLibrary"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>TypeLibrary()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.TypeLibrary()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;Builds a Windows type library (<TT
+CLASS="filename"
+>.tlb</TT
+>)
+file from an input IDL file (<TT
+CLASS="filename"
+>.idl</TT
+>).
+In addition, it will build the associated inteface stub and
+proxy source files,
+naming them according to the base name of the <TT
+CLASS="filename"
+>.idl</TT
+> file.
+For example,
+</P
+><PRE
+CLASS="programlisting"
+>&#13;env.TypeLibrary(source="foo.idl")
+</PRE
+><P
+>&#13;Will create <TT
+CLASS="filename"
+>foo.tlb</TT
+>,
+<TT
+CLASS="filename"
+>foo.h</TT
+>,
+<TT
+CLASS="filename"
+>foo_i.c</TT
+>,
+<TT
+CLASS="filename"
+>foo_p.c</TT
+>
+and
+<TT
+CLASS="filename"
+>foo_data.c</TT
+>
+files.
+</P
+></DD
+><DT
+><A
+NAME="b-Uic"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>Uic()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.Uic()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;Builds a header file, an implementation file and a moc file from an ui file.
+and returns the corresponding nodes in the above order.
+This builder is only available after using the tool 'qt'. Note: you can
+specify <TT
+CLASS="filename"
+>.ui</TT
+> files directly as source
+files to the <CODE
+CLASS="function"
+>Program</CODE
+>,
+<CODE
+CLASS="function"
+>Library</CODE
+> and <CODE
+CLASS="function"
+>SharedLibrary</CODE
+> builders
+without using this builder. Using this builder lets you override the standard
+naming conventions (be careful: prefixes are always prepended to names of
+built files; if you don't want prefixes, you may set them to ``).
+See the <A
+HREF="a5025.html#cv-QTDIR"
+><CODE
+CLASS="envar"
+>$QTDIR</CODE
+></A
+> variable for more information.
+Example:
+</P
+><PRE
+CLASS="programlisting"
+>&#13;env.Uic('foo.ui') # -&#62; ['foo.h', 'uic_foo.cc', 'moc_foo.cc']
+env.Uic(target = Split('include/foo.h gen/uicfoo.cc gen/mocfoo.cc'),
+        source = 'foo.ui') # -&#62; ['include/foo.h', 'gen/uicfoo.cc', 'gen/mocfoo.cc']
+</PRE
+></DD
+><DT
+><A
+NAME="b-Zip"
+></A
+><PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>Zip()</CODE
+></PRE
+>
+<PRE
+CLASS="synopsis"
+><CODE
+CLASS="function"
+>env.Zip()</CODE
+></PRE
+></DT
+><DD
+><P
+>&#13;Builds a zip archive of the specified files
+and/or directories.
+Unlike most builder methods,
+the
+<CODE
+CLASS="function"
+>Zip</CODE
+>
+builder method may be called multiple times
+for a given target;
+each additional call
+adds to the list of entries
+that will be built into the archive.
+Any source directories will
+be scanned for changes to
+any on-disk files,
+regardless of whether or not
+<TT
+CLASS="filename"
+>scons</TT
+>
+knows about them from other Builder or function calls.
+</P
+><PRE
+CLASS="programlisting"
+>&#13;env.Zip('src.zip', 'src')
+
+# Create the stuff.zip file.
+env.Zip('stuff', ['subdir1', 'subdir2'])
+# Also add "another" to the stuff.tar file.
+env.Zip('stuff', 'another')
+</PRE
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="a5025.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="a9600.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Construction Variables</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Tools</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

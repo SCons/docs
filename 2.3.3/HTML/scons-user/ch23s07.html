@@ -1,0 +1,127 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>23.7. Adding Your Own Custom Checks</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 2.3.3"><link rel="up" href="ch23.html" title="Chapter 23. Multi-Platform Configuration (Autoconf Functionality)"><link rel="prev" href="ch23s06.html" title="23.6. Checking the size of a datatype"><link rel="next" href="ch23s08.html" title="23.8. Not Configuring When Cleaning Targets"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">23.7. Adding Your Own Custom Checks</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch23s06.html">Prev</a> </td><th width="60%" align="center">Chapter 23. Multi-Platform Configuration (<span class="application">Autoconf</span> Functionality)</th><td width="20%" align="right"> <a accesskey="n" href="ch23s08.html">Next</a></td></tr></table><hr></div><div class="section" title="23.7. Adding Your Own Custom Checks"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idp23060352"></a>23.7. Adding Your Own Custom Checks</h2></div></div></div><p>
+
+    A custom check is a Python function
+    that checks for a certain condition to exist
+    on the running system,
+    usually using methods that <span class="application">SCons</span>
+    supplies to take care of the details
+    of checking whether a compilation succeeds,
+    a link succeeds,
+    a program is runnable,
+    etc.
+    A simple custom check for the existence of
+    a specific library might look as follows:
+
+    </p><pre class="programlisting">
+mylib_test_source_file = """
+#include &lt;mylib.h&gt;
+int main(int argc, char **argv)
+{
+    MyLibrary mylib(argc, argv);
+    return 0;
+}
+"""
+
+def CheckMyLibrary(context):
+    context.Message('Checking for MyLibrary...')
+    result = context.TryLink(mylib_test_source_file, '.c')
+    context.Result(result)
+    return result
+    </pre><p>
+
+    The <code class="function">Message</code> and <code class="function">Result</code> methods
+    should typically begin and end a custom check to
+    let the user know what's going on:
+    the <code class="function">Message</code> call prints the
+    specified message (with no trailing newline)
+    and the <code class="function">Result</code> call prints
+    <code class="literal">yes</code> if the check succeeds and
+    <code class="literal">no</code> if it doesn't.
+    The <code class="function">TryLink</code> method
+    actually tests for whether the
+    specified program text
+    will successfully link.
+
+    </p><p>
+
+    (Note that a custom check can modify
+    its check based on any arguments you
+    choose to pass it,
+    or by using or modifying the configure context environment
+    in the <code class="literal">context.env</code> attribute.)
+
+    </p><p>
+
+    This custom check function is
+    then attached to the <code class="literal">configure context</code>
+    by passing a dictionary
+    to the <code class="function">Configure</code> call
+    that maps a name of the check
+    to the underlying function:
+
+    </p><pre class="programlisting">
+env = Environment()
+conf = Configure(env, custom_tests = {'CheckMyLibrary' : CheckMyLibrary})
+    </pre><p>
+
+    You'll typically want to make
+    the check and the function name the same,
+    as we've done here,
+    to avoid potential confusion.
+
+    </p><p>
+
+    We can then put these pieces together
+    and actually call the <code class="literal">CheckMyLibrary</code> check
+    as follows:
+
+    </p><pre class="programlisting">
+mylib_test_source_file = """
+#include &lt;mylib.h&gt;
+int main(int argc, char **argv)
+{
+    MyLibrary mylib(argc, argv);
+    return 0;
+}
+"""
+
+def CheckMyLibrary(context):
+    context.Message('Checking for MyLibrary... ')
+    result = context.TryLink(mylib_test_source_file, '.c')
+    context.Result(result)
+    return result
+
+env = Environment()
+conf = Configure(env, custom_tests = {'CheckMyLibrary' : CheckMyLibrary})
+if not conf.CheckMyLibrary():
+    print 'MyLibrary is not installed!'
+    Exit(1)
+env = conf.Finish()
+
+# We would then add actual calls like Program() to build
+# something using the "env" construction environment.
+    </pre><p>
+
+    If MyLibrary is not installed on the system,
+    the output will look like:
+
+    </p><pre class="screen">
+% <strong class="userinput"><code>scons</code></strong>
+scons: Reading SConscript file ...
+Checking for MyLibrary... failed
+MyLibrary is not installed!
+    </pre><p>
+
+    If MyLibrary is installed,
+    the output will look like:
+
+    </p><pre class="screen">
+% <strong class="userinput"><code>scons</code></strong>
+scons: Reading SConscript file ...
+Checking for MyLibrary... failed
+scons: done reading SConscript
+scons: Building targets ...
+    .
+    .
+    .
+    </pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch23s06.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch23.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch23s08.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">23.6. Checking the size of a datatype </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 23.8. Not Configuring When Cleaning Targets</td></tr></table></div></body></html>

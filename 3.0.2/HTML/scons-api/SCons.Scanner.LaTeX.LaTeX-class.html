@@ -1,0 +1,623 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>SCons.Scanner.LaTeX.LaTeX</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="SCons-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://www.scons.org/">SCons</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="SCons-module.html">Package&nbsp;SCons</a> ::
+        <a href="SCons.Scanner-module.html">Package&nbsp;Scanner</a> ::
+        <a href="SCons.Scanner.LaTeX-module.html">Module&nbsp;LaTeX</a> ::
+        Class&nbsp;LaTeX
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="SCons.Scanner.LaTeX.LaTeX-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class LaTeX</h1><p class="nomargin-top"><span class="codelink"><a href="SCons.Scanner.LaTeX-pysrc.html#LaTeX">source&nbsp;code</a></span></p>
+<pre class="base-tree">
+object --+    
+         |    
+      <a href="SCons.Scanner.Base-class.html">Base</a> --+
+             |
+            <strong class="uidshort">LaTeX</strong>
+</pre>
+
+<hr />
+<p>Class for scanning LaTeX files for included files.</p>
+<p>Unlike most scanners, which use regular expressions that just
+return the included file name, this returns a tuple consisting
+of the keyword for the inclusion (&quot;include&quot;, &quot;includegraphics&quot;,
+&quot;input&quot;, or &quot;bibliography&quot;), and then the file name itself.
+Based on a quick look at LaTeX documentation, it seems that we
+should append .tex suffix for the &quot;include&quot; keywords, append .tex if
+there is no extension for the &quot;input&quot; keyword, and need to add .bib
+for the &quot;bibliography&quot; keyword that does not accept extensions by itself.</p>
+<p>Finally, if there is no extension for an &quot;includegraphics&quot; keyword
+latex will append .ps or .eps to find the file, while pdftex may use .pdf,
+.jpg, .tif, .mps, or .png.</p>
+<p>The actual subset and search order may be altered by
+DeclareGraphicsExtensions command. This complication is ignored.
+The default order corresponds to experimentation with teTeX:</p>
+<pre class="rst-literal-block">
+$ latex --version
+pdfeTeX 3.141592-1.21a-2.2 (Web2C 7.5.4)
+kpathsea version 3.5.4
+</pre>
+<dl class="rst-docutils">
+<dt>The order is:</dt>
+<dd>['.eps', '.ps'] for latex
+['.png', '.pdf', '.jpg', '.tif'].</dd>
+</dl>
+<p>Another difference is that the search path is determined by the type
+of the file being searched:
+env['TEXINPUTS'] for &quot;input&quot; and &quot;include&quot; keywords
+env['TEXINPUTS'] for &quot;includegraphics&quot; keyword
+env['TEXINPUTS'] for &quot;lstinputlisting&quot; keyword
+env['BIBINPUTS'] for &quot;bibliography&quot; keyword
+env['BSTINPUTS'] for &quot;bibliographystyle&quot; keyword
+env['INDEXSTYLE'] for &quot;makeindex&quot; keyword, no scanning support needed just allows user to set it if needed.</p>
+<p>FIXME: also look for the class or style in document[class|style]{}
+FIXME: also look for the argument of bibliographystyle{}</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="SCons.Scanner.LaTeX.LaTeX-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>,
+        <span class="summary-sig-arg">suffixes</span>,
+        <span class="summary-sig-arg">graphics_extensions</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kw</span>)</span><br />
+      Construct a new scanner object given a scanner function.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Scanner.LaTeX-pysrc.html#LaTeX.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_latex_names"></a><span class="summary-sig-name">_latex_names</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">include_type</span>,
+        <span class="summary-sig-arg">filename</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Scanner.LaTeX-pysrc.html#LaTeX._latex_names">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="sort_key"></a><span class="summary-sig-name">sort_key</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">include</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Scanner.LaTeX-pysrc.html#LaTeX.sort_key">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="find_include"></a><span class="summary-sig-name">find_include</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">include</span>,
+        <span class="summary-sig-arg">source_dir</span>,
+        <span class="summary-sig-arg">path</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Scanner.LaTeX-pysrc.html#LaTeX.find_include">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="SCons.Scanner.LaTeX.LaTeX-class.html#canonical_text" class="summary-sig-name">canonical_text</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">text</span>)</span><br />
+      Standardize an input TeX-file contents.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Scanner.LaTeX-pysrc.html#LaTeX.canonical_text">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="scan"></a><span class="summary-sig-name">scan</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">node</span>,
+        <span class="summary-sig-arg">subdir</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">.</code><code class="variable-quote">'</code></span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Scanner.LaTeX-pysrc.html#LaTeX.scan">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="scan_recurse"></a><span class="summary-sig-name">scan_recurse</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">node</span>,
+        <span class="summary-sig-arg">path</span>=<span class="summary-sig-default"><code class="variable-group">(</code><code class="variable-group">)</code></span>)</span><br />
+      do a recursive scan of the top level target file
+This lets us search for included files based on the
+directory of the main file just as latex does</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Scanner.LaTeX-pysrc.html#LaTeX.scan_recurse">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="SCons.Scanner.Base-class.html">Base</a></code></b>:
+      <code><a href="SCons.Scanner.Base-class.html#__call__">__call__</a></code>,
+      <code><a href="SCons.Scanner.Base-class.html#__eq__">__eq__</a></code>,
+      <code><a href="SCons.Scanner.Base-class.html#__hash__">__hash__</a></code>,
+      <code><a href="SCons.Scanner.Base-class.html#__str__">__str__</a></code>,
+      <code><a href="SCons.Scanner.Base-class.html#add_scanner">add_scanner</a></code>,
+      <code><a href="SCons.Scanner.Base-class.html#add_skey">add_skey</a></code>,
+      <code><a href="SCons.Scanner.Base-class.html#get_skeys">get_skeys</a></code>,
+      <code><a href="SCons.Scanner.Base-class.html#path">path</a></code>,
+      <code><a href="SCons.Scanner.Base-class.html#select">select</a></code>
+      </p>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="SCons.Scanner.Base-class.html">Base</a></code></b> (private):
+      <code><a href="SCons.Scanner.Base-class.html#_recurse_all_nodes" onclick="show_private();">_recurse_all_nodes</a></code>,
+      <code><a href="SCons.Scanner.Base-class.html#_recurse_no_nodes" onclick="show_private();">_recurse_no_nodes</a></code>
+      </p></div>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="SCons.Scanner.LaTeX.LaTeX-class.html#keyword_paths" class="summary-name">keyword_paths</a> = <code title="{'addbibresource': 'BIBINPUTS',
+ 'addglobalbib': 'BIBINPUTS',
+ 'addsectionbib': 'BIBINPUTS',
+ 'bibliography': 'BIBINPUTS',
+ 'bibliographystyle': 'BSTINPUTS',
+ 'include': 'TEXINPUTS',
+ 'includegraphics': 'TEXINPUTS',
+ 'input': 'TEXINPUTS',
+..."><code class="variable-group">{</code><code class="variable-quote">'</code><code class="variable-string">addbibresource</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">BIBINPUTS</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">addglobalbib</code><code class="variable-quote">'</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="SCons.Scanner.LaTeX.LaTeX-class.html#env_variables" class="summary-name">env_variables</a> = <code title="['INDEXSTYLE', 'BIBINPUTS', 'TEXINPUTS', 'BSTINPUTS']"><code class="variable-group">[</code><code class="variable-quote">'</code><code class="variable-string">INDEXSTYLE</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">BIBINPUTS</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">TEXINPUTS</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">BSTI</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="SCons.Scanner.LaTeX.LaTeX-class.html#two_arg_commands" class="summary-name">two_arg_commands</a> = <code title="['import',
+ 'subimport',
+ 'includefrom',
+ 'subincludefrom',
+ 'inputfrom',
+ 'subinputfrom']"><code class="variable-group">[</code><code class="variable-quote">'</code><code class="variable-string">import</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">subimport</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">includefrom</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">sub</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">name</span>,
+        <span class="sig-arg">suffixes</span>,
+        <span class="sig-arg">graphics_extensions</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kw</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="SCons.Scanner.LaTeX-pysrc.html#LaTeX.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Construct a new scanner object given a scanner function.</p>
+<p>'function' - a scanner function taking two or three
+arguments and returning a list of strings.</p>
+<p>'name' - a name for identifying this scanner object.</p>
+<p>'argument' - an optional argument that, if specified, will be
+passed to both the scanner function and the path_function.</p>
+<p>'skeys' - an optional list argument that can be used to determine
+which scanner should be used for a given Node. In the case of File
+nodes, for example, the 'skeys' would be file suffixes.</p>
+<p>'path_function' - a function that takes four or five arguments
+(a construction environment, Node for the directory containing
+the SConscript file that defined the primary target, list of
+target nodes, list of source nodes, and optional argument for
+this instance) and returns a tuple of the directories that can
+be searched for implicit dependency files.  May also return a
+callable() which is called with no args and returns the tuple
+(supporting Bindable class).</p>
+<p>'node_class' - the class of Nodes which this scan will return.
+If node_class is None, then this scanner will not enforce any
+Node conversion and will return the raw results from the
+underlying scanner function.</p>
+<p>'node_factory' - the factory function to be called to translate
+the raw results returned by the scanner function into the
+expected node_class objects.</p>
+<p>'scan_check' - a function to be called to first check whether
+this node really needs to be scanned.</p>
+<p>'recursive' - specifies that this scanner should be invoked
+recursively on all of the implicit dependencies it returns
+(the canonical example being #include lines in C source files).
+May be a callable, which will be called to filter the list
+of nodes found to select a subset for recursive scanning
+(the canonical example being only recursively scanning
+subdirectories within a directory).</p>
+<p>The scanner function's first argument will be a Node that should
+be scanned for dependencies, the second argument will be an
+Environment object, the third argument will be the tuple of paths
+returned by the path_function, and the fourth argument will be
+the value passed into 'argument', and the returned list should
+contain the Nodes for all the direct dependencies of the file.</p>
+<p>Examples:</p>
+<p>s = Scanner(my_scanner_function)</p>
+<p>s = Scanner(function = my_scanner_function)</p>
+<p>s = Scanner(function = my_scanner_function, argument = 'foo')</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__init__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="canonical_text"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">canonical_text</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">text</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="SCons.Scanner.LaTeX-pysrc.html#LaTeX.canonical_text">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Standardize an input TeX-file contents.</p>
+<dl class="rst-docutils">
+<dt>Currently:</dt>
+<dd><ul class="rst-first rst-last rst-simple">
+<li>removes comments, unwrapping comment-wrapped lines.</li>
+</ul>
+</dd>
+</dl>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== CLASS VARIABLE DETAILS ==================== -->
+<a name="section-ClassVariableDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variable Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariableDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="keyword_paths"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">keyword_paths</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-group">{</code><code class="variable-quote">'</code><code class="variable-string">addbibresource</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">BIBINPUTS</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">addglobalbib</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">BIBINPUTS</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">addsectionbib</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">BIBINPUTS</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">bibliography</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">BIBINPUTS</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">bibliographystyle</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">BSTINPUTS</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">include</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">TEXINPUTS</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">includegraphics</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">TEXINPUTS</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">input</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">TEXINPUTS</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+<code class="variable-ellipsis">...</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="env_variables"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">env_variables</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-group">[</code><code class="variable-quote">'</code><code class="variable-string">INDEXSTYLE</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">BIBINPUTS</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">TEXINPUTS</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">BSTINPUTS</code><code class="variable-quote">'</code><code class="variable-group">]</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="two_arg_commands"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">two_arg_commands</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-group">[</code><code class="variable-quote">'</code><code class="variable-string">import</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">subimport</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">includefrom</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">subincludefrom</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">inputfrom</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">subinputfrom</code><code class="variable-quote">'</code><code class="variable-group">]</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="SCons-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://www.scons.org/">SCons</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jan  1 10:36:31 2019
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

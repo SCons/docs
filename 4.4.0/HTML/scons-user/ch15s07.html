@@ -1,0 +1,81 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>15.7. Variant Build Examples</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.4.0"><link rel="up" href="ch15.html" title="Chapter 15. Separating Source and Build Trees: Variant Directories"><link rel="prev" href="ch15s06.html" title="15.6. Using Glob with VariantDir"><link rel="next" href="ch16.html" title="Chapter 16. Building From Code Repositories"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">15.7. Variant Build Examples</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch15s06.html">Prev</a> </td><th width="60%" align="center">Chapter 15. Separating Source and Build Trees: Variant Directories</th><td width="20%" align="right"> <a accesskey="n" href="ch16.html">Next</a></td></tr></table><hr></div><div class="section" title="15.7. Variant Build Examples"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="sect-variants"></a>15.7. Variant Build Examples</h2></div></div></div><p>
+
+  The <code class="varname">variant_dir</code> keyword argument of
+  the <code class="filename">SConscript</code> function provides everything
+  we need to show how easy it is to create
+  variant builds using <span class="application">SCons</span>.
+  Suppose, for example, that we want to
+  build a program for both Windows and Linux platforms,
+  but that we want to build it in directory on a network share
+  with separate side-by-side build directories
+  for the Windows and Linux versions of the program.
+  We have to do a little bit of work to construct paths,
+  to make sure unwanted location dependencies don't creep in.
+  The top-relative path reference can be useful here.
+  To avoid writing conditional code based on platform,
+  we can build the <em class="parameter"><code>variant_dir</code></em>
+  path dynamically:
+
+  </p><pre class="programlisting">
+platform = ARGUMENTS.get('OS', Platform())
+
+include = "#export/$PLATFORM/include"
+lib = "#export/$PLATFORM/lib"
+bin = "#export/$PLATFORM/bin"
+
+env = Environment(
+    PLATFORM=platform,
+    BINDIR=bin,
+    INCDIR=include,
+    LIBDIR=lib,
+    CPPPATH=[include],
+    LIBPATH=[lib],
+    LIBS='world',
+)
+
+Export('env')
+
+env.SConscript('src/SConscript', variant_dir='build/$PLATFORM')
+    </pre><p>
+
+  This SConstruct file,
+  when run on a Linux system, yields:
+
+  </p><pre class="screen">% <strong class="userinput"><code>scons -Q OS=linux</code></strong>
+Install file: "build/linux/world/world.h" as "export/linux/include/world.h"
+cc -o build/linux/hello/hello.o -c -Iexport/linux/include build/linux/hello/hello.c
+cc -o build/linux/world/world.o -c -Iexport/linux/include build/linux/world/world.c
+ar rc build/linux/world/libworld.a build/linux/world/world.o
+ranlib build/linux/world/libworld.a
+Install file: "build/linux/world/libworld.a" as "export/linux/lib/libworld.a"
+cc -o build/linux/hello/hello build/linux/hello/hello.o -Lexport/linux/lib -lworld
+Install file: "build/linux/hello/hello" as "export/linux/bin/hello"
+</pre><p>
+
+  The same SConstruct file on Windows would build:
+
+  </p><pre class="screen">C:\&gt;<strong class="userinput"><code>scons -Q OS=windows</code></strong>
+Install file: "build/windows/world/world.h" as "export/windows/include/world.h"
+cl /Fobuild\windows\hello\hello.obj /c build\windows\hello\hello.c /nologo /Iexport\windows\include
+cl /Fobuild\windows\world\world.obj /c build\windows\world\world.c /nologo /Iexport\windows\include
+lib /nologo /OUT:build\windows\world\world.lib build\windows\world\world.obj
+Install file: "build/windows/world/world.lib" as "export/windows/lib/world.lib"
+link /nologo /OUT:build\windows\hello\hello.exe /LIBPATH:export\windows\lib world.lib build\windows\hello\hello.obj
+embedManifestExeCheck(target, source, env)
+Install file: "build/windows/hello/hello.exe" as "export/windows/bin/hello.exe"
+</pre><p>
+
+  In order to build several variants at once when using the
+  <em class="parameter"><code>variant_dir</code></em> argument to <code class="filename">SConscript</code>,
+  you can call the function repeatedely - this example
+  does so in a loop. Note that the <a class="link" href="apd.html#f-SConscript"><code class="function">SConscript</code></a> trick of
+  passing a list of script files, or a list of source directories,
+  does not work with <em class="parameter"><code>variant_dir</code></em>,
+  <span class="application">SCons</span> allows only a single <code class="filename">SConscript</code> to be given if
+  <em class="parameter"><code>variant_dir</code></em> is used.
+
+  </p><pre class="programlisting">
+env = Environment(OS=ARGUMENTS.get('OS'))
+for os in ['newell', 'post']:
+    SConscript('src/SConscript', variant_dir='build/' + os)
+    </pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch15s06.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch15.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch16.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">15.6. Using <code class="function">Glob</code> with <code class="function">VariantDir</code> </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 16. Building From Code Repositories</td></tr></table></div></body></html>

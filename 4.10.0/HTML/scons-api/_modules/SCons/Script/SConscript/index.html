@@ -1,0 +1,1136 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SCons.Script.SConscript &#8212; SCons 4.10.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../../_static/documentation_options.js?v=e28746fb"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/SCons/Script/SConscript';</script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search/"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../../">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SCons 4.10.0 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons/">SCons package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.compat/">SCons.compat package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Taskmaster/">SCons.Taskmaster package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Util/">SCons.Util package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Variables/">SCons.Variables package</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for SCons.Script.SConscript</h1><div class="highlight"><pre>
+<span></span><span class="c1"># MIT License</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright The SCons Foundation</span>
+<span class="c1">#</span>
+<span class="c1"># Permission is hereby granted, free of charge, to any person obtaining</span>
+<span class="c1"># a copy of this software and associated documentation files (the</span>
+<span class="c1"># &quot;Software&quot;), to deal in the Software without restriction, including</span>
+<span class="c1"># without limitation the rights to use, copy, modify, merge, publish,</span>
+<span class="c1"># distribute, sublicense, and/or sell copies of the Software, and to</span>
+<span class="c1"># permit persons to whom the Software is furnished to do so, subject to</span>
+<span class="c1"># the following conditions:</span>
+<span class="c1">#</span>
+<span class="c1"># The above copyright notice and this permission notice shall be included</span>
+<span class="c1"># in all copies or substantial portions of the Software.</span>
+<span class="c1">#</span>
+<span class="c1"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY</span>
+<span class="c1"># KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND</span>
+<span class="c1"># NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE</span>
+<span class="c1"># LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION</span>
+<span class="c1"># OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</span>
+<span class="c1"># WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</span>
+
+<span class="sd">&quot;&quot;&quot;This module defines the Python API provided to SConscript files.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">SCons</span>
+<span class="kn">import</span> <span class="nn">SCons.Action</span>
+<span class="kn">import</span> <span class="nn">SCons.Builder</span>
+<span class="kn">import</span> <span class="nn">SCons.Defaults</span>
+<span class="kn">import</span> <span class="nn">SCons.Environment</span>
+<span class="kn">import</span> <span class="nn">SCons.Errors</span>
+<span class="kn">import</span> <span class="nn">SCons.Node</span>
+<span class="kn">import</span> <span class="nn">SCons.Node.Alias</span>
+<span class="kn">import</span> <span class="nn">SCons.Node.FS</span>
+<span class="kn">import</span> <span class="nn">SCons.Platform</span>
+<span class="kn">import</span> <span class="nn">SCons.SConf</span>
+<span class="kn">import</span> <span class="nn">SCons.Tool</span>
+<span class="kn">from</span> <span class="nn">SCons.Util</span> <span class="kn">import</span> <span class="n">is_List</span><span class="p">,</span> <span class="n">is_String</span><span class="p">,</span> <span class="n">is_Dict</span><span class="p">,</span> <span class="n">flatten</span>
+<span class="kn">from</span> <span class="nn">SCons.Node</span> <span class="kn">import</span> <span class="n">SConscriptNodes</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">Main</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<div class="viewcode-block" id="SConscriptReturn">
+<a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.SConscript.SConscriptReturn">[docs]</a>
+<span class="k">class</span> <span class="nc">SConscriptReturn</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<span class="n">launch_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">curdir</span><span class="p">)</span>
+
+<span class="n">GlobalDict</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1"># global exports set by Export():</span>
+<span class="n">global_exports</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="c1"># chdir flag</span>
+<span class="n">sconscript_chdir</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="get_calling_namespaces">
+<a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.SConscript.get_calling_namespaces">[docs]</a>
+<span class="k">def</span> <span class="nf">get_calling_namespaces</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the locals and globals for the function that called</span>
+<span class="sd">    into this module in the current call stack.&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span> <span class="mi">1</span><span class="o">//</span><span class="mi">0</span>
+    <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
+        <span class="c1"># Don&#39;t start iterating with the current stack-frame to</span>
+        <span class="c1"># prevent creating reference cycles (f_back is safe).</span>
+        <span class="n">frame</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">tb_frame</span><span class="o">.</span><span class="n">f_back</span>
+
+    <span class="c1"># Find the first frame that *isn&#39;t* from this file.  This means</span>
+    <span class="c1"># that we expect all of the SCons frames that implement an Export()</span>
+    <span class="c1"># or SConscript() call to be in this file, so that we can identify</span>
+    <span class="c1"># the first non-Script.SConscript frame as the user&#39;s local calling</span>
+    <span class="c1"># environment, and the locals and globals dictionaries from that</span>
+    <span class="c1"># frame as the calling namespaces.  See the comment below preceding</span>
+    <span class="c1"># the DefaultEnvironmentCall block for even more explanation.</span>
+    <span class="k">while</span> <span class="n">frame</span><span class="o">.</span><span class="n">f_globals</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;__name__&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="vm">__name__</span><span class="p">:</span>
+        <span class="n">frame</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">f_back</span>
+
+    <span class="k">return</span> <span class="n">frame</span><span class="o">.</span><span class="n">f_locals</span><span class="p">,</span> <span class="n">frame</span><span class="o">.</span><span class="n">f_globals</span></div>
+
+
+
+<div class="viewcode-block" id="compute_exports">
+<a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.SConscript.compute_exports">[docs]</a>
+<span class="k">def</span> <span class="nf">compute_exports</span><span class="p">(</span><span class="n">exports</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute a dictionary of exports given one of the parameters</span>
+<span class="sd">    to the Export() function or the exports argument to SConscript().&quot;&quot;&quot;</span>
+
+    <span class="n">loc</span><span class="p">,</span> <span class="n">glob</span> <span class="o">=</span> <span class="n">get_calling_namespaces</span><span class="p">()</span>
+
+    <span class="n">retval</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">export</span> <span class="ow">in</span> <span class="n">exports</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">is_Dict</span><span class="p">(</span><span class="n">export</span><span class="p">):</span>
+                <span class="n">retval</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">export</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">retval</span><span class="p">[</span><span class="n">export</span><span class="p">]</span> <span class="o">=</span> <span class="n">loc</span><span class="p">[</span><span class="n">export</span><span class="p">]</span>
+                <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                    <span class="n">retval</span><span class="p">[</span><span class="n">export</span><span class="p">]</span> <span class="o">=</span> <span class="n">glob</span><span class="p">[</span><span class="n">export</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">x</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">UserError</span><span class="p">(</span><span class="s2">&quot;Export of non-existent variable &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="o">%</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">retval</span></div>
+
+
+<div class="viewcode-block" id="Frame">
+<a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.SConscript.Frame">[docs]</a>
+<span class="k">class</span> <span class="nc">Frame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A frame on the SConstruct/SConscript call stack&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">exports</span><span class="p">,</span> <span class="n">sconscript</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">globals</span> <span class="o">=</span> <span class="n">BuildDefaultGlobals</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">retval</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prev_dir</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exports</span> <span class="o">=</span> <span class="n">compute_exports</span><span class="p">(</span><span class="n">exports</span><span class="p">)</span>  <span class="c1"># exports from the calling SConscript</span>
+        <span class="c1"># make sure the sconscript attr is a Node.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sconscript</span><span class="p">,</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">Node</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sconscript</span> <span class="o">=</span> <span class="n">sconscript</span>
+        <span class="k">elif</span> <span class="n">sconscript</span> <span class="o">==</span> <span class="s1">&#39;-&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sconscript</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sconscript</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">sconscript</span><span class="p">))</span></div>
+
+
+<span class="c1"># the SConstruct/SConscript call stack:</span>
+<span class="n">call_stack</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># For documentation on the methods in this file, see the scons man-page</span>
+
+<div class="viewcode-block" id="Return">
+<a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.SConscript.Return">[docs]</a>
+<span class="k">def</span> <span class="nf">Return</span><span class="p">(</span><span class="o">*</span><span class="nb">vars</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="n">retval</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">fvars</span> <span class="o">=</span> <span class="n">flatten</span><span class="p">(</span><span class="nb">vars</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">fvars</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">var</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
+                <span class="n">retval</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">call_stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">globals</span><span class="p">[</span><span class="n">v</span><span class="p">])</span>
+    <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">x</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">UserError</span><span class="p">(</span><span class="s2">&quot;Return of non-existent variable &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="o">%</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">retval</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">call_stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">retval</span> <span class="o">=</span> <span class="n">retval</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">call_stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">retval</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">retval</span><span class="p">)</span>
+
+    <span class="n">stop</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;stop&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">stop</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">SConscriptReturn</span></div>
+
+
+
+<span class="n">stack_bottom</span> <span class="o">=</span> <span class="s1">&#39;% Stack boTTom %&#39;</span> <span class="c1"># hard to define a variable w/this name :)</span>
+
+<div class="viewcode-block" id="handle_missing_SConscript">
+<a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.SConscript.handle_missing_SConscript">[docs]</a>
+<span class="k">def</span> <span class="nf">handle_missing_SConscript</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">must_exist</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Take appropriate action on missing file in SConscript() call.</span>
+
+<span class="sd">    Print a warning or raise an exception on missing file, unless</span>
+<span class="sd">    missing is explicitly allowed by the *must_exist* parameter or by</span>
+<span class="sd">    a global flag.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        f: path to missing configuration file</span>
+<span class="sd">        must_exist: if true (the default), fail.  If false</span>
+<span class="sd">          do nothing, allowing a build to declare it&#39;s okay to be missing.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">       UserError: if *must_exist* is true or if global</span>
+<span class="sd">          :data:`SCons.Script._no_missing_sconscript` is true.</span>
+
+<span class="sd">    .. versionchanged: 4.6.0</span>
+<span class="sd">       Changed default from False.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">must_exist</span><span class="p">:</span>  <span class="c1"># explicitly set False: ok</span>
+        <span class="k">return</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Script</span><span class="o">.</span><span class="n">_no_missing_sconscript</span><span class="p">:</span>  <span class="c1"># system default changed: ok</span>
+        <span class="k">return</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;missing SConscript file </span><span class="si">{</span><span class="n">f</span><span class="o">.</span><span class="n">get_internal_path</span><span class="p">()</span><span class="si">!r}</span><span class="s2">&quot;</span>
+    <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">UserError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="_SConscript">
+<a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.SConscript._SConscript">[docs]</a>
+<span class="k">def</span> <span class="nf">_SConscript</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="o">*</span><span class="n">files</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="n">top</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">Top</span>
+    <span class="n">sd</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">SConstruct_dir</span><span class="o">.</span><span class="n">rdir</span><span class="p">()</span>
+    <span class="n">exports</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;exports&#39;</span><span class="p">,</span> <span class="p">[])</span>
+
+    <span class="c1"># evaluate each SConscript file</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+        <span class="n">call_stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Frame</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="n">exports</span><span class="p">,</span> <span class="n">fn</span><span class="p">))</span>
+        <span class="n">old_sys_path</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">SCons</span><span class="o">.</span><span class="n">Script</span><span class="o">.</span><span class="n">sconscript_reading</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Script</span><span class="o">.</span><span class="n">sconscript_reading</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">fn</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span>
+                <span class="n">exec</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">call_stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">globals</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">Node</span><span class="p">):</span>
+                    <span class="n">f</span> <span class="o">=</span> <span class="n">fn</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">f</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">fn</span><span class="p">))</span>
+                <span class="n">_file_</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">SConscriptNodes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+                <span class="c1"># Change directory to the top of the source</span>
+                <span class="c1"># tree to make sure the os&#39;s cwd and the cwd of</span>
+                <span class="c1"># fs match so we can open the SConscript.</span>
+                <span class="n">fs</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">change_os_dir</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">rexists</span><span class="p">():</span>
+                    <span class="n">actual</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">rfile</span><span class="p">()</span>
+                    <span class="n">_file_</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">actual</span><span class="o">.</span><span class="n">get_abspath</span><span class="p">(),</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">f</span><span class="o">.</span><span class="n">srcnode</span><span class="p">()</span><span class="o">.</span><span class="n">rexists</span><span class="p">():</span>
+                    <span class="n">actual</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">srcnode</span><span class="p">()</span><span class="o">.</span><span class="n">rfile</span><span class="p">()</span>
+                    <span class="n">_file_</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">actual</span><span class="o">.</span><span class="n">get_abspath</span><span class="p">(),</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">f</span><span class="o">.</span><span class="n">has_src_builder</span><span class="p">():</span>
+                    <span class="c1"># The SConscript file apparently exists in a source</span>
+                    <span class="c1"># code management system.  Build it, but then clear</span>
+                    <span class="c1"># the builder so that it doesn&#39;t get built *again*</span>
+                    <span class="c1"># during the actual build phase.</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">built</span><span class="p">()</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">builder_set</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                        <span class="n">_file_</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">get_abspath</span><span class="p">(),</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">_file_</span><span class="p">:</span>
+                    <span class="c1"># Chdir to the SConscript directory.  Use a path</span>
+                    <span class="c1"># name relative to the SConstruct file so that if</span>
+                    <span class="c1"># we&#39;re using the -f option, we&#39;re essentially</span>
+                    <span class="c1"># creating a parallel SConscript directory structure</span>
+                    <span class="c1"># in our local directory tree.</span>
+                    <span class="c1">#</span>
+                    <span class="c1"># XXX This is broken for multiple-repository cases</span>
+                    <span class="c1"># where the SConstruct and SConscript files might be</span>
+                    <span class="c1"># in different Repositories.  For now, cross that</span>
+                    <span class="c1"># bridge when someone comes to it.</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">src_dir</span> <span class="o">=</span> <span class="n">kw</span><span class="p">[</span><span class="s1">&#39;src_dir&#39;</span><span class="p">]</span>
+                    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                        <span class="n">ldir</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">Dir</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">dir</span><span class="o">.</span><span class="n">get_path</span><span class="p">(</span><span class="n">sd</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">ldir</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">Dir</span><span class="p">(</span><span class="n">src_dir</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">ldir</span><span class="o">.</span><span class="n">is_under</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">dir</span><span class="p">):</span>
+                            <span class="c1"># They specified a source directory, but</span>
+                            <span class="c1"># it&#39;s above the SConscript directory.</span>
+                            <span class="c1"># Do the sensible thing and just use the</span>
+                            <span class="c1"># SConcript directory.</span>
+                            <span class="n">ldir</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">Dir</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">dir</span><span class="o">.</span><span class="n">get_path</span><span class="p">(</span><span class="n">sd</span><span class="p">))</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">fs</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">ldir</span><span class="p">,</span> <span class="n">change_os_dir</span><span class="o">=</span><span class="n">sconscript_chdir</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+                        <span class="c1"># There was no local directory, so we should be</span>
+                        <span class="c1"># able to chdir to the Repository directory.</span>
+                        <span class="c1"># Note that we do this directly, not through</span>
+                        <span class="c1"># fs.chdir(), because we still need to</span>
+                        <span class="c1"># interpret the stuff within the SConscript file</span>
+                        <span class="c1"># relative to where we are logically.</span>
+                        <span class="n">fs</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">ldir</span><span class="p">,</span> <span class="n">change_os_dir</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                        <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">actual</span><span class="o">.</span><span class="n">dir</span><span class="o">.</span><span class="n">get_abspath</span><span class="p">())</span>
+
+                    <span class="c1"># Append the SConscript directory to the beginning</span>
+                    <span class="c1"># of sys.path so Python modules in the SConscript</span>
+                    <span class="c1"># directory can be easily imported.</span>
+                    <span class="n">sys</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="p">[</span> <span class="n">f</span><span class="o">.</span><span class="n">dir</span><span class="o">.</span><span class="n">get_abspath</span><span class="p">()</span> <span class="p">]</span> <span class="o">+</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span>
+
+                    <span class="c1"># This is the magic line that actually reads up</span>
+                    <span class="c1"># and executes the stuff in the SConscript file.</span>
+                    <span class="c1"># The locals for this frame contain the special</span>
+                    <span class="c1"># bottom-of-the-stack marker so that any</span>
+                    <span class="c1"># exceptions that occur when processing this</span>
+                    <span class="c1"># SConscript can base the printed frames at this</span>
+                    <span class="c1"># level and not show SCons internals as well.</span>
+                    <span class="n">call_stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">globals</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">stack_bottom</span><span class="p">:</span><span class="mi">1</span><span class="p">})</span>
+                    <span class="n">old_file</span> <span class="o">=</span> <span class="n">call_stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">globals</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;__file__&#39;</span><span class="p">)</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="k">del</span> <span class="n">call_stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">globals</span><span class="p">[</span><span class="s1">&#39;__file__&#39;</span><span class="p">]</span>
+                    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                        <span class="k">pass</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">Main</span><span class="o">.</span><span class="n">print_time</span><span class="p">:</span>
+                                <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+                            <span class="n">scriptdata</span> <span class="o">=</span> <span class="n">_file_</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                            <span class="n">scriptname</span> <span class="o">=</span> <span class="n">_file_</span><span class="o">.</span><span class="n">name</span>
+                            <span class="n">_file_</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                            <span class="k">if</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Debug</span><span class="o">.</span><span class="n">sconscript_trace</span><span class="p">:</span>
+                                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;scons: Entering &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">scriptname</span><span class="p">))</span>
+                            <span class="n">exec</span><span class="p">(</span><span class="nb">compile</span><span class="p">(</span><span class="n">scriptdata</span><span class="p">,</span> <span class="n">scriptname</span><span class="p">,</span> <span class="s1">&#39;exec&#39;</span><span class="p">),</span> <span class="n">call_stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">globals</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Debug</span><span class="o">.</span><span class="n">sconscript_trace</span><span class="p">:</span>
+                                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;scons: Exiting &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">scriptname</span><span class="p">))</span>
+                        <span class="k">except</span> <span class="n">SConscriptReturn</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Debug</span><span class="o">.</span><span class="n">sconscript_trace</span><span class="p">:</span>
+                                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;scons: Exiting &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">scriptname</span><span class="p">))</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="k">pass</span>
+                    <span class="k">finally</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">Main</span><span class="o">.</span><span class="n">print_time</span><span class="p">:</span>
+                            <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;SConscript:</span><span class="si">%s</span><span class="s1">  took </span><span class="si">%0.3f</span><span class="s1"> ms&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">get_abspath</span><span class="p">(),</span> <span class="n">elapsed</span> <span class="o">*</span> <span class="mf">1000.0</span><span class="p">))</span>
+
+                        <span class="k">if</span> <span class="n">old_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="n">call_stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">globals</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="vm">__file__</span><span class="p">:</span><span class="n">old_file</span><span class="p">})</span>
+
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">handle_missing_SConscript</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;must_exist&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
+
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">SCons</span><span class="o">.</span><span class="n">Script</span><span class="o">.</span><span class="n">sconscript_reading</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Script</span><span class="o">.</span><span class="n">sconscript_reading</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">old_sys_path</span>
+            <span class="n">frame</span> <span class="o">=</span> <span class="n">call_stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">fs</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">prev_dir</span><span class="p">,</span> <span class="n">change_os_dir</span><span class="o">=</span><span class="n">sconscript_chdir</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+                <span class="c1"># There was no local directory, so chdir to the</span>
+                <span class="c1"># Repository directory.  Like above, we do this</span>
+                <span class="c1"># directly.</span>
+                <span class="n">fs</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">prev_dir</span><span class="p">,</span> <span class="n">change_os_dir</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="n">rdir</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">prev_dir</span><span class="o">.</span><span class="n">rdir</span><span class="p">()</span>
+                <span class="n">rdir</span><span class="o">.</span><span class="n">_create</span><span class="p">()</span>  <span class="c1"># Make sure there&#39;s a directory there.</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">rdir</span><span class="o">.</span><span class="n">get_abspath</span><span class="p">())</span>
+                <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="c1"># We still couldn&#39;t chdir there, so raise the error,</span>
+                    <span class="c1"># but only if actions are being executed.</span>
+                    <span class="c1">#</span>
+                    <span class="c1"># If the -n option was used, the directory would *not*</span>
+                    <span class="c1"># have been created and we should just carry on and</span>
+                    <span class="c1"># let things muddle through.  This isn&#39;t guaranteed</span>
+                    <span class="c1"># to work if the SConscript files are reading things</span>
+                    <span class="c1"># from disk (for example), but it should work well</span>
+                    <span class="c1"># enough for most configurations.</span>
+                    <span class="k">if</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Action</span><span class="o">.</span><span class="n">execute_actions</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="n">e</span>
+
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">retval</span><span class="p">)</span>
+
+    <span class="c1"># if we only have one script, don&#39;t return a tuple</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SConscript_exception">
+<a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.SConscript.SConscript_exception">[docs]</a>
+<span class="k">def</span> <span class="nf">SConscript_exception</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Print an exception stack trace just for the SConscript file(s).</span>
+<span class="sd">    This will show users who have Python errors where the problem is,</span>
+<span class="sd">    without cluttering the output with all of the internal calls leading</span>
+<span class="sd">    up to where we exec the SConscript.&quot;&quot;&quot;</span>
+    <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">exc_tb</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()</span>
+    <span class="n">tb</span> <span class="o">=</span> <span class="n">exc_tb</span>
+    <span class="k">while</span> <span class="n">tb</span> <span class="ow">and</span> <span class="n">stack_bottom</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tb</span><span class="o">.</span><span class="n">tb_frame</span><span class="o">.</span><span class="n">f_locals</span><span class="p">:</span>
+        <span class="n">tb</span> <span class="o">=</span> <span class="n">tb</span><span class="o">.</span><span class="n">tb_next</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">tb</span><span class="p">:</span>
+        <span class="c1"># We did not find our exec statement, so this was actually a bug</span>
+        <span class="c1"># in SCons itself.  Show the whole stack.</span>
+        <span class="n">tb</span> <span class="o">=</span> <span class="n">exc_tb</span>
+    <span class="n">stack</span> <span class="o">=</span> <span class="n">traceback</span><span class="o">.</span><span class="n">extract_tb</span><span class="p">(</span><span class="n">tb</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="nb">type</span> <span class="o">=</span> <span class="n">exc_type</span><span class="o">.</span><span class="vm">__name__</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="nb">type</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">exc_type</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">[:</span><span class="mi">11</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;exceptions.&quot;</span><span class="p">:</span>
+            <span class="nb">type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">[</span><span class="mi">11</span><span class="p">:]</span>
+    <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">: </span><span class="si">%s</span><span class="s1">:</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">fname</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">stack</span><span class="p">:</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;  File &quot;</span><span class="si">%s</span><span class="s1">&quot;, line </span><span class="si">%d</span><span class="s1">:</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">line</span><span class="p">))</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;    </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">text</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="annotate">
+<a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.SConscript.annotate">[docs]</a>
+<span class="k">def</span> <span class="nf">annotate</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Annotate a node with the stack frame describing the</span>
+<span class="sd">    SConscript file and line number that created it.&quot;&quot;&quot;</span>
+    <span class="n">tb</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">while</span> <span class="n">tb</span> <span class="ow">and</span> <span class="n">stack_bottom</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tb</span><span class="o">.</span><span class="n">tb_frame</span><span class="o">.</span><span class="n">f_locals</span><span class="p">:</span>
+        <span class="n">tb</span> <span class="o">=</span> <span class="n">tb</span><span class="o">.</span><span class="n">tb_next</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">tb</span><span class="p">:</span>
+        <span class="c1"># We did not find any exec of an SConscript file: what?!</span>
+        <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">InternalError</span><span class="p">(</span><span class="s2">&quot;could not find SConscript stack frame&quot;</span><span class="p">)</span>
+    <span class="n">node</span><span class="o">.</span><span class="n">creator</span> <span class="o">=</span> <span class="n">traceback</span><span class="o">.</span><span class="n">extract_stack</span><span class="p">(</span><span class="n">tb</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<span class="c1"># The following line would cause each Node to be annotated using the</span>
+<span class="c1"># above function.  Unfortunately, this is a *huge* performance hit, so</span>
+<span class="c1"># leave this disabled until we find a more efficient mechanism.</span>
+<span class="c1">#SCons.Node.Annotate = annotate</span>
+
+<div class="viewcode-block" id="SConsEnvironment">
+<a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.SConscript.SConsEnvironment">[docs]</a>
+<span class="k">class</span> <span class="nc">SConsEnvironment</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Environment</span><span class="o">.</span><span class="n">Base</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An Environment subclass that contains all of the methods that</span>
+<span class="sd">    are particular to the wrapper SCons interface and which aren&#39;t</span>
+<span class="sd">    (or shouldn&#39;t be) part of the build engine itself.</span>
+
+<span class="sd">    Note that not all of the methods of this class have corresponding</span>
+<span class="sd">    global functions, there are some private methods.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#</span>
+    <span class="c1"># Private methods of an SConsEnvironment.</span>
+    <span class="c1">#</span>
+<div class="viewcode-block" id="SConsEnvironment._get_major_minor_revision">
+<a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.SConscript.SConsEnvironment._get_major_minor_revision">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_major_minor_revision</span><span class="p">(</span><span class="n">version_string</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Split a version string into major, minor and (optionally)</span>
+<span class="sd">        revision parts.</span>
+
+<span class="sd">        This is complicated by the fact that a version string can be</span>
+<span class="sd">        something like 3.2b1.&quot;&quot;&quot;</span>
+        <span class="n">version</span> <span class="o">=</span> <span class="n">version_string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+        <span class="n">v_major</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">version</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">v_minor</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\d+&#39;</span><span class="p">,</span> <span class="n">version</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">group</span><span class="p">())</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">version</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">v_revision</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\d+&#39;</span><span class="p">,</span> <span class="n">version</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">group</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">v_revision</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">v_major</span><span class="p">,</span> <span class="n">v_minor</span><span class="p">,</span> <span class="n">v_revision</span></div>
+
+
+<div class="viewcode-block" id="SConsEnvironment._get_SConscript_filenames">
+<a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.SConscript.SConsEnvironment._get_SConscript_filenames">[docs]</a>
+    <span class="k">def</span> <span class="nf">_get_SConscript_filenames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ls</span><span class="p">,</span> <span class="n">kw</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert the parameters passed to SConscript() calls into a list</span>
+<span class="sd">        of files and export variables.  If the parameters are invalid,</span>
+<span class="sd">        throws SCons.Errors.UserError. Returns a tuple (l, e) where l</span>
+<span class="sd">        is a list of SConscript filenames and e is a list of exports.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">exports</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ls</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">dirs</span> <span class="o">=</span> <span class="n">kw</span><span class="p">[</span><span class="s2">&quot;dirs&quot;</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">UserError</span><span class="p">(</span><span class="s2">&quot;Invalid SConscript usage - no parameters&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_List</span><span class="p">(</span><span class="n">dirs</span><span class="p">):</span>
+                <span class="n">dirs</span> <span class="o">=</span> <span class="p">[</span> <span class="n">dirs</span> <span class="p">]</span>
+            <span class="n">dirs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">dirs</span><span class="p">))</span>
+
+            <span class="n">name</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;SConscript&#39;</span><span class="p">)</span>
+
+            <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">dirs</span><span class="p">]</span>
+
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">ls</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+
+            <span class="n">files</span> <span class="o">=</span> <span class="n">ls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">ls</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+
+            <span class="n">files</span>   <span class="o">=</span> <span class="n">ls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">exports</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Split</span><span class="p">(</span><span class="n">ls</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">UserError</span><span class="p">(</span><span class="s2">&quot;Invalid SConscript() usage - too many arguments&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_List</span><span class="p">(</span><span class="n">files</span><span class="p">):</span>
+            <span class="n">files</span> <span class="o">=</span> <span class="p">[</span> <span class="n">files</span> <span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;exports&#39;</span><span class="p">):</span>
+            <span class="n">exports</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Split</span><span class="p">(</span><span class="n">kw</span><span class="p">[</span><span class="s1">&#39;exports&#39;</span><span class="p">]))</span>
+
+        <span class="n">variant_dir</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;variant_dir&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">variant_dir</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">UserError</span><span class="p">(</span><span class="s2">&quot;Invalid SConscript() usage - can only specify one SConscript with a variant_dir&quot;</span><span class="p">)</span>
+            <span class="n">duplicate</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;duplicate&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">src_dir</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;src_dir&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">src_dir</span><span class="p">:</span>
+                <span class="n">src_dir</span><span class="p">,</span> <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+                <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">variant_dir</span><span class="p">),</span> <span class="n">fname</span><span class="p">)]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">src_dir</span><span class="p">,</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">Node</span><span class="p">):</span>
+                    <span class="n">src_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fs</span><span class="o">.</span><span class="n">Dir</span><span class="p">(</span><span class="n">src_dir</span><span class="p">)</span>
+                <span class="n">fn</span> <span class="o">=</span> <span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">Node</span><span class="p">):</span>
+                    <span class="n">fn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fs</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">fn</span><span class="o">.</span><span class="n">is_under</span><span class="p">(</span><span class="n">src_dir</span><span class="p">):</span>
+                    <span class="c1"># Get path relative to the source directory.</span>
+                    <span class="n">fname</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="n">get_path</span><span class="p">(</span><span class="n">src_dir</span><span class="p">)</span>
+                    <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">variant_dir</span><span class="p">),</span> <span class="n">fname</span><span class="p">)]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">fn</span><span class="o">.</span><span class="n">get_abspath</span><span class="p">()]</span>
+                <span class="n">kw</span><span class="p">[</span><span class="s1">&#39;src_dir&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">variant_dir</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fs</span><span class="o">.</span><span class="n">VariantDir</span><span class="p">(</span><span class="n">variant_dir</span><span class="p">,</span> <span class="n">src_dir</span><span class="p">,</span> <span class="n">duplicate</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="n">exports</span><span class="p">)</span></div>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Public methods of an SConsEnvironment.  These get</span>
+    <span class="c1"># entry points in the global namespace so they can be called</span>
+    <span class="c1"># as global functions.</span>
+    <span class="c1">#</span>
+
+<div class="viewcode-block" id="SConsEnvironment.Configure">
+<a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.SConscript.SConsEnvironment.Configure">[docs]</a>
+    <span class="k">def</span> <span class="nf">Configure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Script</span><span class="o">.</span><span class="n">sconscript_reading</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">UserError</span><span class="p">(</span><span class="s2">&quot;Calling Configure from Builders is not supported.&quot;</span><span class="p">)</span>
+        <span class="n">kw</span><span class="p">[</span><span class="s1">&#39;_depth&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;_depth&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Environment</span><span class="o">.</span><span class="n">Base</span><span class="o">.</span><span class="n">Configure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SConsEnvironment.Default">
+<a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.SConscript.SConsEnvironment.Default">[docs]</a>
+    <span class="k">def</span> <span class="nf">Default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">targets</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">SCons</span><span class="o">.</span><span class="n">Script</span><span class="o">.</span><span class="n">_Set_Default_Targets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SConsEnvironment.GetSConsVersion">
+<a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.SConscript.SConsEnvironment.GetSConsVersion">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">GetSConsVersion</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the current SCons version.</span>
+
+<span class="sd">        .. versionadded:: 4.8.0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">SConsEnvironment</span><span class="o">.</span><span class="n">_get_major_minor_revision</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SConsEnvironment.EnsureSConsVersion">
+<a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.SConscript.SConsEnvironment.EnsureSConsVersion">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">EnsureSConsVersion</span><span class="p">(</span><span class="n">major</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">minor</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">revision</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Exit abnormally if the SCons version is not late enough.&quot;&quot;&quot;</span>
+        <span class="c1"># split string to avoid replacement during build process</span>
+        <span class="k">if</span> <span class="n">SCons</span><span class="o">.</span><span class="n">__version__</span> <span class="o">==</span> <span class="s1">&#39;__&#39;</span> <span class="o">+</span> <span class="s1">&#39;VERSION__&#39;</span><span class="p">:</span>
+            <span class="n">SCons</span><span class="o">.</span><span class="n">Warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Warnings</span><span class="o">.</span><span class="n">DevelopmentVersionWarning</span><span class="p">,</span>
+                <span class="s2">&quot;EnsureSConsVersion is ignored for development version&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">SConsEnvironment</span><span class="o">.</span><span class="n">GetSConsVersion</span><span class="p">()</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">major</span><span class="p">,</span> <span class="n">minor</span><span class="p">,</span> <span class="n">revision</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">revision</span><span class="p">:</span>
+                <span class="n">scons_ver_string</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%d</span><span class="s1">.</span><span class="si">%d</span><span class="s1">.</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">major</span><span class="p">,</span> <span class="n">minor</span><span class="p">,</span> <span class="n">revision</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">scons_ver_string</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%d</span><span class="s1">.</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">major</span><span class="p">,</span> <span class="n">minor</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SCons </span><span class="si">%s</span><span class="s2"> or greater required, but you have SCons </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> \
+                  <span class="p">(</span><span class="n">scons_ver_string</span><span class="p">,</span> <span class="n">SCons</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SConsEnvironment.EnsurePythonVersion">
+<a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.SConscript.SConsEnvironment.EnsurePythonVersion">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">EnsurePythonVersion</span><span class="p">(</span><span class="n">major</span><span class="p">,</span> <span class="n">minor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Exit abnormally if the Python version is not late enough.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">major</span><span class="p">,</span> <span class="n">minor</span><span class="p">):</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Python </span><span class="si">%d</span><span class="s2">.</span><span class="si">%d</span><span class="s2"> or greater required, but you have Python </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">major</span><span class="p">,</span><span class="n">minor</span><span class="p">,</span><span class="n">v</span><span class="p">))</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SConsEnvironment.Exit">
+<a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.SConscript.SConsEnvironment.Exit">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">Exit</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SConsEnvironment.Export">
+<a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.SConscript.SConsEnvironment.Export">[docs]</a>
+    <span class="k">def</span> <span class="nf">Export</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="nb">vars</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">:</span>
+            <span class="n">global_exports</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">compute_exports</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Split</span><span class="p">(</span><span class="n">var</span><span class="p">)))</span>
+        <span class="n">global_exports</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kw</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SConsEnvironment.GetLaunchDir">
+<a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.SConscript.SConsEnvironment.GetLaunchDir">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">GetLaunchDir</span><span class="p">():</span>
+        <span class="k">global</span> <span class="n">launch_dir</span>
+        <span class="k">return</span> <span class="n">launch_dir</span></div>
+
+
+<div class="viewcode-block" id="SConsEnvironment.GetOption">
+<a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.SConscript.SConsEnvironment.GetOption">[docs]</a>
+    <span class="k">def</span> <span class="nf">GetOption</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subst</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Script</span><span class="o">.</span><span class="n">Main</span><span class="o">.</span><span class="n">GetOption</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SConsEnvironment.Help">
+<a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.SConscript.SConsEnvironment.Help">[docs]</a>
+    <span class="k">def</span> <span class="nf">Help</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">append</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">local_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update the help text.</span>
+
+<span class="sd">        The previous help text has *text* appended to it, except on the</span>
+<span class="sd">        first call. On first call, the values of *append* and *local_only*</span>
+<span class="sd">        are considered to determine what is appended to.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">           text: string to add to the help text.</span>
+<span class="sd">           append: on first call, if true, keep the existing help text</span>
+<span class="sd">              (default False).</span>
+<span class="sd">           local_only: on first call, if true and *append* is also true,</span>
+<span class="sd">              keep only the help text from AddOption calls.</span>
+
+<span class="sd">        .. versionchanged:: 4.6.0</span>
+<span class="sd">           The *keep_local* parameter was added.</span>
+<span class="sd">        .. versionchanged:: 4.9.0</span>
+<span class="sd">           The *keep_local* parameter was renamed *local_only* to match manpage</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subst</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">raw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">SCons</span><span class="o">.</span><span class="n">Script</span><span class="o">.</span><span class="n">HelpFunction</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="n">append</span><span class="p">,</span> <span class="n">local_only</span><span class="o">=</span><span class="n">local_only</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SConsEnvironment.Import">
+<a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.SConscript.SConsEnvironment.Import">[docs]</a>
+    <span class="k">def</span> <span class="nf">Import</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="nb">vars</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">frame</span> <span class="o">=</span> <span class="n">call_stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="nb">globals</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">globals</span>
+            <span class="n">exports</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">exports</span>
+            <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">:</span>
+                <span class="n">var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Split</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">var</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="s1">&#39;*&#39;</span><span class="p">:</span>
+                        <span class="nb">globals</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">global_exports</span><span class="p">)</span>
+                        <span class="nb">globals</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">exports</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">exports</span><span class="p">:</span>
+                            <span class="nb">globals</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">exports</span><span class="p">[</span><span class="n">v</span><span class="p">]</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="nb">globals</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">global_exports</span><span class="p">[</span><span class="n">v</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">x</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">UserError</span><span class="p">(</span><span class="s2">&quot;Import of non-existent variable &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="o">%</span><span class="n">x</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SConsEnvironment.SConscript">
+<a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.SConscript.SConsEnvironment.SConscript">[docs]</a>
+    <span class="k">def</span> <span class="nf">SConscript</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">ls</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Execute SCons configuration files.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            *ls (str or list): configuration file(s) to execute.</span>
+
+<span class="sd">        Keyword arguments:</span>
+<span class="sd">            dirs (list): execute SConscript in each listed directory.</span>
+<span class="sd">            name (str): execute script &#39;name&#39; (used only with &#39;dirs&#39;).</span>
+<span class="sd">            exports (list or dict): locally export variables the</span>
+<span class="sd">              called script(s) can import.</span>
+<span class="sd">            variant_dir (str): mirror sources needed for the build in</span>
+<span class="sd">             a variant directory to allow building in it.</span>
+<span class="sd">            duplicate (bool): physically duplicate sources instead of just</span>
+<span class="sd">              adjusting paths of derived files (used only with &#39;variant_dir&#39;)</span>
+<span class="sd">              (default is True).</span>
+<span class="sd">            must_exist (bool): fail if a requested script is missing</span>
+<span class="sd">              (default is False, default is deprecated).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list of variables returned by the called script</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            UserError: a script is not found and such exceptions are enabled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">subst_element</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">subst</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">subst</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_List</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">subst</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">subst</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">x</span>
+        <span class="n">ls</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">subst_element</span><span class="p">,</span> <span class="n">ls</span><span class="p">))</span>
+        <span class="n">subst_kw</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">kw</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">is_String</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subst</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_List</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">subst</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">if</span> <span class="n">is_String</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">else</span> <span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">val</span><span class="p">]</span>
+            <span class="n">subst_kw</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+
+        <span class="n">files</span><span class="p">,</span> <span class="n">exports</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_SConscript_filenames</span><span class="p">(</span><span class="n">ls</span><span class="p">,</span> <span class="n">subst_kw</span><span class="p">)</span>
+        <span class="n">subst_kw</span><span class="p">[</span><span class="s1">&#39;exports&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exports</span>
+        <span class="k">return</span> <span class="n">_SConscript</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fs</span><span class="p">,</span> <span class="o">*</span><span class="n">files</span><span class="p">,</span> <span class="o">**</span><span class="n">subst_kw</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SConsEnvironment.SConscriptChdir">
+<a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.SConscript.SConsEnvironment.SConscriptChdir">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">SConscriptChdir</span><span class="p">(</span><span class="n">flag</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">global</span> <span class="n">sconscript_chdir</span>
+        <span class="n">sconscript_chdir</span> <span class="o">=</span> <span class="n">flag</span></div>
+
+
+<div class="viewcode-block" id="SConsEnvironment.SetOption">
+<a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.SConscript.SConsEnvironment.SetOption">[docs]</a>
+    <span class="k">def</span> <span class="nf">SetOption</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subst</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">SCons</span><span class="o">.</span><span class="n">Script</span><span class="o">.</span><span class="n">Main</span><span class="o">.</span><span class="n">SetOption</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></div>
+</div>
+
+
+<span class="c1">#</span>
+<span class="c1">#</span>
+<span class="c1">#</span>
+<span class="n">SCons</span><span class="o">.</span><span class="n">Environment</span><span class="o">.</span><span class="n">Environment</span> <span class="o">=</span> <span class="n">SConsEnvironment</span>
+
+<div class="viewcode-block" id="Configure">
+<a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.SConscript.Configure">[docs]</a>
+<span class="k">def</span> <span class="nf">Configure</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Script</span><span class="o">.</span><span class="n">sconscript_reading</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">UserError</span><span class="p">(</span><span class="s2">&quot;Calling Configure from Builders is not supported.&quot;</span><span class="p">)</span>
+    <span class="n">kw</span><span class="p">[</span><span class="s1">&#39;_depth&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">SCons</span><span class="o">.</span><span class="n">SConf</span><span class="o">.</span><span class="n">SConf</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+
+<span class="c1"># It&#39;s very important that the DefaultEnvironmentCall() class stay in this</span>
+<span class="c1"># file, with the get_calling_namespaces() function, the compute_exports()</span>
+<span class="c1"># function, the Frame class and the SConsEnvironment.Export() method.</span>
+<span class="c1"># These things make up the calling stack leading up to the actual global</span>
+<span class="c1"># Export() or SConscript() call that the user issued.  We want to allow</span>
+<span class="c1"># users to export local variables that they define, like so:</span>
+<span class="c1">#</span>
+<span class="c1">#       def func():</span>
+<span class="c1">#           x = 1</span>
+<span class="c1">#           Export(&#39;x&#39;)</span>
+<span class="c1">#</span>
+<span class="c1"># To support this, the get_calling_namespaces() function assumes that</span>
+<span class="c1"># the *first* stack frame that&#39;s not from this file is the local frame</span>
+<span class="c1"># for the Export() or SConscript() call.</span>
+
+<span class="n">_DefaultEnvironmentProxy</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="get_DefaultEnvironmentProxy">
+<a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.SConscript.get_DefaultEnvironmentProxy">[docs]</a>
+<span class="k">def</span> <span class="nf">get_DefaultEnvironmentProxy</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">_DefaultEnvironmentProxy</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_DefaultEnvironmentProxy</span><span class="p">:</span>
+        <span class="n">default_env</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Defaults</span><span class="o">.</span><span class="n">DefaultEnvironment</span><span class="p">()</span>
+        <span class="n">_DefaultEnvironmentProxy</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Environment</span><span class="o">.</span><span class="n">NoSubstitutionProxy</span><span class="p">(</span><span class="n">default_env</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_DefaultEnvironmentProxy</span></div>
+
+
+<div class="viewcode-block" id="DefaultEnvironmentCall">
+<a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.SConscript.DefaultEnvironmentCall">[docs]</a>
+<span class="k">class</span> <span class="nc">DefaultEnvironmentCall</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class that implements &quot;global function&quot; calls of</span>
+<span class="sd">    Environment methods by fetching the specified method from the</span>
+<span class="sd">    DefaultEnvironment&#39;s class.  Note that this uses an intermediate</span>
+<span class="sd">    proxy class instead of calling the DefaultEnvironment method</span>
+<span class="sd">    directly so that the proxy can override the subst() method and</span>
+<span class="sd">    thereby prevent expansion of construction variables (since from</span>
+<span class="sd">    the user&#39;s point of view this was called as a global function,</span>
+<span class="sd">    with no associated construction environment).&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method_name</span><span class="p">,</span> <span class="n">subst</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span> <span class="o">=</span> <span class="n">method_name</span>
+        <span class="k">if</span> <span class="n">subst</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">factory</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Defaults</span><span class="o">.</span><span class="n">DefaultEnvironment</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">factory</span> <span class="o">=</span> <span class="n">get_DefaultEnvironmentProxy</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">factory</span><span class="p">()</span>
+        <span class="n">method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">method</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="BuildDefaultGlobals">
+<a class="viewcode-back" href="../../../../SCons.Script/#SCons.Script.SConscript.BuildDefaultGlobals">[docs]</a>
+<span class="k">def</span> <span class="nf">BuildDefaultGlobals</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a dictionary containing all the default globals for</span>
+<span class="sd">    SConstruct and SConscript files.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">global</span> <span class="n">GlobalDict</span>
+    <span class="k">if</span> <span class="n">GlobalDict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">GlobalDict</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="kn">import</span> <span class="nn">SCons.Script</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Script</span><span class="o">.</span><span class="vm">__dict__</span>
+        <span class="k">def</span> <span class="nf">not_a_module</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">d</span><span class="p">,</span> <span class="n">mtype</span><span class="o">=</span><span class="nb">type</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Script</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+             <span class="k">return</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">mtype</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">filter</span><span class="p">(</span><span class="n">not_a_module</span><span class="p">,</span> <span class="nb">dir</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Script</span><span class="p">)):</span>
+             <span class="n">GlobalDict</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="n">m</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">GlobalDict</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+
+
+<span class="c1"># Local Variables:</span>
+<span class="c1"># tab-width:4</span>
+<span class="c1"># indent-tabs-mode:nil</span>
+<span class="c1"># End:</span>
+<span class="c1"># vim: set expandtab tabstop=4 shiftwidth=4:</span>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SCons Project Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022, SCons Project.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,458 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Where To Put Your Custom Builders and Tools</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 2.2.0"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Writing Your Own Builders"
+HREF="c3621.html"><LINK
+REL="PREVIOUS"
+TITLE="Builders That Modify the Target or Source Lists Using an Emitter"
+HREF="x3798.html"><LINK
+REL="NEXT"
+TITLE="Not Writing a Builder:  the Command Builder"
+HREF="c3895.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 2.2.0</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x3798.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 18. Writing Your Own Builders</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="c3895.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN3822"
+>18.7. Where To Put Your Custom Builders and Tools</A
+></H1
+><P
+>&#13;
+    The <TT
+CLASS="filename"
+>site_scons</TT
+> directories give you a place to
+    put Python modules and packages that you can import into your <TT
+CLASS="filename"
+>SConscript</TT
+> files
+    (<TT
+CLASS="filename"
+>site_scons</TT
+>),
+    add-on tools that can integrate into <SPAN
+CLASS="application"
+>SCons</SPAN
+>
+    (<TT
+CLASS="filename"
+>site_scons/site_tools</TT
+>),
+    and a <TT
+CLASS="filename"
+>site_scons/site_init.py</TT
+> file that
+    gets read before any <TT
+CLASS="filename"
+>SConstruct</TT
+> or <TT
+CLASS="filename"
+>SConscript</TT
+> file,
+    allowing you to change <SPAN
+CLASS="application"
+>SCons</SPAN
+>'s default behavior.
+
+    </P
+><P
+>&#13;
+    Each system type (Windows, Mac, Linux, etc.) searches a canonical
+    set of directories for site_scons; see the man page for details.
+    The top-level SConstruct's site_scons dir is always searched last,
+    and its dir is placed first in the tool path so it overrides all
+    others.
+
+    </P
+><P
+>&#13;
+    If you get a tool from somewhere (the <SPAN
+CLASS="application"
+>SCons</SPAN
+> wiki or a third party,
+    for instance) and you'd like to use it in your project, a
+    <TT
+CLASS="filename"
+>site_scons</TT
+> dir is the simplest place to put it.
+    Tools come in two flavors; either a Python function that operates on
+    an <CODE
+CLASS="function"
+>Environment</CODE
+> or a Python module or package  containing two functions,
+    <CODE
+CLASS="function"
+>exists()</CODE
+> and <CODE
+CLASS="function"
+>generate()</CODE
+>.
+
+    </P
+><P
+>&#13;
+    A single-function Tool can just be included in your
+    <TT
+CLASS="filename"
+>site_scons/site_init.py</TT
+> file where it will be
+    parsed and made available for use.  For instance, you could have a
+    <TT
+CLASS="filename"
+>site_scons/site_init.py</TT
+> file like this:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;        def TOOL_ADD_HEADER(env):
+           """A Tool to add a header from $HEADER to the source file"""
+           add_header = Builder(action=['echo "$HEADER" &#62; $TARGET',
+                                        'cat $SOURCE &#62;&#62; $TARGET'])
+           env.Append(BUILDERS = {'AddHeader' : add_header})
+           env['HEADER'] = '' # set default value
+    </PRE
+><P
+>&#13;
+    and a <TT
+CLASS="filename"
+>SConstruct</TT
+> like this:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;        # Use TOOL_ADD_HEADER from site_scons/site_init.py
+        env=Environment(tools=['default', TOOL_ADD_HEADER], HEADER="=====")
+        env.AddHeader('tgt', 'src')
+    </PRE
+><P
+>&#13;
+      The <CODE
+CLASS="function"
+>TOOL_ADD_HEADER</CODE
+> tool method will be
+      called to add the <CODE
+CLASS="function"
+>AddHeader</CODE
+> tool to the
+      environment.
+
+    </P
+><P
+>&#13;      A more full-fledged tool with
+      <CODE
+CLASS="function"
+>exists()</CODE
+> and <CODE
+CLASS="function"
+>generate()</CODE
+>
+      methods can be installed either as a module in the file
+      <TT
+CLASS="filename"
+>site_scons/site_tools/toolname.py</TT
+> or as a
+      package in the
+      directory <TT
+CLASS="filename"
+>site_scons/site_tools/toolname</TT
+>.  In
+      the case of using a package, the <CODE
+CLASS="function"
+>exists()</CODE
+>
+      and <CODE
+CLASS="function"
+>generate()</CODE
+> are in the
+      file <TT
+CLASS="filename"
+>site_scons/site_tools/toolname/__init__.py</TT
+>.
+      (In all the above case <TT
+CLASS="filename"
+>toolname</TT
+> is replaced
+      by the name of the tool.)
+      Since <TT
+CLASS="filename"
+>site_scons/site_tools</TT
+> is automatically
+      added to the head of the tool search path, any tool found there
+      will be available to all environments.  Furthermore, a tool found
+      there will override a built-in tool of the same name, so if you
+      need to change the behavior of a built-in
+      tool, <TT
+CLASS="filename"
+>site_scons</TT
+> gives you the hook you need.
+    </P
+><P
+>&#13;      Many people have a library of utility Python functions they'd like
+      to include in <TT
+CLASS="filename"
+>SConscript</TT
+>s; just put that module in
+      <TT
+CLASS="filename"
+>site_scons/my_utils.py</TT
+> or any valid Python module name of your
+      choice.  For instance you can do something like this in
+      <TT
+CLASS="filename"
+>site_scons/my_utils.py</TT
+> to add
+      <CODE
+CLASS="function"
+>build_id</CODE
+> and <CODE
+CLASS="function"
+>MakeWorkDir</CODE
+>
+      functions:
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;        from SCons.Script import *   # for Execute and Mkdir
+        def build_id():
+           """Return a build ID (stub version)"""
+           return "100"
+        def MakeWorkDir(workdir):
+           """Create the specified dir immediately"""
+           Execute(Mkdir(workdir))
+    </PRE
+><P
+>&#13;
+    And then in your <TT
+CLASS="filename"
+>SConscript</TT
+> or any sub-<TT
+CLASS="filename"
+>SConscript</TT
+> anywhere in
+    your build, you can import <TT
+CLASS="filename"
+>my_utils</TT
+> and use it:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;        import my_utils
+        print "build_id=" + my_utils.build_id()
+        my_utils.MakeWorkDir('/tmp/work')
+    </PRE
+><P
+>&#13;      Note that although you can put this library in
+      <TT
+CLASS="filename"
+>site_scons/site_init.py</TT
+>,
+      it is no better there than <TT
+CLASS="filename"
+>site_scons/my_utils.py</TT
+>
+      since you still have to import that module into your <TT
+CLASS="filename"
+>SConscript</TT
+>.
+      Also note that in order to refer to objects in the SCons namespace
+      such as <CODE
+CLASS="function"
+>Environment</CODE
+> or <CODE
+CLASS="function"
+>Mkdir</CODE
+> or <CODE
+CLASS="function"
+>Execute</CODE
+> in any file other
+      than a <TT
+CLASS="filename"
+>SConstruct</TT
+> or <TT
+CLASS="filename"
+>SConscript</TT
+> you always need to do
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;        from SCons.Script import *
+    </PRE
+><P
+>&#13;      This is true in modules in <TT
+CLASS="filename"
+>site_scons</TT
+> such as
+      <TT
+CLASS="filename"
+>site_scons/site_init.py</TT
+> as well.
+    </P
+><P
+>&#13;
+      You can use any of the user- or machine-wide site dirs such as
+      <TT
+CLASS="filename"
+>~/.scons/site_scons</TT
+> instead of
+      <TT
+CLASS="filename"
+>./site_scons</TT
+>, or use the
+      <TT
+CLASS="literal"
+>--site-dir</TT
+> option to point to your own dir.
+      <TT
+CLASS="filename"
+>site_init.py</TT
+> and
+      <TT
+CLASS="filename"
+>site_tools</TT
+> will be located under that dir.
+      To avoid using a <TT
+CLASS="filename"
+>site_scons</TT
+> dir at all,
+      even if it exists, use the <TT
+CLASS="literal"
+>--no-site-dir</TT
+>
+      option.
+
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x3798.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="c3895.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Builders That Modify the Target or Source Lists Using an <TT
+CLASS="literal"
+>Emitter</TT
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c3621.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Not Writing a Builder:  the <CODE
+CLASS="function"
+>Command</CODE
+> Builder</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

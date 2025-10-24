@@ -1,0 +1,37 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>22.2. Keeping Build Output Consistent</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.10.0"><link rel="up" href="ch22.html" title="Chapter 22. Caching Built Files"><link rel="prev" href="ch22.html" title="Chapter 22. Caching Built Files"><link rel="next" href="ch22s03.html" title="22.3. Not Using the Derived-File Cache for Specific Files"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">22.2. Keeping Build Output Consistent</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch22.html">Prev</a> </td><th width="60%" align="center">Chapter 22. Caching Built Files</th><td width="20%" align="right"> <a accesskey="n" href="ch22s03.html">Next</a></td></tr></table><hr></div><div class="section" title="22.2. Keeping Build Output Consistent"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="sect-caching-consistency"></a>22.2. Keeping Build Output Consistent</h2></div></div></div><p>
+
+    One potential drawback to using a derived-file cache
+    is that the output printed by <span class="application">SCons</span>
+    can be inconsistent from invocation to invocation,
+    because any given file may be rebuilt one time
+    and retrieved from the derived-file cache the next time.
+    This can make analyzing build output more difficult,
+    especially for automated scripts that
+    expect consistent output each time.
+
+    </p><p>
+
+    If, however, you use the <code class="option">--cache-show</code> option,
+    <span class="application">SCons</span> will print the command line that it
+    <span class="emphasis"><em>would</em></span> have executed
+    to build the file,
+    even when it is retrieving the file from the derived-file cache.
+    This keeps the build output consistent across builds:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o hello.o -c hello.c
+cc -o hello hello.o
+% <strong class="userinput"><code>scons -Q -c</code></strong>
+Removed hello.o
+Removed hello
+% <strong class="userinput"><code>scons -Q --cache-show</code></strong>
+cc -o hello.o -c hello.c
+cc -o hello hello.o
+</pre><p>
+
+    The trade-off, of course, is that you no longer
+    know whether or not <span class="application">SCons</span>
+    has retrieved a derived file from cache
+    or has rebuilt it locally.
+
+    </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch22.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch22.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch22s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 22. Caching Built Files </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 22.3. Not Using the Derived-File Cache for Specific Files</td></tr></table></div></body></html>

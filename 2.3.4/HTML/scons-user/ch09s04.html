@@ -1,0 +1,113 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>9.4. Printing Detailed Build Status: the GetBuildFailures Function</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 2.3.4"><link rel="up" href="ch09.html" title="Chapter 9. Controlling Build Output"><link rel="prev" href="ch09s03.html" title="9.3. Providing Build Progress Output: the Progress Function"><link rel="next" href="ch10.html" title="Chapter 10. Controlling a Build From the Command Line"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">9.4. Printing Detailed Build Status:  the <code class="function">GetBuildFailures</code> Function</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch09s03.html">Prev</a> </td><th width="60%" align="center">Chapter 9. Controlling Build Output</th><td width="20%" align="right"> <a accesskey="n" href="ch10.html">Next</a></td></tr></table><hr></div><div class="section" title="9.4. Printing Detailed Build Status: the GetBuildFailures Function"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idp4815912"></a>9.4. Printing Detailed Build Status:  the <code class="function">GetBuildFailures</code> Function</h2></div></div></div><p>
+
+    SCons, like most build tools, returns zero status to
+    the shell on success and nonzero status on failure.
+    Sometimes it's useful to give more information about
+    the build status at the end of the run, for instance
+    to print an informative message, send an email, or
+    page the poor slob who broke the build.
+
+    </p><p>
+
+    SCons provides a <code class="function">GetBuildFailures</code> method that
+    you can use in a python <code class="function">atexit</code> function
+    to get a list of objects describing the actions that failed
+    while attempting to build targets.  There can be more
+    than one if you're using <code class="literal">-j</code>.  Here's a 
+    simple example:
+
+    </p><pre class="programlisting">
+import atexit
+
+def print_build_failures():
+    from SCons.Script import GetBuildFailures
+    for bf in GetBuildFailures():
+        print "%s failed: %s" % (bf.node, bf.errstr)
+atexit.register(print_build_failures)
+      </pre><p>
+
+    The <code class="function">atexit.register</code> call
+    registers <code class="function">print_build_failures</code>
+    as an <code class="function">atexit</code> callback, to be called
+    before <span class="application">SCons</span> exits.  When that function is called,
+    it calls <code class="function">GetBuildFailures</code> to fetch the list of failed objects.
+    See the man page
+    for the detailed contents of the returned objects;
+    some of the more useful attributes are 
+    <code class="literal">.node</code>,
+    <code class="literal">.errstr</code>,
+    <code class="literal">.filename</code>, and
+    <code class="literal">.command</code>.
+    The <code class="literal">filename</code> is not necessarily
+    the same file as the <code class="literal">node</code>; the
+    <code class="literal">node</code> is the target that was
+    being built when the error occurred, while the 
+    <code class="literal">filename</code>is the file or dir that
+    actually caused the error.
+    Note:  only call <code class="function">GetBuildFailures</code> at the end of the
+    build; calling it at any other time is undefined.
+
+    </p><p>   
+
+    Here is a more complete example showing how to
+    turn each element of <code class="function">GetBuildFailures</code> into a string:
+
+    </p><pre class="programlisting">
+# Make the build fail if we pass fail=1 on the command line
+if ARGUMENTS.get('fail', 0):
+    Command('target', 'source', ['/bin/false'])
+
+def bf_to_str(bf):
+    """Convert an element of GetBuildFailures() to a string
+    in a useful way."""
+    import SCons.Errors
+    if bf is None: # unknown targets product None in list
+        return '(unknown tgt)'
+    elif isinstance(bf, SCons.Errors.StopError):
+        return str(bf)
+    elif bf.node:
+        return str(bf.node) + ': ' + bf.errstr
+    elif bf.filename:
+        return bf.filename + ': ' + bf.errstr
+    return 'unknown failure: ' + bf.errstr
+import atexit
+
+def build_status():
+    """Convert the build status to a 2-tuple, (status, msg)."""
+    from SCons.Script import GetBuildFailures
+    bf = GetBuildFailures()
+    if bf:
+        # bf is normally a list of build failures; if an element is None,
+        # it's because of a target that scons doesn't know anything about.
+        status = 'failed'
+        failures_message = "\n".join(["Failed building %s" % bf_to_str(x)
+                           for x in bf if x is not None])
+    else:
+        # if bf is None, the build completed successfully.
+        status = 'ok'
+        failures_message = ''
+    return (status, failures_message)
+
+def display_build_status():
+    """Display the build status.  Called by atexit.
+    Here you could do all kinds of complicated things."""
+    status, failures_message = build_status()
+    if status == 'failed':
+       print "FAILED!!!!"  # could display alert, ring bell, etc.
+    elif status == 'ok':
+       print "Build succeeded."
+    print failures_message
+
+atexit.register(display_build_status)
+      </pre><p>
+    
+    When this runs, you'll see the appropriate output:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+scons: `.' is up to date.
+Build succeeded.
+% <strong class="userinput"><code>scons -Q fail=1</code></strong>
+scons: *** [target] Source `source' not found, needed by target `target'.
+FAILED!!!!
+Failed building target: Source `source' not found, needed by target `target'.
+</pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch09s03.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch09.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch10.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">9.3. Providing Build Progress Output:  the <code class="function">Progress</code> Function </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 10. Controlling a Build From the Command Line</td></tr></table></div></body></html>

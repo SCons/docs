@@ -1,0 +1,73 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>20.3. Using scanners with Builders</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.9.0"><link rel="up" href="ch20.html" title="Chapter 20. Extending SCons: Writing Your Own Scanners"><link rel="prev" href="ch20s02.html" title="20.2. Adding a search path to a Scanner: FindPathDirs"><link rel="next" href="ch21.html" title="Chapter 21. Multi-Platform Configuration (Autoconf Functionality)"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">20.3. Using scanners with Builders</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch20s02.html">Prev</a> </td><th width="60%" align="center">Chapter 20. Extending <span class="application">SCons</span>: Writing Your Own Scanners</th><td width="20%" align="right"> <a accesskey="n" href="ch21.html">Next</a></td></tr></table><hr></div><div class="section" title="20.3. Using scanners with Builders"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="scanner-with-builder"></a>20.3. Using scanners with Builders</h2></div></div></div><p>
+    One approach for introducing a <em class="glossterm">Scanner</em> into the build is in
+    conjunction with a <em class="glossterm">Builder</em>.  There are two relevant optional
+    parameters we can use when creating a Builder:
+    <em class="parameter"><code>source_scanner</code></em> and
+    <em class="parameter"><code>target_scanner</code></em>.
+    <em class="parameter"><code>source_scanner</code></em> is used for scanning
+    source files, and <em class="parameter"><code>target_scanner</code></em>
+    is used for scanning the target once it is generated.
+    </p><pre class="programlisting">
+import os, re
+
+include_re = re.compile(r"^include\s+(\S+)$", re.M)
+
+def kfile_scan(node, env, path, arg=None):
+    includes = include_re.findall(node.get_text_contents())
+    print(f"DEBUG: scan of {str(node)!r} found {includes}")
+    deps = []
+    for inc in includes:
+        for dir in path:
+            file = str(dir) + os.sep + inc
+            if os.path.exists(file):
+                deps.append(file)
+                break
+    print(f"DEBUG: scanned dependencies found: {deps}")
+    return env.File(deps)
+
+kscan = Scanner(
+    function=kfile_scan,
+    skeys=[".k"],
+    path_function=FindPathDirs("KPATH"),
+)
+
+def build_function(target, source, env):
+    # Code to build "target" from "source"
+    return None
+
+bld = Builder(
+    action=build_function,
+    suffix=".k",
+    source_scanner=kscan,
+    src_suffix=".input",
+)
+
+env = Environment(BUILDERS={"KFile": bld}, KPATH="inc")
+env.KFile("file")
+      </pre><p>
+    Running this example would only show that the stub
+    <code class="function">build_function</code> is getting called,
+    so some debug prints were added to the scanner function,
+    just to show the scanner is being invoked.
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+DEBUG: scan of 'file.input' found ['other_file']
+DEBUG: scanned dependencies found: ['inc/other_file']
+build_function(["file.k"], ["file.input"])
+</pre><p>
+    The path-search implementation in
+    <code class="function">kfile_scan</code> works,
+    but is quite simple-minded - a production scanner
+    will probably do something more sophisticated.
+    </p><p>
+
+    An emitter function can modify the list of sources or targets
+    passed to the action function when the Builder is triggered.
+
+    </p><p>
+
+    A scanner function will not affect the list of sources or targets
+    seen by the Builder during the build action. The scanner function
+    will, however, affect if the Builder should rebuild (if any of
+    the files sourced by the Scanner have changed for example).
+
+    </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch20s02.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch20.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch21.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">20.2. Adding a search path to a Scanner: <code class="function">FindPathDirs</code> </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 21. Multi-Platform Configuration (<span class="application">Autoconf</span> Functionality)</td></tr></table></div></body></html>

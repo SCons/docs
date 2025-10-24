@@ -1,0 +1,1433 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Controlling a Build From the Command Line</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 1.2.0"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Printing Detailed Build Status:  the GetBuildFailures Function"
+HREF="x1977.html"><LINK
+REL="NEXT"
+TITLE="Command-Line variable=value Build Variables"
+HREF="x2361.html"></HEAD
+><BODY
+CLASS="chapter"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 1.2.0</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x1977.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x2361.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="chapter"
+><H1
+><A
+NAME="chap-command-line"
+></A
+>Chapter 12. Controlling a Build From the Command Line</H1
+><P
+>&#13;
+  <SPAN
+CLASS="application"
+>SCons</SPAN
+> provides a number of ways
+  for the writer of the <TT
+CLASS="filename"
+>SConscript</TT
+> files
+  to give the users who will run <SPAN
+CLASS="application"
+>SCons</SPAN
+>
+  a great deal of control over the build execution.
+  The arguments that the user can specify on
+  the command line are broken down into three types:
+
+  </P
+><P
+></P
+><DIV
+CLASS="variablelist"
+><DL
+><DT
+>Options</DT
+><DD
+><P
+>&#13;
+    Command-line options always begin with
+    one or two <TT
+CLASS="literal"
+>-</TT
+> (hyphen) characters.
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> provides ways for you to examind
+    and set options values from within your <TT
+CLASS="filename"
+>SConscript</TT
+> files,
+    as well as the ability to define your own
+    custom options.
+    See <A
+HREF="c2008.html#sect-command-line-options"
+>Section 12.1</A
+>, below.
+
+    </P
+></DD
+><DT
+>Variables</DT
+><DD
+><P
+>&#13;
+    Any command-line argument containing an <TT
+CLASS="literal"
+>=</TT
+>
+    (equal sign) is considered a variable setting with the form
+    <CODE
+CLASS="varname"
+>variable</CODE
+>=<CODE
+CLASS="varname"
+>value</CODE
+>
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> provides direct access to
+    all of the command-line variable settings,
+    the ability to apply command-line variable settings
+    to construction environments,
+    and functions for configuring 
+    specific types of variables
+    (Boolean values, path names, etc.)
+    with automatic validation of the user's specified values.
+    See <A
+HREF="x2361.html"
+>Section 12.2</A
+>, below.
+
+    </P
+></DD
+><DT
+>Targets</DT
+><DD
+><P
+>&#13;
+    Any command-line argument that is not an option
+    or a variable setting
+    (does not begin with a hyphen
+    and does not contain an equal sign)
+    is considered a target that the user
+    (presumably) wants <SPAN
+CLASS="application"
+>SCons</SPAN
+> to build.
+    A list of Node objects representing
+    the target or targets to build.
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> provides access to the list of specified targets,
+    as well as ways to set the default list of targets
+    from within the <TT
+CLASS="filename"
+>SConscript</TT
+> files.
+    See <A
+HREF="x2720.html"
+>Section 12.3</A
+>, below.
+
+    </P
+></DD
+></DL
+></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="sect-command-line-options"
+>12.1. Command-Line Options</A
+></H1
+><P
+>&#13;
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> has many <SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>command-line options</I
+></SPAN
+>
+    that control its behavior.
+    A <SPAN
+CLASS="application"
+>SCons</SPAN
+> <SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>command-line option</I
+></SPAN
+>
+    always begins with one or two <TT
+CLASS="literal"
+>-</TT
+> (hyphen)
+    characters.
+
+    </P
+><DIV
+CLASS="section"
+><H2
+CLASS="section"
+><A
+NAME="AEN2048"
+>12.1.1. Not Having to Specify Command-Line Options Each Time:  the <CODE
+CLASS="varname"
+>SCONSFLAGS</CODE
+> Environment Variable</A
+></H2
+><P
+>&#13;
+      Users may find themselves supplying
+      the same command-line options every time
+      they run <SPAN
+CLASS="application"
+>SCons</SPAN
+>.
+      For example, you might find it saves time
+      to specify a value of <TT
+CLASS="literal"
+>-j 2</TT
+>
+      to have <SPAN
+CLASS="application"
+>SCons</SPAN
+> run up to two build commands in parallel.
+      To avoid having to type <TT
+CLASS="literal"
+>-j 2</TT
+> by hand
+      every time,
+      you can set the external environment variable
+      <CODE
+CLASS="varname"
+>SCONSFLAGS</CODE
+> to a string containing
+      command-line options that you want <SPAN
+CLASS="application"
+>SCons</SPAN
+> to use.
+
+      </P
+><P
+>&#13;
+      If, for example,
+      you're using a POSIX shell that's
+      compatible with the Bourne shell,
+      and you always want <SPAN
+CLASS="application"
+>SCons</SPAN
+> to use the
+      <TT
+CLASS="literal"
+>-Q</TT
+> option,
+      you can set the <CODE
+CLASS="varname"
+>SCONSFLAGS</CODE
+>
+      environment as follows:
+
+      </P
+><PRE
+CLASS="screen"
+>&#13;        % <KBD
+CLASS="userinput"
+>scons</KBD
+>
+        scons: Reading SConscript files ...
+        scons: done reading SConscript files.
+        scons: Building targets ...
+            ... [build output] ...
+        scons: done building targets.
+        % <KBD
+CLASS="userinput"
+>export SCONSFLAGS="-Q"</KBD
+>
+        % <KBD
+CLASS="userinput"
+>scons</KBD
+>
+            ... [build output] ...
+      </PRE
+><P
+>&#13;
+      Users of <SPAN
+CLASS="application"
+>csh</SPAN
+>-style shells on POSIX systems
+      can set the <CODE
+CLASS="varname"
+>SCONSFLAGS</CODE
+> environment as follows:
+
+      </P
+><PRE
+CLASS="screen"
+>&#13;        $ <KBD
+CLASS="userinput"
+>setenv SCONSFLAGS "-Q"</KBD
+>
+      </PRE
+><P
+>&#13;
+      Windows users may typically want to set the
+      <CODE
+CLASS="varname"
+>SCONSFLAGS</CODE
+> in the appropriate tab of the
+      <TT
+CLASS="literal"
+>System Properties</TT
+> window.
+
+      </P
+></DIV
+><DIV
+CLASS="section"
+><H2
+CLASS="section"
+><A
+NAME="AEN2074"
+>12.1.2. Getting Values Set by Command-Line Options:  the <CODE
+CLASS="function"
+>GetOption</CODE
+> Function</A
+></H2
+><P
+>&#13;
+      <SPAN
+CLASS="application"
+>SCons</SPAN
+> provides the <CODE
+CLASS="function"
+>GetOption</CODE
+> function
+      to get the values set by the various command-line options.
+      One common use of this is to check whether or not
+      the <TT
+CLASS="literal"
+>-h</TT
+> or <TT
+CLASS="literal"
+>--help</TT
+> option
+      has been specified.
+      Normally, <SPAN
+CLASS="application"
+>SCons</SPAN
+> does not print its help text
+      until after it has read all of the <TT
+CLASS="filename"
+>SConscript</TT
+> files,
+      because it's possible that help text has been added
+      by some subsidiary <TT
+CLASS="filename"
+>SConscript</TT
+> file deep in the
+      source tree hierarchy.
+      Of course, reading all of the <TT
+CLASS="filename"
+>SConscript</TT
+> files
+      takes extra time.
+
+      </P
+><P
+>&#13;
+      If you know that your configuration does not define
+      any additional help text in subsidiary <TT
+CLASS="filename"
+>SConscript</TT
+> files,
+      you can speed up the command-line help available to users
+      by using the <CODE
+CLASS="function"
+>GetOption</CODE
+> function to load the
+      subsidiary <TT
+CLASS="filename"
+>SConscript</TT
+> files only if the
+      the user has <SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>not</I
+></SPAN
+> specified
+      the <TT
+CLASS="literal"
+>-h</TT
+> or <TT
+CLASS="literal"
+>--help</TT
+> option,
+      like so:
+
+      </P
+><PRE
+CLASS="programlisting"
+></PRE
+><P
+>&#13;
+      In general, the string that you pass to the
+      <CODE
+CLASS="function"
+>GetOption</CODE
+> function to fetch the value of a command-line
+      option setting is the same as the "most common" long option name
+      (beginning with two hyphen characters),
+      although there are some exceptions.
+      The list of <SPAN
+CLASS="application"
+>SCons</SPAN
+> command-line options
+      and the <CODE
+CLASS="function"
+>GetOption</CODE
+> strings for fetching them,
+      are available in the
+      <A
+HREF="c2008.html#sect-command-line-option-strings"
+>Section 12.1.4</A
+> section,
+      below.
+
+      </P
+></DIV
+><DIV
+CLASS="section"
+><H2
+CLASS="section"
+><A
+NAME="AEN2099"
+>12.1.3. Setting Values of Command-Line Options:  the <CODE
+CLASS="function"
+>SetOption</CODE
+> Function</A
+></H2
+><P
+>&#13;
+      You can also set the values of <SPAN
+CLASS="application"
+>SCons</SPAN
+>
+      command-line options from within the <TT
+CLASS="filename"
+>SConscript</TT
+> files
+      by using the <CODE
+CLASS="function"
+>SetOption</CODE
+> function.
+      The strings that you use to set the values of <SPAN
+CLASS="application"
+>SCons</SPAN
+>
+      command-line options are available in the
+      <A
+HREF="c2008.html#sect-command-line-option-strings"
+>Section 12.1.4</A
+> section,
+      below.
+
+      </P
+><P
+>&#13;
+      One use of the <CODE
+CLASS="function"
+>SetOption</CODE
+> function is to
+      specify a value for the <TT
+CLASS="literal"
+>-j</TT
+>
+      or <TT
+CLASS="literal"
+>--jobs</TT
+> option,
+      so that users get the improved performance
+      of a parallel build without having to specify the option by hand.
+      A complicating factor is that a good value
+      for the <TT
+CLASS="literal"
+>-j</TT
+> option is
+      somewhat system-dependent.
+      One rough guideline is that the more processors
+      your system has,
+      the higher you want to set the
+      <TT
+CLASS="literal"
+>-j</TT
+> value,
+      in order to take advantage of the number of CPUs.
+
+      </P
+><P
+>&#13;
+      For example, suppose the administrators
+      of your development systems
+      have standardized on setting a
+      <CODE
+CLASS="varname"
+>NUM_CPU</CODE
+> environment variable
+      to the number of processors on each system.
+      A little bit of Python code
+      to access the environment variable
+      and the <CODE
+CLASS="function"
+>SetOption</CODE
+> function
+      provide the right level of flexibility:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;        import os
+        num_cpu = int(os.environ.get('NUM_CPU', 2))
+        SetOption('num_jobs', num_cpu)
+        print "running with -j", GetOption('num_jobs')
+      </PRE
+><P
+>&#13;
+      The above snippet of code
+      sets the value of the <TT
+CLASS="literal"
+>--jobs</TT
+> option
+      to the value specified in the
+      <CODE
+CLASS="varname"
+>$NUM_CPU</CODE
+> environment variable.
+      (This is one of the exception cases
+      where the string is spelled differently from
+      the from command-line option.
+      The string for fetching or setting the <TT
+CLASS="literal"
+>--jobs</TT
+>
+      value is <TT
+CLASS="literal"
+>num_jobs</TT
+>
+      for historical reasons.)
+      The code in this example prints the <TT
+CLASS="literal"
+>num_jobs</TT
+>
+      value for illustrative purposes.
+      It uses a default value of <TT
+CLASS="literal"
+>2</TT
+>
+      to provide some minimal parallelism even on
+      single-processor systems:
+
+      </P
+><PRE
+CLASS="screen"
+>&#13;        % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+        running with -j 2
+        scons: `.' is up to date.
+      </PRE
+><P
+>&#13;
+      But if the <CODE
+CLASS="varname"
+>$NUM_CPU</CODE
+>
+      environment variable is set,
+      then we use that for the default number of jobs:
+
+      </P
+><PRE
+CLASS="screen"
+>&#13;        % <KBD
+CLASS="userinput"
+>export NUM_CPU="4"</KBD
+>
+        % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+        running with -j 4
+        scons: `.' is up to date.
+      </PRE
+><P
+>&#13;
+      But any explicit
+      <TT
+CLASS="literal"
+>-j</TT
+> or <TT
+CLASS="literal"
+>--jobs</TT
+>
+      value the user specifies an the command line is used first,
+      regardless of whether or not
+      the <CODE
+CLASS="varname"
+>$NUM_CPU</CODE
+> environment
+      variable is set:
+
+      </P
+><PRE
+CLASS="screen"
+>&#13;        % <KBD
+CLASS="userinput"
+>scons -Q -j 7</KBD
+>
+        running with -j 7
+        scons: `.' is up to date.
+        % <KBD
+CLASS="userinput"
+>export NUM_CPU="4"</KBD
+>
+        % <KBD
+CLASS="userinput"
+>scons -Q -j 3</KBD
+>
+        running with -j 3
+        scons: `.' is up to date.
+      </PRE
+></DIV
+><DIV
+CLASS="section"
+><H2
+CLASS="section"
+><A
+NAME="sect-command-line-option-strings"
+>12.1.4. Strings for Getting or Setting Values of <SPAN
+CLASS="application"
+>SCons</SPAN
+> Command-Line Options</A
+></H2
+><P
+>&#13;
+      The strings that you can pass to the <CODE
+CLASS="function"
+>GetOption</CODE
+>
+      and <CODE
+CLASS="function"
+>SetOption</CODE
+> functions usually correspond to the
+      first long-form option name
+      (beginning with two hyphen characters:  <TT
+CLASS="literal"
+>--</TT
+>),
+      after replacing any remaining hyphen characters
+      with underscores.
+
+      </P
+><P
+>&#13;
+      The full list of strings and the variables they
+      correspond to is as follows:
+
+      </P
+><DIV
+CLASS="informaltable"
+><P
+></P
+><A
+NAME="AEN2148"
+></A
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><THEAD
+><TR
+><TH
+>String for <CODE
+CLASS="function"
+>GetOption</CODE
+> and <CODE
+CLASS="function"
+>SetOption</CODE
+></TH
+><TH
+>Command-Line Option(s)</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="literal"
+>cache_debug</TT
+></TD
+><TD
+><CODE
+CLASS="option"
+>--cache-debug</CODE
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="literal"
+>cache_disable</TT
+></TD
+><TD
+><CODE
+CLASS="option"
+>--cache-disable</CODE
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="literal"
+>cache_force</TT
+></TD
+><TD
+><CODE
+CLASS="option"
+>--cache-force</CODE
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="literal"
+>cache_show</TT
+></TD
+><TD
+><CODE
+CLASS="option"
+>--cache-show</CODE
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="literal"
+>clean</TT
+></TD
+><TD
+><CODE
+CLASS="option"
+>-c</CODE
+>,
+           <CODE
+CLASS="option"
+>--clean</CODE
+>,
+           <CODE
+CLASS="option"
+>--remove</CODE
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="literal"
+>config</TT
+></TD
+><TD
+><CODE
+CLASS="option"
+>--config</CODE
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="literal"
+>directory</TT
+></TD
+><TD
+><CODE
+CLASS="option"
+>-C</CODE
+>,
+             <CODE
+CLASS="option"
+>--directory</CODE
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="literal"
+>diskcheck</TT
+></TD
+><TD
+><CODE
+CLASS="option"
+>--diskcheck</CODE
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="literal"
+>duplicate</TT
+></TD
+><TD
+><CODE
+CLASS="option"
+>--duplicate</CODE
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="literal"
+>file</TT
+></TD
+><TD
+><CODE
+CLASS="option"
+>-f</CODE
+>,
+             <CODE
+CLASS="option"
+>--file</CODE
+>,
+             <CODE
+CLASS="option"
+>--makefile </CODE
+>,
+             <CODE
+CLASS="option"
+>--sconstruct</CODE
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="literal"
+>help</TT
+></TD
+><TD
+><CODE
+CLASS="option"
+>-h</CODE
+>,
+             <CODE
+CLASS="option"
+>--help</CODE
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="literal"
+>ignore_errors</TT
+></TD
+><TD
+><CODE
+CLASS="option"
+>--ignore-errors</CODE
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="literal"
+>implicit_cache</TT
+></TD
+><TD
+><CODE
+CLASS="option"
+>--implicit-cache</CODE
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="literal"
+>implicit_deps_changed</TT
+></TD
+><TD
+><CODE
+CLASS="option"
+>--implicit-deps-changed</CODE
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="literal"
+>implicit_deps_unchanged</TT
+></TD
+><TD
+><CODE
+CLASS="option"
+>--implicit-deps-unchanged</CODE
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="literal"
+>interactive</TT
+></TD
+><TD
+><CODE
+CLASS="option"
+>--interact</CODE
+>,
+             <CODE
+CLASS="option"
+>--interactive</CODE
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="literal"
+>keep_going</TT
+></TD
+><TD
+><CODE
+CLASS="option"
+>-k</CODE
+>,
+             <CODE
+CLASS="option"
+>--keep-going</CODE
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="literal"
+>max_drift</TT
+></TD
+><TD
+><CODE
+CLASS="option"
+>--max-drift</CODE
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="literal"
+>no_exec</TT
+></TD
+><TD
+><CODE
+CLASS="option"
+>-n</CODE
+>,
+             <CODE
+CLASS="option"
+>--no-exec</CODE
+>,
+             <CODE
+CLASS="option"
+>--just-print</CODE
+>,
+             <CODE
+CLASS="option"
+>--dry-run</CODE
+>,
+             <CODE
+CLASS="option"
+>--recon</CODE
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="literal"
+>no_site_dir</TT
+></TD
+><TD
+><CODE
+CLASS="option"
+>--no-site-dir</CODE
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="literal"
+>num_jobs</TT
+></TD
+><TD
+><CODE
+CLASS="option"
+>-j</CODE
+>,
+             <CODE
+CLASS="option"
+>--jobs</CODE
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="literal"
+>profile_file</TT
+></TD
+><TD
+><CODE
+CLASS="option"
+>--profile</CODE
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="literal"
+>question</TT
+></TD
+><TD
+><CODE
+CLASS="option"
+>-q</CODE
+>,
+             <CODE
+CLASS="option"
+>--question</CODE
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="literal"
+>random</TT
+></TD
+><TD
+><CODE
+CLASS="option"
+>--random</CODE
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="literal"
+>repository</TT
+></TD
+><TD
+><CODE
+CLASS="option"
+>-Y</CODE
+>,
+             <CODE
+CLASS="option"
+>--repository</CODE
+>,
+             <CODE
+CLASS="option"
+>--srcdir</CODE
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="literal"
+>silent</TT
+></TD
+><TD
+><CODE
+CLASS="option"
+>-s</CODE
+>,
+             <CODE
+CLASS="option"
+>--silent</CODE
+>,
+             <CODE
+CLASS="option"
+>--quiet</CODE
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="literal"
+>site_dir</TT
+></TD
+><TD
+><CODE
+CLASS="option"
+>--site-dir</CODE
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="literal"
+>stack_size</TT
+></TD
+><TD
+><CODE
+CLASS="option"
+>--stack-size</CODE
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="literal"
+>taskmastertrace_file</TT
+></TD
+><TD
+><CODE
+CLASS="option"
+>--taskmastertrace</CODE
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="literal"
+>warn</TT
+></TD
+><TD
+><CODE
+CLASS="option"
+>--warn</CODE
+> <CODE
+CLASS="option"
+>--warning</CODE
+></TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="section"
+><H2
+CLASS="section"
+><A
+NAME="AEN2327"
+>12.1.5. Adding Custom Command-Line Options:  the <CODE
+CLASS="function"
+>AddOption</CODE
+> Function</A
+></H2
+><P
+>&#13;
+      <SPAN
+CLASS="application"
+>SCons</SPAN
+> also allows you to define your own
+      command-line options with the <CODE
+CLASS="function"
+>AddOption</CODE
+> function.
+      The <CODE
+CLASS="function"
+>AddOption</CODE
+> function takes the same arguments
+      as the <CODE
+CLASS="function"
+>optparse.add_option</CODE
+> function
+      from the standard Python library.
+      <A
+NAME="AEN2335"
+HREF="#FTN.AEN2335"
+><SPAN
+CLASS="footnote"
+>[1]</SPAN
+></A
+>
+      Once you have added a custom command-line option
+      with the <CODE
+CLASS="function"
+>AddOption</CODE
+> function,
+      the value of the option (if any) is immediately available
+      using the standard <CODE
+CLASS="function"
+>GetOption</CODE
+> function.
+      (The value can also be set using <CODE
+CLASS="function"
+>SetOption</CODE
+>,
+      although that's not very useful in practice
+      because a default value can be specified in
+      directly in the <CODE
+CLASS="function"
+>AddOption</CODE
+> call.)
+
+      </P
+><P
+>&#13;
+      One useful example of using this functionality
+      is to provide a <CODE
+CLASS="option"
+>--prefix</CODE
+> for users:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;        AddOption('--prefix',
+                  dest='prefix',
+                  type='string',
+                  nargs=1,
+                  action='store',
+                  metavar='DIR',
+                  help='installation prefix')
+
+        env = Environment(PREFIX = GetOption('prefix'))
+
+        installed_foo = env.Install('$PREFIX/usr/bin', 'foo.in')
+        Default(installed_foo)
+      </PRE
+><P
+>&#13;
+      The above code uses the <CODE
+CLASS="function"
+>GetOption</CODE
+> function
+      to set the <CODE
+CLASS="varname"
+>$PREFIX</CODE
+>
+      construction variable to any
+      value that the user specifies with a command-line
+      option of <TT
+CLASS="literal"
+>--prefix</TT
+>.
+      Because <CODE
+CLASS="varname"
+>$PREFIX</CODE
+>
+      will expand to a null string if it's not initialized,
+      running <SPAN
+CLASS="application"
+>SCons</SPAN
+> without the
+      option of <TT
+CLASS="literal"
+>--prefix</TT
+>
+      will install the file in the
+      <TT
+CLASS="filename"
+>/usr/bin/</TT
+> directory:
+
+      </P
+><PRE
+CLASS="screen"
+>&#13;        % <KBD
+CLASS="userinput"
+>scons -Q -n</KBD
+>
+        Install file: "foo.in" as "/usr/bin/foo.in"
+      </PRE
+><P
+>&#13;
+      But specifying <TT
+CLASS="literal"
+>--prefix=/tmp/install</TT
+>
+      on the command line causes the file to be installed in the
+      <TT
+CLASS="filename"
+>/tmp/install/usr/bin/</TT
+> directory:
+
+      </P
+><PRE
+CLASS="screen"
+>&#13;        % <KBD
+CLASS="userinput"
+>scons -Q -n --prefix=/tmp/install</KBD
+>
+        Install file: "foo.in" as "/tmp/install/usr/bin/foo.in"
+      </PRE
+></DIV
+></DIV
+></DIV
+><H3
+CLASS="FOOTNOTES"
+>Notes</H3
+><TABLE
+BORDER="0"
+CLASS="FOOTNOTES"
+WIDTH="100%"
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+WIDTH="5%"
+><A
+NAME="FTN.AEN2335"
+HREF="c2008.html#AEN2335"
+><SPAN
+CLASS="footnote"
+>[1]</SPAN
+></A
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+WIDTH="95%"
+><P
+>&#13;      The <CODE
+CLASS="function"
+>AddOption</CODE
+> function is,
+      in fact, implemented using a subclass
+      of the <CODE
+CLASS="classname"
+>optparse.OptionParser</CODE
+>.
+      </P
+></TD
+></TR
+></TABLE
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x1977.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x2361.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Printing Detailed Build Status:  the <CODE
+CLASS="function"
+>GetBuildFailures</CODE
+> Function</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Command-Line <CODE
+CLASS="varname"
+>variable</CODE
+>=<CODE
+CLASS="varname"
+>value</CODE
+> Build Variables</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

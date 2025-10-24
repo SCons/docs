@@ -1,0 +1,79 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Chapter 21. Multi-Platform Configuration (Autoconf Functionality)</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.1.0"><link rel="up" href="index.html" title="SCons 4.1.0"><link rel="prev" href="ch20s03.html" title="20.3. Using scanners with Builders"><link rel="next" href="ch21s02.html" title="21.2. Checking for the Existence of Header Files"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 21. Multi-Platform Configuration (<span class="application">Autoconf</span> Functionality)</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch20s03.html">Prev</a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="ch21s02.html">Next</a></td></tr></table><hr></div><div class="chapter" title="Chapter 21. Multi-Platform Configuration (Autoconf Functionality)"><div class="titlepage"><div><div><h2 class="title"><a name="chap-sconf"></a>Chapter 21. Multi-Platform Configuration (<span class="application">Autoconf</span> Functionality)</h2></div></div></div><p>
+
+  <span class="application">SCons</span> has integrated support for build configuration
+  similar in style to GNU <span class="application">Autoconf</span>, but designed to be
+  transparently multi-platform. The configuration system
+  can help figure out if external build requirements such
+  as system libraries or header files
+  are available on the build system.
+  This section describes how to use
+  this <span class="application">SCons</span> feature.
+  (See also the <span class="application">SCons</span> man page for additional information).
+
+  </p><div class="section" title="21.1. Configure Contexts"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idp140637532032816"></a>21.1. <span>Configure Contexts</span></h2></div></div></div><p>
+
+    The basic framework for multi-platform build configuration
+    in <span class="application">SCons</span> is to create a <span>configure context</span> inside a
+    <span>construction environment</span> by calling the <code class="function">Configure</code> function,
+    perform the desired checks for
+    libraries, functions, header files, etc.,
+    and then call the configure context's <code class="function">Finish</code> method
+    to finish off the configuration:
+
+    </p><pre class="programlisting">
+env = Environment()
+conf = Configure(env)
+# Checks for libraries, header files, etc. go here!
+env = conf.Finish()
+    </pre><p>
+
+    The <code class="function">Finish</code> call is required; if a new context is
+    created while a context is active, even in a different
+    <span>construction environment</span>, <span class="command"><strong>scons</strong></span> will complain and exit.
+
+    </p><p>
+
+    <span class="application">SCons</span> provides a number of pre-defined basic checks,
+    as well as a mechanism for adding your own custom checks.
+
+    </p><p>
+
+    There are a few possible strategies for failing
+    configure checks.  Some checks may be for features without
+    which you cannot proceed.  The simple approach here is
+    just to exit <span class="application">SCons</span> at that point - a number of the
+    examples in this chapter are coded that way.  If there
+    are multiple hard requirements, however, it may be
+    friendlier to the user to set a flag in case of any
+    fails of hard requirements and accumulate a record of them,
+    so that on the completion of the <span>configure context</span> they can
+    all be listed prior to failing the build - as it can be frustrating
+    to have to iterate through the setup, fixing one new
+    requirement each iteration.  Other checks may be for
+    features which you can do without, and here the strategy
+    will usually be to set a construction variable which the
+    rest of the build can examine for its absence/presence,
+    or to set particular compiler flags, library lists, etc.
+    as appropriate for the circumstances, so you can proceed
+    with the build appropriately based on available features.
+
+    </p><p>
+
+    Note that <span class="application">SCons</span> uses its own dependency
+    mechanism to determine when a check
+    needs to be run--that is,
+    <span class="application">SCons</span> does not run the checks
+    every time it is invoked,
+    but caches the values returned by previous checks
+    and uses the cached values unless something has changed.
+    This saves a tremendous amount
+    of developer time while working on
+    cross-platform build issues.
+
+    </p><p>
+
+    The next sections describe
+    the basic checks that <span class="application">SCons</span> supports,
+    as well as how to add your own custom checks.
+
+    </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch20s03.html">Prev</a> </td><td width="20%" align="center"> </td><td width="40%" align="right"> <a accesskey="n" href="ch21s02.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">20.3. Using scanners with Builders </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 21.2. Checking for the Existence of Header Files</td></tr></table></div></body></html>

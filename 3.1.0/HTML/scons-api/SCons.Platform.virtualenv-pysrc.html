@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>SCons.Platform.virtualenv</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="SCons-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://www.scons.org/">SCons</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="SCons-module.html">Package&nbsp;SCons</a> ::
+        <a href="SCons.Platform-module.html">Package&nbsp;Platform</a> ::
+        Module&nbsp;virtualenv
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="SCons.Platform.virtualenv-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="SCons.Platform.virtualenv-module.html">Module SCons.Platform.virtualenv</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-docstring">"""SCons.Platform.virtualenv</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring">Support for virtualenv.</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-comment"># Copyright (c) 2001 - 2019 The SCons Foundation</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-comment"># Permission is hereby granted, free of charge, to any person obtaining</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-comment"># a copy of this software and associated documentation files (the</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-comment"># "Software"), to deal in the Software without restriction, including</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-comment"># without limitation the rights to use, copy, modify, merge, publish,</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-comment"># distribute, sublicense, and/or sell copies of the Software, and to</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-comment"># permit persons to whom the Software is furnished to do so, subject to</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-comment"># the following conditions:</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-comment"># The above copyright notice and this permission notice shall be included</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-comment"># in all copies or substantial portions of the Software.</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-comment"># THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-comment"># KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-comment"># WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-comment"># NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-comment"># LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-comment"># OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-comment"># WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt id="link-0" class="py-name" targets="Variable SCons.Action.__revision__=SCons.Action-module.html#__revision__,Variable SCons.Builder.__revision__=SCons.Builder-module.html#__revision__,Variable SCons.CacheDir.__revision__=SCons.CacheDir-module.html#__revision__,Variable SCons.Debug.__revision__=SCons.Debug-module.html#__revision__,Variable SCons.Defaults.__revision__=SCons.Defaults-module.html#__revision__,Variable SCons.Environment.__revision__=SCons.Environment-module.html#__revision__,Variable SCons.Errors.__revision__=SCons.Errors-module.html#__revision__,Variable SCons.Executor.__revision__=SCons.Executor-module.html#__revision__,Variable SCons.Job.__revision__=SCons.Job-module.html#__revision__,Variable SCons.Memoize.__revision__=SCons.Memoize-module.html#__revision__,Variable SCons.Node.Alias.__revision__=SCons.Node.Alias-module.html#__revision__,Variable SCons.Node.FS.__revision__=SCons.Node.FS-module.html#__revision__,Variable SCons.Node.Python.__revision__=SCons.Node.Python-module.html#__revision__,Variable SCons.Node.__revision__=SCons.Node-module.html#__revision__,Variable SCons.PathList.__revision__=SCons.PathList-module.html#__revision__,Variable SCons.Platform.__revision__=SCons.Platform-module.html#__revision__,Variable SCons.Platform.aix.__revision__=SCons.Platform.aix-module.html#__revision__,Variable SCons.Platform.cygwin.__revision__=SCons.Platform.cygwin-module.html#__revision__,Variable SCons.Platform.darwin.__revision__=SCons.Platform.darwin-module.html#__revision__,Variable SCons.Platform.hpux.__revision__=SCons.Platform.hpux-module.html#__revision__,Variable SCons.Platform.irix.__revision__=SCons.Platform.irix-module.html#__revision__,Variable SCons.Platform.mingw.__revision__=SCons.Platform.mingw-module.html#__revision__,Variable SCons.Platform.os2.__revision__=SCons.Platform.os2-module.html#__revision__,Variable SCons.Platform.posix.__revision__=SCons.Platform.posix-module.html#__revision__,Variable SCons.Platform.sunos.__revision__=SCons.Platform.sunos-module.html#__revision__,Variable SCons.Platform.virtualenv.__revision__=SCons.Platform.virtualenv-module.html#__revision__,Variable SCons.Platform.win32.__revision__=SCons.Platform.win32-module.html#__revision__,Variable SCons.SConf.__revision__=SCons.SConf-module.html#__revision__,Variable SCons.SConsign.__revision__=SCons.SConsign-module.html#__revision__,Variable SCons.Scanner.C.__revision__=SCons.Scanner.C-module.html#__revision__,Variable SCons.Scanner.D.__revision__=SCons.Scanner.D-module.html#__revision__,Variable SCons.Scanner.Dir.__revision__=SCons.Scanner.Dir-module.html#__revision__,Variable SCons.Scanner.Fortran.__revision__=SCons.Scanner.Fortran-module.html#__revision__,Variable SCons.Scanner.IDL.__revision__=SCons.Scanner.IDL-module.html#__revision__,Variable SCons.Scanner.LaTeX.__revision__=SCons.Scanner.LaTeX-module.html#__revision__,Variable SCons.Scanner.Prog.__revision__=SCons.Scanner.Prog-module.html#__revision__,Variable SCons.Scanner.RC.__revision__=SCons.Scanner.RC-module.html#__revision__,Variable SCons.Scanner.SWIG.__revision__=SCons.Scanner.SWIG-module.html#__revision__,Variable SCons.Scanner.__revision__=SCons.Scanner-module.html#__revision__,Variable SCons.Script.Interactive.__revision__=SCons.Script.Interactive-module.html#__revision__,Variable SCons.Script.Main.__revision__=SCons.Script.Main-module.html#__revision__,Variable SCons.Script.SConscript'.__revision__=SCons.Script.SConscript%27-module.html#__revision__,Variable SCons.Script.__revision__=SCons.Script-module.html#__revision__,Variable SCons.Subst.__revision__=SCons.Subst-module.html#__revision__,Variable SCons.Taskmaster.__revision__=SCons.Taskmaster-module.html#__revision__,Variable SCons.Variables.BoolVariable'.__revision__=SCons.Variables.BoolVariable%27-module.html#__revision__,Variable SCons.Variables.EnumVariable'.__revision__=SCons.Variables.EnumVariable%27-module.html#__revision__,Variable SCons.Variables.ListVariable'.__revision__=SCons.Variables.ListVariable%27-module.html#__revision__,Variable SCons.Variables.PackageVariable'.__revision__=SCons.Variables.PackageVariable%27-module.html#__revision__,Variable SCons.Variables.PathVariable'.__revision__=SCons.Variables.PathVariable%27-module.html#__revision__,Variable SCons.Variables.__revision__=SCons.Variables-module.html#__revision__,Variable SCons.Warnings.__revision__=SCons.Warnings-module.html#__revision__,Variable SCons.__revision__=SCons-module.html#__revision__,Variable SCons.compat.__revision__=SCons.compat-module.html#__revision__,Variable SCons.compat._scons_dbm.__revision__=SCons.compat._scons_dbm-module.html#__revision__,Variable SCons.exitfuncs.__revision__=SCons.exitfuncs-module.html#__revision__"><a title="SCons.Action.__revision__
+SCons.Builder.__revision__
+SCons.CacheDir.__revision__
+SCons.Debug.__revision__
+SCons.Defaults.__revision__
+SCons.Environment.__revision__
+SCons.Errors.__revision__
+SCons.Executor.__revision__
+SCons.Job.__revision__
+SCons.Memoize.__revision__
+SCons.Node.Alias.__revision__
+SCons.Node.FS.__revision__
+SCons.Node.Python.__revision__
+SCons.Node.__revision__
+SCons.PathList.__revision__
+SCons.Platform.__revision__
+SCons.Platform.aix.__revision__
+SCons.Platform.cygwin.__revision__
+SCons.Platform.darwin.__revision__
+SCons.Platform.hpux.__revision__
+SCons.Platform.irix.__revision__
+SCons.Platform.mingw.__revision__
+SCons.Platform.os2.__revision__
+SCons.Platform.posix.__revision__
+SCons.Platform.sunos.__revision__
+SCons.Platform.virtualenv.__revision__
+SCons.Platform.win32.__revision__
+SCons.SConf.__revision__
+SCons.SConsign.__revision__
+SCons.Scanner.C.__revision__
+SCons.Scanner.D.__revision__
+SCons.Scanner.Dir.__revision__
+SCons.Scanner.Fortran.__revision__
+SCons.Scanner.IDL.__revision__
+SCons.Scanner.LaTeX.__revision__
+SCons.Scanner.Prog.__revision__
+SCons.Scanner.RC.__revision__
+SCons.Scanner.SWIG.__revision__
+SCons.Scanner.__revision__
+SCons.Script.Interactive.__revision__
+SCons.Script.Main.__revision__
+SCons.Script.SConscript'.__revision__
+SCons.Script.__revision__
+SCons.Subst.__revision__
+SCons.Taskmaster.__revision__
+SCons.Variables.BoolVariable'.__revision__
+SCons.Variables.EnumVariable'.__revision__
+SCons.Variables.ListVariable'.__revision__
+SCons.Variables.PackageVariable'.__revision__
+SCons.Variables.PathVariable'.__revision__
+SCons.Variables.__revision__
+SCons.Warnings.__revision__
+SCons.__revision__
+SCons.compat.__revision__
+SCons.compat._scons_dbm.__revision__
+SCons.exitfuncs.__revision__" class="py-name" href="#" onclick="return doclink('link-0', '__revision__', 'link-0');">__revision__</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"src/engine/SCons/Platform/virtualenv.py e724ae812eb96f4858a132f5b8c769724744faf6 2019-07-21 00:04:47 bdeegan"</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">os</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">sys</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Package SCons=SCons-module.html"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-1', 'SCons', 'link-1');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Module SCons.Util=SCons.Util-module.html"><a title="SCons.Util" class="py-name" href="#" onclick="return doclink('link-2', 'Util', 'link-2');">Util</a></tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"><tt id="link-3" class="py-name" targets="Variable SCons.Platform.virtualenv.virtualenv_enabled_by_default=SCons.Platform.virtualenv-module.html#virtualenv_enabled_by_default"><a title="SCons.Platform.virtualenv.virtualenv_enabled_by_default" class="py-name" href="#" onclick="return doclink('link-3', 'virtualenv_enabled_by_default', 'link-3');">virtualenv_enabled_by_default</a></tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"> </tt>
+<a name="_enable_virtualenv_default"></a><div id="_enable_virtualenv_default-def"><a name="L39"></a><tt class="py-lineno"> 39</tt> <a class="py-toggle" href="#" id="_enable_virtualenv_default-toggle" onclick="return toggle('_enable_virtualenv_default');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Platform.virtualenv-module.html#_enable_virtualenv_default">_enable_virtualenv_default</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_enable_virtualenv_default-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_enable_virtualenv_default-expanded"><a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-4" class="py-name"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-4', 'SCons', 'link-1');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-5" class="py-name"><a title="SCons.Util" class="py-name" href="#" onclick="return doclink('link-5', 'Util', 'link-2');">Util</a></tt><tt class="py-op">.</tt><tt class="py-name">get_os_env_bool</tt><tt class="py-op">(</tt><tt class="py-string">'SCONS_ENABLE_VIRTUALENV'</tt><tt class="py-op">,</tt> <tt id="link-6" class="py-name"><a title="SCons.Platform.virtualenv.virtualenv_enabled_by_default" class="py-name" href="#" onclick="return doclink('link-6', 'virtualenv_enabled_by_default', 'link-3');">virtualenv_enabled_by_default</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"> </tt>
+<a name="_ignore_virtualenv_default"></a><div id="_ignore_virtualenv_default-def"><a name="L43"></a><tt class="py-lineno"> 43</tt> <a class="py-toggle" href="#" id="_ignore_virtualenv_default-toggle" onclick="return toggle('_ignore_virtualenv_default');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Platform.virtualenv-module.html#_ignore_virtualenv_default">_ignore_virtualenv_default</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_ignore_virtualenv_default-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_ignore_virtualenv_default-expanded"><a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-7" class="py-name"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-7', 'SCons', 'link-1');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-8" class="py-name"><a title="SCons.Util" class="py-name" href="#" onclick="return doclink('link-8', 'Util', 'link-2');">Util</a></tt><tt class="py-op">.</tt><tt class="py-name">get_os_env_bool</tt><tt class="py-op">(</tt><tt class="py-string">'SCONS_IGNORE_VIRTUALENV'</tt><tt class="py-op">,</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"><tt id="link-9" class="py-name" targets="Variable SCons.Platform.virtualenv.enable_virtualenv=SCons.Platform.virtualenv-module.html#enable_virtualenv"><a title="SCons.Platform.virtualenv.enable_virtualenv" class="py-name" href="#" onclick="return doclink('link-9', 'enable_virtualenv', 'link-9');">enable_virtualenv</a></tt> <tt class="py-op">=</tt> <tt id="link-10" class="py-name" targets="Function SCons.Platform.virtualenv._enable_virtualenv_default()=SCons.Platform.virtualenv-module.html#_enable_virtualenv_default"><a title="SCons.Platform.virtualenv._enable_virtualenv_default" class="py-name" href="#" onclick="return doclink('link-10', '_enable_virtualenv_default', 'link-10');">_enable_virtualenv_default</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"><tt id="link-11" class="py-name" targets="Variable SCons.Platform.virtualenv.ignore_virtualenv=SCons.Platform.virtualenv-module.html#ignore_virtualenv"><a title="SCons.Platform.virtualenv.ignore_virtualenv" class="py-name" href="#" onclick="return doclink('link-11', 'ignore_virtualenv', 'link-11');">ignore_virtualenv</a></tt> <tt class="py-op">=</tt> <tt id="link-12" class="py-name" targets="Function SCons.Platform.virtualenv._ignore_virtualenv_default()=SCons.Platform.virtualenv-module.html#_ignore_virtualenv_default"><a title="SCons.Platform.virtualenv._ignore_virtualenv_default" class="py-name" href="#" onclick="return doclink('link-12', '_ignore_virtualenv_default', 'link-12');">_ignore_virtualenv_default</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"><tt id="link-13" class="py-name" targets="Variable SCons.Platform.virtualenv.virtualenv_variables=SCons.Platform.virtualenv-module.html#virtualenv_variables"><a title="SCons.Platform.virtualenv.virtualenv_variables" class="py-name" href="#" onclick="return doclink('link-13', 'virtualenv_variables', 'link-13');">virtualenv_variables</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-string">'VIRTUAL_ENV'</tt><tt class="py-op">,</tt> <tt class="py-string">'PIPENV_ACTIVE'</tt><tt class="py-op">]</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"> </tt>
+<a name="_running_in_virtualenv"></a><div id="_running_in_virtualenv-def"><a name="L52"></a><tt class="py-lineno"> 52</tt> <a class="py-toggle" href="#" id="_running_in_virtualenv-toggle" onclick="return toggle('_running_in_virtualenv');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Platform.virtualenv-module.html#_running_in_virtualenv">_running_in_virtualenv</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_running_in_virtualenv-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_running_in_virtualenv-expanded"><a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">    <tt class="py-docstring">"""Returns True, if scons is executed within a virtualenv"""</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">    <tt class="py-comment"># see https://stackoverflow.com/a/42580137</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-op">(</tt><tt class="py-name">hasattr</tt><tt class="py-op">(</tt><tt class="py-name">sys</tt><tt class="py-op">,</tt> <tt class="py-string">'real_prefix'</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">            <tt class="py-op">(</tt><tt class="py-name">hasattr</tt><tt class="py-op">(</tt><tt class="py-name">sys</tt><tt class="py-op">,</tt> <tt class="py-string">'base_prefix'</tt><tt class="py-op">)</tt> <tt class="py-keyword">and</tt> <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">base_prefix</tt> <tt class="py-op">!=</tt> <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">prefix</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line"> </tt>
+<a name="_is_path_in"></a><div id="_is_path_in-def"><a name="L59"></a><tt class="py-lineno"> 59</tt> <a class="py-toggle" href="#" id="_is_path_in-toggle" onclick="return toggle('_is_path_in');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Platform.virtualenv-module.html#_is_path_in">_is_path_in</a><tt class="py-op">(</tt><tt class="py-param">path</tt><tt class="py-op">,</tt> <tt class="py-param">base</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_is_path_in-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_is_path_in-expanded"><a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">    <tt class="py-docstring">"""Returns true, if **path** is located under the **base** directory."""</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt id="link-14" class="py-name" targets="Method SCons.Scanner.Base.path()=SCons.Scanner.Base-class.html#path"><a title="SCons.Scanner.Base.path" class="py-name" href="#" onclick="return doclink('link-14', 'path', 'link-14');">path</a></tt> <tt class="py-keyword">or</tt> <tt class="py-keyword">not</tt> <tt class="py-name">base</tt><tt class="py-op">:</tt> <tt class="py-comment"># empty path may happen, base too</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">False</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">    <tt class="py-name">rp</tt> <tt class="py-op">=</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-15" class="py-name"><a title="SCons.Scanner.Base.path" class="py-name" href="#" onclick="return doclink('link-15', 'path', 'link-14');">path</a></tt><tt class="py-op">.</tt><tt class="py-name">relpath</tt><tt class="py-op">(</tt><tt id="link-16" class="py-name"><a title="SCons.Scanner.Base.path" class="py-name" href="#" onclick="return doclink('link-16', 'path', 'link-14');">path</a></tt><tt class="py-op">,</tt> <tt class="py-name">base</tt><tt class="py-op">)</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-keyword">not</tt> <tt class="py-name">rp</tt><tt class="py-op">.</tt><tt class="py-name">startswith</tt><tt class="py-op">(</tt><tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-17" class="py-name"><a title="SCons.Scanner.Base.path" class="py-name" href="#" onclick="return doclink('link-17', 'path', 'link-14');">path</a></tt><tt class="py-op">.</tt><tt class="py-name">pardir</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> <tt class="py-keyword">and</tt> <tt class="py-op">(</tt><tt class="py-keyword">not</tt> <tt class="py-name">rp</tt> <tt class="py-op">==</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-18" class="py-name"><a title="SCons.Scanner.Base.path" class="py-name" href="#" onclick="return doclink('link-18', 'path', 'link-14');">path</a></tt><tt class="py-op">.</tt><tt class="py-name">curdir</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line"> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line"> </tt>
+<a name="_inject_venv_variables"></a><div id="_inject_venv_variables-def"><a name="L67"></a><tt class="py-lineno"> 67</tt> <a class="py-toggle" href="#" id="_inject_venv_variables-toggle" onclick="return toggle('_inject_venv_variables');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Platform.virtualenv-module.html#_inject_venv_variables">_inject_venv_variables</a><tt class="py-op">(</tt><tt class="py-param">env</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_inject_venv_variables-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_inject_venv_variables-expanded"><a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-string">'ENV'</tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt id="link-19" class="py-name" targets="Variable SCons.Executor.Executor.env=SCons.Executor.Executor-class.html#env,Variable SCons.Executor.Null.env=SCons.Executor.Null-class.html#env,Variable SCons.Node.Node.env=SCons.Node.Node-class.html#env"><a title="SCons.Executor.Executor.env
+SCons.Executor.Null.env
+SCons.Node.Node.env" class="py-name" href="#" onclick="return doclink('link-19', 'env', 'link-19');">env</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">        <tt id="link-20" class="py-name"><a title="SCons.Executor.Executor.env
+SCons.Executor.Null.env
+SCons.Node.Node.env" class="py-name" href="#" onclick="return doclink('link-20', 'env', 'link-19');">env</a></tt><tt class="py-op">[</tt><tt class="py-string">'ENV'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">    <tt class="py-name">ENV</tt> <tt class="py-op">=</tt> <tt id="link-21" class="py-name"><a title="SCons.Executor.Executor.env
+SCons.Executor.Null.env
+SCons.Node.Node.env" class="py-name" href="#" onclick="return doclink('link-21', 'env', 'link-19');">env</a></tt><tt class="py-op">[</tt><tt class="py-string">'ENV'</tt><tt class="py-op">]</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt id="link-22" class="py-name" targets="Variable SCons.Node.FS.Base.name=SCons.Node.FS.Base-class.html#name"><a title="SCons.Node.FS.Base.name" class="py-name" href="#" onclick="return doclink('link-22', 'name', 'link-22');">name</a></tt> <tt class="py-keyword">in</tt> <tt id="link-23" class="py-name"><a title="SCons.Platform.virtualenv.virtualenv_variables" class="py-name" href="#" onclick="return doclink('link-23', 'virtualenv_variables', 'link-13');">virtualenv_variables</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">            <tt class="py-name">ENV</tt><tt class="py-op">[</tt><tt id="link-24" class="py-name"><a title="SCons.Node.FS.Base.name" class="py-name" href="#" onclick="return doclink('link-24', 'name', 'link-22');">name</a></tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">environ</tt><tt class="py-op">[</tt><tt id="link-25" class="py-name"><a title="SCons.Node.FS.Base.name" class="py-name" href="#" onclick="return doclink('link-25', 'name', 'link-22');">name</a></tt><tt class="py-op">]</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt> <tt class="py-name">KeyError</tt><tt class="py-op">:</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">            <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line"> </tt>
+<a name="_inject_venv_path"></a><div id="_inject_venv_path-def"><a name="L77"></a><tt class="py-lineno"> 77</tt> <a class="py-toggle" href="#" id="_inject_venv_path-toggle" onclick="return toggle('_inject_venv_path');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Platform.virtualenv-module.html#_inject_venv_path">_inject_venv_path</a><tt class="py-op">(</tt><tt class="py-param">env</tt><tt class="py-op">,</tt> <tt class="py-param">path_list</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_inject_venv_path-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_inject_venv_path-expanded"><a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">    <tt class="py-docstring">"""Modify environment such that SCons will take into account its virtualenv</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line"><tt class="py-docstring">    when running external tools."""</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">path_list</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">        <tt class="py-name">path_list</tt> <tt class="py-op">=</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">getenv</tt><tt class="py-op">(</tt><tt class="py-string">'PATH'</tt><tt class="py-op">)</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">    <tt id="link-26" class="py-name"><a title="SCons.Executor.Executor.env
+SCons.Executor.Null.env
+SCons.Node.Node.env" class="py-name" href="#" onclick="return doclink('link-26', 'env', 'link-19');">env</a></tt><tt class="py-op">.</tt><tt id="link-27" class="py-name" targets="Method SCons.Environment.Base.PrependENVPath()=SCons.Environment.Base-class.html#PrependENVPath,Method SCons.Environment.Base.PrependENVPath()=SCons.Environment.Base-class.html#PrependENVPath"><a title="SCons.Environment.Base.PrependENVPath
+SCons.Environment.Base.PrependENVPath" class="py-name" href="#" onclick="return doclink('link-27', 'PrependENVPath', 'link-27');">PrependENVPath</a></tt><tt class="py-op">(</tt><tt class="py-string">'PATH'</tt><tt class="py-op">,</tt> <tt id="link-28" class="py-name" targets="Function SCons.Platform.virtualenv.select_paths_in_venv()=SCons.Platform.virtualenv-module.html#select_paths_in_venv"><a title="SCons.Platform.virtualenv.select_paths_in_venv" class="py-name" href="#" onclick="return doclink('link-28', 'select_paths_in_venv', 'link-28');">select_paths_in_venv</a></tt><tt class="py-op">(</tt><tt class="py-name">path_list</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line"> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line"> </tt>
+<a name="select_paths_in_venv"></a><div id="select_paths_in_venv-def"><a name="L85"></a><tt class="py-lineno"> 85</tt> <a class="py-toggle" href="#" id="select_paths_in_venv-toggle" onclick="return toggle('select_paths_in_venv');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Platform.virtualenv-module.html#select_paths_in_venv">select_paths_in_venv</a><tt class="py-op">(</tt><tt class="py-param">path_list</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="select_paths_in_venv-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="select_paths_in_venv-expanded"><a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">    <tt class="py-docstring">"""Returns a list of paths from **path_list** which are under virtualenv's</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line"><tt class="py-docstring">    home directory."""</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-29" class="py-name"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-29', 'SCons', 'link-1');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-30" class="py-name"><a title="SCons.Util" class="py-name" href="#" onclick="return doclink('link-30', 'Util', 'link-2');">Util</a></tt><tt class="py-op">.</tt><tt class="py-name">is_String</tt><tt class="py-op">(</tt><tt class="py-name">path_list</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">        <tt class="py-name">path_list</tt> <tt class="py-op">=</tt> <tt class="py-name">path_list</tt><tt class="py-op">.</tt><tt class="py-name">split</tt><tt class="py-op">(</tt><tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-31" class="py-name"><a title="SCons.Scanner.Base.path" class="py-name" href="#" onclick="return doclink('link-31', 'path', 'link-14');">path</a></tt><tt class="py-op">.</tt><tt class="py-name">pathsep</tt><tt class="py-op">)</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">    <tt class="py-comment"># Find in path_list the paths under the virtualenv's home</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-op">[</tt><tt id="link-32" class="py-name"><a title="SCons.Scanner.Base.path" class="py-name" href="#" onclick="return doclink('link-32', 'path', 'link-14');">path</a></tt> <tt class="py-keyword">for</tt> <tt id="link-33" class="py-name"><a title="SCons.Scanner.Base.path" class="py-name" href="#" onclick="return doclink('link-33', 'path', 'link-14');">path</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">path_list</tt> <tt class="py-keyword">if</tt> <tt id="link-34" class="py-name" targets="Function SCons.Platform.virtualenv.IsInVirtualenv()=SCons.Platform.virtualenv-module.html#IsInVirtualenv"><a title="SCons.Platform.virtualenv.IsInVirtualenv" class="py-name" href="#" onclick="return doclink('link-34', 'IsInVirtualenv', 'link-34');">IsInVirtualenv</a></tt><tt class="py-op">(</tt><tt id="link-35" class="py-name"><a title="SCons.Scanner.Base.path" class="py-name" href="#" onclick="return doclink('link-35', 'path', 'link-14');">path</a></tt><tt class="py-op">)</tt><tt class="py-op">]</tt> </tt>
+</div><a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line"> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line"> </tt>
+<a name="ImportVirtualenv"></a><div id="ImportVirtualenv-def"><a name="L94"></a><tt class="py-lineno"> 94</tt> <a class="py-toggle" href="#" id="ImportVirtualenv-toggle" onclick="return toggle('ImportVirtualenv');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Platform.virtualenv-module.html#ImportVirtualenv">ImportVirtualenv</a><tt class="py-op">(</tt><tt class="py-param">env</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ImportVirtualenv-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ImportVirtualenv-expanded"><a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">    <tt class="py-docstring">"""Copies virtualenv-related environment variables from OS environment</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line"><tt class="py-docstring">    to ``env['ENV']`` and prepends virtualenv's PATH to ``env['ENV']['PATH']``.</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">    <tt id="link-36" class="py-name" targets="Function SCons.Platform.virtualenv._inject_venv_variables()=SCons.Platform.virtualenv-module.html#_inject_venv_variables"><a title="SCons.Platform.virtualenv._inject_venv_variables" class="py-name" href="#" onclick="return doclink('link-36', '_inject_venv_variables', 'link-36');">_inject_venv_variables</a></tt><tt class="py-op">(</tt><tt id="link-37" class="py-name"><a title="SCons.Executor.Executor.env
+SCons.Executor.Null.env
+SCons.Node.Node.env" class="py-name" href="#" onclick="return doclink('link-37', 'env', 'link-19');">env</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">    <tt id="link-38" class="py-name" targets="Function SCons.Platform.virtualenv._inject_venv_path()=SCons.Platform.virtualenv-module.html#_inject_venv_path"><a title="SCons.Platform.virtualenv._inject_venv_path" class="py-name" href="#" onclick="return doclink('link-38', '_inject_venv_path', 'link-38');">_inject_venv_path</a></tt><tt class="py-op">(</tt><tt id="link-39" class="py-name"><a title="SCons.Executor.Executor.env
+SCons.Executor.Null.env
+SCons.Node.Node.env" class="py-name" href="#" onclick="return doclink('link-39', 'env', 'link-19');">env</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line"> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"> </tt>
+<a name="Virtualenv"></a><div id="Virtualenv-def"><a name="L102"></a><tt class="py-lineno">102</tt> <a class="py-toggle" href="#" id="Virtualenv-toggle" onclick="return toggle('Virtualenv');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Platform.virtualenv-module.html#Virtualenv">Virtualenv</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Virtualenv-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Virtualenv-expanded"><a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">    <tt class="py-docstring">"""Returns path to the virtualenv home if scons is executing within a</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line"><tt class="py-docstring">    virtualenv or None, if not."""</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-40" class="py-name" targets="Function SCons.Platform.virtualenv._running_in_virtualenv()=SCons.Platform.virtualenv-module.html#_running_in_virtualenv"><a title="SCons.Platform.virtualenv._running_in_virtualenv" class="py-name" href="#" onclick="return doclink('link-40', '_running_in_virtualenv', 'link-40');">_running_in_virtualenv</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">prefix</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">None</tt> </tt>
+</div><a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line"> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line"> </tt>
+<a name="IsInVirtualenv"></a><div id="IsInVirtualenv-def"><a name="L110"></a><tt class="py-lineno">110</tt> <a class="py-toggle" href="#" id="IsInVirtualenv-toggle" onclick="return toggle('IsInVirtualenv');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Platform.virtualenv-module.html#IsInVirtualenv">IsInVirtualenv</a><tt class="py-op">(</tt><tt class="py-param">path</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="IsInVirtualenv-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="IsInVirtualenv-expanded"><a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">    <tt class="py-docstring">"""Returns True, if **path** is under virtualenv's home directory. If not,</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line"><tt class="py-docstring">    or if we don't use virtualenv, returns False."""</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-41" class="py-name" targets="Function SCons.Platform.virtualenv._is_path_in()=SCons.Platform.virtualenv-module.html#_is_path_in"><a title="SCons.Platform.virtualenv._is_path_in" class="py-name" href="#" onclick="return doclink('link-41', '_is_path_in', 'link-41');">_is_path_in</a></tt><tt class="py-op">(</tt><tt id="link-42" class="py-name"><a title="SCons.Scanner.Base.path" class="py-name" href="#" onclick="return doclink('link-42', 'path', 'link-14');">path</a></tt><tt class="py-op">,</tt> <tt id="link-43" class="py-name" targets="Function SCons.Platform.virtualenv.Virtualenv()=SCons.Platform.virtualenv-module.html#Virtualenv"><a title="SCons.Platform.virtualenv.Virtualenv" class="py-name" href="#" onclick="return doclink('link-43', 'Virtualenv', 'link-43');">Virtualenv</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line"> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line"> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line"><tt class="py-comment"># Local Variables:</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line"><tt class="py-comment"># tab-width:4</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line"><tt class="py-comment"># indent-tabs-mode:nil</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line"><tt class="py-comment"># End:</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line"><tt class="py-comment"># vim: set expandtab tabstop=4 shiftwidth=4:</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="SCons-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://www.scons.org/">SCons</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1
+    on Sun Jul 21 02:32:24 2019
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

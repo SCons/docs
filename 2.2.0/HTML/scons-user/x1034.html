@@ -1,0 +1,490 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Older Functions for Deciding When an Input File Has Changed</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 2.2.0"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Dependencies"
+HREF="c824.html"><LINK
+REL="PREVIOUS"
+TITLE="Dependencies"
+HREF="c824.html"><LINK
+REL="NEXT"
+TITLE="Implicit Dependencies:  The $CPPPATH Construction Variable"
+HREF="x1097.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 2.2.0</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="c824.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 6. Dependencies</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x1097.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN1034"
+>6.2. Older Functions for Deciding When an Input File Has Changed</A
+></H1
+><P
+>&#13;
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> still supports two functions that used to be the
+    primary methods for configuring the
+    decision about whether or not an input file has changed.
+    These functions have been officially deprecated
+    as <SPAN
+CLASS="application"
+>SCons</SPAN
+> version 2.0,
+    and their use is discouraged,
+    mainly because they rely on a somewhat
+    confusing distinction between how
+    source files and target files are handled.
+    These functions are documented here mainly in case you
+    encounter them in older <TT
+CLASS="filename"
+>SConscript</TT
+> files.
+
+    </P
+><DIV
+CLASS="section"
+><H2
+CLASS="section"
+><A
+NAME="AEN1040"
+>6.2.1. The <CODE
+CLASS="function"
+>SourceSignatures</CODE
+> Function</A
+></H2
+><P
+>&#13;
+      The <CODE
+CLASS="function"
+>SourceSignatures</CODE
+> function is fairly straightforward,
+      and supports two different argument values
+      to configure whether source file changes should be decided
+      using MD5 signatures:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;        Program('hello.c')
+        SourceSignatures('MD5')
+      </PRE
+><P
+>&#13;
+      Or using time stamps:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;        Program('hello.c')
+        SourceSignatures('timestamp')
+      </PRE
+><P
+>&#13;
+      These are roughly equivalent to specifying
+      <CODE
+CLASS="function"
+>Decider('MD5')</CODE
+>
+      or
+      <CODE
+CLASS="function"
+>Decider('timestamp-match')</CODE
+>,
+      respectively,
+      although it only affects how SCons makes
+      decisions about dependencies on
+      <SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>source</I
+></SPAN
+> files--that is,
+      files that are not built from any other files.
+
+      </P
+></DIV
+><DIV
+CLASS="section"
+><H2
+CLASS="section"
+><A
+NAME="AEN1052"
+>6.2.2. The <CODE
+CLASS="function"
+>TargetSignatures</CODE
+> Function</A
+></H2
+><P
+>&#13;
+      The <CODE
+CLASS="function"
+>TargetSignatures</CODE
+> function
+      specifies how <SPAN
+CLASS="application"
+>SCons</SPAN
+> decides
+      when a target file has changed
+      <SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>when it is used as a
+      dependency of (input to) another target</I
+></SPAN
+>--that is,
+      the <CODE
+CLASS="function"
+>TargetSignatures</CODE
+> function configures
+      how the signatures of "intermediate" target files
+      are used when deciding if a "downstream" target file
+      must be rebuilt.
+      <A
+NAME="AEN1060"
+HREF="#FTN.AEN1060"
+><SPAN
+CLASS="footnote"
+>[1]</SPAN
+></A
+>
+
+      </P
+><P
+>&#13;
+      The <CODE
+CLASS="function"
+>TargetSignatures</CODE
+> function supports the same
+      <TT
+CLASS="literal"
+>'MD5'</TT
+> and <TT
+CLASS="literal"
+>'timestamp'</TT
+>
+      argument values that are supported by the <CODE
+CLASS="function"
+>SourceSignatures</CODE
+>,
+      with the same meanings, but applied to target files.
+      That is, in the example:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;        Program('hello.c')
+        TargetSignatures('MD5')
+      </PRE
+><P
+>&#13;
+      The MD5 checksum of the <TT
+CLASS="filename"
+>hello.o</TT
+> target file
+      will be used to decide if it has changed since the last
+      time the "downstream" <TT
+CLASS="filename"
+>hello</TT
+> target file was built.
+      And in the example:
+      
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;        Program('hello.c')
+        TargetSignatures('timestamp')
+      </PRE
+><P
+>&#13;
+      The modification time of the <TT
+CLASS="filename"
+>hello.o</TT
+> target file
+      will be used to decide if it has changed since the last
+      time the "downstream" <TT
+CLASS="filename"
+>hello</TT
+> target file was built.
+
+      </P
+><P
+>&#13;
+      The <CODE
+CLASS="function"
+>TargetSignatures</CODE
+> function supports
+      two additional argument values:
+      <TT
+CLASS="literal"
+>'source'</TT
+> and <TT
+CLASS="literal"
+>'build'</TT
+>.
+      The <TT
+CLASS="literal"
+>'source'</TT
+> argument
+      specifies that decisions involving
+      whether target files have changed
+      since a previous build
+      should use the same behavior
+      for the decisions configured for source files
+      (using the <CODE
+CLASS="function"
+>SourceSignatures</CODE
+> function).
+      So in the example:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;        Program('hello.c')
+        TargetSignatures('source')
+        SourceSignatures('timestamp')
+      </PRE
+><P
+>&#13;
+      All files, both targets and sources,
+      will use modification times
+      when deciding if an input file
+      has changed since the last
+      time a target was built.
+
+      </P
+><P
+>&#13;
+      Lastly, the <TT
+CLASS="literal"
+>'build'</TT
+> argument
+      specifies that <SPAN
+CLASS="application"
+>SCons</SPAN
+> should examine
+      the build status of a target file
+      and always rebuild a "downstream" target
+      if the target file was itself rebuilt,
+      without re-examining the contents or timestamp
+      of the newly-built target file.
+      If the target file was not rebuilt during
+      this <TT
+CLASS="filename"
+>scons</TT
+> invocation,
+      then the target file will be examined
+      the same way as configured by
+      the <CODE
+CLASS="function"
+>SourceSignature</CODE
+> call
+      to decide if it has changed.
+
+      </P
+><P
+>&#13;
+      This mimics the behavior of
+      <TT
+CLASS="literal"
+>build signatures</TT
+>
+      in earlier versions of <SPAN
+CLASS="application"
+>SCons</SPAN
+>.
+      A <TT
+CLASS="literal"
+>build signature</TT
+> re-combined
+      signatures of all the input files
+      that went into making the target file,
+      so that the target file itself
+      did not need to have its contents read
+      to compute an MD5 signature.
+      This can improve performance for some configurations,
+      but is generally not as effective as using
+      <TT
+CLASS="literal"
+>Decider('MD5-timestamp')</TT
+>.
+
+      </P
+></DIV
+></DIV
+><H3
+CLASS="FOOTNOTES"
+>Notes</H3
+><TABLE
+BORDER="0"
+CLASS="FOOTNOTES"
+WIDTH="100%"
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+WIDTH="5%"
+><A
+NAME="FTN.AEN1060"
+HREF="x1034.html#AEN1060"
+><SPAN
+CLASS="footnote"
+>[1]</SPAN
+></A
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+WIDTH="95%"
+><P
+>&#13;      This easily-overlooked distinction between
+      how <SPAN
+CLASS="application"
+>SCons</SPAN
+> decides if the target itself must be rebuilt
+      and how the target is then used to decide if a different
+      target must be rebuilt is one of the confusing
+      things that has led to the <CODE
+CLASS="function"
+>TargetSignatures</CODE
+>
+      and <CODE
+CLASS="function"
+>SourceSignatures</CODE
+> functions being
+      replaced by the simpler <CODE
+CLASS="function"
+>Decider</CODE
+> function.
+      </P
+></TD
+></TR
+></TABLE
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="c824.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x1097.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Dependencies</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c824.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Implicit Dependencies:  The <CODE
+CLASS="envar"
+>$CPPPATH</CODE
+> Construction Variable</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

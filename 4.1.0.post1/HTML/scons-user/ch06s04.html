@@ -1,0 +1,48 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>6.4. Explicit Dependencies: the Depends Function</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.1.0.post1"><link rel="up" href="ch06.html" title="Chapter 6. Dependencies"><link rel="prev" href="ch06s03.html" title="6.3. Caching Implicit Dependencies"><link rel="next" href="ch06s05.html" title="6.5. Dependencies From External Files: the ParseDepends Function"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">6.4. Explicit Dependencies:  the <code class="function">Depends</code> Function</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch06s03.html">Prev</a> </td><th width="60%" align="center">Chapter 6. Dependencies</th><td width="20%" align="right"> <a accesskey="n" href="ch06s05.html">Next</a></td></tr></table><hr></div><div class="section" title="6.4. Explicit Dependencies: the Depends Function"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idp140186650347712"></a>6.4. Explicit Dependencies:  the <code class="function">Depends</code> Function</h2></div></div></div><p>
+
+    Sometimes a file depends on another file
+    that is not detected by an <span class="application">SCons</span> scanner.
+    For this situation,
+    <span class="application">SCons</span> allows you to specific explicitly that one file
+    depends on another file,
+    and must be rebuilt whenever that file changes.
+    This is specified using the <code class="function">Depends</code> method:
+
+    </p><pre class="programlisting">
+hello = Program('hello.c')
+Depends(hello, 'other_file')
+    </pre><pre class="screen">
+% <strong class="userinput"><code>scons -Q hello</code></strong>
+cc -c hello.c -o hello.o
+cc -o hello hello.o
+% <strong class="userinput"><code>scons -Q hello</code></strong>
+scons: `hello' is up to date.
+% <strong class="userinput"><code>edit other_file</code></strong>
+    [CHANGE THE CONTENTS OF other_file]
+% <strong class="userinput"><code>scons -Q hello</code></strong>
+cc -c hello.c -o hello.o
+cc -o hello hello.o
+    </pre><p>
+
+    Note that the dependency
+    (the second argument to <code class="function">Depends</code>)
+    may also be a list of Node objects
+    (for example, as returned by a call to a Builder):
+
+    </p><pre class="programlisting">
+hello = Program('hello.c')
+goodbye = Program('goodbye.c')
+Depends(hello, goodbye)
+    </pre><p>
+
+    in which case the dependency or dependencies
+    will be built before the target(s):
+
+    </p><pre class="screen">
+% <strong class="userinput"><code>scons -Q hello</code></strong>
+cc -c goodbye.c -o goodbye.o
+cc -o goodbye goodbye.o
+cc -c hello.c -o hello.o
+cc -o hello hello.o
+    </pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch06s03.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch06.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch06s05.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">6.3. Caching Implicit Dependencies </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 6.5. Dependencies From External Files:  the <code class="function">ParseDepends</code>
+  Function</td></tr></table></div></body></html>

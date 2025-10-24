@@ -1,0 +1,90 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>17.2. Attaching a Builder to a Construction Environment</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.8.0"><link rel="up" href="ch17.html" title="Chapter 17. Extending SCons: Writing Your Own Builders"><link rel="prev" href="ch17.html" title="Chapter 17. Extending SCons: Writing Your Own Builders"><link rel="next" href="ch17s03.html" title="17.3. Letting SCons Handle The File Suffixes"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">17.2. Attaching a Builder to a <span>Construction Environment</span></th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch17.html">Prev</a> </td><th width="60%" align="center">Chapter 17. Extending <span class="application">SCons</span>: Writing Your Own Builders</th><td width="20%" align="right"> <a accesskey="n" href="ch17s03.html">Next</a></td></tr></table><hr></div><div class="section" title="17.2. Attaching a Builder to a Construction Environment"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id5578"></a>17.2. Attaching a Builder to a <span>Construction Environment</span></h2></div></div></div><p>
+
+    A <em class="glossterm">Builder</em> object isn't useful
+    until it's attached to a <span>construction environment</span>
+    so that we can call it to arrange
+    for files to be built.
+    This is done through the <a class="link" href="apa.html#cv-BUILDERS"><code class="envar">$BUILDERS</code></a>
+    <span>construction variable</span> in an environment.
+    The <a class="link" href="apa.html#cv-BUILDERS"><code class="envar">$BUILDERS</code></a> variable is a <span class="application">Python</span> dictionary
+    that maps the names by which you want to call
+    various <em class="glossterm">Builder</em> objects to the objects themselves.
+    For example, if we want to call the
+    <em class="glossterm">Builder</em> we just defined by the name
+    <code class="function">Foo</code>,
+    our <code class="filename">SConstruct</code> file might look like:
+
+    </p><pre class="programlisting">
+bld = Builder(action='foobuild &lt; $SOURCE &gt; $TARGET')
+env = Environment(BUILDERS={'Foo': bld})
+    </pre><p>
+
+    With the <em class="glossterm">Builder</em> attached to our <span>construction environment</span>
+    with the name <code class="function">Foo</code>,
+    we can now actually call it like so:
+
+    </p><pre class="programlisting">
+env.Foo('file.foo', 'file.input')
+    </pre><p>
+
+    Then when we run <span class="application">SCons</span> it looks like:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+foobuild &lt; file.input &gt; file.foo
+</pre><p>
+
+    Note, however, that the default <code class="envar">$BUILDERS</code>
+    variable in a <span>construction environment</span>
+    comes with a default set of <em class="glossterm">Builder</em> objects
+    already defined:
+    <a class="link" href="apb.html#b-Program"><code class="function">Program</code></a>, <a class="link" href="apb.html#b-Library"><code class="function">Library</code></a>, etc.
+    And when we explicitly set the <code class="envar">$BUILDERS</code> variable
+    when we create the <span>construction environment</span>,
+    the default <em class="glossterm">Builder</em>s are no longer part of
+    the environment:
+
+    </p><pre class="programlisting">
+bld = Builder(action='foobuild &lt; $SOURCE &gt; $TARGET')
+env = Environment(BUILDERS={'Foo': bld})
+env.Foo('file.foo', 'file.input')
+env.Program('hello.c')
+       </pre><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+AttributeError: 'SConsEnvironment' object has no attribute 'Program':
+  File "/home/my/project/SConstruct", line 7:
+    env.Program('hello.c')
+</pre><p>
+
+    To be able to use both our own defined <em class="glossterm">Builder</em> objects
+    and the default <em class="glossterm">Builder</em> objects in the same <span>construction environment</span>,
+    you can either add to the <a class="link" href="apa.html#cv-BUILDERS"><code class="envar">$BUILDERS</code></a> variable
+    using the <a class="link" href="apd.html#f-Append"><code class="function">Append</code></a> function:
+
+    </p><pre class="programlisting">
+env = Environment()
+bld = Builder(action='foobuild &lt; $SOURCE &gt; $TARGET')
+env.Append(BUILDERS={'Foo': bld})
+env.Foo('file.foo', 'file.input')
+env.Program('hello.c')
+    </pre><p>
+
+    Or you can explicitly set the appropriately-named
+    key in the <code class="envar">$BUILDERS</code> dictionary:
+
+    </p><pre class="programlisting">
+env = Environment()
+bld = Builder(action='foobuild &lt; $SOURCE &gt; $TARGET')
+env['BUILDERS']['Foo'] = bld
+env.Foo('file.foo', 'file.input')
+env.Program('hello.c')
+    </pre><p>
+
+    Either way, the same <span>construction environment</span>
+    can then use both the newly-defined
+    <code class="function">Foo</code> <em class="glossterm">Builder</em>
+    and the default <a class="link" href="apb.html#b-Program"><code class="function">Program</code></a> <em class="glossterm">Builder</em>:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+foobuild &lt; file.input &gt; file.foo
+cc -o hello.o -c hello.c
+cc -o hello hello.o
+</pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch17.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch17.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch17s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 17. Extending <span class="application">SCons</span>: Writing Your Own Builders </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 17.3. Letting <span class="application">SCons</span> Handle The File Suffixes</td></tr></table></div></body></html>

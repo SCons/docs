@@ -1,0 +1,165 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Chapter 20. Extending SCons: Writing Your Own Scanners</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.10.0"><link rel="up" href="index.html" title="SCons 4.10.0"><link rel="prev" href="ch19.html" title="Chapter 19. Extending SCons: Pseudo-Builders and the AddMethod function"><link rel="next" href="ch20s02.html" title="20.2. Adding a search path to a Scanner: FindPathDirs"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 20. Extending <span class="application">SCons</span>: Writing Your Own Scanners</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch19.html">Prev</a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="ch20s02.html">Next</a></td></tr></table><hr></div><div class="chapter" title="Chapter 20. Extending SCons: Writing Your Own Scanners"><div class="titlepage"><div><div><h2 class="title"><a name="chap-scanners"></a>Chapter 20. Extending <span class="application">SCons</span>: Writing Your Own Scanners</h2></div></div></div><p>
+
+    <span class="application">SCons</span> has built-in <em class="glossterm">Scanners</em> that know how to look in
+    C/C++, Fortran, D, IDL, LaTeX, Python and SWIG source files
+    for information about
+    other files that targets built from those files depend on.
+
+    For example, if you have a file format which uses <code class="literal">#include</code>
+    to specify files which should be included into the source file
+    when it is processed, you can use an existing scanner already
+    included in <span class="application">SCons</span>.
+
+    You can use the same mechanisms that <span class="application">SCons</span> uses to create
+    its built-in Scanners to write Scanners of your own for file types
+    that <span class="application">SCons</span> does not know how to scan "out of the box."
+
+  </p><div class="section" title="20.1. A Simple Scanner Example"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="sect-simple-scanner"></a>20.1. A Simple Scanner Example</h2></div></div></div><p>
+
+      Suppose, for example, that we want to create a simple <em class="glossterm">Scanner</em>
+      for <code class="filename">.k</code> files.
+      A <code class="filename">.k</code> file contains some text that
+      will be processed,
+      and can include other files on lines that begin
+      with <code class="literal">include</code>
+      followed by a file name:
+
+    </p><pre class="programlisting">
+include filename.k
+    </pre><p>
+
+      Scanning a file will be handled by a Python function
+      that you must supply.
+      Here is a function that will use the Python
+      <code class="systemitem">re</code> module
+      to scan for the <code class="literal">include</code> lines in our example:
+
+    </p><pre class="programlisting">
+import re
+
+include_re = re.compile(r'^include\s+(\S+)$', re.M)
+
+def kfile_scan(node, env, path, arg=None):
+    contents = node.get_text_contents()
+    return env.File(include_re.findall(contents))
+    </pre><p>
+
+      It is important to note that you
+      have to return a list of File nodes from the scanner function, simple
+      strings for the file names won't do.
+      As in the examples we are showing here,
+      you can use the <a class="link" href="apd.html#f-File"><code class="function">File</code></a>
+      function of your current <span>construction environment</span>  in order to create nodes
+      on the fly from a sequence of file names with relative paths.
+
+    </p><p>
+
+      The scanner function must
+      accept the four specified arguments
+      and return a list of implicit dependencies.
+      Presumably, these would be dependencies found
+      from examining the contents of the file,
+      although the function can perform any
+      manipulation at all to generate the list of
+      dependencies.
+
+    </p><div class="variablelist"><dl><dt><span class="term"><em class="parameter"><code>node</code></em></span></dt><dd><p>
+
+      An <span class="application">SCons</span> node object representing the file being scanned.
+      The path name to the file can be
+      used by converting the node to a string
+      using the <code class="function">str</code> function,
+      or an internal <span class="application">SCons</span> <code class="methodname">get_text_contents</code>
+      object method can be used to fetch the contents.
+
+      </p></dd><dt><span class="term"><em class="parameter"><code>env</code></em></span></dt><dd><p>
+
+      The <span>construction environment</span> in effect for this scan.
+      The scanner function may choose to use <span>construction variables</span>
+      from this environment to affect its behavior.
+
+      </p></dd><dt><span class="term"><em class="parameter"><code>path</code></em></span></dt><dd><p>
+
+      A list of directories that form the search path for included files
+      for this Scanner.
+      This is how <span class="application">SCons</span> handles the <a class="link" href="apa.html#cv-CPPPATH"><code class="envar">$CPPPATH</code></a> and <a class="link" href="apa.html#cv-LIBPATH"><code class="envar">$LIBPATH</code></a>
+      variables.
+
+      </p></dd><dt><span class="term"><em class="parameter"><code>arg</code></em></span></dt><dd><p>
+
+      An optional argument that can be passed
+      to this scanner function when it is called from
+      a  scanner instance. The argument is only supplied
+      if it was given when the scanner instance is created
+      (see the manpage section "Scanner Objects").
+      This can be useful, for example, to distinguish which
+      scanner type called us, if the function might be bound
+      to several scanner objects.
+      Since the argument is only supplied in the function
+      call if it was defined for that scanner, the function
+      needs to be prepared to possibly be called in different
+      ways if multiple scanners are expected to use this
+      function - giving the parameter a default value as
+      shown above is a good way to do this.
+      If the function to scanner relationship will be 1:1,
+      just make sure they match.
+
+      </p></dd></dl></div><p>
+
+    A scanner object is created using the <a class="link" href="apd.html#f-Scanner"><code class="function">Scanner</code></a> function,
+    which typically takes an <em class="parameter"><code>skeys</code></em> argument
+    to associate a file suffix with this Scanner.
+    The scanner object must then be associated with the
+    <a class="link" href="apa.html#cv-SCANNERS"><code class="envar">$SCANNERS</code></a> <span>construction variable</span> in the current <span>construction environment</span>,
+    typically by using the <a class="link" href="apd.html#f-Append"><code class="function">Append</code></a> method:
+
+    </p><pre class="programlisting">
+kscan = Scanner(function=kfile_scan, skeys=['.k'])
+env.Append(SCANNERS=kscan)
+    </pre><p>
+
+    Let's put this all together.
+    Our new file type, with the <code class="filename">.k</code> suffix,
+    will be processed by a command named <span class="command"><strong>kprocess</strong></span>,
+    which lives in non-standard location
+    <code class="filename">/usr/local/bin</code>,
+    so we add that path to the execution environment so <span class="application">SCons</span>
+    can find it. Here's what it looks like:
+
+    </p><pre class="programlisting">
+import re
+
+include_re = re.compile(r'^include\s+(\S+)$', re.M)
+
+def kfile_scan(node, env, path):
+    contents = node.get_text_contents()
+    includes = include_re.findall(contents)
+    return env.File(includes)
+
+kscan = Scanner(function=kfile_scan, skeys=['.k'])
+env = Environment()
+env.AppendENVPath('PATH', '/usr/local/bin')
+env.Append(SCANNERS=kscan)
+
+env.Command('foo', 'foo.k', 'kprocess &lt; $SOURCES &gt; $TARGET')
+      </pre><p>
+
+    Assume a <code class="filename">foo.k</code> file like this:
+
+    </p><pre class="programlisting">
+some initial text
+include other_file
+some other text
+      
+</pre><p>
+
+    Now if we run <span class="command"><strong>scons</strong></span> we can see that the scanner works -
+    it identified the dependency
+    <code class="filename">other_file</code> via the detected
+    <code class="literal">include</code> line,
+    although we get an error message because we
+    forgot to create that file!
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+scons: *** [foo] Implicit dependency `other_file' not found, needed by target `foo'.
+</pre></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch19.html">Prev</a> </td><td width="20%" align="center"> </td><td width="40%" align="right"> <a accesskey="n" href="ch20s02.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 19. Extending <span class="application">SCons</span>: Pseudo-Builders and the AddMethod function </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 20.2. Adding a search path to a Scanner: <code class="function">FindPathDirs</code></td></tr></table></div></body></html>

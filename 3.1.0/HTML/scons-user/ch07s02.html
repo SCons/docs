@@ -1,0 +1,711 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>7.2. Construction Environments</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 3.1.0"><link rel="up" href="ch07.html" title="Chapter 7. Environments"><link rel="prev" href="ch07.html" title="Chapter 7. Environments"><link rel="next" href="ch07s03.html" title="7.3. Controlling the Execution Environment for Issued Commands"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">7.2. Construction Environments</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch07.html">Prev</a> </td><th width="60%" align="center">Chapter 7. Environments</th><td width="20%" align="right"> <a accesskey="n" href="ch07s03.html">Next</a></td></tr></table><hr></div><div class="section" title="7.2. Construction Environments"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="sect-construction-environments"></a>7.2. Construction Environments</h2></div></div></div><p>
+
+      It is rare that all of the software in a large,
+      complicated system needs to be built the same way.
+      For example, different source files may need different options
+      enabled on the command line,
+      or different executable programs need to be linked
+      with different libraries.
+      <span class="application">SCons</span> accommodates these different build
+      requirements by allowing you to create and
+      configure multiple <code class="literal">construction environments</code>
+      that control how the software is built.
+      A <code class="literal">construction environment</code> is an object
+      that has a number of associated
+      <code class="literal">construction variables</code>, each with a name and a value.
+      (A construction environment also has an attached
+      set of <code class="classname">Builder</code> methods,
+      about which we'll learn more later.)
+
+    </p><div class="section" title="7.2.1. Creating a Construction Environment: the Environment Function"><div class="titlepage"><div><div><h3 class="title"><a name="idm1446"></a>7.2.1. Creating a <code class="literal">Construction Environment</code>:  the <code class="function">Environment</code> Function</h3></div></div></div><p>
+
+        A <code class="literal">construction environment</code> is created by the <code class="function">Environment</code> method:
+
+      </p><pre class="programlisting">
+env = Environment()
+       </pre><p>
+
+        By default, <span class="application">SCons</span> initializes every
+        new construction environment
+        with a set of <code class="literal">construction variables</code>
+        based on the tools that it finds on your system,
+        plus the default set of builder methods
+        necessary for using those tools.
+        The construction variables
+        are initialized with values describing
+        the C compiler,
+        the Fortran compiler,
+        the linker,
+        etc.,
+        as well as the command lines to invoke them.
+
+      </p><p>
+
+        When you initialize a construction environment
+        you can set the values of the
+        environment's <code class="literal">construction variables</code>
+        to control how a program is built.
+        For example:
+
+      </p><pre class="programlisting">
+ env = Environment(CC = 'gcc',
+                   CCFLAGS = '-O2')
+
+ env.Program('foo.c')
+         </pre><p>
+
+        The construction environment in this example
+        is still initialized with the same default
+        construction variable values,
+        except that the user has explicitly specified use of the
+        GNU C compiler <span class="application">gcc</span>,
+        and further specifies that the <code class="literal">-O2</code>
+        (optimization level two)
+        flag should be used when compiling the object file.
+        In other words, the explicit initializations of
+        <a class="link" href="apa.html#cv-CC"><code class="envar">$CC</code></a> and <a class="link" href="apa.html#cv-CCFLAGS"><code class="envar">$CCFLAGS</code></a>
+        override the default values in the newly-created
+        construction environment.
+        So a run from this example would look like:
+
+      </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+gcc -o foo.o -c -O2 foo.c
+gcc -o foo foo.o
+</pre></div><div class="section" title="7.2.2. Fetching Values From a Construction Environment"><div class="titlepage"><div><div><h3 class="title"><a name="idm1469"></a>7.2.2. Fetching Values From a <code class="literal">Construction Environment</code></h3></div></div></div><p>
+
+      You can fetch individual construction variables
+      using the normal syntax
+      for accessing individual named items in a Python dictionary:
+
+      </p><pre class="programlisting">
+env = Environment()
+print("CC is: %s"%env['CC'])
+        </pre><p>
+
+      This example <code class="filename">SConstruct</code> file doesn't build anything,
+      but because it's actually a Python script,
+      it will print the value of <a class="link" href="apa.html#cv-CC"><code class="envar">$CC</code></a> for us:
+
+      </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+CC is: cc
+scons: `.' is up to date.
+</pre><p>
+
+      A construction environment, however,
+      is actually an object with associated methods, etc.
+      If you want to have direct access to only the
+      dictionary of construction variables,
+      you can fetch this using the <code class="literal">Dictionary</code> method:
+
+      </p><pre class="programlisting">
+env = Environment(FOO = 'foo', BAR = 'bar')
+dict = env.Dictionary()
+for key in ['OBJSUFFIX', 'LIBSUFFIX', 'PROGSUFFIX']:
+    print("key = %s, value = %s" % (key, dict[key]))
+         </pre><p>
+
+      This <code class="filename">SConstruct</code> file
+      will print the specified dictionary items for us on POSIX
+      systems as follows:
+
+      </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+key = OBJSUFFIX, value = .o
+key = LIBSUFFIX, value = .a
+key = PROGSUFFIX, value = 
+scons: `.' is up to date.
+</pre><p>
+
+      And on Windows:
+
+      </p><pre class="screen">C:\&gt;<strong class="userinput"><code>scons -Q</code></strong>
+key = OBJSUFFIX, value = .obj
+key = LIBSUFFIX, value = .lib
+key = PROGSUFFIX, value = .exe
+scons: `.' is up to date.
+</pre><p>
+
+      If you want to loop and print the values of
+      all of the construction variables in a construction environment,
+      the Python code to do that in sorted order might look something like:
+
+      </p><pre class="programlisting">
+env = Environment()
+for item in sorted(env.Dictionary().items()):
+    print("construction variable = '%s', value = '%s'" % item)
+      </pre></div><div class="section" title="7.2.3. Expanding Values From a Construction Environment: the subst Method"><div class="titlepage"><div><div><h3 class="title"><a name="idm1492"></a>7.2.3. Expanding Values From a <code class="literal">Construction Environment</code>:  the <code class="function">subst</code> Method</h3></div></div></div><p>
+
+      Another way to get information from
+      a construction environment
+      is to use the <code class="function">subst</code> method
+      on a string containing <code class="literal">$</code> expansions
+      of construction variable names.
+      As a simple example,
+      the example from the previous
+      section that used
+      <code class="literal">env['CC']</code>
+      to fetch the value of <a class="link" href="apa.html#cv-CC"><code class="envar">$CC</code></a>
+      could also be written as:
+
+      </p><pre class="programlisting">
+env = Environment()
+print("CC is: %s"%env.subst('$CC'))
+      </pre><p>
+
+      One advantage of using
+      <code class="function">subst</code> to expand strings is
+      that construction variables
+      in the result get re-expanded until
+      there are no expansions left in the string.
+      So a simple fetch of a value like
+      <a class="link" href="apa.html#cv-CCCOM"><code class="envar">$CCCOM</code></a>:
+
+      </p><pre class="programlisting">
+env = Environment(CCFLAGS = '-DFOO')
+print("CCCOM is: %s"%env['CCCOM'])
+      </pre><p>
+
+      Will print the unexpanded value of <code class="envar">$CCCOM</code>,
+      showing us the construction
+      variables that still need to be expanded:
+
+      </p><pre class="screen">
+% <strong class="userinput"><code>scons -Q</code></strong>
+CCCOM is: $CC $CCFLAGS $CPPFLAGS $_CPPDEFFLAGS $_CPPINCFLAGS -c -o $TARGET $SOURCES
+scons: `.' is up to date.
+      </pre><p>
+
+      Calling the <code class="function">subst</code> method on <code class="varname">$CCOM</code>,
+      however:
+
+      </p><pre class="programlisting">
+env = Environment(CCFLAGS = '-DFOO')
+print("CCCOM is: %s"%env.subst('$CCCOM'))
+      </pre><p>
+
+      Will recursively expand all of
+      the construction variables prefixed
+      with <code class="literal">$</code> (dollar signs),
+      showing us the final output:
+
+      </p><pre class="screen">
+% <strong class="userinput"><code>scons -Q</code></strong>
+CCCOM is: gcc -DFOO -c -o
+scons: `.' is up to date.
+      </pre><p>
+
+      Note that because we're not expanding this
+      in the context of building something
+      there are no target or source files
+      for <a class="link" href="apa.html#cv-TARGET"><code class="envar">$TARGET</code></a> and <a class="link" href="apa.html#cv-SOURCES"><code class="envar">$SOURCES</code></a> to expand.
+
+      </p></div><div class="section" title="7.2.4. Handling Problems With Value Expansion"><div class="titlepage"><div><div><h3 class="title"><a name="idm1525"></a>7.2.4. Handling Problems With Value Expansion</h3></div></div></div><p>
+
+      If a problem occurs when expanding a construction variable,
+      by default it is expanded to <code class="literal">''</code>
+      (a null string), and will not cause scons to fail. 
+      </p><pre class="programlisting">
+env = Environment()
+print("value is: %s"%env.subst( '-&gt;$MISSING&lt;-' ))
+        </pre><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+value is: -&gt;&lt;-
+scons: `.' is up to date.
+</pre><p>
+      This default behaviour can be changed using the <code class="function">AllowSubstExceptions</code>
+      function.
+      When a problem occurs with a variable expansion it generates
+      an exception, and the <code class="function">AllowSubstExceptions</code> function controls
+      which of these exceptions are actually fatal and which are
+      allowed to occur safely.   By default, <code class="classname">NameError</code> and <code class="classname">IndexError</code>
+      are the two exceptions that are allowed to occur: so instead of
+      causing scons to fail, these are caught, the variable expanded to
+      <code class="literal">''</code>
+      and scons execution continues.
+      To require that all construction variable names exist, and that
+      indexes out of range are not allowed, call <code class="function">AllowSubstExceptions</code>
+      with no extra arguments.
+      </p><pre class="programlisting">
+AllowSubstExceptions()
+env = Environment()
+print("value is: %s"%env.subst( '-&gt;$MISSING&lt;-' ))
+        </pre><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+
+scons: *** NameError `MISSING' trying to evaluate `$MISSING'
+File "/home/my/project/SConstruct", line 3, in &lt;module&gt;
+</pre><p>
+      This can also be used to allow other exceptions that might occur,
+      most usefully with the <code class="literal">${...}</code> construction
+      variable syntax.  For example, this would allow zero-division to
+      occur in a variable expansion in addition to the default exceptions
+      allowed
+      </p><pre class="programlisting">
+AllowSubstExceptions(IndexError, NameError, ZeroDivisionError)
+env = Environment()
+print("value is: %s"%env.subst( '-&gt;${1 / 0}&lt;-' ))
+        </pre><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+value is: -&gt;&lt;-
+scons: `.' is up to date.
+</pre><p>
+      If <code class="function">AllowSubstExceptions</code> is called multiple times, each call
+      completely overwrites the previous list of allowed exceptions.
+      </p></div><div class="section" title="7.2.5. Controlling the Default Construction Environment: the DefaultEnvironment Function"><div class="titlepage"><div><div><h3 class="title"><a name="idm1549"></a>7.2.5. Controlling the Default <code class="literal">Construction Environment</code>:  the <code class="function">DefaultEnvironment</code> Function</h3></div></div></div><p>
+
+      All of the <code class="classname">Builder</code> functions that we've introduced so far,
+      like <code class="function">Program</code> and <code class="function">Library</code>,
+      actually use a default <code class="literal">construction environment</code>
+      that contains settings
+      for the various compilers
+      and other tools that
+      <span class="application">SCons</span> configures by default,
+      or otherwise knows about
+      and has discovered on your system.
+      The goal of the default construction environment
+      is to make many configurations to "just work"
+      to build software using
+      readily available tools
+      with a minimum of configuration changes.
+
+      </p><p>
+
+      You can, however, control the settings
+      in the default construction environment
+      by using the <code class="function">DefaultEnvironment</code> function
+      to initialize various settings:
+
+      </p><pre class="programlisting">
+DefaultEnvironment(CC = '/usr/local/bin/gcc')
+      </pre><p>
+
+      When configured as above,
+      all calls to the <code class="function">Program</code>
+      or <code class="function">Object</code> Builder
+      will build object files with the
+      <code class="filename">/usr/local/bin/gcc</code>
+      compiler.
+
+      </p><p>
+
+      Note that the <code class="function">DefaultEnvironment</code> function
+      returns the initialized
+      default construction environment object,
+      which can then be manipulated like any
+      other construction environment.
+      So the following
+      would be equivalent to the
+      previous example,
+      setting the <code class="envar">$CC</code>
+      variable to <code class="filename">/usr/local/bin/gcc</code>
+      but as a separate step after
+      the default construction environment has been initialized:
+
+      </p><pre class="programlisting">
+env = DefaultEnvironment()
+env['CC'] = '/usr/local/bin/gcc'
+      </pre><p>
+
+      One very common use of the <code class="function">DefaultEnvironment</code> function
+      is to speed up <span class="application">SCons</span> initialization.
+      As part of trying to make most default
+      configurations "just work,"
+      <span class="application">SCons</span> will actually
+      search the local system for installed
+      compilers and other utilities.
+      This search can take time,
+      especially on systems with
+      slow or networked file systems.
+      If you know which compiler(s) and/or
+      other utilities you want to configure,
+      you can control the search
+      that <span class="application">SCons</span> performs
+      by specifying some specific
+      tool modules with which to
+      initialize the default construction environment:
+
+      </p><pre class="programlisting">
+env = DefaultEnvironment(tools = ['gcc', 'gnulink'],
+                         CC = '/usr/local/bin/gcc')
+      </pre><p>
+
+      So the above example would tell <span class="application">SCons</span>
+      to explicitly configure the default environment
+      to use its normal GNU Compiler and GNU Linker settings
+      (without having to search for them,
+      or any other utilities for that matter),
+      and specifically to use the compiler found at
+      <code class="filename">/usr/local/bin/gcc</code>.
+
+      </p></div><div class="section" title="7.2.6. Multiple Construction Environments"><div class="titlepage"><div><div><h3 class="title"><a name="idm1580"></a>7.2.6. Multiple <code class="literal">Construction Environments</code></h3></div></div></div><p>
+
+      The real advantage of construction environments
+      is that you can create as many different construction
+      environments as you need,
+      each tailored to a different way to build
+      some piece of software or other file.
+      If, for example, we need to build
+      one program with the <code class="literal">-O2</code> flag
+      and another with the <code class="literal">-g</code> (debug) flag,
+      we would do this like so:
+
+      </p><pre class="programlisting">
+opt = Environment(CCFLAGS = '-O2')
+dbg = Environment(CCFLAGS = '-g')
+
+opt.Program('foo', 'foo.c')
+
+dbg.Program('bar', 'bar.c')
+        </pre><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o bar.o -c -g bar.c
+cc -o bar bar.o
+cc -o foo.o -c -O2 foo.c
+cc -o foo foo.o
+</pre><p>
+
+      We can even use multiple construction environments to build
+      multiple versions of a single program.
+      If you do this by simply trying to use the
+      <a class="link" href="apb.html#b-Program"><code class="function">Program</code></a> builder with both environments, though,
+      like this:
+
+      </p><pre class="programlisting">
+opt = Environment(CCFLAGS = '-O2')
+dbg = Environment(CCFLAGS = '-g')
+
+opt.Program('foo', 'foo.c')
+
+dbg.Program('foo', 'foo.c')
+        </pre><p>
+
+      Then <span class="application">SCons</span> generates the following error:
+
+      </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+
+scons: *** Two environments with different actions were specified for the same target: foo.o
+File "/home/my/project/SConstruct", line 6, in &lt;module&gt;
+</pre><p>
+
+      This is because the two <code class="function">Program</code> calls have
+      each implicitly told <span class="application">SCons</span> to generate an object file named
+      <code class="filename">foo.o</code>,
+      one with a <a class="link" href="apa.html#cv-CCFLAGS"><code class="envar">$CCFLAGS</code></a> value of
+      <code class="literal">-O2</code>
+      and one with a <a class="link" href="apa.html#cv-CCFLAGS"><code class="envar">$CCFLAGS</code></a> value of
+      <code class="literal">-g</code>.
+      <span class="application">SCons</span> can't just decide that one of them
+      should take precedence over the other,
+      so it generates the error.
+      To avoid this problem,
+      we must explicitly specify
+      that each environment compile
+      <code class="filename">foo.c</code>
+      to a separately-named object file
+      using the <a class="link" href="apb.html#b-Object"><code class="function">Object</code></a> builder, like so:
+
+      </p><pre class="programlisting">
+opt = Environment(CCFLAGS = '-O2')
+dbg = Environment(CCFLAGS = '-g')
+
+o = opt.Object('foo-opt', 'foo.c')
+opt.Program(o)
+
+d = dbg.Object('foo-dbg', 'foo.c')
+dbg.Program(d)
+        </pre><p>
+
+      Notice that each call to the <code class="function">Object</code> builder
+      returns a value,
+      an internal <span class="application">SCons</span> object that
+      represents the object file that will be built.
+      We then use that object
+      as input to the <code class="function">Program</code> builder.
+      This avoids having to specify explicitly
+      the object file name in multiple places,
+      and makes for a compact, readable
+      <code class="filename">SConstruct</code> file.
+      Our <span class="application">SCons</span> output then looks like:
+
+      </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o foo-dbg.o -c -g foo.c
+cc -o foo-dbg foo-dbg.o
+cc -o foo-opt.o -c -O2 foo.c
+cc -o foo-opt foo-opt.o
+</pre></div><div class="section" title="7.2.7. Making Copies of Construction Environments: the Clone Method"><div class="titlepage"><div><div><h3 class="title"><a name="idm1620"></a>7.2.7. Making Copies of <code class="literal">Construction Environments</code>:  the <code class="function">Clone</code> Method</h3></div></div></div><p>
+
+      Sometimes you want more than one construction environment
+      to share the same values for one or more variables.
+      Rather than always having to repeat all of the common
+      variables when you create each construction environment,
+      you can use the <code class="function">Clone</code> method
+      to create a copy of a construction environment.
+
+      </p><p>
+
+      Like the <code class="function">Environment</code> call that creates a construction environment,
+      the <code class="function">Clone</code> method takes <code class="literal">construction variable</code> assignments,
+      which will override the values in the copied construction environment.
+      For example, suppose we want to use <span class="application">gcc</span>
+      to create three versions of a program,
+      one optimized, one debug, and one with neither.
+      We could do this by creating a "base" construction environment
+      that sets <a class="link" href="apa.html#cv-CC"><code class="envar">$CC</code></a> to <span class="application">gcc</span>,
+      and then creating two copies,
+      one which sets <a class="link" href="apa.html#cv-CCFLAGS"><code class="envar">$CCFLAGS</code></a> for optimization
+      and the other which sets <code class="envar">$CCFLAGS</code> for debugging:
+
+      </p><pre class="programlisting">
+env = Environment(CC = 'gcc')
+opt = env.Clone(CCFLAGS = '-O2')
+dbg = env.Clone(CCFLAGS = '-g')
+
+env.Program('foo', 'foo.c')
+
+o = opt.Object('foo-opt', 'foo.c')
+opt.Program(o)
+
+d = dbg.Object('foo-dbg', 'foo.c')
+dbg.Program(d)
+        </pre><p>
+
+      Then our output would look like:
+
+      </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+gcc -o foo.o -c foo.c
+gcc -o foo foo.o
+gcc -o foo-dbg.o -c -g foo.c
+gcc -o foo-dbg foo-dbg.o
+gcc -o foo-opt.o -c -O2 foo.c
+gcc -o foo-opt foo-opt.o
+</pre></div><div class="section" title="7.2.8. Replacing Values: the Replace Method"><div class="titlepage"><div><div><h3 class="title"><a name="idm1641"></a>7.2.8. Replacing Values:  the <code class="function">Replace</code> Method</h3></div></div></div><p>
+
+      You can replace existing construction variable values
+      using the <code class="function">Replace</code> method:
+
+      </p><pre class="programlisting">
+env = Environment(CCFLAGS = '-DDEFINE1')
+env.Replace(CCFLAGS = '-DDEFINE2')
+env.Program('foo.c')
+        </pre><p>
+
+      The replacing value
+      (<code class="literal">-DDEFINE2</code> in the above example)
+      completely replaces the value in the
+      construction environment:
+
+      </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o foo.o -c -DDEFINE2 foo.c
+cc -o foo foo.o
+</pre><p>
+
+      You can safely call <code class="function">Replace</code>
+      for construction variables that
+      don't exist in the construction environment:
+
+      </p><pre class="programlisting">
+env = Environment()
+env.Replace(NEW_VARIABLE = 'xyzzy')
+print("NEW_VARIABLE = %s"%env['NEW_VARIABLE'])
+        </pre><p>
+
+      In this case,
+      the construction variable simply
+      gets added to the construction environment:
+
+      </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+NEW_VARIABLE = xyzzy
+scons: `.' is up to date.
+</pre><p>
+
+      Because the variables
+      aren't expanded until the construction environment
+      is actually used to build the targets,
+      and because <span class="application">SCons</span> function and method calls
+      are order-independent,
+      the last replacement "wins"
+      and is used to build all targets,
+      regardless of the order in which
+      the calls to Replace() are
+      interspersed with calls to
+      builder methods:
+
+      </p><pre class="programlisting">
+env = Environment(CCFLAGS = '-DDEFINE1')
+print("CCFLAGS = %s"%env['CCFLAGS'])
+env.Program('foo.c')
+
+env.Replace(CCFLAGS = '-DDEFINE2')
+print("CCFLAGS = %s"%env['CCFLAGS'])
+env.Program('bar.c')
+        </pre><p>
+
+      The timing of when the replacement
+      actually occurs relative
+      to when the targets get built
+      becomes apparent
+      if we run <code class="filename">scons</code> without the <code class="literal">-Q</code>
+      option:
+
+      </p><pre class="screen">% <strong class="userinput"><code>scons</code></strong>
+scons: Reading SConscript files ...
+CCFLAGS = -DDEFINE1
+CCFLAGS = -DDEFINE2
+scons: done reading SConscript files.
+scons: Building targets ...
+cc -o bar.o -c -DDEFINE2 bar.c
+cc -o bar bar.o
+cc -o foo.o -c -DDEFINE2 foo.c
+cc -o foo foo.o
+scons: done building targets.
+</pre><p>
+
+      Because the replacement occurs while
+      the <code class="filename">SConscript</code> files are being read,
+      the <a class="link" href="apa.html#cv-CCFLAGS"><code class="envar">$CCFLAGS</code></a>
+      variable has already been set to
+      <code class="literal">-DDEFINE2</code>
+      by the time the <code class="filename">foo.o</code> target is built,
+      even though the call to the <code class="function">Replace</code>
+      method does not occur until later in
+      the <code class="filename">SConscript</code> file.
+
+      </p></div><div class="section" title="7.2.9. Setting Values Only If They're Not Already Defined: the SetDefault Method"><div class="titlepage"><div><div><h3 class="title"><a name="idm1673"></a>7.2.9. Setting Values Only If They're Not Already Defined:  the <code class="function">SetDefault</code> Method</h3></div></div></div><p>
+
+      Sometimes it's useful to be able to specify
+      that a construction variable should be
+      set to a value only if the construction environment
+      does not already have that variable defined
+      You can do this with the <code class="function">SetDefault</code> method,
+      which behaves similarly to the <code class="function">set_default</code>
+      method of Python dictionary objects:
+
+      </p><pre class="programlisting">
+env.SetDefault(SPECIAL_FLAG = '-extra-option')
+      </pre><p>
+
+      This is especially useful
+      when writing your own <code class="literal">Tool</code> modules
+      to apply variables to construction environments.
+      
+
+      </p></div><div class="section" title="7.2.10. Appending to the End of Values: the Append Method"><div class="titlepage"><div><div><h3 class="title"><a name="idm1682"></a>7.2.10. Appending to the End of Values:  the <code class="function">Append</code> Method</h3></div></div></div><p>
+
+      You can append a value to
+      an existing construction variable
+      using the <code class="function">Append</code> method:
+
+      </p><pre class="programlisting">
+env = Environment(CCFLAGS = ['-DMY_VALUE'])
+env.Append(CCFLAGS = ['-DLAST'])
+env.Program('foo.c')
+        </pre><p>
+
+      <span class="application">SCons</span> then supplies both the <code class="literal">-DMY_VALUE</code> and
+      <code class="literal">-DLAST</code> flags when compiling the object file:
+
+      </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o foo.o -c -DMY_VALUE -DLAST foo.c
+cc -o foo foo.o
+</pre><p>
+
+      If the construction variable doesn't already exist,
+      the <code class="function">Append</code> method will create it:
+
+      </p><pre class="programlisting">
+env = Environment()
+env.Append(NEW_VARIABLE = 'added')
+print("NEW_VARIABLE = %s"%env['NEW_VARIABLE'])
+        </pre><p>
+
+      Which yields:
+
+      </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+NEW_VARIABLE = added
+scons: `.' is up to date.
+</pre><p>
+
+      Note that the <code class="function">Append</code> function tries to be "smart"
+      about how the new value is appended to the old value.
+      If both are strings, the previous and new strings
+      are simply concatenated.
+      Similarly, if both are lists,
+      the lists are concatenated.
+      If, however, one is a string and the other is a list,
+      the string is added as a new element to the list.
+
+      </p></div><div class="section" title="7.2.11. Appending Unique Values: the AppendUnique Method"><div class="titlepage"><div><div><h3 class="title"><a name="idm1702"></a>7.2.11. Appending Unique Values:  the <code class="function">AppendUnique</code> Method</h3></div></div></div><p>
+
+      Some times it's useful to add a new value
+      only if the existing construction variable
+      doesn't already contain the value.
+      This can be done using the <code class="function">AppendUnique</code> method:
+
+      </p><pre class="programlisting">
+env.AppendUnique(CCFLAGS=['-g'])
+      </pre><p>
+
+      In the above example,
+      the <code class="literal">-g</code> would be added
+      only if the <code class="envar">$CCFLAGS</code> variable
+      does not already contain a <code class="literal">-g</code> value.
+
+      </p></div><div class="section" title="7.2.12. Appending to the Beginning of Values: the Prepend Method"><div class="titlepage"><div><div><h3 class="title"><a name="idm1712"></a>7.2.12. Appending to the Beginning of Values:  the <code class="function">Prepend</code> Method</h3></div></div></div><p>
+
+      You can append a value to the beginning of
+      an existing construction variable
+      using the <code class="function">Prepend</code> method:
+
+      </p><pre class="programlisting">
+env = Environment(CCFLAGS = ['-DMY_VALUE'])
+env.Prepend(CCFLAGS = ['-DFIRST'])
+env.Program('foo.c')
+        </pre><p>
+
+      <span class="application">SCons</span> then supplies both the <code class="literal">-DFIRST</code> and
+      <code class="literal">-DMY_VALUE</code> flags when compiling the object file:
+
+      </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o foo.o -c -DFIRST -DMY_VALUE foo.c
+cc -o foo foo.o
+</pre><p>
+
+      If the construction variable doesn't already exist,
+      the <code class="function">Prepend</code> method will create it:
+
+      </p><pre class="programlisting">
+env = Environment()
+env.Prepend(NEW_VARIABLE = 'added')
+print("NEW_VARIABLE = %s"%env['NEW_VARIABLE'])
+        </pre><p>
+
+      Which yields:
+
+      </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+NEW_VARIABLE = added
+scons: `.' is up to date.
+</pre><p>
+
+      Like the <code class="function">Append</code> function,
+      the <code class="function">Prepend</code> function tries to be "smart"
+      about how the new value is appended to the old value.
+      If both are strings, the previous and new strings
+      are simply concatenated.
+      Similarly, if both are lists,
+      the lists are concatenated.
+      If, however, one is a string and the other is a list,
+      the string is added as a new element to the list.
+
+      </p></div><div class="section" title="7.2.13. Prepending Unique Values: the PrependUnique Method"><div class="titlepage"><div><div><h3 class="title"><a name="idm1733"></a>7.2.13. Prepending Unique Values:  the <code class="function">PrependUnique</code> Method</h3></div></div></div><p>
+
+      Some times it's useful to add a new value
+      to the beginning of a construction variable
+      only if the existing value
+      doesn't already contain the to-be-added value.
+      This can be done using the <code class="function">PrependUnique</code> method:
+
+      </p><pre class="programlisting">
+env.PrependUnique(CCFLAGS=['-g'])
+      </pre><p>
+
+      In the above example,
+      the <code class="literal">-g</code> would be added
+      only if the <code class="envar">$CCFLAGS</code> variable
+      does not already contain a <code class="literal">-g</code> value.
+
+      </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch07.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch07.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch07s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 7. Environments </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 7.3. Controlling the Execution Environment for Issued Commands</td></tr></table></div></body></html>

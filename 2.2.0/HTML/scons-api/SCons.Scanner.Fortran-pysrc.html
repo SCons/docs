@@ -1,0 +1,633 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>SCons.Scanner.Fortran</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="SCons-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://www.scons.org/">SCons</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="SCons-module.html">Package&nbsp;SCons</a> ::
+        <a href="SCons.Scanner-module.html">Package&nbsp;Scanner</a> ::
+        Module&nbsp;Fortran
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="SCons.Scanner.Fortran-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="SCons.Scanner.Fortran-module.html">Module SCons.Scanner.Fortran</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-docstring">"""SCons.Scanner.Fortran</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring">This module implements the dependency scanner for Fortran code.</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-comment"># Copyright (c) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012 The SCons Foundation</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-comment"># Permission is hereby granted, free of charge, to any person obtaining</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-comment"># a copy of this software and associated documentation files (the</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-comment"># "Software"), to deal in the Software without restriction, including</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-comment"># without limitation the rights to use, copy, modify, merge, publish,</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-comment"># distribute, sublicense, and/or sell copies of the Software, and to</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-comment"># permit persons to whom the Software is furnished to do so, subject to</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-comment"># the following conditions:</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-comment"># The above copyright notice and this permission notice shall be included</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-comment"># in all copies or substantial portions of the Software.</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-comment"># THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-comment"># KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-comment"># WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-comment"># NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-comment"># LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-comment"># OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-comment"># WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt id="link-0" class="py-name" targets="Variable SCons.Action.__revision__=SCons.Action-module.html#__revision__,Variable SCons.Builder.__revision__=SCons.Builder-module.html#__revision__,Variable SCons.CacheDir.__revision__=SCons.CacheDir-module.html#__revision__,Variable SCons.Debug.__revision__=SCons.Debug-module.html#__revision__,Variable SCons.Defaults.__revision__=SCons.Defaults-module.html#__revision__,Variable SCons.Environment.__revision__=SCons.Environment-module.html#__revision__,Variable SCons.Errors.__revision__=SCons.Errors-module.html#__revision__,Variable SCons.Executor.__revision__=SCons.Executor-module.html#__revision__,Variable SCons.Job.__revision__=SCons.Job-module.html#__revision__,Variable SCons.Memoize.__revision__=SCons.Memoize-module.html#__revision__,Variable SCons.Node.Alias.__revision__=SCons.Node.Alias-module.html#__revision__,Variable SCons.Node.FS.__revision__=SCons.Node.FS-module.html#__revision__,Variable SCons.Node.Python.__revision__=SCons.Node.Python-module.html#__revision__,Variable SCons.Node.__revision__=SCons.Node-module.html#__revision__,Variable SCons.PathList.__revision__=SCons.PathList-module.html#__revision__,Variable SCons.SConf.__revision__=SCons.SConf-module.html#__revision__,Variable SCons.SConsign.__revision__=SCons.SConsign-module.html#__revision__,Variable SCons.Scanner.C.__revision__=SCons.Scanner.C-module.html#__revision__,Variable SCons.Scanner.D.__revision__=SCons.Scanner.D-module.html#__revision__,Variable SCons.Scanner.Dir.__revision__=SCons.Scanner.Dir-module.html#__revision__,Variable SCons.Scanner.Fortran.__revision__=SCons.Scanner.Fortran-module.html#__revision__,Variable SCons.Scanner.IDL.__revision__=SCons.Scanner.IDL-module.html#__revision__,Variable SCons.Scanner.LaTeX.__revision__=SCons.Scanner.LaTeX-module.html#__revision__,Variable SCons.Scanner.Prog.__revision__=SCons.Scanner.Prog-module.html#__revision__,Variable SCons.Scanner.RC.__revision__=SCons.Scanner.RC-module.html#__revision__,Variable SCons.Scanner.__revision__=SCons.Scanner-module.html#__revision__,Variable SCons.Script.Interactive.__revision__=SCons.Script.Interactive-module.html#__revision__,Variable SCons.Script.Main.__revision__=SCons.Script.Main-module.html#__revision__,Variable SCons.Script.SConscript'.__revision__=SCons.Script.SConscript%27-module.html#__revision__,Variable SCons.Script.__revision__=SCons.Script-module.html#__revision__,Variable SCons.Sig.__revision__=SCons.Sig-module.html#__revision__,Variable SCons.Subst.__revision__=SCons.Subst-module.html#__revision__,Variable SCons.Taskmaster.__revision__=SCons.Taskmaster-module.html#__revision__,Variable SCons.Variables.BoolVariable'.__revision__=SCons.Variables.BoolVariable%27-module.html#__revision__,Variable SCons.Variables.EnumVariable'.__revision__=SCons.Variables.EnumVariable%27-module.html#__revision__,Variable SCons.Variables.ListVariable'.__revision__=SCons.Variables.ListVariable%27-module.html#__revision__,Variable SCons.Variables.PackageVariable'.__revision__=SCons.Variables.PackageVariable%27-module.html#__revision__,Variable SCons.Variables.PathVariable'.__revision__=SCons.Variables.PathVariable%27-module.html#__revision__,Variable SCons.Variables.__revision__=SCons.Variables-module.html#__revision__,Variable SCons.Warnings.__revision__=SCons.Warnings-module.html#__revision__,Variable SCons.__revision__=SCons-module.html#__revision__,Variable SCons.compat.__revision__=SCons.compat-module.html#__revision__,Variable SCons.compat._scons_builtins.__revision__=SCons.compat._scons_builtins-module.html#__revision__,Variable SCons.compat._scons_collections.__revision__=SCons.compat._scons_collections-module.html#__revision__,Variable SCons.compat._scons_dbm.__revision__=SCons.compat._scons_dbm-module.html#__revision__,Variable SCons.compat._scons_hashlib.__revision__=SCons.compat._scons_hashlib-module.html#__revision__,Variable SCons.compat._scons_io.__revision__=SCons.compat._scons_io-module.html#__revision__,Variable SCons.exitfuncs.__revision__=SCons.exitfuncs-module.html#__revision__"><a title="SCons.Action.__revision__
+SCons.Builder.__revision__
+SCons.CacheDir.__revision__
+SCons.Debug.__revision__
+SCons.Defaults.__revision__
+SCons.Environment.__revision__
+SCons.Errors.__revision__
+SCons.Executor.__revision__
+SCons.Job.__revision__
+SCons.Memoize.__revision__
+SCons.Node.Alias.__revision__
+SCons.Node.FS.__revision__
+SCons.Node.Python.__revision__
+SCons.Node.__revision__
+SCons.PathList.__revision__
+SCons.SConf.__revision__
+SCons.SConsign.__revision__
+SCons.Scanner.C.__revision__
+SCons.Scanner.D.__revision__
+SCons.Scanner.Dir.__revision__
+SCons.Scanner.Fortran.__revision__
+SCons.Scanner.IDL.__revision__
+SCons.Scanner.LaTeX.__revision__
+SCons.Scanner.Prog.__revision__
+SCons.Scanner.RC.__revision__
+SCons.Scanner.__revision__
+SCons.Script.Interactive.__revision__
+SCons.Script.Main.__revision__
+SCons.Script.SConscript'.__revision__
+SCons.Script.__revision__
+SCons.Sig.__revision__
+SCons.Subst.__revision__
+SCons.Taskmaster.__revision__
+SCons.Variables.BoolVariable'.__revision__
+SCons.Variables.EnumVariable'.__revision__
+SCons.Variables.ListVariable'.__revision__
+SCons.Variables.PackageVariable'.__revision__
+SCons.Variables.PathVariable'.__revision__
+SCons.Variables.__revision__
+SCons.Warnings.__revision__
+SCons.__revision__
+SCons.compat.__revision__
+SCons.compat._scons_builtins.__revision__
+SCons.compat._scons_collections.__revision__
+SCons.compat._scons_dbm.__revision__
+SCons.compat._scons_hashlib.__revision__
+SCons.compat._scons_io.__revision__
+SCons.exitfuncs.__revision__" class="py-name" href="#" onclick="return doclink('link-0', '__revision__', 'link-0');">__revision__</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"src/engine/SCons/Scanner/Fortran.py issue-2856:2676:d23b7a2f45e8 2012/08/05 15:38:28 garyo"</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">re</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Package SCons=SCons-module.html"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-1', 'SCons', 'link-1');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Package SCons.Node=SCons.Node-module.html,Class SCons.Node.Node=SCons.Node.Node-class.html"><a title="SCons.Node
+SCons.Node.Node" class="py-name" href="#" onclick="return doclink('link-2', 'Node', 'link-2');">Node</a></tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-3" class="py-name"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-3', 'SCons', 'link-1');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-4" class="py-name"><a title="SCons.Node
+SCons.Node.Node" class="py-name" href="#" onclick="return doclink('link-4', 'Node', 'link-2');">Node</a></tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Module SCons.Node.FS=SCons.Node.FS-module.html,Class SCons.Node.FS.FS=SCons.Node.FS.FS-class.html"><a title="SCons.Node.FS
+SCons.Node.FS.FS" class="py-name" href="#" onclick="return doclink('link-5', 'FS', 'link-5');">FS</a></tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-6" class="py-name"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-6', 'SCons', 'link-1');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Method SCons.Environment.Base.Scanner()=SCons.Environment.Base-class.html#Scanner,Package SCons.Scanner=SCons.Scanner-module.html"><a title="SCons.Environment.Base.Scanner
+SCons.Scanner" class="py-name" href="#" onclick="return doclink('link-7', 'Scanner', 'link-7');">Scanner</a></tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-8" class="py-name"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-8', 'SCons', 'link-1');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-9" class="py-name" targets="Module SCons.Util=SCons.Util-module.html"><a title="SCons.Util" class="py-name" href="#" onclick="return doclink('link-9', 'Util', 'link-9');">Util</a></tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-10" class="py-name"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-10', 'SCons', 'link-1');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-11" class="py-name" targets="Module SCons.Warnings=SCons.Warnings-module.html"><a title="SCons.Warnings" class="py-name" href="#" onclick="return doclink('link-11', 'Warnings', 'link-11');">Warnings</a></tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"> </tt>
+<a name="F90Scanner"></a><div id="F90Scanner-def"><a name="L39"></a><tt class="py-lineno"> 39</tt> <a class="py-toggle" href="#" id="F90Scanner-toggle" onclick="return toggle('F90Scanner');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="SCons.Scanner.Fortran.F90Scanner-class.html">F90Scanner</a><tt class="py-op">(</tt><tt class="py-base-class">SCons</tt><tt class="py-op">.</tt><tt class="py-base-class">Scanner</tt><tt class="py-op">.</tt><tt class="py-base-class">Classic</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="F90Scanner-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="F90Scanner-expanded"><a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"><tt class="py-docstring">    A Classic Scanner subclass for Fortran source files which takes</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"><tt class="py-docstring">    into account both USE and INCLUDE statements.  This scanner will</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"><tt class="py-docstring">    work for both F77 and F90 (and beyond) compilers.</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"><tt class="py-docstring">    Currently, this scanner assumes that the include files do not contain</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"><tt class="py-docstring">    USE statements.  To enable the ability to deal with USE statements</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"><tt class="py-docstring">    in include files, add logic right after the module names are found</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"><tt class="py-docstring">    to loop over each include file, search for and locate each USE</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"><tt class="py-docstring">    statement, and append each module name to the list of dependencies.</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"><tt class="py-docstring">    Caching the search results in a common dictionary somewhere so that</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"><tt class="py-docstring">    the same include file is not searched multiple times would be a</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"><tt class="py-docstring">    smart thing to do.</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"> </tt>
+<a name="F90Scanner.__init__"></a><div id="F90Scanner.__init__-def"><a name="L55"></a><tt class="py-lineno"> 55</tt> <a class="py-toggle" href="#" id="F90Scanner.__init__-toggle" onclick="return toggle('F90Scanner.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Scanner.Fortran.F90Scanner-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">,</tt> <tt class="py-param">suffixes</tt><tt class="py-op">,</tt> <tt class="py-param">path_variable</tt><tt class="py-op">,</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">                 <tt class="py-param">use_regex</tt><tt class="py-op">,</tt> <tt class="py-param">incl_regex</tt><tt class="py-op">,</tt> <tt class="py-param">def_regex</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kw</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="F90Scanner.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="F90Scanner.__init__-expanded"><a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">cre_use</tt> <tt class="py-op">=</tt> <tt class="py-name">re</tt><tt class="py-op">.</tt><tt class="py-name">compile</tt><tt class="py-op">(</tt><tt class="py-name">use_regex</tt><tt class="py-op">,</tt> <tt class="py-name">re</tt><tt class="py-op">.</tt><tt class="py-name">M</tt><tt class="py-op">)</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">cre_incl</tt> <tt class="py-op">=</tt> <tt class="py-name">re</tt><tt class="py-op">.</tt><tt class="py-name">compile</tt><tt class="py-op">(</tt><tt class="py-name">incl_regex</tt><tt class="py-op">,</tt> <tt class="py-name">re</tt><tt class="py-op">.</tt><tt class="py-name">M</tt><tt class="py-op">)</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">cre_def</tt> <tt class="py-op">=</tt> <tt class="py-name">re</tt><tt class="py-op">.</tt><tt class="py-name">compile</tt><tt class="py-op">(</tt><tt class="py-name">def_regex</tt><tt class="py-op">,</tt> <tt class="py-name">re</tt><tt class="py-op">.</tt><tt class="py-name">M</tt><tt class="py-op">)</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">        <tt class="py-keyword">def</tt> <tt class="py-def-name">_scan</tt><tt class="py-op">(</tt><tt class="py-param">node</tt><tt class="py-op">,</tt> <tt class="py-param">env</tt><tt class="py-op">,</tt> <tt class="py-param">path</tt><tt class="py-op">,</tt> <tt class="py-param">self</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">            <tt class="py-name">node</tt> <tt class="py-op">=</tt> <tt class="py-name">node</tt><tt class="py-op">.</tt><tt id="link-12" class="py-name" targets="Function SCons.Executor.rfile()=SCons.Executor-module.html#rfile,Method SCons.Node.FS.Base.rfile()=SCons.Node.FS.Base-class.html#rfile,Method SCons.Node.FS.Entry.rfile()=SCons.Node.FS.Entry-class.html#rfile,Method SCons.Node.FS.File.rfile()=SCons.Node.FS.File-class.html#rfile"><a title="SCons.Executor.rfile
+SCons.Node.FS.Base.rfile
+SCons.Node.FS.Entry.rfile
+SCons.Node.FS.File.rfile" class="py-name" href="#" onclick="return doclink('link-12', 'rfile', 'link-12');">rfile</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line"> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">node</tt><tt class="py-op">.</tt><tt id="link-13" class="py-name" targets="Method SCons.Node.FS.Base.exists()=SCons.Node.FS.Base-class.html#exists,Method SCons.Node.FS.Entry.exists()=SCons.Node.FS.Entry-class.html#exists,Method SCons.Node.FS.File.exists()=SCons.Node.FS.File-class.html#exists,Method SCons.Node.FS.LocalFS.exists()=SCons.Node.FS.LocalFS-class.html#exists,Method SCons.Node.Node.exists()=SCons.Node.Node-class.html#exists"><a title="SCons.Node.FS.Base.exists
+SCons.Node.FS.Entry.exists
+SCons.Node.FS.File.exists
+SCons.Node.FS.LocalFS.exists
+SCons.Node.Node.exists" class="py-name" href="#" onclick="return doclink('link-13', 'exists', 'link-13');">exists</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line"> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-14" class="py-name" targets="Method SCons.Executor.Executor.scan()=SCons.Executor.Executor-class.html#scan,Method SCons.Node.Node.scan()=SCons.Node.Node-class.html#scan,Method SCons.Scanner.Classic.scan()=SCons.Scanner.Classic-class.html#scan,Method SCons.Scanner.Fortran.F90Scanner.scan()=SCons.Scanner.Fortran.F90Scanner-class.html#scan,Method SCons.Scanner.LaTeX.LaTeX.scan()=SCons.Scanner.LaTeX.LaTeX-class.html#scan,Function SCons.Scanner.Prog.scan()=SCons.Scanner.Prog-module.html#scan"><a title="SCons.Executor.Executor.scan
+SCons.Node.Node.scan
+SCons.Scanner.Classic.scan
+SCons.Scanner.Fortran.F90Scanner.scan
+SCons.Scanner.LaTeX.LaTeX.scan
+SCons.Scanner.Prog.scan" class="py-name" href="#" onclick="return doclink('link-14', 'scan', 'link-14');">scan</a></tt><tt class="py-op">(</tt><tt class="py-name">node</tt><tt class="py-op">,</tt> <tt class="py-name">env</tt><tt class="py-op">,</tt> <tt id="link-15" class="py-name" targets="Method SCons.Scanner.Base.path()=SCons.Scanner.Base-class.html#path"><a title="SCons.Scanner.Base.path" class="py-name" href="#" onclick="return doclink('link-15', 'path', 'link-15');">path</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line"> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">        <tt class="py-name">kw</tt><tt class="py-op">[</tt><tt class="py-string">'function'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">_scan</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">        <tt class="py-name">kw</tt><tt class="py-op">[</tt><tt class="py-string">'path_function'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt id="link-16" class="py-name"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-16', 'SCons', 'link-1');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-17" class="py-name"><a title="SCons.Environment.Base.Scanner
+SCons.Scanner" class="py-name" href="#" onclick="return doclink('link-17', 'Scanner', 'link-7');">Scanner</a></tt><tt class="py-op">.</tt><tt id="link-18" class="py-name" targets="Class SCons.Scanner.FindPathDirs=SCons.Scanner.FindPathDirs-class.html"><a title="SCons.Scanner.FindPathDirs" class="py-name" href="#" onclick="return doclink('link-18', 'FindPathDirs', 'link-18');">FindPathDirs</a></tt><tt class="py-op">(</tt><tt class="py-name">path_variable</tt><tt class="py-op">)</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">        <tt class="py-name">kw</tt><tt class="py-op">[</tt><tt class="py-string">'recursive'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-number">1</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">        <tt class="py-name">kw</tt><tt class="py-op">[</tt><tt class="py-string">'skeys'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">suffixes</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">        <tt class="py-name">kw</tt><tt class="py-op">[</tt><tt class="py-string">'name'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">name</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line"> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">        <tt id="link-19" class="py-name"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-19', 'SCons', 'link-1');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-20" class="py-name"><a title="SCons.Environment.Base.Scanner
+SCons.Scanner" class="py-name" href="#" onclick="return doclink('link-20', 'Scanner', 'link-7');">Scanner</a></tt><tt class="py-op">.</tt><tt id="link-21" class="py-name" targets="Class SCons.Scanner.Current=SCons.Scanner.Current-class.html"><a title="SCons.Scanner.Current" class="py-name" href="#" onclick="return doclink('link-21', 'Current', 'link-21');">Current</a></tt><tt class="py-op">.</tt><tt id="link-22" class="py-name" targets="Method SCons.Action.ActionCaller.__init__()=SCons.Action.ActionCaller-class.html#__init__,Method SCons.Action.ActionFactory.__init__()=SCons.Action.ActionFactory-class.html#__init__,Method SCons.Action.CommandAction.__init__()=SCons.Action.CommandAction-class.html#__init__,Method SCons.Action.CommandGeneratorAction.__init__()=SCons.Action.CommandGeneratorAction-class.html#__init__,Method SCons.Action.FunctionAction.__init__()=SCons.Action.FunctionAction-class.html#__init__,Method SCons.Action.LazyAction.__init__()=SCons.Action.LazyAction-class.html#__init__,Method SCons.Action.ListAction.__init__()=SCons.Action.ListAction-class.html#__init__,Method SCons.Action._ActionAction.__init__()=SCons.Action._ActionAction-class.html#__init__,Method SCons.Builder.BuilderBase.__init__()=SCons.Builder.BuilderBase-class.html#__init__,Method SCons.Builder.CompositeBuilder.__init__()=SCons.Builder.CompositeBuilder-class.html#__init__,Method SCons.Builder.DictCmdGenerator.__init__()=SCons.Builder.DictCmdGenerator-class.html#__init__,Method SCons.Builder.EmitterProxy.__init__()=SCons.Builder.EmitterProxy-class.html#__init__,Method SCons.Builder.OverrideWarner.__init__()=SCons.Builder.OverrideWarner-class.html#__init__,Method SCons.CacheDir.CacheDir.__init__()=SCons.CacheDir.CacheDir-class.html#__init__,Method SCons.Defaults.NullCmdGenerator.__init__()=SCons.Defaults.NullCmdGenerator-class.html#__init__,Method SCons.Defaults.Variable_Method_Caller.__init__()=SCons.Defaults.Variable_Method_Caller-class.html#__init__,Method SCons.Environment.Base.__init__()=SCons.Environment.Base-class.html#__init__,Method SCons.Environment.BuilderDict.__init__()=SCons.Environment.BuilderDict-class.html#__init__,Method SCons.Environment.MethodWrapper.__init__()=SCons.Environment.MethodWrapper-class.html#__init__,Method SCons.Environment.OverrideEnvironment.__init__()=SCons.Environment.OverrideEnvironment-class.html#__init__,Method SCons.Environment.SubstitutionEnvironment.__init__()=SCons.Environment.SubstitutionEnvironment-class.html#__init__,Method SCons.Errors.BuildError.__init__()=SCons.Errors.BuildError-class.html#__init__,Method SCons.Errors.ExplicitExit.__init__()=SCons.Errors.ExplicitExit-class.html#__init__,Method SCons.Executor.Batch.__init__()=SCons.Executor.Batch-class.html#__init__,Method SCons.Executor.Executor.__init__()=SCons.Executor.Executor-class.html#__init__,Method SCons.Executor.Null.__init__()=SCons.Executor.Null-class.html#__init__,Method SCons.Executor.TSList.__init__()=SCons.Executor.TSList-class.html#__init__,Method SCons.Executor.TSObject.__init__()=SCons.Executor.TSObject-class.html#__init__,Method SCons.Job.InterruptState.__init__()=SCons.Job.InterruptState-class.html#__init__,Method SCons.Job.Jobs.__init__()=SCons.Job.Jobs-class.html#__init__,Method SCons.Job.Parallel.__init__()=SCons.Job.Parallel-class.html#__init__,Method SCons.Job.Serial.__init__()=SCons.Job.Serial-class.html#__init__,Method SCons.Job.ThreadPool.__init__()=SCons.Job.ThreadPool-class.html#__init__,Method SCons.Job.Worker.__init__()=SCons.Job.Worker-class.html#__init__,Method SCons.Memoize.CountDict.__init__()=SCons.Memoize.CountDict-class.html#__init__,Method SCons.Memoize.Counter.__init__()=SCons.Memoize.Counter-class.html#__init__,Method SCons.Memoize.Memoized_Metaclass.__init__()=SCons.Memoize.Memoized_Metaclass-class.html#__init__,Method SCons.Memoize.Memoizer.__init__()=SCons.Memoize.Memoizer-class.html#__init__,Method SCons.Node.Alias.Alias.__init__()=SCons.Node.Alias.Alias-class.html#__init__,Method SCons.Node.BuildInfoBase.__init__()=SCons.Node.BuildInfoBase-class.html#__init__,Method SCons.Node.FS.Base.__init__()=SCons.Node.FS.Base-class.html#__init__,Method SCons.Node.FS.Dir.__init__()=SCons.Node.FS.Dir-class.html#__init__,Method SCons.Node.FS.DiskChecker.__init__()=SCons.Node.FS.DiskChecker-class.html#__init__,Method SCons.Node.FS.EntryProxyAttributeError.__init__()=SCons.Node.FS.EntryProxyAttributeError-class.html#__init__,Method SCons.Node.FS.FS.__init__()=SCons.Node.FS.FS-class.html#__init__,Method SCons.Node.FS.File.__init__()=SCons.Node.FS.File-class.html#__init__,Method SCons.Node.FS.FileFinder.__init__()=SCons.Node.FS.FileFinder-class.html#__init__,Method SCons.Node.FS.RootDir.__init__()=SCons.Node.FS.RootDir-class.html#__init__,Method SCons.Node.Node.__init__()=SCons.Node.Node-class.html#__init__,Method SCons.Node.NodeInfoBase.__init__()=SCons.Node.NodeInfoBase-class.html#__init__,Method SCons.Node.Python.Value.__init__()=SCons.Node.Python.Value-class.html#__init__,Method SCons.Node.Walker.__init__()=SCons.Node.Walker-class.html#__init__,Method SCons.PathList._PathList.__init__()=SCons.PathList._PathList-class.html#__init__,Method SCons.SConf.CheckContext.__init__()=SCons.SConf.CheckContext-class.html#__init__,Method SCons.SConf.ConfigureCacheError.__init__()=SCons.SConf.ConfigureCacheError-class.html#__init__,Method SCons.SConf.ConfigureDryRunError.__init__()=SCons.SConf.ConfigureDryRunError-class.html#__init__,Method SCons.SConf.SConfBase.TestWrapper.__init__()=SCons.SConf.SConfBase.TestWrapper-class.html#__init__,Method SCons.SConf.SConfBase.__init__()=SCons.SConf.SConfBase-class.html#__init__,Method SCons.SConf.SConfError.__init__()=SCons.SConf.SConfError-class.html#__init__,Method SCons.SConf.Streamer.__init__()=SCons.SConf.Streamer-class.html#__init__,Method SCons.SConsign.Base.__init__()=SCons.SConsign.Base-class.html#__init__,Method SCons.SConsign.DB.__init__()=SCons.SConsign.DB-class.html#__init__,Method SCons.SConsign.Dir.__init__()=SCons.SConsign.Dir-class.html#__init__,Method SCons.SConsign.DirFile.__init__()=SCons.SConsign.DirFile-class.html#__init__,Method SCons.SConsign.SConsignEntry.__init__()=SCons.SConsign.SConsignEntry-class.html#__init__,Method SCons.Scanner.Base.__init__()=SCons.Scanner.Base-class.html#__init__,Method SCons.Scanner.C.SConsCPPScanner.__init__()=SCons.Scanner.C.SConsCPPScanner-class.html#__init__,Method SCons.Scanner.C.SConsCPPScannerWrapper.__init__()=SCons.Scanner.C.SConsCPPScannerWrapper-class.html#__init__,Method SCons.Scanner.Classic.__init__()=SCons.Scanner.Classic-class.html#__init__,Method SCons.Scanner.Current.__init__()=SCons.Scanner.Current-class.html#__init__,Method SCons.Scanner.D.D.__init__()=SCons.Scanner.D.D-class.html#__init__,Method SCons.Scanner.FindPathDirs.__init__()=SCons.Scanner.FindPathDirs-class.html#__init__,Method SCons.Scanner.Fortran.F90Scanner.__init__()=SCons.Scanner.Fortran.F90Scanner-class.html#__init__,Method SCons.Scanner.LaTeX.FindENVPathDirs.__init__()=SCons.Scanner.LaTeX.FindENVPathDirs-class.html#__init__,Method SCons.Scanner.LaTeX.LaTeX.__init__()=SCons.Scanner.LaTeX.LaTeX-class.html#__init__,Method SCons.Scanner.Selector.__init__()=SCons.Scanner.Selector-class.html#__init__,Method SCons.Script.Interactive.SConsInteractiveCmd.__init__()=SCons.Script.Interactive.SConsInteractiveCmd-class.html#__init__,Method SCons.Script.Main.Progressor.__init__()=SCons.Script.Main.Progressor-class.html#__init__,Method SCons.Script.Main.Stats.__init__()=SCons.Script.Main.Stats-class.html#__init__,Method SCons.Script.Main.TreePrinter.__init__()=SCons.Script.Main.TreePrinter-class.html#__init__,Method SCons.Script.SConscript'.DefaultEnvironmentCall.__init__()=SCons.Script.SConscript%27.DefaultEnvironmentCall-class.html#__init__,Method SCons.Script.SConscript'.Frame.__init__()=SCons.Script.SConscript%27.Frame-class.html#__init__,Method SCons.Subst.CmdStringHolder.__init__()=SCons.Subst.CmdStringHolder-class.html#__init__,Method SCons.Subst.Literal.__init__()=SCons.Subst.Literal-class.html#__init__,Method SCons.Subst.NLWrapper.__init__()=SCons.Subst.NLWrapper-class.html#__init__,Method SCons.Subst.SpecialAttrWrapper.__init__()=SCons.Subst.SpecialAttrWrapper-class.html#__init__,Method SCons.Subst.Target_or_Source.__init__()=SCons.Subst.Target_or_Source-class.html#__init__,Method SCons.Subst.Targets_or_Sources.__init__()=SCons.Subst.Targets_or_Sources-class.html#__init__,Method SCons.Taskmaster.Stats.__init__()=SCons.Taskmaster.Stats-class.html#__init__,Method SCons.Taskmaster.Task.__init__()=SCons.Taskmaster.Task-class.html#__init__,Method SCons.Taskmaster.Taskmaster.__init__()=SCons.Taskmaster.Taskmaster-class.html#__init__,Method SCons.Util.CLVar.__init__()=SCons.Util.CLVar-class.html#__init__,Method SCons.Util.Delegate.__init__()=SCons.Util.Delegate-class.html#__init__,Method SCons.Util.LogicalLines.__init__()=SCons.Util.LogicalLines-class.html#__init__,Method SCons.Util.Null.__init__()=SCons.Util.Null-class.html#__init__,Method SCons.Util.OrderedDict.__init__()=SCons.Util.OrderedDict-class.html#__init__,Method SCons.Util.Proxy.__init__()=SCons.Util.Proxy-class.html#__init__,Method SCons.Util.Unbuffered.__init__()=SCons.Util.Unbuffered-class.html#__init__,Method SCons.Util.UniqueList.__init__()=SCons.Util.UniqueList-class.html#__init__,Method SCons.Variables.ListVariable'._ListVariable.__init__()=SCons.Variables.ListVariable%27._ListVariable-class.html#__init__,Method SCons.Variables.Variables.__init__()=SCons.Variables.Variables-class.html#__init__,Method SCons.compat._scons_builtins.memoryview.__init__()=SCons.compat._scons_builtins.memoryview-class.html#__init__,Method SCons.compat._scons_hashlib.md5obj.__init__()=SCons.compat._scons_hashlib.md5obj-class.html#__init__,Method SCons.compat._scons_sets.BaseSet.__init__()=SCons.compat._scons_sets.BaseSet-class.html#__init__,Method SCons.compat._scons_sets.ImmutableSet.__init__()=SCons.compat._scons_sets.ImmutableSet-class.html#__init__,Method SCons.compat._scons_sets.Set.__init__()=SCons.compat._scons_sets.Set-class.html#__init__,Method SCons.compat._scons_sets._TemporarilyImmutableSet.__init__()=SCons.compat._scons_sets._TemporarilyImmutableSet-class.html#__init__,Method SCons.compat._scons_subprocess.CalledProcessError.__init__()=SCons.compat._scons_subprocess.CalledProcessError-class.html#__init__,Method SCons.compat._scons_subprocess.Popen.__init__()=SCons.compat._scons_subprocess.Popen-class.html#__init__,Method SCons.cpp.DumbPreProcessor.__init__()=SCons.cpp.DumbPreProcessor-class.html#__init__,Method SCons.cpp.FunctionEvaluator.__init__()=SCons.cpp.FunctionEvaluator-class.html#__init__,Method SCons.cpp.PreProcessor.__init__()=SCons.cpp.PreProcessor-class.html#__init__,Method SCons.dblite.dblite.__init__()=SCons.dblite.dblite-class.html#__init__"><a title="SCons.Action.ActionCaller.__init__
+SCons.Action.ActionFactory.__init__
+SCons.Action.CommandAction.__init__
+SCons.Action.CommandGeneratorAction.__init__
+SCons.Action.FunctionAction.__init__
+SCons.Action.LazyAction.__init__
+SCons.Action.ListAction.__init__
+SCons.Action._ActionAction.__init__
+SCons.Builder.BuilderBase.__init__
+SCons.Builder.CompositeBuilder.__init__
+SCons.Builder.DictCmdGenerator.__init__
+SCons.Builder.EmitterProxy.__init__
+SCons.Builder.OverrideWarner.__init__
+SCons.CacheDir.CacheDir.__init__
+SCons.Defaults.NullCmdGenerator.__init__
+SCons.Defaults.Variable_Method_Caller.__init__
+SCons.Environment.Base.__init__
+SCons.Environment.BuilderDict.__init__
+SCons.Environment.MethodWrapper.__init__
+SCons.Environment.OverrideEnvironment.__init__
+SCons.Environment.SubstitutionEnvironment.__init__
+SCons.Errors.BuildError.__init__
+SCons.Errors.ExplicitExit.__init__
+SCons.Executor.Batch.__init__
+SCons.Executor.Executor.__init__
+SCons.Executor.Null.__init__
+SCons.Executor.TSList.__init__
+SCons.Executor.TSObject.__init__
+SCons.Job.InterruptState.__init__
+SCons.Job.Jobs.__init__
+SCons.Job.Parallel.__init__
+SCons.Job.Serial.__init__
+SCons.Job.ThreadPool.__init__
+SCons.Job.Worker.__init__
+SCons.Memoize.CountDict.__init__
+SCons.Memoize.Counter.__init__
+SCons.Memoize.Memoized_Metaclass.__init__
+SCons.Memoize.Memoizer.__init__
+SCons.Node.Alias.Alias.__init__
+SCons.Node.BuildInfoBase.__init__
+SCons.Node.FS.Base.__init__
+SCons.Node.FS.Dir.__init__
+SCons.Node.FS.DiskChecker.__init__
+SCons.Node.FS.EntryProxyAttributeError.__init__
+SCons.Node.FS.FS.__init__
+SCons.Node.FS.File.__init__
+SCons.Node.FS.FileFinder.__init__
+SCons.Node.FS.RootDir.__init__
+SCons.Node.Node.__init__
+SCons.Node.NodeInfoBase.__init__
+SCons.Node.Python.Value.__init__
+SCons.Node.Walker.__init__
+SCons.PathList._PathList.__init__
+SCons.SConf.CheckContext.__init__
+SCons.SConf.ConfigureCacheError.__init__
+SCons.SConf.ConfigureDryRunError.__init__
+SCons.SConf.SConfBase.TestWrapper.__init__
+SCons.SConf.SConfBase.__init__
+SCons.SConf.SConfError.__init__
+SCons.SConf.Streamer.__init__
+SCons.SConsign.Base.__init__
+SCons.SConsign.DB.__init__
+SCons.SConsign.Dir.__init__
+SCons.SConsign.DirFile.__init__
+SCons.SConsign.SConsignEntry.__init__
+SCons.Scanner.Base.__init__
+SCons.Scanner.C.SConsCPPScanner.__init__
+SCons.Scanner.C.SConsCPPScannerWrapper.__init__
+SCons.Scanner.Classic.__init__
+SCons.Scanner.Current.__init__
+SCons.Scanner.D.D.__init__
+SCons.Scanner.FindPathDirs.__init__
+SCons.Scanner.Fortran.F90Scanner.__init__
+SCons.Scanner.LaTeX.FindENVPathDirs.__init__
+SCons.Scanner.LaTeX.LaTeX.__init__
+SCons.Scanner.Selector.__init__
+SCons.Script.Interactive.SConsInteractiveCmd.__init__
+SCons.Script.Main.Progressor.__init__
+SCons.Script.Main.Stats.__init__
+SCons.Script.Main.TreePrinter.__init__
+SCons.Script.SConscript'.DefaultEnvironmentCall.__init__
+SCons.Script.SConscript'.Frame.__init__
+SCons.Subst.CmdStringHolder.__init__
+SCons.Subst.Literal.__init__
+SCons.Subst.NLWrapper.__init__
+SCons.Subst.SpecialAttrWrapper.__init__
+SCons.Subst.Target_or_Source.__init__
+SCons.Subst.Targets_or_Sources.__init__
+SCons.Taskmaster.Stats.__init__
+SCons.Taskmaster.Task.__init__
+SCons.Taskmaster.Taskmaster.__init__
+SCons.Util.CLVar.__init__
+SCons.Util.Delegate.__init__
+SCons.Util.LogicalLines.__init__
+SCons.Util.Null.__init__
+SCons.Util.OrderedDict.__init__
+SCons.Util.Proxy.__init__
+SCons.Util.Unbuffered.__init__
+SCons.Util.UniqueList.__init__
+SCons.Variables.ListVariable'._ListVariable.__init__
+SCons.Variables.Variables.__init__
+SCons.compat._scons_builtins.memoryview.__init__
+SCons.compat._scons_hashlib.md5obj.__init__
+SCons.compat._scons_sets.BaseSet.__init__
+SCons.compat._scons_sets.ImmutableSet.__init__
+SCons.compat._scons_sets.Set.__init__
+SCons.compat._scons_sets._TemporarilyImmutableSet.__init__
+SCons.compat._scons_subprocess.CalledProcessError.__init__
+SCons.compat._scons_subprocess.Popen.__init__
+SCons.cpp.DumbPreProcessor.__init__
+SCons.cpp.FunctionEvaluator.__init__
+SCons.cpp.PreProcessor.__init__
+SCons.dblite.dblite.__init__" class="py-name" href="#" onclick="return doclink('link-22', '__init__', 'link-22');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-name">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kw</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line"> </tt>
+<a name="F90Scanner.scan"></a><div id="F90Scanner.scan-def"><a name="L78"></a><tt class="py-lineno"> 78</tt> <a class="py-toggle" href="#" id="F90Scanner.scan-toggle" onclick="return toggle('F90Scanner.scan');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Scanner.Fortran.F90Scanner-class.html#scan">scan</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">node</tt><tt class="py-op">,</tt> <tt class="py-param">env</tt><tt class="py-op">,</tt> <tt class="py-param">path</tt><tt class="py-op">=</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="F90Scanner.scan-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="F90Scanner.scan-expanded"><a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line"> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">        <tt class="py-comment"># cache the includes list in node so we only scan it once:</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">node</tt><tt class="py-op">.</tt><tt class="py-name">includes</tt> <tt class="py-op">!=</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">            <tt class="py-name">mods_and_includes</tt> <tt class="py-op">=</tt> <tt class="py-name">node</tt><tt class="py-op">.</tt><tt class="py-name">includes</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">            <tt class="py-comment"># retrieve all included filenames</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">            <tt class="py-name">includes</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">cre_incl</tt><tt class="py-op">.</tt><tt class="py-name">findall</tt><tt class="py-op">(</tt><tt class="py-name">node</tt><tt class="py-op">.</tt><tt id="link-23" class="py-name" targets="Method SCons.Node.FS.Dir.get_text_contents()=SCons.Node.FS.Dir-class.html#get_text_contents,Method SCons.Node.FS.Entry.get_text_contents()=SCons.Node.FS.Entry-class.html#get_text_contents,Method SCons.Node.FS.File.get_text_contents()=SCons.Node.FS.File-class.html#get_text_contents,Method SCons.Node.Python.Value.get_text_contents()=SCons.Node.Python.Value-class.html#get_text_contents"><a title="SCons.Node.FS.Dir.get_text_contents
+SCons.Node.FS.Entry.get_text_contents
+SCons.Node.FS.File.get_text_contents
+SCons.Node.Python.Value.get_text_contents" class="py-name" href="#" onclick="return doclink('link-23', 'get_text_contents', 'link-23');">get_text_contents</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">            <tt class="py-comment"># retrieve all USE'd module names</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">            <tt class="py-name">modules</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">cre_use</tt><tt class="py-op">.</tt><tt class="py-name">findall</tt><tt class="py-op">(</tt><tt class="py-name">node</tt><tt class="py-op">.</tt><tt id="link-24" class="py-name"><a title="SCons.Node.FS.Dir.get_text_contents
+SCons.Node.FS.Entry.get_text_contents
+SCons.Node.FS.File.get_text_contents
+SCons.Node.Python.Value.get_text_contents" class="py-name" href="#" onclick="return doclink('link-24', 'get_text_contents', 'link-23');">get_text_contents</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">            <tt class="py-comment"># retrieve all defined module names</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">            <tt class="py-name">defmodules</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">cre_def</tt><tt class="py-op">.</tt><tt class="py-name">findall</tt><tt class="py-op">(</tt><tt class="py-name">node</tt><tt class="py-op">.</tt><tt id="link-25" class="py-name"><a title="SCons.Node.FS.Dir.get_text_contents
+SCons.Node.FS.Entry.get_text_contents
+SCons.Node.FS.File.get_text_contents
+SCons.Node.Python.Value.get_text_contents" class="py-name" href="#" onclick="return doclink('link-25', 'get_text_contents', 'link-23');">get_text_contents</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">            <tt class="py-comment"># Remove all USE'd module names that are defined in the same file</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">            <tt class="py-comment"># (case-insensitively)</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">            <tt id="link-26" class="py-name" targets="Variable SCons.Util.d=SCons.Util-module.html#d"><a title="SCons.Util.d" class="py-name" href="#" onclick="return doclink('link-26', 'd', 'link-26');">d</a></tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">m</tt> <tt class="py-keyword">in</tt> <tt class="py-name">defmodules</tt><tt class="py-op">:</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">                <tt id="link-27" class="py-name"><a title="SCons.Util.d" class="py-name" href="#" onclick="return doclink('link-27', 'd', 'link-26');">d</a></tt><tt class="py-op">[</tt><tt class="py-name">m</tt><tt class="py-op">.</tt><tt class="py-name">lower</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-number">1</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">            <tt class="py-name">modules</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-name">m</tt> <tt class="py-keyword">for</tt> <tt class="py-name">m</tt> <tt class="py-keyword">in</tt> <tt class="py-name">modules</tt> <tt class="py-keyword">if</tt> <tt class="py-name">m</tt><tt class="py-op">.</tt><tt class="py-name">lower</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt id="link-28" class="py-name"><a title="SCons.Util.d" class="py-name" href="#" onclick="return doclink('link-28', 'd', 'link-26');">d</a></tt><tt class="py-op">]</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line"> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">            <tt class="py-comment"># Convert module name to a .mod filename</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">            <tt class="py-name">suffix</tt> <tt class="py-op">=</tt> <tt class="py-name">env</tt><tt class="py-op">.</tt><tt id="link-29" class="py-name" targets="Method SCons.Action.ActionCaller.subst()=SCons.Action.ActionCaller-class.html#subst,Method SCons.Environment.SubstitutionEnvironment.subst()=SCons.Environment.SubstitutionEnvironment-class.html#subst"><a title="SCons.Action.ActionCaller.subst
+SCons.Environment.SubstitutionEnvironment.subst" class="py-name" href="#" onclick="return doclink('link-29', 'subst', 'link-29');">subst</a></tt><tt class="py-op">(</tt><tt class="py-string">'$FORTRANMODSUFFIX'</tt><tt class="py-op">)</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">            <tt class="py-name">modules</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt id="link-30" class="py-name" targets="Variable SCons.cpp.x=SCons.cpp-module.html#x,Variable SCons.exitfuncs.x=SCons.exitfuncs-module.html#x"><a title="SCons.cpp.x
+SCons.exitfuncs.x" class="py-name" href="#" onclick="return doclink('link-30', 'x', 'link-30');">x</a></tt><tt class="py-op">.</tt><tt class="py-name">lower</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">+</tt> <tt class="py-name">suffix</tt> <tt class="py-keyword">for</tt> <tt id="link-31" class="py-name"><a title="SCons.cpp.x
+SCons.exitfuncs.x" class="py-name" href="#" onclick="return doclink('link-31', 'x', 'link-30');">x</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">modules</tt><tt class="py-op">]</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">            <tt class="py-comment"># Remove unique items from the list</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">            <tt class="py-name">mods_and_includes</tt> <tt class="py-op">=</tt> <tt id="link-32" class="py-name"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-32', 'SCons', 'link-1');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-33" class="py-name"><a title="SCons.Util" class="py-name" href="#" onclick="return doclink('link-33', 'Util', 'link-9');">Util</a></tt><tt class="py-op">.</tt><tt class="py-name">unique</tt><tt class="py-op">(</tt><tt class="py-name">includes</tt><tt class="py-op">+</tt><tt class="py-name">modules</tt><tt class="py-op">)</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">            <tt class="py-name">node</tt><tt class="py-op">.</tt><tt class="py-name">includes</tt> <tt class="py-op">=</tt> <tt class="py-name">mods_and_includes</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line"> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">        <tt class="py-comment"># This is a hand-coded DSU (decorate-sort-undecorate, or</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">        <tt class="py-comment"># Schwartzian transform) pattern.  The sort key is the raw name</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">        <tt class="py-comment"># of the file as specifed on the USE or INCLUDE line, which lets</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">        <tt class="py-comment"># us keep the sort order constant regardless of whether the file</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">        <tt class="py-comment"># is actually found in a Repository or locally.</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">        <tt class="py-name">nodes</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">        <tt class="py-name">source_dir</tt> <tt class="py-op">=</tt> <tt class="py-name">node</tt><tt class="py-op">.</tt><tt id="link-34" class="py-name" targets="Method SCons.Node.FS.Base.get_dir()=SCons.Node.FS.Base-class.html#get_dir,Method SCons.Node.FS.RootDir.get_dir()=SCons.Node.FS.RootDir-class.html#get_dir"><a title="SCons.Node.FS.Base.get_dir
+SCons.Node.FS.RootDir.get_dir" class="py-name" href="#" onclick="return doclink('link-34', 'get_dir', 'link-34');">get_dir</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">callable</tt><tt class="py-op">(</tt><tt id="link-35" class="py-name"><a title="SCons.Scanner.Base.path" class="py-name" href="#" onclick="return doclink('link-35', 'path', 'link-15');">path</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">            <tt id="link-36" class="py-name"><a title="SCons.Scanner.Base.path" class="py-name" href="#" onclick="return doclink('link-36', 'path', 'link-15');">path</a></tt> <tt class="py-op">=</tt> <tt id="link-37" class="py-name"><a title="SCons.Scanner.Base.path" class="py-name" href="#" onclick="return doclink('link-37', 'path', 'link-15');">path</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">dep</tt> <tt class="py-keyword">in</tt> <tt class="py-name">mods_and_includes</tt><tt class="py-op">:</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">            <tt class="py-name">n</tt><tt class="py-op">,</tt> <tt class="py-name">i</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-38" class="py-name" targets="Method SCons.Scanner.Classic.find_include()=SCons.Scanner.Classic-class.html#find_include,Method SCons.Scanner.ClassicCPP.find_include()=SCons.Scanner.ClassicCPP-class.html#find_include,Method SCons.Scanner.D.D.find_include()=SCons.Scanner.D.D-class.html#find_include,Method SCons.Scanner.LaTeX.LaTeX.find_include()=SCons.Scanner.LaTeX.LaTeX-class.html#find_include"><a title="SCons.Scanner.Classic.find_include
+SCons.Scanner.ClassicCPP.find_include
+SCons.Scanner.D.D.find_include
+SCons.Scanner.LaTeX.LaTeX.find_include" class="py-name" href="#" onclick="return doclink('link-38', 'find_include', 'link-38');">find_include</a></tt><tt class="py-op">(</tt><tt class="py-name">dep</tt><tt class="py-op">,</tt> <tt class="py-name">source_dir</tt><tt class="py-op">,</tt> <tt id="link-39" class="py-name"><a title="SCons.Scanner.Base.path" class="py-name" href="#" onclick="return doclink('link-39', 'path', 'link-15');">path</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line"> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">n</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">                <tt id="link-40" class="py-name"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-40', 'SCons', 'link-1');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-41" class="py-name"><a title="SCons.Warnings" class="py-name" href="#" onclick="return doclink('link-41', 'Warnings', 'link-11');">Warnings</a></tt><tt class="py-op">.</tt><tt id="link-42" class="py-name" targets="Method SCons.Builder.OverrideWarner.warn()=SCons.Builder.OverrideWarner-class.html#warn"><a title="SCons.Builder.OverrideWarner.warn" class="py-name" href="#" onclick="return doclink('link-42', 'warn', 'link-42');">warn</a></tt><tt class="py-op">(</tt><tt id="link-43" class="py-name"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-43', 'SCons', 'link-1');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-44" class="py-name"><a title="SCons.Warnings" class="py-name" href="#" onclick="return doclink('link-44', 'Warnings', 'link-11');">Warnings</a></tt><tt class="py-op">.</tt><tt id="link-45" class="py-name" targets="Class SCons.Warnings.DependencyWarning=SCons.Warnings.DependencyWarning-class.html"><a title="SCons.Warnings.DependencyWarning" class="py-name" href="#" onclick="return doclink('link-45', 'DependencyWarning', 'link-45');">DependencyWarning</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">                                    <tt class="py-string">"No dependency generated for file: %s (referenced by: %s) -- file not found"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-name">i</tt><tt class="py-op">,</tt> <tt class="py-name">node</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">            <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">                <tt class="py-name">sortkey</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-46" class="py-name" targets="Method SCons.Scanner.Classic.sort_key()=SCons.Scanner.Classic-class.html#sort_key,Method SCons.Scanner.ClassicCPP.sort_key()=SCons.Scanner.ClassicCPP-class.html#sort_key,Method SCons.Scanner.LaTeX.LaTeX.sort_key()=SCons.Scanner.LaTeX.LaTeX-class.html#sort_key"><a title="SCons.Scanner.Classic.sort_key
+SCons.Scanner.ClassicCPP.sort_key
+SCons.Scanner.LaTeX.LaTeX.sort_key" class="py-name" href="#" onclick="return doclink('link-46', 'sort_key', 'link-46');">sort_key</a></tt><tt class="py-op">(</tt><tt class="py-name">dep</tt><tt class="py-op">)</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">                <tt class="py-name">nodes</tt><tt class="py-op">.</tt><tt id="link-47" class="py-name" targets="Method SCons.Util.UniqueList.append()=SCons.Util.UniqueList-class.html#append"><a title="SCons.Util.UniqueList.append" class="py-name" href="#" onclick="return doclink('link-47', 'append', 'link-47');">append</a></tt><tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-name">sortkey</tt><tt class="py-op">,</tt> <tt class="py-name">n</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line"> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-op">[</tt><tt class="py-name">pair</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt> <tt class="py-keyword">for</tt> <tt class="py-name">pair</tt> <tt class="py-keyword">in</tt> <tt id="link-48" class="py-name" targets="Function SCons.compat._scons_builtins.sorted()=SCons.compat._scons_builtins-module.html#sorted"><a title="SCons.compat._scons_builtins.sorted" class="py-name" href="#" onclick="return doclink('link-48', 'sorted', 'link-48');">sorted</a></tt><tt class="py-op">(</tt><tt class="py-name">nodes</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> </tt>
+</div></div><a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line"> </tt>
+<a name="FortranScan"></a><div id="FortranScan-def"><a name="L126"></a><tt class="py-lineno">126</tt> <a class="py-toggle" href="#" id="FortranScan-toggle" onclick="return toggle('FortranScan');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Scanner.Fortran-module.html#FortranScan">FortranScan</a><tt class="py-op">(</tt><tt class="py-param">path_variable</tt><tt class="py-op">=</tt><tt class="py-string">"FORTRANPATH"</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FortranScan-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="FortranScan-expanded"><a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">    <tt class="py-docstring">"""Return a prototype Scanner instance for scanning source files</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line"><tt class="py-docstring">    for Fortran USE &amp; INCLUDE statements"""</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line"> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line"><tt class="py-comment">#   The USE statement regex matches the following:</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line"><tt class="py-comment">#   USE module_name</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line"><tt class="py-comment">#   USE :: module_name</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line"><tt class="py-comment">#   USE, INTRINSIC :: module_name</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line"><tt class="py-comment">#   USE, NON_INTRINSIC :: module_name</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line"><tt class="py-comment">#   Limitations</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line"><tt class="py-comment">#   --  While the regex can handle multiple USE statements on one line,</tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line"><tt class="py-comment">#       it cannot properly handle them if they are commented out.</tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line"><tt class="py-comment">#       In either of the following cases:</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line"><tt class="py-comment">#            !  USE mod_a ; USE mod_b         [entire line is commented out]</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line"><tt class="py-comment">#               USE mod_a ! ; USE mod_b       [in-line comment of second USE statement]</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line"><tt class="py-comment">#       the second module name (mod_b) will be picked up as a dependency</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line"><tt class="py-comment">#       even though it should be ignored.  The only way I can see</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line"><tt class="py-comment">#       to rectify this would be to modify the scanner to eliminate</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line"><tt class="py-comment">#       the call to re.findall, read in the contents of the file,</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line"><tt class="py-comment">#       treating the comment character as an end-of-line character</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line"><tt class="py-comment">#       in addition to the normal linefeed, loop over each line,</tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line"><tt class="py-comment">#       weeding out the comments, and looking for the USE statements.</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line"><tt class="py-comment">#       One advantage to this is that the regex passed to the scanner</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line"><tt class="py-comment">#       would no longer need to match a semicolon.</tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line"><tt class="py-comment">#   --  I question whether or not we need to detect dependencies to</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line"><tt class="py-comment">#       INTRINSIC modules because these are built-in to the compiler.</tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line"><tt class="py-comment">#       If we consider them a dependency, will SCons look for them, not</tt> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line"><tt class="py-comment">#       find them, and kill the build?  Or will we there be standard</tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line"><tt class="py-comment">#       compiler-specific directories we will need to point to so the</tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line"><tt class="py-comment">#       compiler and SCons can locate the proper object and mod files?</tt> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line"> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line"><tt class="py-comment">#   Here is a breakdown of the regex:</tt> </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line"><tt class="py-comment">#   (?i)               : regex is case insensitive</tt> </tt>
+<a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line"><tt class="py-comment">#   ^                  : start of line</tt> </tt>
+<a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line"><tt class="py-comment">#   (?:                : group a collection of regex symbols without saving the match as a "group"</tt> </tt>
+<a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line"><tt class="py-comment">#      ^|;             : matches either the start of the line or a semicolon - semicolon</tt> </tt>
+<a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line"><tt class="py-comment">#   )                  : end the unsaved grouping</tt> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line"><tt class="py-comment">#   \s*                : any amount of white space</tt> </tt>
+<a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line"><tt class="py-comment">#   USE                : match the string USE, case insensitive</tt> </tt>
+<a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line"><tt class="py-comment">#   (?:                : group a collection of regex symbols without saving the match as a "group"</tt> </tt>
+<a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line"><tt class="py-comment">#      \s+|            : match one or more whitespace OR ....  (the next entire grouped set of regex symbols)</tt> </tt>
+<a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line"><tt class="py-comment">#      (?:             : group a collection of regex symbols without saving the match as a "group"</tt> </tt>
+<a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line"><tt class="py-comment">#         (?:          : establish another unsaved grouping of regex symbols</tt> </tt>
+<a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line"><tt class="py-comment">#            \s*          : any amount of white space</tt> </tt>
+<a name="L177"></a><tt class="py-lineno">177</tt>  <tt class="py-line"><tt class="py-comment">#            ,         : match a comma</tt> </tt>
+<a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line"><tt class="py-comment">#            \s*       : any amount of white space</tt> </tt>
+<a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line"><tt class="py-comment">#            (?:NON_)? : optionally match the prefix NON_, case insensitive</tt> </tt>
+<a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line"><tt class="py-comment">#            INTRINSIC : match the string INTRINSIC, case insensitive</tt> </tt>
+<a name="L181"></a><tt class="py-lineno">181</tt>  <tt class="py-line"><tt class="py-comment">#         )?           : optionally match the ", INTRINSIC/NON_INTRINSIC" grouped expression</tt> </tt>
+<a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line"><tt class="py-comment">#         \s*          : any amount of white space</tt> </tt>
+<a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line"><tt class="py-comment">#         ::           : match a double colon that must appear after the INTRINSIC/NON_INTRINSIC attribute</tt> </tt>
+<a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line"><tt class="py-comment">#      )               : end the unsaved grouping</tt> </tt>
+<a name="L185"></a><tt class="py-lineno">185</tt>  <tt class="py-line"><tt class="py-comment">#   )                  : end the unsaved grouping</tt> </tt>
+<a name="L186"></a><tt class="py-lineno">186</tt>  <tt class="py-line"><tt class="py-comment">#   \s*                : match any amount of white space</tt> </tt>
+<a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line"><tt class="py-comment">#   (\w+)              : match the module name that is being USE'd</tt> </tt>
+<a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L189"></a><tt class="py-lineno">189</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L190"></a><tt class="py-lineno">190</tt>  <tt class="py-line">    <tt class="py-name">use_regex</tt> <tt class="py-op">=</tt> <tt class="py-string">"(?i)(?:^|;)\s*USE(?:\s+|(?:(?:\s*,\s*(?:NON_)?INTRINSIC)?\s*::))\s*(\w+)"</tt> </tt>
+<a name="L191"></a><tt class="py-lineno">191</tt>  <tt class="py-line"> </tt>
+<a name="L192"></a><tt class="py-lineno">192</tt>  <tt class="py-line"> </tt>
+<a name="L193"></a><tt class="py-lineno">193</tt>  <tt class="py-line"><tt class="py-comment">#   The INCLUDE statement regex matches the following:</tt> </tt>
+<a name="L194"></a><tt class="py-lineno">194</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L195"></a><tt class="py-lineno">195</tt>  <tt class="py-line"><tt class="py-comment">#   INCLUDE 'some_Text'</tt> </tt>
+<a name="L196"></a><tt class="py-lineno">196</tt>  <tt class="py-line"><tt class="py-comment">#   INCLUDE "some_Text"</tt> </tt>
+<a name="L197"></a><tt class="py-lineno">197</tt>  <tt class="py-line"><tt class="py-comment">#   INCLUDE "some_Text" ; INCLUDE "some_Text"</tt> </tt>
+<a name="L198"></a><tt class="py-lineno">198</tt>  <tt class="py-line"><tt class="py-comment">#   INCLUDE kind_"some_Text"</tt> </tt>
+<a name="L199"></a><tt class="py-lineno">199</tt>  <tt class="py-line"><tt class="py-comment">#   INCLUDE kind_'some_Text"</tt> </tt>
+<a name="L200"></a><tt class="py-lineno">200</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L201"></a><tt class="py-lineno">201</tt>  <tt class="py-line"><tt class="py-comment">#   where some_Text can include any alphanumeric and/or special character</tt> </tt>
+<a name="L202"></a><tt class="py-lineno">202</tt>  <tt class="py-line"><tt class="py-comment">#   as defined by the Fortran 2003 standard.</tt> </tt>
+<a name="L203"></a><tt class="py-lineno">203</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L204"></a><tt class="py-lineno">204</tt>  <tt class="py-line"><tt class="py-comment">#   Limitations:</tt> </tt>
+<a name="L205"></a><tt class="py-lineno">205</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L206"></a><tt class="py-lineno">206</tt>  <tt class="py-line"><tt class="py-comment">#   --  The Fortran standard dictates that a " or ' in the INCLUDE'd</tt> </tt>
+<a name="L207"></a><tt class="py-lineno">207</tt>  <tt class="py-line"><tt class="py-comment">#       string must be represented as a "" or '', if the quotes that wrap</tt> </tt>
+<a name="L208"></a><tt class="py-lineno">208</tt>  <tt class="py-line"><tt class="py-comment">#       the entire string are either a ' or ", respectively.   While the</tt> </tt>
+<a name="L209"></a><tt class="py-lineno">209</tt>  <tt class="py-line"><tt class="py-comment">#       regular expression below can detect the ' or " characters just fine,</tt> </tt>
+<a name="L210"></a><tt class="py-lineno">210</tt>  <tt class="py-line"><tt class="py-comment">#       the scanning logic, presently is unable to detect them and reduce</tt> </tt>
+<a name="L211"></a><tt class="py-lineno">211</tt>  <tt class="py-line"><tt class="py-comment">#       them to a single instance.  This probably isn't an issue since,</tt> </tt>
+<a name="L212"></a><tt class="py-lineno">212</tt>  <tt class="py-line"><tt class="py-comment">#       in practice, ' or " are not generally used in filenames.</tt> </tt>
+<a name="L213"></a><tt class="py-lineno">213</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L214"></a><tt class="py-lineno">214</tt>  <tt class="py-line"><tt class="py-comment">#   --  This regex will not properly deal with multiple INCLUDE statements</tt> </tt>
+<a name="L215"></a><tt class="py-lineno">215</tt>  <tt class="py-line"><tt class="py-comment">#       when the entire line has been commented out, ala</tt> </tt>
+<a name="L216"></a><tt class="py-lineno">216</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L217"></a><tt class="py-lineno">217</tt>  <tt class="py-line"><tt class="py-comment">#           ! INCLUDE 'some_file' ; INCLUDE 'some_file'</tt> </tt>
+<a name="L218"></a><tt class="py-lineno">218</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L219"></a><tt class="py-lineno">219</tt>  <tt class="py-line"><tt class="py-comment">#       In such cases, it will properly ignore the first INCLUDE file,</tt> </tt>
+<a name="L220"></a><tt class="py-lineno">220</tt>  <tt class="py-line"><tt class="py-comment">#       but will actually still pick up the second.  Interestingly enough,</tt> </tt>
+<a name="L221"></a><tt class="py-lineno">221</tt>  <tt class="py-line"><tt class="py-comment">#       the regex will properly deal with these cases:</tt> </tt>
+<a name="L222"></a><tt class="py-lineno">222</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L223"></a><tt class="py-lineno">223</tt>  <tt class="py-line"><tt class="py-comment">#             INCLUDE 'some_file'</tt> </tt>
+<a name="L224"></a><tt class="py-lineno">224</tt>  <tt class="py-line"><tt class="py-comment">#             INCLUDE 'some_file' !; INCLUDE 'some_file'</tt> </tt>
+<a name="L225"></a><tt class="py-lineno">225</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L226"></a><tt class="py-lineno">226</tt>  <tt class="py-line"><tt class="py-comment">#       To get around the above limitation, the FORTRAN programmer could</tt> </tt>
+<a name="L227"></a><tt class="py-lineno">227</tt>  <tt class="py-line"><tt class="py-comment">#       simply comment each INCLUDE statement separately, like this</tt> </tt>
+<a name="L228"></a><tt class="py-lineno">228</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L229"></a><tt class="py-lineno">229</tt>  <tt class="py-line"><tt class="py-comment">#           ! INCLUDE 'some_file' !; INCLUDE 'some_file'</tt> </tt>
+<a name="L230"></a><tt class="py-lineno">230</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L231"></a><tt class="py-lineno">231</tt>  <tt class="py-line"><tt class="py-comment">#       The way I see it, the only way to get around this limitation would</tt> </tt>
+<a name="L232"></a><tt class="py-lineno">232</tt>  <tt class="py-line"><tt class="py-comment">#       be to modify the scanning logic to replace the calls to re.findall</tt> </tt>
+<a name="L233"></a><tt class="py-lineno">233</tt>  <tt class="py-line"><tt class="py-comment">#       with a custom loop that processes each line separately, throwing</tt> </tt>
+<a name="L234"></a><tt class="py-lineno">234</tt>  <tt class="py-line"><tt class="py-comment">#       away fully commented out lines before attempting to match against</tt> </tt>
+<a name="L235"></a><tt class="py-lineno">235</tt>  <tt class="py-line"><tt class="py-comment">#       the INCLUDE syntax.</tt> </tt>
+<a name="L236"></a><tt class="py-lineno">236</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L237"></a><tt class="py-lineno">237</tt>  <tt class="py-line"><tt class="py-comment">#   Here is a breakdown of the regex:</tt> </tt>
+<a name="L238"></a><tt class="py-lineno">238</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L239"></a><tt class="py-lineno">239</tt>  <tt class="py-line"><tt class="py-comment">#   (?i)               : regex is case insensitive</tt> </tt>
+<a name="L240"></a><tt class="py-lineno">240</tt>  <tt class="py-line"><tt class="py-comment">#   (?:                : begin a non-saving group that matches the following:</tt> </tt>
+<a name="L241"></a><tt class="py-lineno">241</tt>  <tt class="py-line"><tt class="py-comment">#      ^               :    either the start of the line</tt> </tt>
+<a name="L242"></a><tt class="py-lineno">242</tt>  <tt class="py-line"><tt class="py-comment">#      |               :                or</tt> </tt>
+<a name="L243"></a><tt class="py-lineno">243</tt>  <tt class="py-line"><tt class="py-comment">#      ['"&gt;]\s*;       :    a semicolon that follows a single quote,</tt> </tt>
+<a name="L244"></a><tt class="py-lineno">244</tt>  <tt class="py-line"><tt class="py-comment">#                           double quote or greater than symbol (with any</tt> </tt>
+<a name="L245"></a><tt class="py-lineno">245</tt>  <tt class="py-line"><tt class="py-comment">#                           amount of whitespace in between).  This will</tt> </tt>
+<a name="L246"></a><tt class="py-lineno">246</tt>  <tt class="py-line"><tt class="py-comment">#                           allow the regex to match multiple INCLUDE</tt> </tt>
+<a name="L247"></a><tt class="py-lineno">247</tt>  <tt class="py-line"><tt class="py-comment">#                           statements per line (although it also requires</tt> </tt>
+<a name="L248"></a><tt class="py-lineno">248</tt>  <tt class="py-line"><tt class="py-comment">#                           the positive lookahead assertion that is</tt> </tt>
+<a name="L249"></a><tt class="py-lineno">249</tt>  <tt class="py-line"><tt class="py-comment">#                           used below).  It will even properly deal with</tt> </tt>
+<a name="L250"></a><tt class="py-lineno">250</tt>  <tt class="py-line"><tt class="py-comment">#                           (i.e. ignore) cases in which the additional</tt> </tt>
+<a name="L251"></a><tt class="py-lineno">251</tt>  <tt class="py-line"><tt class="py-comment">#                           INCLUDES are part of an in-line comment, ala</tt> </tt>
+<a name="L252"></a><tt class="py-lineno">252</tt>  <tt class="py-line"><tt class="py-comment">#                                           "  INCLUDE 'someFile' ! ; INCLUDE 'someFile2' "</tt> </tt>
+<a name="L253"></a><tt class="py-lineno">253</tt>  <tt class="py-line"><tt class="py-comment">#   )                  : end of non-saving group</tt> </tt>
+<a name="L254"></a><tt class="py-lineno">254</tt>  <tt class="py-line"><tt class="py-comment">#   \s*                : any amount of white space</tt> </tt>
+<a name="L255"></a><tt class="py-lineno">255</tt>  <tt class="py-line"><tt class="py-comment">#   INCLUDE            : match the string INCLUDE, case insensitive</tt> </tt>
+<a name="L256"></a><tt class="py-lineno">256</tt>  <tt class="py-line"><tt class="py-comment">#   \s+                : match one or more white space characters</tt> </tt>
+<a name="L257"></a><tt class="py-lineno">257</tt>  <tt class="py-line"><tt class="py-comment">#   (?\w+_)?           : match the optional "kind-param _" prefix allowed by the standard</tt> </tt>
+<a name="L258"></a><tt class="py-lineno">258</tt>  <tt class="py-line"><tt class="py-comment">#   [&lt;"']              : match the include delimiter - an apostrophe, double quote, or less than symbol</tt> </tt>
+<a name="L259"></a><tt class="py-lineno">259</tt>  <tt class="py-line"><tt class="py-comment">#   (.+?)              : match one or more characters that make up</tt> </tt>
+<a name="L260"></a><tt class="py-lineno">260</tt>  <tt class="py-line"><tt class="py-comment">#                        the included path and file name and save it</tt> </tt>
+<a name="L261"></a><tt class="py-lineno">261</tt>  <tt class="py-line"><tt class="py-comment">#                        in a group.  The Fortran standard allows for</tt> </tt>
+<a name="L262"></a><tt class="py-lineno">262</tt>  <tt class="py-line"><tt class="py-comment">#                        any non-control character to be used.  The dot</tt> </tt>
+<a name="L263"></a><tt class="py-lineno">263</tt>  <tt class="py-line"><tt class="py-comment">#                        operator will pick up any character, including</tt> </tt>
+<a name="L264"></a><tt class="py-lineno">264</tt>  <tt class="py-line"><tt class="py-comment">#                        control codes, but I can't conceive of anyone</tt> </tt>
+<a name="L265"></a><tt class="py-lineno">265</tt>  <tt class="py-line"><tt class="py-comment">#                        putting control codes in their file names.</tt> </tt>
+<a name="L266"></a><tt class="py-lineno">266</tt>  <tt class="py-line"><tt class="py-comment">#                        The question mark indicates it is non-greedy so</tt> </tt>
+<a name="L267"></a><tt class="py-lineno">267</tt>  <tt class="py-line"><tt class="py-comment">#                        that regex will match only up to the next quote,</tt> </tt>
+<a name="L268"></a><tt class="py-lineno">268</tt>  <tt class="py-line"><tt class="py-comment">#                        double quote, or greater than symbol</tt> </tt>
+<a name="L269"></a><tt class="py-lineno">269</tt>  <tt class="py-line"><tt class="py-comment">#   (?=["'&gt;])          : positive lookahead assertion to match the include</tt> </tt>
+<a name="L270"></a><tt class="py-lineno">270</tt>  <tt class="py-line"><tt class="py-comment">#                        delimiter - an apostrophe, double quote, or</tt> </tt>
+<a name="L271"></a><tt class="py-lineno">271</tt>  <tt class="py-line"><tt class="py-comment">#                        greater than symbol.  This level of complexity</tt> </tt>
+<a name="L272"></a><tt class="py-lineno">272</tt>  <tt class="py-line"><tt class="py-comment">#                        is required so that the include delimiter is</tt> </tt>
+<a name="L273"></a><tt class="py-lineno">273</tt>  <tt class="py-line"><tt class="py-comment">#                        not consumed by the match, thus allowing the</tt> </tt>
+<a name="L274"></a><tt class="py-lineno">274</tt>  <tt class="py-line"><tt class="py-comment">#                        sub-regex discussed above to uniquely match a</tt> </tt>
+<a name="L275"></a><tt class="py-lineno">275</tt>  <tt class="py-line"><tt class="py-comment">#                        set of semicolon-separated INCLUDE statements</tt> </tt>
+<a name="L276"></a><tt class="py-lineno">276</tt>  <tt class="py-line"><tt class="py-comment">#                        (as allowed by the F2003 standard)</tt> </tt>
+<a name="L277"></a><tt class="py-lineno">277</tt>  <tt class="py-line"> </tt>
+<a name="L278"></a><tt class="py-lineno">278</tt>  <tt class="py-line">    <tt class="py-name">include_regex</tt> <tt class="py-op">=</tt> <tt class="py-string">"""(?i)(?:^|['"&gt;]\s*;)\s*INCLUDE\s+(?:\w+_)?[&lt;"'](.+?)(?=["'&gt;])"""</tt> </tt>
+<a name="L279"></a><tt class="py-lineno">279</tt>  <tt class="py-line"> </tt>
+<a name="L280"></a><tt class="py-lineno">280</tt>  <tt class="py-line"><tt class="py-comment">#   The MODULE statement regex finds module definitions by matching</tt> </tt>
+<a name="L281"></a><tt class="py-lineno">281</tt>  <tt class="py-line"><tt class="py-comment">#   the following:</tt> </tt>
+<a name="L282"></a><tt class="py-lineno">282</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L283"></a><tt class="py-lineno">283</tt>  <tt class="py-line"><tt class="py-comment">#   MODULE module_name</tt> </tt>
+<a name="L284"></a><tt class="py-lineno">284</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L285"></a><tt class="py-lineno">285</tt>  <tt class="py-line"><tt class="py-comment">#   but *not* the following:</tt> </tt>
+<a name="L286"></a><tt class="py-lineno">286</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L287"></a><tt class="py-lineno">287</tt>  <tt class="py-line"><tt class="py-comment">#   MODULE PROCEDURE procedure_name</tt> </tt>
+<a name="L288"></a><tt class="py-lineno">288</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L289"></a><tt class="py-lineno">289</tt>  <tt class="py-line"><tt class="py-comment">#   Here is a breakdown of the regex:</tt> </tt>
+<a name="L290"></a><tt class="py-lineno">290</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L291"></a><tt class="py-lineno">291</tt>  <tt class="py-line"><tt class="py-comment">#   (?i)               : regex is case insensitive</tt> </tt>
+<a name="L292"></a><tt class="py-lineno">292</tt>  <tt class="py-line"><tt class="py-comment">#   ^\s*               : any amount of white space</tt> </tt>
+<a name="L293"></a><tt class="py-lineno">293</tt>  <tt class="py-line"><tt class="py-comment">#   MODULE             : match the string MODULE, case insensitive</tt> </tt>
+<a name="L294"></a><tt class="py-lineno">294</tt>  <tt class="py-line"><tt class="py-comment">#   \s+                : match one or more white space characters</tt> </tt>
+<a name="L295"></a><tt class="py-lineno">295</tt>  <tt class="py-line"><tt class="py-comment">#   (?!PROCEDURE)      : but *don't* match if the next word matches</tt> </tt>
+<a name="L296"></a><tt class="py-lineno">296</tt>  <tt class="py-line"><tt class="py-comment">#                        PROCEDURE (negative lookahead assertion),</tt> </tt>
+<a name="L297"></a><tt class="py-lineno">297</tt>  <tt class="py-line"><tt class="py-comment">#                        case insensitive</tt> </tt>
+<a name="L298"></a><tt class="py-lineno">298</tt>  <tt class="py-line"><tt class="py-comment">#   (\w+)              : match one or more alphanumeric characters</tt> </tt>
+<a name="L299"></a><tt class="py-lineno">299</tt>  <tt class="py-line"><tt class="py-comment">#                        that make up the defined module name and</tt> </tt>
+<a name="L300"></a><tt class="py-lineno">300</tt>  <tt class="py-line"><tt class="py-comment">#                        save it in a group</tt> </tt>
+<a name="L301"></a><tt class="py-lineno">301</tt>  <tt class="py-line"> </tt>
+<a name="L302"></a><tt class="py-lineno">302</tt>  <tt class="py-line">    <tt class="py-name">def_regex</tt> <tt class="py-op">=</tt> <tt class="py-string">"""(?i)^\s*MODULE\s+(?!PROCEDURE)(\w+)"""</tt> </tt>
+<a name="L303"></a><tt class="py-lineno">303</tt>  <tt class="py-line"> </tt>
+<a name="L304"></a><tt class="py-lineno">304</tt>  <tt class="py-line">    <tt class="py-name">scanner</tt> <tt class="py-op">=</tt> <tt id="link-49" class="py-name" targets="Class SCons.Scanner.Fortran.F90Scanner=SCons.Scanner.Fortran.F90Scanner-class.html"><a title="SCons.Scanner.Fortran.F90Scanner" class="py-name" href="#" onclick="return doclink('link-49', 'F90Scanner', 'link-49');">F90Scanner</a></tt><tt class="py-op">(</tt><tt class="py-string">"FortranScan"</tt><tt class="py-op">,</tt> </tt>
+<a name="L305"></a><tt class="py-lineno">305</tt>  <tt class="py-line">                         <tt class="py-string">"$FORTRANSUFFIXES"</tt><tt class="py-op">,</tt> </tt>
+<a name="L306"></a><tt class="py-lineno">306</tt>  <tt class="py-line">                         <tt class="py-name">path_variable</tt><tt class="py-op">,</tt> </tt>
+<a name="L307"></a><tt class="py-lineno">307</tt>  <tt class="py-line">                         <tt class="py-name">use_regex</tt><tt class="py-op">,</tt> </tt>
+<a name="L308"></a><tt class="py-lineno">308</tt>  <tt class="py-line">                         <tt class="py-name">include_regex</tt><tt class="py-op">,</tt> </tt>
+<a name="L309"></a><tt class="py-lineno">309</tt>  <tt class="py-line">                         <tt class="py-name">def_regex</tt><tt class="py-op">)</tt> </tt>
+<a name="L310"></a><tt class="py-lineno">310</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">scanner</tt> </tt>
+</div><a name="L311"></a><tt class="py-lineno">311</tt>  <tt class="py-line"> </tt>
+<a name="L312"></a><tt class="py-lineno">312</tt>  <tt class="py-line"><tt class="py-comment"># Local Variables:</tt> </tt>
+<a name="L313"></a><tt class="py-lineno">313</tt>  <tt class="py-line"><tt class="py-comment"># tab-width:4</tt> </tt>
+<a name="L314"></a><tt class="py-lineno">314</tt>  <tt class="py-line"><tt class="py-comment"># indent-tabs-mode:nil</tt> </tt>
+<a name="L315"></a><tt class="py-lineno">315</tt>  <tt class="py-line"><tt class="py-comment"># End:</tt> </tt>
+<a name="L316"></a><tt class="py-lineno">316</tt>  <tt class="py-line"><tt class="py-comment"># vim: set expandtab tabstop=4 shiftwidth=4:</tt> </tt>
+<a name="L317"></a><tt class="py-lineno">317</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="SCons-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://www.scons.org/">SCons</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sun Aug  5 15:53:19 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

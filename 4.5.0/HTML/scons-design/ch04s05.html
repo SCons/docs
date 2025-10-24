@@ -1,0 +1,101 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>4.5. Scanner Objects</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.5.0"><link rel="up" href="ch04.html" title="Chapter 4. Build Engine API"><link rel="prev" href="ch04s04.html" title="4.4. Dependencies"><link rel="next" href="ch04s06.html" title="4.6. Targets"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">4.5. <code class="classname">Scanner</code> Objects</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s04.html">Prev</a> </td><th width="60%" align="center">Chapter 4. Build Engine API</th><td width="20%" align="right"> <a accesskey="n" href="ch04s06.html">Next</a></td></tr></table><hr></div><div class="section" title="4.5. Scanner Objects"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="sect-scanners"></a>4.5. <code class="classname">Scanner</code> Objects</h2></div></div></div><p>
+
+  Analagous to the previously-described <code class="classname">Builder</code> objects, <span class="application">SCons</span>
+  supplies (and uses) <code class="classname">Scanner</code> objects to search the contents of
+  a file for implicit dependency files:
+
+ </p><div class="informaltable"><table border="1"><colgroup><col><col></colgroup><tbody><tr><td>CScan</td><td>scan .{c,C,cc,cxx,cpp} files for #include dependencies</td></tr></tbody></table></div><p>
+
+  A <span>construction environment</span> can be explicitly initialized with
+  associated <code class="classname">Scanner</code> objects:
+
+ </p><pre class="programlisting">
+	env = Environment(SCANNERS = ['CScan', 'M4Scan'])
+	</pre><p>
+
+  <code class="classname">Scanner</code> objects bound to a <span>construction environment</span> can be
+  associated directly with specified files:
+
+ </p><pre class="programlisting">
+	env.CScan('foo.c', 'bar.c')
+	env.M4Scan('input.m4')
+	</pre><div class="section" title="4.5.1. User-defined Scanner objects"><div class="titlepage"><div><div><h3 class="title"><a name="idp105548802072392"></a>4.5.1. User-defined <code class="classname">Scanner</code> objects</h3></div></div></div><p>
+
+   A user may define a <code class="classname">Scanner</code> object to scan a type of file for
+   implicit dependencies:
+
+  </p><pre class="programlisting">
+	def scanner1(file_contents):
+	        # search for dependencies
+	        return dependency_list
+
+	FirstScan = Scanner(function = scanner1)
+	</pre><p>
+
+   The scanner function must return a list of dependencies that its finds
+   based on analyzing the file contents it is passed as an argument.
+
+  </p><p>
+
+   The scanner function, when invoked, will be passed the calling
+   environment.  The scanner function can use <span>construction environments</span> from the passed
+   environment to affect how it performs its dependency scan--the
+   canonical example being to use some sort of search-path construction
+   variable to look for dependency files in other directories:
+
+  </p><pre class="programlisting">
+	def scanner2(file_contents, env):
+	        path = env.{'SCANNERPATH'}	# XXX
+	        # search for dependencies using 'path'
+	        return dependency_list
+
+	SecondScan = Scanner(function = scanner2)
+	</pre><p>
+
+   The user may specify an additional argument when the <code class="classname">Scanner</code> object
+   is created.  When the scanner is invoked, the additional argument
+   will be passed to the scanner funciton, which can be used in any way
+   the scanner function sees fit:
+
+  </p><pre class="programlisting">
+	def scanner3(file_contents, env, arg):
+	        # skip 'arg' lines, then search for dependencies
+	        return dependency_list
+
+	Skip_3_Lines_Scan = Scanner(function = scanner2, argument = 3)
+	Skip_6_Lines_Scan = Scanner(function = scanner2, argument = 6)
+	</pre></div><div class="section" title="4.5.2. Copying Scanner Objects"><div class="titlepage"><div><div><h3 class="title"><a name="idp105548802077512"></a>4.5.2. Copying <code class="classname">Scanner</code> Objects</h3></div></div></div><p>
+
+   A method exists to return a copy of an existing <code class="classname">Scanner</code> object,
+   with any overridden values specified as keyword arguments to the
+   method:
+
+  </p><pre class="programlisting">
+	scan = Scanner(function = my_scan)
+	scan_path = scan.Copy(path = '%SCANNERPATH')
+	</pre><p>
+
+   Typically, <code class="classname">Scanner</code> objects will be supplied by a tool-master or
+   administrator through a shared <span>construction environment</span>.
+
+  </p></div><div class="section" title="4.5.3. Scanner maps"><div class="titlepage"><div><div><h3 class="title"><a name="idp105548802080968"></a>4.5.3. <code class="classname">Scanner</code> maps</h3></div></div></div><p>
+
+   Each <span>construction environment</span> has a <code class="varname">SCANNERMAP</code>, a dictionary that associates
+   different file suffixes with a scanner object that can be used to
+   generate a list of dependencies from the contents of that file.  This
+   <code class="varname">SCANNERMAP</code> can be initialized at instantiation:
+
+  </p><pre class="programlisting">
+	env = Environment(SCANNERMAP = {
+	                        '.c' : CScan,
+	                        '.cc' : CScan,
+	                        '.m4' : M4Scan,
+	                })
+	</pre><p>
+
+   <code class="classname">Scanner</code> objects referenced in the <code class="varname">SCANNERMAP</code> do not need to
+   be listed separately in the <code class="literal">SCANNERS</code> variable.  The <span>construction environment</span>
+   will bind the union of the <code class="classname">Scanner</code> objects listed
+   in both variables.
+
+  </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch04s04.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch04.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch04s06.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">4.4. Dependencies </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 4.6. Targets</td></tr></table></div></body></html>

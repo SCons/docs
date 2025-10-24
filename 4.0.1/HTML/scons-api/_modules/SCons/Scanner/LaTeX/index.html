@@ -1,0 +1,726 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>SCons.Scanner.LaTeX &mdash; SCons 4.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../" class="icon icon-home"> SCons
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                4.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons/">SCons package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../SCons.Variables/">SCons.Variables package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../SCons.compat/">SCons.compat package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Action">SCons.Action module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Builder">SCons.Builder module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.CacheDir">SCons.CacheDir module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Conftest">SCons.Conftest module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Debug">SCons.Debug module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Defaults">SCons.Defaults module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Environment">SCons.Environment module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Errors">SCons.Errors module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Executor">SCons.Executor module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Job">SCons.Job module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Memoize">SCons.Memoize module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.PathList">SCons.PathList module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.SConf">SCons.SConf module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.SConsign">SCons.SConsign module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Subst">SCons.Subst module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Taskmaster">SCons.Taskmaster module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../SCons/#generic-taskmaster-module-for-the-scons-build-engine">Generic Taskmaster module for the SCons build engine.</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Util">SCons.Util module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Warnings">SCons.Warnings module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.cpp">SCons.cpp module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.dblite">SCons.dblite module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.exitfuncs">SCons.exitfuncs module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.compat/">SCons.compat package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.compat/#module-SCons.compat">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Node/">SCons.Node package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Node/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Node/#module-SCons.Node.Alias">SCons.Node.Alias module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Node/#module-SCons.Node.FS">SCons.Node.FS module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Node/#module-SCons.Node.Python">SCons.Node.Python module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Node/#module-SCons.Node">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Platform/">SCons.Platform package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform.aix">SCons.Platform.aix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform.cygwin">SCons.Platform.cygwin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform.darwin">SCons.Platform.darwin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform.hpux">SCons.Platform.hpux module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform.irix">SCons.Platform.irix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform.mingw">SCons.Platform.mingw module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform.os2">SCons.Platform.os2 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform.posix">SCons.Platform.posix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform.sunos">SCons.Platform.sunos module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform.virtualenv">SCons.Platform.virtualenv module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform.win32">SCons.Platform.win32 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Scanner/">SCons.Scanner package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/#module-SCons.Scanner.C">SCons.Scanner.C module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/#module-SCons.Scanner.D">SCons.Scanner.D module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/#module-SCons.Scanner.Dir">SCons.Scanner.Dir module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/#module-SCons.Scanner.Fortran">SCons.Scanner.Fortran module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/#module-SCons.Scanner.IDL">SCons.Scanner.IDL module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/#module-SCons.Scanner.LaTeX">SCons.Scanner.LaTeX module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/#module-SCons.Scanner.Prog">SCons.Scanner.Prog module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/#module-SCons.Scanner.RC">SCons.Scanner.RC module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/#module-SCons.Scanner.SWIG">SCons.Scanner.SWIG module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/#module-SCons.Scanner">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Script/">SCons.Script package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Script/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Script/#module-SCons.Script.Interactive">SCons.Script.Interactive module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Script/#module-SCons.Script.Main">SCons.Script.Main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Script/#module-SCons.Script.SConsOptions">SCons.Script.SConsOptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Script/#module-SCons.Script.SConscript">SCons.Script.SConscript module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Script/#module-SCons.Script">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Tool/">SCons.Tool package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Tool/#module-SCons.Tool">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Variables/">SCons.Variables package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Variables/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Variables/#module-SCons.Variables.BoolVariable">SCons.Variables.BoolVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Variables/#module-SCons.Variables.EnumVariable">SCons.Variables.EnumVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Variables/#module-SCons.Variables.ListVariable">SCons.Variables.ListVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Variables/#module-SCons.Variables.PackageVariable">SCons.Variables.PackageVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Variables/#module-SCons.Variables.PathVariable">SCons.Variables.PathVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Variables/#module-SCons.Variables">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../">SCons</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../">Module code</a> &raquo;</li>
+        
+          <li><a href="../">SCons.Scanner</a> &raquo;</li>
+        
+      <li>SCons.Scanner.LaTeX</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for SCons.Scanner.LaTeX</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;SCons.Scanner.LaTeX</span>
+
+<span class="sd">This module implements the dependency scanner for LaTeX code.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1">#</span>
+<span class="c1"># __COPYRIGHT__</span>
+<span class="c1">#</span>
+<span class="c1"># Permission is hereby granted, free of charge, to any person obtaining</span>
+<span class="c1"># a copy of this software and associated documentation files (the</span>
+<span class="c1"># &quot;Software&quot;), to deal in the Software without restriction, including</span>
+<span class="c1"># without limitation the rights to use, copy, modify, merge, publish,</span>
+<span class="c1"># distribute, sublicense, and/or sell copies of the Software, and to</span>
+<span class="c1"># permit persons to whom the Software is furnished to do so, subject to</span>
+<span class="c1"># the following conditions:</span>
+<span class="c1">#</span>
+<span class="c1"># The above copyright notice and this permission notice shall be included</span>
+<span class="c1"># in all copies or substantial portions of the Software.</span>
+<span class="c1">#</span>
+<span class="c1"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY</span>
+<span class="c1"># KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND</span>
+<span class="c1"># NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE</span>
+<span class="c1"># LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION</span>
+<span class="c1"># OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</span>
+<span class="c1"># WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</span>
+<span class="c1">#</span>
+
+<span class="n">__revision__</span> <span class="o">=</span> <span class="s2">&quot;__FILE__ __REVISION__ __DATE__ __DEVELOPER__&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">import</span> <span class="nn">SCons.Scanner</span>
+<span class="kn">import</span> <span class="nn">SCons.Util</span>
+
+<span class="c1"># list of graphics file extensions for TeX and LaTeX</span>
+<span class="n">TexGraphics</span>   <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;.eps&#39;</span><span class="p">,</span> <span class="s1">&#39;.ps&#39;</span><span class="p">]</span>
+<span class="c1">#LatexGraphics = [&#39;.pdf&#39;, &#39;.png&#39;, &#39;.jpg&#39;, &#39;.gif&#39;, &#39;.tif&#39;]</span>
+<span class="n">LatexGraphics</span> <span class="o">=</span> <span class="p">[</span> <span class="s1">&#39;.png&#39;</span><span class="p">,</span> <span class="s1">&#39;.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;.gif&#39;</span><span class="p">,</span> <span class="s1">&#39;.tif&#39;</span><span class="p">]</span>
+
+
+<span class="c1"># Used as a return value of modify_env_var if the variable is not set.</span>
+<div class="viewcode-block" id="_Null"><a class="viewcode-back" href="../../../../SCons.Scanner/#SCons.Scanner.LaTeX._Null">[docs]</a><span class="k">class</span> <span class="nc">_Null</span><span class="p">:</span>
+    <span class="k">pass</span></div>
+<span class="n">_null</span> <span class="o">=</span> <span class="n">_Null</span>
+
+<span class="c1"># The user specifies the paths in env[variable], similar to other builders.</span>
+<span class="c1"># They may be relative and must be converted to absolute, as expected</span>
+<span class="c1"># by LaTeX and Co. The environment may already have some paths in</span>
+<span class="c1"># env[&#39;ENV&#39;][var]. These paths are honored, but the env[var] paths have</span>
+<span class="c1"># higher precedence. All changes are un-done on exit.</span>
+<div class="viewcode-block" id="modify_env_var"><a class="viewcode-back" href="../../../../SCons.Scanner/#SCons.Scanner.LaTeX.modify_env_var">[docs]</a><span class="k">def</span> <span class="nf">modify_env_var</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">abspath</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">save</span> <span class="o">=</span> <span class="n">env</span><span class="p">[</span><span class="s1">&#39;ENV&#39;</span><span class="p">][</span><span class="n">var</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="n">save</span> <span class="o">=</span> <span class="n">_null</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">PrependENVPath</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">abspath</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_List</span><span class="p">(</span><span class="n">env</span><span class="p">[</span><span class="n">var</span><span class="p">]):</span>
+            <span class="n">env</span><span class="o">.</span><span class="n">PrependENVPath</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="p">))</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">env</span><span class="p">[</span><span class="n">var</span><span class="p">]])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Split at os.pathsep to convert into absolute path</span>
+            <span class="n">env</span><span class="o">.</span><span class="n">PrependENVPath</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">env</span><span class="p">[</span><span class="n">var</span><span class="p">])</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">pathsep</span><span class="p">)])</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="c1"># Convert into a string explicitly to append &quot;:&quot; (without which it won&#39;t search system</span>
+    <span class="c1"># paths as well). The problem is that env.AppendENVPath(var, &quot;:&quot;)</span>
+    <span class="c1"># does not work, refuses to append &quot;:&quot; (os.pathsep).</span>
+
+    <span class="k">if</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_List</span><span class="p">(</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;ENV&#39;</span><span class="p">][</span><span class="n">var</span><span class="p">]):</span>
+        <span class="n">env</span><span class="p">[</span><span class="s1">&#39;ENV&#39;</span><span class="p">][</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">pathsep</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;ENV&#39;</span><span class="p">][</span><span class="n">var</span><span class="p">])</span>
+    <span class="c1"># Append the trailing os.pathsep character here to catch the case with no env[var]</span>
+    <span class="n">env</span><span class="p">[</span><span class="s1">&#39;ENV&#39;</span><span class="p">][</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="n">env</span><span class="p">[</span><span class="s1">&#39;ENV&#39;</span><span class="p">][</span><span class="n">var</span><span class="p">]</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">pathsep</span>
+
+    <span class="k">return</span> <span class="n">save</span></div>
+
+<div class="viewcode-block" id="FindENVPathDirs"><a class="viewcode-back" href="../../../../SCons.Scanner/#SCons.Scanner.LaTeX.FindENVPathDirs">[docs]</a><span class="k">class</span> <span class="nc">FindENVPathDirs</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class to bind a specific E{*}PATH variable name to a function that</span>
+<span class="sd">    will return all of the E{*}path directories.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variable</span> <span class="o">=</span> <span class="n">variable</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="nb">dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">argument</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">SCons.PathList</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">env</span><span class="p">[</span><span class="s1">&#39;ENV&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">()</span>
+
+        <span class="nb">dir</span> <span class="o">=</span> <span class="nb">dir</span> <span class="ow">or</span> <span class="n">env</span><span class="o">.</span><span class="n">fs</span><span class="o">.</span><span class="n">_cwd</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">PathList</span><span class="o">.</span><span class="n">PathList</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">subst_path</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">dir</span><span class="o">.</span><span class="n">Rfindalldirs</span><span class="p">(</span><span class="n">path</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="LaTeXScanner"><a class="viewcode-back" href="../../../../SCons.Scanner/#SCons.Scanner.LaTeX.LaTeXScanner">[docs]</a><span class="k">def</span> <span class="nf">LaTeXScanner</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return a prototype Scanner instance for scanning LaTeX source files</span>
+<span class="sd">    when built with latex.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">LaTeX</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;LaTeXScanner&quot;</span><span class="p">,</span>
+               <span class="n">suffixes</span> <span class="o">=</span>  <span class="s1">&#39;$LATEXSUFFIXES&#39;</span><span class="p">,</span>
+               <span class="c1"># in the search order, see below in LaTeX class docstring</span>
+               <span class="n">graphics_extensions</span> <span class="o">=</span> <span class="n">TexGraphics</span><span class="p">,</span>
+               <span class="n">recursive</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ds</span></div>
+
+<div class="viewcode-block" id="PDFLaTeXScanner"><a class="viewcode-back" href="../../../../SCons.Scanner/#SCons.Scanner.LaTeX.PDFLaTeXScanner">[docs]</a><span class="k">def</span> <span class="nf">PDFLaTeXScanner</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return a prototype Scanner instance for scanning LaTeX source files</span>
+<span class="sd">    when built with pdflatex.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">LaTeX</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;PDFLaTeXScanner&quot;</span><span class="p">,</span>
+               <span class="n">suffixes</span> <span class="o">=</span>  <span class="s1">&#39;$LATEXSUFFIXES&#39;</span><span class="p">,</span>
+               <span class="c1"># in the search order, see below in LaTeX class docstring</span>
+               <span class="n">graphics_extensions</span> <span class="o">=</span> <span class="n">LatexGraphics</span><span class="p">,</span>
+               <span class="n">recursive</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ds</span></div>
+
+<div class="viewcode-block" id="LaTeX"><a class="viewcode-back" href="../../../../SCons.Scanner/#SCons.Scanner.LaTeX.LaTeX">[docs]</a><span class="k">class</span> <span class="nc">LaTeX</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Scanner</span><span class="o">.</span><span class="n">Base</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class for scanning LaTeX files for included files.</span>
+
+<span class="sd">    Unlike most scanners, which use regular expressions that just</span>
+<span class="sd">    return the included file name, this returns a tuple consisting</span>
+<span class="sd">    of the keyword for the inclusion (&quot;include&quot;, &quot;includegraphics&quot;,</span>
+<span class="sd">    &quot;input&quot;, or &quot;bibliography&quot;), and then the file name itself.</span>
+<span class="sd">    Based on a quick look at LaTeX documentation, it seems that we</span>
+<span class="sd">    should append .tex suffix for the &quot;include&quot; keywords, append .tex if</span>
+<span class="sd">    there is no extension for the &quot;input&quot; keyword, and need to add .bib</span>
+<span class="sd">    for the &quot;bibliography&quot; keyword that does not accept extensions by itself.</span>
+
+<span class="sd">    Finally, if there is no extension for an &quot;includegraphics&quot; keyword</span>
+<span class="sd">    latex will append .ps or .eps to find the file, while pdftex may use .pdf,</span>
+<span class="sd">    .jpg, .tif, .mps, or .png.</span>
+
+<span class="sd">    The actual subset and search order may be altered by</span>
+<span class="sd">    DeclareGraphicsExtensions command. This complication is ignored.</span>
+<span class="sd">    The default order corresponds to experimentation with teTeX::</span>
+
+<span class="sd">        $ latex --version</span>
+<span class="sd">        pdfeTeX 3.141592-1.21a-2.2 (Web2C 7.5.4)</span>
+<span class="sd">        kpathsea version 3.5.4</span>
+
+<span class="sd">    The order is:</span>
+<span class="sd">        [&#39;.eps&#39;, &#39;.ps&#39;] for latex</span>
+<span class="sd">        [&#39;.png&#39;, &#39;.pdf&#39;, &#39;.jpg&#39;, &#39;.tif&#39;].</span>
+
+<span class="sd">    Another difference is that the search path is determined by the type</span>
+<span class="sd">    of the file being searched:</span>
+<span class="sd">    env[&#39;TEXINPUTS&#39;] for &quot;input&quot; and &quot;include&quot; keywords</span>
+<span class="sd">    env[&#39;TEXINPUTS&#39;] for &quot;includegraphics&quot; keyword</span>
+<span class="sd">    env[&#39;TEXINPUTS&#39;] for &quot;lstinputlisting&quot; keyword</span>
+<span class="sd">    env[&#39;BIBINPUTS&#39;] for &quot;bibliography&quot; keyword</span>
+<span class="sd">    env[&#39;BSTINPUTS&#39;] for &quot;bibliographystyle&quot; keyword</span>
+<span class="sd">    env[&#39;INDEXSTYLE&#39;] for &quot;makeindex&quot; keyword, no scanning support needed just allows user to set it if needed.</span>
+
+<span class="sd">    FIXME: also look for the class or style in document[class|style]{}</span>
+<span class="sd">    FIXME: also look for the argument of bibliographystyle{}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">keyword_paths</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;include&#39;</span><span class="p">:</span> <span class="s1">&#39;TEXINPUTS&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;input&#39;</span><span class="p">:</span> <span class="s1">&#39;TEXINPUTS&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;includegraphics&#39;</span><span class="p">:</span> <span class="s1">&#39;TEXINPUTS&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;bibliography&#39;</span><span class="p">:</span> <span class="s1">&#39;BIBINPUTS&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;bibliographystyle&#39;</span><span class="p">:</span> <span class="s1">&#39;BSTINPUTS&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;addbibresource&#39;</span><span class="p">:</span> <span class="s1">&#39;BIBINPUTS&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;addglobalbib&#39;</span><span class="p">:</span> <span class="s1">&#39;BIBINPUTS&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;addsectionbib&#39;</span><span class="p">:</span> <span class="s1">&#39;BIBINPUTS&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;makeindex&#39;</span><span class="p">:</span> <span class="s1">&#39;INDEXSTYLE&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;usepackage&#39;</span><span class="p">:</span> <span class="s1">&#39;TEXINPUTS&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;lstinputlisting&#39;</span><span class="p">:</span> <span class="s1">&#39;TEXINPUTS&#39;</span><span class="p">}</span>
+    <span class="n">env_variables</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">keyword_paths</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+    <span class="n">two_arg_commands</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;import&#39;</span><span class="p">,</span> <span class="s1">&#39;subimport&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;includefrom&#39;</span><span class="p">,</span> <span class="s1">&#39;subincludefrom&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;inputfrom&#39;</span><span class="p">,</span> <span class="s1">&#39;subinputfrom&#39;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">suffixes</span><span class="p">,</span> <span class="n">graphics_extensions</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">regex</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">            \\(</span>
+<span class="s1">                include</span>
+<span class="s1">              | includegraphics(?:\s*\[[^\]]+\])?</span>
+<span class="s1">              | lstinputlisting(?:\[[^\]]+\])?</span>
+<span class="s1">              | input</span>
+<span class="s1">              | import</span>
+<span class="s1">              | subimport</span>
+<span class="s1">              | includefrom</span>
+<span class="s1">              | subincludefrom</span>
+<span class="s1">              | inputfrom</span>
+<span class="s1">              | subinputfrom</span>
+<span class="s1">              | bibliography</span>
+<span class="s1">              | addbibresource</span>
+<span class="s1">              | addglobalbib</span>
+<span class="s1">              | addsectionbib</span>
+<span class="s1">              | usepackage</span>
+<span class="s1">              )</span>
+<span class="s1">                  \s*{([^}]*)}       # first arg</span>
+<span class="s1">              (?: \s*{([^}]*)} )?    # maybe another arg</span>
+<span class="s1">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cre</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comment_re</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^((?:(?:</span><span class="se">\\</span><span class="s1">%)|[^%\n])*)(.*)$&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">graphics_extensions</span> <span class="o">=</span> <span class="n">graphics_extensions</span>
+
+        <span class="k">def</span> <span class="nf">_scan</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="p">(),</span> <span class="bp">self</span><span class="o">=</span><span class="bp">self</span><span class="p">):</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">rfile</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">node</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="k">return</span> <span class="p">[]</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scan_recurse</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+
+        <span class="k">class</span> <span class="nc">FindMultiPathDirs</span><span class="p">:</span>
+            <span class="sd">&quot;&quot;&quot;The stock FindPathDirs function has the wrong granularity:</span>
+<span class="sd">            it is called once per target, while we need the path that depends</span>
+<span class="sd">            on what kind of included files is being searched. This wrapper</span>
+<span class="sd">            hides multiple instances of FindPathDirs, one per the LaTeX path</span>
+<span class="sd">            variable in the environment. When invoked, the function calculates</span>
+<span class="sd">            and returns all the required paths as a dictionary (converted into</span>
+<span class="sd">            a tuple to become hashable). Then the scan function converts it</span>
+<span class="sd">            back and uses a dictionary of tuples rather than a single tuple</span>
+<span class="sd">            of paths.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dictionary</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">n</span> <span class="ow">in</span> <span class="n">dictionary</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">dictionary</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Scanner</span><span class="o">.</span><span class="n">FindPathDirs</span><span class="p">(</span><span class="n">n</span><span class="p">),</span>
+                                           <span class="n">FindENVPathDirs</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="p">)</span>
+
+            <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="nb">dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                    <span class="n">argument</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                <span class="n">di</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">for</span> <span class="n">k</span><span class="p">,(</span><span class="n">c</span><span class="p">,</span><span class="n">cENV</span><span class="p">)</span>  <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dictionary</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">di</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span> <span class="n">c</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="nb">dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                   <span class="n">argument</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="p">,</span>
+                              <span class="n">cENV</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="nb">dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                   <span class="n">argument</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="p">)</span>
+                <span class="c1"># To prevent &quot;dict is not hashable error&quot;</span>
+                <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">di</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+
+        <span class="k">class</span> <span class="nc">LaTeXScanCheck</span><span class="p">:</span>
+            <span class="sd">&quot;&quot;&quot;Skip all but LaTeX source files, i.e., do not scan *.eps,</span>
+<span class="sd">            *.pdf, *.jpg, etc.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">suffixes</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">suffixes</span> <span class="o">=</span> <span class="n">suffixes</span>
+            <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+                <span class="n">current</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">node</span><span class="o">.</span><span class="n">has_builder</span><span class="p">()</span> <span class="ow">or</span> <span class="n">node</span><span class="o">.</span><span class="n">is_up_to_date</span><span class="p">()</span>
+                <span class="n">scannable</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">get_suffix</span><span class="p">()</span> <span class="ow">in</span> <span class="n">env</span><span class="o">.</span><span class="n">subst_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">suffixes</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="c1"># Returning false means that the file is not scanned.</span>
+                <span class="k">return</span> <span class="n">scannable</span> <span class="ow">and</span> <span class="n">current</span>
+
+        <span class="n">kw</span><span class="p">[</span><span class="s1">&#39;function&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_scan</span>
+        <span class="n">kw</span><span class="p">[</span><span class="s1">&#39;path_function&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">FindMultiPathDirs</span><span class="p">(</span><span class="n">LaTeX</span><span class="o">.</span><span class="n">keyword_paths</span><span class="p">)</span>
+        <span class="n">kw</span><span class="p">[</span><span class="s1">&#39;recursive&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">kw</span><span class="p">[</span><span class="s1">&#39;skeys&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">suffixes</span>
+        <span class="n">kw</span><span class="p">[</span><span class="s1">&#39;scan_check&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">LaTeXScanCheck</span><span class="p">(</span><span class="n">suffixes</span><span class="p">)</span>
+        <span class="n">kw</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+
+        <span class="n">SCons</span><span class="o">.</span><span class="n">Scanner</span><span class="o">.</span><span class="n">Base</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+
+<div class="viewcode-block" id="LaTeX._latex_names"><a class="viewcode-back" href="../../../../SCons.Scanner/#SCons.Scanner.LaTeX.LaTeX._latex_names">[docs]</a>    <span class="k">def</span> <span class="nf">_latex_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">include_type</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">include_type</span> <span class="o">==</span> <span class="s1">&#39;input&#39;</span><span class="p">:</span>
+            <span class="n">base</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span> <span class="n">filename</span> <span class="p">)</span>
+            <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">filename</span> <span class="o">+</span> <span class="s1">&#39;.tex&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">include_type</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;include&#39;</span><span class="p">,</span> <span class="s1">&#39;import&#39;</span><span class="p">,</span> <span class="s1">&#39;subimport&#39;</span><span class="p">,</span>
+                            <span class="s1">&#39;includefrom&#39;</span><span class="p">,</span> <span class="s1">&#39;subincludefrom&#39;</span><span class="p">,</span>
+                            <span class="s1">&#39;inputfrom&#39;</span><span class="p">,</span> <span class="s1">&#39;subinputfrom&#39;</span><span class="p">):</span>
+            <span class="n">base</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span> <span class="n">filename</span> <span class="p">)</span>
+            <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">filename</span> <span class="o">+</span> <span class="s1">&#39;.tex&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">include_type</span> <span class="o">==</span> <span class="s1">&#39;bibliography&#39;</span><span class="p">:</span>
+            <span class="n">base</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span> <span class="n">filename</span> <span class="p">)</span>
+            <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">filename</span> <span class="o">+</span> <span class="s1">&#39;.bib&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">include_type</span> <span class="o">==</span> <span class="s1">&#39;usepackage&#39;</span><span class="p">:</span>
+            <span class="n">base</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span> <span class="n">filename</span> <span class="p">)</span>
+            <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">filename</span> <span class="o">+</span> <span class="s1">&#39;.sty&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">include_type</span> <span class="o">==</span> <span class="s1">&#39;includegraphics&#39;</span><span class="p">:</span>
+            <span class="n">base</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span> <span class="n">filename</span> <span class="p">)</span>
+            <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="c1">#return [filename+e for e in self.graphics_extensions + TexGraphics]</span>
+                <span class="c1"># use the line above to find dependencies for the PDF builder</span>
+                <span class="c1"># when only an .eps figure is present.  Since it will be found</span>
+                <span class="c1"># if the user tells scons how to make the pdf figure, leave</span>
+                <span class="c1"># it out for now.</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">filename</span><span class="o">+</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">graphics_extensions</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">filename</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="LaTeX.sort_key"><a class="viewcode-back" href="../../../../SCons.Scanner/#SCons.Scanner.LaTeX.LaTeX.sort_key">[docs]</a>    <span class="k">def</span> <span class="nf">sort_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">include</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">FS</span><span class="o">.</span><span class="n">_my_normcase</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">include</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="LaTeX.find_include"><a class="viewcode-back" href="../../../../SCons.Scanner/#SCons.Scanner.LaTeX.LaTeX.find_include">[docs]</a>    <span class="k">def</span> <span class="nf">find_include</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">include</span><span class="p">,</span> <span class="n">source_dir</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="n">inc_type</span><span class="p">,</span> <span class="n">inc_subdir</span><span class="p">,</span> <span class="n">inc_filename</span> <span class="o">=</span> <span class="n">include</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">sub_paths</span> <span class="o">=</span> <span class="n">path</span><span class="p">[</span><span class="n">inc_type</span><span class="p">]</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">IndexError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">):</span>
+            <span class="n">sub_paths</span> <span class="o">=</span> <span class="p">((),</span> <span class="p">())</span>
+        <span class="n">try_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_latex_names</span><span class="p">(</span><span class="n">inc_type</span><span class="p">,</span> <span class="n">inc_filename</span><span class="p">)</span>
+
+        <span class="c1"># There are three search paths to try:</span>
+        <span class="c1">#  1. current directory &quot;source_dir&quot;</span>
+        <span class="c1">#  2. env[var]</span>
+        <span class="c1">#  3. env[&#39;ENV&#39;][var]</span>
+        <span class="n">search_paths</span> <span class="o">=</span> <span class="p">[(</span><span class="n">source_dir</span><span class="p">,)]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">sub_paths</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">try_names</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">search_path</span> <span class="ow">in</span> <span class="n">search_paths</span><span class="p">:</span>
+                <span class="n">paths</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="n">d</span><span class="o">.</span><span class="n">Dir</span><span class="p">(</span><span class="n">inc_subdir</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">search_path</span><span class="p">])</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">FS</span><span class="o">.</span><span class="n">find_file</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">paths</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">i</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">i</span><span class="p">,</span> <span class="n">include</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">include</span></div>
+
+<div class="viewcode-block" id="LaTeX.canonical_text"><a class="viewcode-back" href="../../../../SCons.Scanner/#SCons.Scanner.LaTeX.LaTeX.canonical_text">[docs]</a>    <span class="k">def</span> <span class="nf">canonical_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Standardize an input TeX-file contents.</span>
+
+<span class="sd">        Currently:</span>
+<span class="sd">          * removes comments, unwrapping comment-wrapped lines.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">line_continues_a_comment</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
+            <span class="n">line</span><span class="p">,</span><span class="n">comment</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">comment_re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">line</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">line_continues_a_comment</span><span class="p">:</span>
+                <span class="n">out</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">out</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">line</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="n">line_continues_a_comment</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">comment</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span></div>
+
+<div class="viewcode-block" id="LaTeX.scan"><a class="viewcode-back" href="../../../../SCons.Scanner/#SCons.Scanner.LaTeX.LaTeX.scan">[docs]</a>    <span class="k">def</span> <span class="nf">scan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">subdir</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">):</span>
+        <span class="c1"># Modify the default scan function to allow for the regular</span>
+        <span class="c1"># expression to return a comma separated list of file names</span>
+        <span class="c1"># as can be the case with the bibliography keyword.</span>
+
+        <span class="c1"># Cache the includes list in node so we only scan it once:</span>
+        <span class="c1"># path_dict = dict(list(path))</span>
+        <span class="c1"># add option for whitespace (\s) before the &#39;[&#39;</span>
+        <span class="n">noopt_cre</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\s*\[.*$&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">includes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">includes</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">includes</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">canonical_text</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">get_text_contents</span><span class="p">())</span>
+            <span class="n">includes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cre</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+            <span class="c1"># 1. Split comma-separated lines, e.g.</span>
+            <span class="c1">#      (&#39;bibliography&#39;, &#39;phys,comp&#39;)</span>
+            <span class="c1">#    should become two entries</span>
+            <span class="c1">#      (&#39;bibliography&#39;, &#39;phys&#39;)</span>
+            <span class="c1">#      (&#39;bibliography&#39;, &#39;comp&#39;)</span>
+            <span class="c1"># 2. Remove the options, e.g., such as</span>
+            <span class="c1">#      (&#39;includegraphics[clip,width=0.7\\linewidth]&#39;, &#39;picture.eps&#39;)</span>
+            <span class="c1">#    should become</span>
+            <span class="c1">#      (&#39;includegraphics&#39;, &#39;picture.eps&#39;)</span>
+            <span class="n">split_includes</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">include</span> <span class="ow">in</span> <span class="n">includes</span><span class="p">:</span>
+                <span class="n">inc_type</span> <span class="o">=</span> <span class="n">noopt_cre</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">inc_subdir</span> <span class="o">=</span> <span class="n">subdir</span>
+                <span class="k">if</span> <span class="n">inc_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">two_arg_commands</span><span class="p">:</span>
+                    <span class="n">inc_subdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">subdir</span><span class="p">,</span> <span class="n">include</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="n">inc_list</span> <span class="o">=</span> <span class="n">include</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">inc_list</span> <span class="o">=</span> <span class="n">include</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">inc</span> <span class="ow">in</span> <span class="n">inc_list</span><span class="p">:</span>
+                    <span class="n">split_includes</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">inc_type</span><span class="p">,</span> <span class="n">inc_subdir</span><span class="p">,</span> <span class="n">inc</span><span class="p">))</span>
+
+            <span class="n">includes</span> <span class="o">=</span> <span class="n">split_includes</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">includes</span> <span class="o">=</span> <span class="n">includes</span>
+
+        <span class="k">return</span> <span class="n">includes</span></div>
+
+<div class="viewcode-block" id="LaTeX.scan_recurse"><a class="viewcode-back" href="../../../../SCons.Scanner/#SCons.Scanner.LaTeX.LaTeX.scan_recurse">[docs]</a>    <span class="k">def</span> <span class="nf">scan_recurse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="p">()):</span>
+        <span class="sd">&quot;&quot;&quot; do a recursive scan of the top level target file</span>
+<span class="sd">        This lets us search for included files based on the</span>
+<span class="sd">        directory of the main file just as latex does&quot;&quot;&quot;</span>
+
+        <span class="n">path_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+
+        <span class="n">queue</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">queue</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">node</span><span class="p">)</span> <span class="p">)</span>
+        <span class="n">seen</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># This is a hand-coded DSU (decorate-sort-undecorate, or</span>
+        <span class="c1"># Schwartzian transform) pattern.  The sort key is the raw name</span>
+        <span class="c1"># of the file as specifed on the \include, \input, etc. line.</span>
+        <span class="c1"># TODO: what about the comment in the original Classic scanner:</span>
+        <span class="c1"># &quot;&quot;&quot;which lets</span>
+        <span class="c1"># us keep the sort order constant regardless of whether the file</span>
+        <span class="c1"># is actually found in a Repository or locally.&quot;&quot;&quot;</span>
+        <span class="n">nodes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">source_dir</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">get_dir</span><span class="p">()</span>
+        <span class="c1">#for include in includes:</span>
+        <span class="k">while</span> <span class="n">queue</span><span class="p">:</span>
+
+            <span class="n">include</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="n">inc_type</span><span class="p">,</span> <span class="n">inc_subdir</span><span class="p">,</span> <span class="n">inc_filename</span> <span class="o">=</span> <span class="n">include</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">seen</span><span class="p">[</span><span class="n">inc_filename</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">continue</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="n">seen</span><span class="p">[</span><span class="n">inc_filename</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+            <span class="c1">#</span>
+            <span class="c1"># Handle multiple filenames in include[1]</span>
+            <span class="c1">#</span>
+            <span class="n">n</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_include</span><span class="p">(</span><span class="n">include</span><span class="p">,</span> <span class="n">source_dir</span><span class="p">,</span> <span class="n">path_dict</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># Do not bother with &#39;usepackage&#39; warnings, as they most</span>
+                <span class="c1"># likely refer to system-level files</span>
+                <span class="k">if</span> <span class="n">inc_type</span> <span class="o">!=</span> <span class="s1">&#39;usepackage&#39;</span><span class="p">:</span>
+                    <span class="n">SCons</span><span class="o">.</span><span class="n">Warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Warnings</span><span class="o">.</span><span class="n">DependencyWarning</span><span class="p">,</span>
+                                        <span class="s2">&quot;No dependency generated for file: </span><span class="si">%s</span><span class="s2"> (included from: </span><span class="si">%s</span><span class="s2">) -- file not found&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">node</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">sortkey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sort_key</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+                <span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">sortkey</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+                <span class="c1"># recurse down</span>
+                <span class="n">queue</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">inc_subdir</span><span class="p">)</span> <span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">nodes</span><span class="p">)]</span></div></div>
+
+<span class="c1"># Local Variables:</span>
+<span class="c1"># tab-width:4</span>
+<span class="c1"># indent-tabs-mode:nil</span>
+<span class="c1"># End:</span>
+<span class="c1"># vim: set expandtab tabstop=4 shiftwidth=4:</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, SCons Project
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

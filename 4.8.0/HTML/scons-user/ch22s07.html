@@ -1,0 +1,41 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>22.7. Using a Custom CacheDir Class</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.8.0"><link rel="up" href="ch22.html" title="Chapter 22. Caching Built Files"><link rel="prev" href="ch22s06.html" title="22.6. Minimizing Cache Contention: the --random Option"><link rel="next" href="ch23.html" title="Chapter 23. Alias Targets"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">22.7. Using a Custom CacheDir Class</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch22s06.html">Prev</a> </td><th width="60%" align="center">Chapter 22. Caching Built Files</th><td width="20%" align="right"> <a accesskey="n" href="ch23.html">Next</a></td></tr></table><hr></div><div class="section" title="22.7. Using a Custom CacheDir Class"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id6375"></a>22.7. Using a Custom CacheDir Class</h2></div></div></div><p>
+
+    You can customize the behavior of derived-file caching to
+    add your own features, for example to support compressed and/or
+    encrypted cache files, modify cache file permissions to better
+    support shared caches, gather additional statistics and data, etc.
+
+    </p><p>
+
+    To define custom cache behavior, subclass the
+    <code class="classname">SCons.CacheDir.CacheDir</code> class,
+    specializing those methods you want to change.
+    You can pass this custom class as the <em class="parameter"><code>custom_class</code></em>
+    parameter when calling <a class="link" href="apd.html#f-CacheDir"><code class="function">CacheDir</code></a> for global reach,
+    or when calling <a class="link" href="apd.html#f-CacheDir"><code class="function">env.CacheDir</code></a> for a specific environment.
+    You can also set the <span>construction variable</span>
+    <a class="link" href="apa.html#cv-CACHEDIR_CLASS"><code class="envar">$CACHEDIR_CLASS</code></a> to the custom class - this needs to happen
+    before configuring the cache in that environment.
+    <span class="application">SCons</span> will internally invoke and use your custom class when performing
+    cache operations.
+    The below example shows a simple use case of overriding the
+    <code class="function">copy_from_cache</code>
+    method to record the total number of bytes pulled from the cache.
+
+    </p><pre class="programlisting">
+import os
+import SCons.CacheDir
+
+class CustomCacheDir(SCons.CacheDir.CacheDir):
+    total_retrieved = 0
+
+    @classmethod
+    def copy_from_cache(cls, env, src, dst):
+        # record total bytes pulled from cache
+        cls.total_retrieved += os.stat(src).st_size
+        return super().copy_from_cache(env, src, dst)
+
+env = Environment()
+env.CacheDir('scons-cache', custom_class=CustomCacheDir)
+# ...
+      </pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch22s06.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch22.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch23.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">22.6. Minimizing Cache Contention:  the <code class="option">--random</code> Option </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 23. Alias Targets</td></tr></table></div></body></html>

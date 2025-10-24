@@ -1,0 +1,262 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<HTML
+><HEAD
+><TITLE
+>Removing additional files during clean: the Clean Function</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="HOME"
+TITLE="SCons User Guide 0.97"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Preventing Removal of Targets"
+HREF="c1971.html"><LINK
+REL="PREVIOUS"
+TITLE="Preventing target removal during clean: the NoClean Function"
+HREF="x1996.html"><LINK
+REL="NEXT"
+TITLE="Hierarchical Builds"
+HREF="c2032.html"></HEAD
+><BODY
+CLASS="SECTION"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 0.97</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x1996.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Preventing Removal of Targets</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="c2032.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECTION"
+><H1
+CLASS="SECTION"
+><A
+NAME="AEN2010"
+>Removing additional files during clean: the <TT
+CLASS="FUNCTION"
+>Clean</TT
+> Function</A
+></H1
+><P
+>&#13;    There may be additional files that you want removed
+    when the <TT
+CLASS="LITERAL"
+>-c</TT
+> option is used,
+    but which <TT
+CLASS="APPLICATION"
+>SCons</TT
+> doesn't know about
+    because they're not normal target files.
+    For example, perhaps a command you invoke
+    creates a log file as
+    part of building the target file you want.
+    You would like the log file cleaned,
+    but you don't want to have to teach
+    SCons that the command
+    "builds" two files.
+
+    </P
+><P
+>&#13;    You can use the <TT
+CLASS="FUNCTION"
+>Clean</TT
+> function to arrange for additional files
+    to be removed when the <TT
+CLASS="LITERAL"
+>-c</TT
+> option is used.
+    Notice, however, that the <TT
+CLASS="FUNCTION"
+>Clean</TT
+> function takes two arguments,
+    and the <I
+CLASS="EMPHASIS"
+>second</I
+> argument
+    is the name of the additional file you want cleaned
+    (<TT
+CLASS="FILENAME"
+>foo.log</TT
+> in this example):
+
+    </P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>        t = Command('foo.out', 'foo.in', 'build -o $TARGET $SOURCE')
+        Clean(t, 'foo.log')
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>&#13;    The first argument is the target with which you want
+    the cleaning of this additional file associated.
+    In the above example,
+    we've used the return value from the
+    <TT
+CLASS="FUNCTION"
+>Command</TT
+> function,
+    which represents the
+    <TT
+CLASS="FILENAME"
+>foo.out</TT
+>
+    target.
+    Now whenever the
+    <TT
+CLASS="FILENAME"
+>foo.out</TT
+> target is cleaned
+    by the <TT
+CLASS="LITERAL"
+>-c</TT
+> option,
+    the <TT
+CLASS="FILENAME"
+>foo.log</TT
+> file
+    will be removed as well:
+
+    </P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>        % <KBD
+CLASS="USERINPUT"
+>scons -Q</KBD
+>
+        build -o foo.out foo.in
+        % <KBD
+CLASS="USERINPUT"
+>scons -Q -c</KBD
+>
+        Removed foo.out
+        Removed foo.log
+    </PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x1996.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="c2032.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Preventing target removal during clean: the <TT
+CLASS="FUNCTION"
+>NoClean</TT
+> Function</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c1971.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Hierarchical Builds</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

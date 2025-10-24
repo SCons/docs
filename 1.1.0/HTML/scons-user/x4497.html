@@ -1,0 +1,297 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Handling Nested Lists:  the Flatten Function</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 1.1.0"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Miscellaneous Functionality"
+HREF="c4404.html"><LINK
+REL="PREVIOUS"
+TITLE="Searching for Files:  the FindFile Function"
+HREF="x4468.html"><LINK
+REL="NEXT"
+TITLE="Finding the Invocation Directory:  the GetLaunchDir Function"
+HREF="x4524.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 1.1.0</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x4468.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 28. Miscellaneous Functionality</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x4524.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN4497"
+>28.5. Handling Nested Lists:  the <CODE
+CLASS="function"
+>Flatten</CODE
+> Function</A
+></H1
+><P
+>&#13;
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> supports a <CODE
+CLASS="function"
+>Flatten</CODE
+> function
+    which takes an input Python sequence
+    (list or tuple)
+    and returns a flattened list
+    containing just the individual elements of
+    the sequence.
+    This can be handy when trying to examine
+    a list composed of the lists
+    returned by calls to various Builders.
+    For example, you might collect
+    object files built in different ways
+    into one call to the <CODE
+CLASS="function"
+>Program</CODE
+> Builder
+    by just enclosing them in a list, as follows:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;      objects = [
+          Object('prog1.c'),
+          Object('prog2.c', CCFLAGS='-DFOO'),
+      ]
+      Program(objects)
+    </PRE
+><P
+>&#13;
+    Because the Builder calls in <SPAN
+CLASS="application"
+>SCons</SPAN
+>
+    flatten their input lists,
+    this works just fine to build the program:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      cc -o prog1.o -c prog1.c
+      cc -o prog2.o -c -DFOO prog2.c
+      cc -o prog1 prog1.o prog2.o
+    </PRE
+><P
+>&#13;
+    But if you were debugging your build
+    and wanted to print the absolute path
+    of each object file in the
+    <CODE
+CLASS="varname"
+>objects</CODE
+> list,
+    you might try the following simple approach,
+    trying to print each Node's
+    <TT
+CLASS="literal"
+>abspath</TT
+>
+    attribute:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;      objects = [
+          Object('prog1.c'),
+          Object('prog2.c', CCFLAGS='-DFOO'),
+      ]
+      Program(objects)
+
+      for object_file in objects:
+          print object_file.abspath
+    </PRE
+><P
+>&#13;
+    This does not work as expected
+    because each call to <CODE
+CLASS="function"
+>str</CODE
+>
+    is operating an embedded list returned by
+    each <CODE
+CLASS="function"
+>Object</CODE
+> call,
+    not on the underlying Nodes within those lists:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      AttributeError: NodeList instance has no attribute 'abspath':
+        File "/home/my/project/SConstruct", line 8:
+          print object_file.abspath
+    </PRE
+><P
+>&#13;
+    The solution is to use the <CODE
+CLASS="function"
+>Flatten</CODE
+> function
+    so that you can pass each Node to
+    the <CODE
+CLASS="function"
+>str</CODE
+> separately:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;      objects = [
+          Object('prog1.c'),
+          Object('prog2.c', CCFLAGS='-DFOO'),
+      ]
+      Program(objects)
+
+      for object_file in Flatten(objects):
+          print object_file.abspath
+    </PRE
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      /home/me/project/prog1.o
+      /home/me/project/prog2.o
+      cc -o prog1.o -c prog1.c
+      cc -o prog2.o -c -DFOO prog2.c
+      cc -o prog1 prog1.o prog2.o
+    </PRE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x4468.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x4524.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Searching for Files:  the <CODE
+CLASS="function"
+>FindFile</CODE
+> Function</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c4404.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Finding the Invocation Directory:  the <CODE
+CLASS="function"
+>GetLaunchDir</CODE
+> Function</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

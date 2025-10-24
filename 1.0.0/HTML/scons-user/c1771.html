@@ -1,0 +1,271 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Finding Installed Library Information:  the ParseConfig Function</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 1.0.0"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Separating Compile Arguments into their Variables:  the ParseFlags Function"
+HREF="c1734.html"><LINK
+REL="NEXT"
+TITLE="Controlling Build Output"
+HREF="c1799.html"></HEAD
+><BODY
+CLASS="chapter"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 1.0.0</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="c1734.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="c1799.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="chapter"
+><H1
+><A
+NAME="chap-parseconfig"
+></A
+>Chapter 10. Finding Installed Library Information:  the <CODE
+CLASS="function"
+>ParseConfig</CODE
+> Function</H1
+><P
+>&#13;
+ Configuring the right options to build programs to work with
+ libraries--especially shared libraries--that are available
+ on POSIX systems can be very complicated.
+ To help this situation,
+ various utilies with names that end in <TT
+CLASS="filename"
+>config</TT
+>
+ return the command-line options for the GNU Compiler Collection (GCC)
+ that are needed to use these libraries;
+ for example, the command-line options
+ to use a library named <TT
+CLASS="filename"
+>lib</TT
+>
+ would be found by calling a utility named <TT
+CLASS="filename"
+>lib-config</TT
+>.
+
+ </P
+><P
+>&#13;
+ A more recent convention is that these options
+ are available from the generic <TT
+CLASS="filename"
+>pkg-config</TT
+> program,
+ which has common framework, error handling, and the like,
+ so that all the package creator has to do is provide the set of strings
+ for his particular package.
+
+ </P
+><P
+>&#13;
+ <SPAN
+CLASS="application"
+>SCons</SPAN
+> construction environments have a <CODE
+CLASS="function"
+>ParseConfig</CODE
+> method
+ that executes a <TT
+CLASS="filename"
+>*config</TT
+> utility
+ (either <TT
+CLASS="filename"
+>pkg-config</TT
+> or a
+ more specific utility)
+ and configures the appropriate construction variables
+ in the environment
+ based on the command-line options
+ returned by the specified command.
+
+ </P
+><PRE
+CLASS="programlisting"
+>&#13;    env = Environment()
+    env['CPPPATH'] = ['/lib/compat']
+    env.ParseConfig("pkg-config x11 --cflags --libs")
+    print env['CPPPATH']
+ </PRE
+><P
+>&#13;
+ <SPAN
+CLASS="application"
+>SCons</SPAN
+> will execute the specified command string,
+ parse the resultant flags,
+ and add the flags to the appropriate environment variables.
+
+ </P
+><PRE
+CLASS="screen"
+>&#13;    % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+    ['/lib/compat', '/usr/X11/include']
+    scons: `.' is up to date.
+ </PRE
+><P
+>&#13;
+ In the example above, <SPAN
+CLASS="application"
+>SCons</SPAN
+> has added the include directory to
+ <CODE
+CLASS="varname"
+>CPPPATH</CODE
+>.
+ (Depending upon what other flags are emitted by the
+ <TT
+CLASS="filename"
+>pkg-config</TT
+> command,
+ other variables may have been extended as well.)
+
+ </P
+><P
+>&#13;
+ Note that the options are merged with existing options using
+ the <CODE
+CLASS="function"
+>MergeFlags</CODE
+> method,
+ so that each option only occurs once in the construction variable:
+
+ </P
+><PRE
+CLASS="programlisting"
+>&#13;    env = Environment()
+    env.ParseConfig("pkg-config x11 --cflags --libs")
+    env.ParseConfig("pkg-config x11 --cflags --libs")
+    print env['CPPPATH']
+ </PRE
+><PRE
+CLASS="screen"
+>&#13;    % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+    ['/usr/X11/include']
+    scons: `.' is up to date.
+ </PRE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="c1734.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="c1799.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Separating Compile Arguments into their Variables:  the <CODE
+CLASS="function"
+>ParseFlags</CODE
+> Function</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Controlling Build Output</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

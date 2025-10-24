@@ -1,0 +1,878 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>10.2. Command-Line variable=value Build Variables</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 2.4.1"><link rel="up" href="ch10.html" title="Chapter 10. Controlling a Build From the Command Line"><link rel="prev" href="ch10.html" title="Chapter 10. Controlling a Build From the Command Line"><link rel="next" href="ch10s03.html" title="10.3. Command-Line Targets"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">10.2. Command-Line <code class="varname">variable</code>=<code class="varname">value</code> Build Variables</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch10.html">Prev</a> </td><th width="60%" align="center">Chapter 10. Controlling a Build From the Command Line</th><td width="20%" align="right"> <a accesskey="n" href="ch10s03.html">Next</a></td></tr></table><hr></div><div class="section" title="10.2. Command-Line variable=value Build Variables"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="sect-command-line-variables"></a>10.2. Command-Line <code class="varname">variable</code>=<code class="varname">value</code> Build Variables</h2></div></div></div><p>
+
+    You may want to control various aspects
+    of your build by allowing the user
+    to specify <code class="varname">variable</code>=<code class="varname">value</code>
+    values on the command line.
+    For example, suppose you
+    want users to be able to
+    build a debug version of a program
+    by running <span class="application">SCons</span> as follows:
+
+    </p><pre class="screen">
+% <strong class="userinput"><code>scons -Q debug=1</code></strong>
+    </pre><p>
+
+    <span class="application">SCons</span> provides an <code class="varname">ARGUMENTS</code> dictionary
+    that stores all of the
+    <code class="varname">variable</code>=<code class="varname">value</code>
+    assignments from the command line.
+    This allows you to modify
+    aspects of your build in response
+    to specifications on the command line.
+    (Note that unless you want to require
+    that users <span class="emphasis"><em>always</em></span>
+    specify a variable,
+    you probably want to use
+    the Python
+    <code class="literal">ARGUMENTS.get()</code> function,
+    which allows you to specify a default value
+    to be used if there is no specification
+    on the command line.)
+
+    </p><p>
+
+    The following code sets the <a class="link" href="apa.html#cv-CCFLAGS"><code class="envar">$CCFLAGS</code></a> construction
+    variable in response to the <code class="varname">debug</code>
+    flag being set in the <code class="varname">ARGUMENTS</code> dictionary:
+
+    </p><pre class="programlisting">
+env = Environment()
+debug = ARGUMENTS.get('debug', 0)
+if int(debug):
+    env.Append(CCFLAGS = '-g')
+env.Program('prog.c')
+       </pre><p>
+
+    This results in the <code class="varname">-g</code>
+    compiler option being used when
+    <code class="literal">debug=1</code>
+    is used on the command line:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q debug=0</code></strong>
+cc -o prog.o -c prog.c
+cc -o prog prog.o
+% <strong class="userinput"><code>scons -Q debug=0</code></strong>
+scons: `.' is up to date.
+% <strong class="userinput"><code>scons -Q debug=1</code></strong>
+cc -o prog.o -c -g prog.c
+cc -o prog prog.o
+% <strong class="userinput"><code>scons -Q debug=1</code></strong>
+scons: `.' is up to date.
+</pre><p>
+
+    Notice that <span class="application">SCons</span> keeps track of
+    the last values used to build the object files,
+    and as a result correctly rebuilds
+    the object and executable files
+    only when the value of the <code class="literal">debug</code>
+    argument has changed.
+
+    </p><p>
+
+    The <code class="varname">ARGUMENTS</code> dictionary has two minor drawbacks.
+    First, because it is a dictionary,
+    it can only store one value for each specified keyword,
+    and thus only "remembers" the last setting
+    for each keyword on the command line.
+    This makes the <code class="varname">ARGUMENTS</code> dictionary
+    inappropriate if users should be able to
+    specify multiple values
+    on the command line for a given keyword.
+    Second, it does not preserve
+    the order in which the variable settings
+    were specified,
+    which is a problem if
+    you want the configuration to
+    behave differently in response
+    to the order in which the build
+    variable settings were specified on the command line.
+
+    </p><p>
+
+    To accomodate these requirements,
+    <span class="application">SCons</span> provides an <code class="varname">ARGLIST</code> variable
+    that gives you direct access to
+    <code class="varname">variable</code>=<code class="varname">value</code>
+    settings on the command line,
+    in the exact order they were specified,
+    and without removing any duplicate settings.
+    Each element in the <code class="varname">ARGLIST</code> variable
+    is itself a two-element list
+    containing the keyword and the value
+    of the setting,
+    and you must loop through,
+    or otherwise select from,
+    the elements of <code class="varname">ARGLIST</code> to
+    process the specific settings you want
+    in whatever way is appropriate for your configuration.
+    For example,
+    the following code to let the user
+    add to the <code class="varname">CPPDEFINES</code> construction variable
+    by specifying multiple
+    <code class="varname">define=</code>
+    settings on the command line:
+
+    </p><pre class="programlisting">
+cppdefines = []
+for key, value in ARGLIST:
+    if key == 'define':
+        cppdefines.append(value)
+env = Environment(CPPDEFINES = cppdefines)
+env.Object('prog.c')
+       </pre><p>
+
+    Yields the following output:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q define=FOO</code></strong>
+cc -o prog.o -c -DFOO prog.c
+% <strong class="userinput"><code>scons -Q define=FOO define=BAR</code></strong>
+cc -o prog.o -c -DFOO -DBAR prog.c
+</pre><p>
+
+    Note that the <code class="varname">ARGLIST</code> and <code class="varname">ARGUMENTS</code>
+    variables do not interfere with each other,
+    but merely provide slightly different views
+    into how the user specified
+    <code class="varname">variable</code>=<code class="varname">value</code>
+    settings on the command line.
+    You can use both variables in the same
+    <span class="application">SCons</span> configuration.
+    In general, the <code class="varname">ARGUMENTS</code> dictionary
+    is more convenient to use,
+    (since you can just fetch variable
+    settings through a dictionary access),
+    and the <code class="varname">ARGLIST</code> list
+    is more flexible
+    (since you can examine the
+    specific order in which
+    the user's command-line variabe settings).
+
+    </p><div class="section" title="10.2.1. Controlling Command-Line Build Variables"><div class="titlepage"><div><div><h3 class="title"><a name="idp1371547180"></a>10.2.1. Controlling Command-Line Build Variables</h3></div></div></div><p>
+
+      Being able to use a command-line build variable like
+      <code class="literal">debug=1</code> is handy,
+      but it can be a chore to write specific Python code
+      to recognize each such variable,
+      check for errors and provide appropriate messages,
+      and apply the values to a construction variable.
+      To help with this,
+      <span class="application">SCons</span> supports a class to
+      define such build variables easily,
+      and a mechanism to apply the
+      build variables to a construction environment.
+      This allows you to control how the build variables affect
+      construction environments.
+
+      </p><p>
+
+      For example, suppose that you want users to set
+      a <code class="varname">RELEASE</code> construction variable on the
+      command line whenever the time comes to build
+      a program for release,
+      and that the value of this variable
+      should be added to the command line
+      with the appropriate <code class="literal">-D</code> option
+      (or other command line option)
+      to pass the value to the C compiler.
+      Here's how you might do that by setting
+      the appropriate value in a dictionary for the
+      <a class="link" href="apa.html#cv-CPPDEFINES"><code class="envar">$CPPDEFINES</code></a> construction variable:
+
+      </p><pre class="programlisting">
+vars = Variables(None, ARGUMENTS)
+vars.Add('RELEASE', 'Set to 1 to build for release', 0)
+env = Environment(variables = vars,
+                  CPPDEFINES={'RELEASE_BUILD' : '${RELEASE}'})
+env.Program(['foo.c', 'bar.c'])
+        </pre><p>
+
+      This <code class="filename">SConstruct</code> file first creates a <code class="function">Variables</code> object
+      which uses the values from the command-line options dictionary <code class="varname">ARGUMENTS</code>
+      (the <code class="literal">vars = Variables(None, ARGUMENTS)</code> call).
+      It then uses the object's <code class="function">Add</code>
+      method to indicate that the <code class="varname">RELEASE</code>
+      variable can be set on the command line,
+      and that its default value will be <code class="literal">0</code>
+      (the third argument to the <code class="function">Add</code> method).
+      The second argument is a line of help text;
+      we'll learn how to use it in the next section.
+
+      </p><p>
+
+      We then pass the created <code class="function">Variables</code>
+      object as a <code class="varname">variables</code> keyword argument
+      to the <code class="function">Environment</code> call
+      used to create the construction environment.
+      This then allows a user to set the
+      <code class="varname">RELEASE</code> build variable on the command line
+      and have the variable show up in
+      the command line used to build each object from
+      a C source file:
+
+      </p><pre class="screen">% <strong class="userinput"><code>scons -Q RELEASE=1</code></strong>
+cc -o bar.o -c -DRELEASE_BUILD=1 bar.c
+cc -o foo.o -c -DRELEASE_BUILD=1 foo.c
+cc -o foo foo.o bar.o
+</pre><p>
+
+      NOTE:  Before <span class="application">SCons</span> release 0.98.1, these build variables
+      were known as "command-line build options."
+      The class was actually named the <code class="function">Options</code> class,
+      and in the sections below,
+      the various functions were named
+      <code class="function">BoolOption</code>, <code class="function">EnumOption</code>, <code class="function">ListOption</code>,
+      <code class="function">PathOption</code>, <code class="function">PackageOption</code> and <code class="function">AddOptions</code>.
+      These older names still work,
+      and you may encounter them in older
+      <code class="filename">SConscript</code> files,
+      but they have been officially deprecated
+      as of <span class="application">SCons</span> version 2.0.
+
+      </p></div><div class="section" title="10.2.2. Providing Help for Command-Line Build Variables"><div class="titlepage"><div><div><h3 class="title"><a name="idp1371557884"></a>10.2.2. Providing Help for Command-Line Build Variables</h3></div></div></div><p>
+
+      To make command-line build variables most useful,
+      you ideally want to provide
+      some help text that will describe
+      the available variables
+      when the user runs <code class="literal">scons -h</code>.
+      You could write this text by hand,
+      but <span class="application">SCons</span> provides an easier way.
+      <code class="function">Variables</code> objects support a
+      <code class="function">GenerateHelpText</code> method
+      that will, as its name suggests,
+      generate text that describes
+      the various variables that
+      have been added to it.
+      You then pass the output from this method to
+      the <code class="function">Help</code> function:
+
+      </p><pre class="programlisting">
+vars = Variables(None, ARGUMENTS)
+vars.Add('RELEASE', 'Set to 1 to build for release', 0)
+env = Environment(variables = vars)
+Help(vars.GenerateHelpText(env))
+        </pre><p>
+
+      <span class="application">SCons</span> will now display some useful text
+      when the <code class="literal">-h</code> option is used:
+
+      </p><pre class="screen">% <strong class="userinput"><code>scons -Q -h</code></strong>
+
+RELEASE: Set to 1 to build for release
+    default: 0
+    actual: 0
+
+Use scons -H for help about command-line options.
+</pre><p>
+
+      Notice that the help output shows the default value,
+      and the current actual value of the build variable.
+
+      </p></div><div class="section" title="10.2.3. Reading Build Variables From a File"><div class="titlepage"><div><div><h3 class="title"><a name="idp1371562324"></a>10.2.3. Reading Build Variables From a File</h3></div></div></div><p>
+
+      Giving the user a way to specify the
+      value of a build variable on the command line
+      is useful,
+      but can still be tedious
+      if users must specify the variable
+      every time they run <span class="application">SCons</span>.
+      We can let users provide customized build variable settings
+      in a local file by providing a
+      file name when we create the
+      <code class="function">Variables</code> object:
+
+      </p><pre class="programlisting">
+vars = Variables('custom.py')
+vars.Add('RELEASE', 'Set to 1 to build for release', 0)
+env = Environment(variables = vars,
+                  CPPDEFINES={'RELEASE_BUILD' : '${RELEASE}'})
+env.Program(['foo.c', 'bar.c'])
+Help(vars.GenerateHelpText(env))
+        </pre><p>
+
+      This then allows the user to control the <code class="varname">RELEASE</code>
+      variable by setting it in the <code class="filename">custom.py</code> file:
+
+      </p><pre class="programlisting">
+RELEASE = 1
+        
+</pre><p>
+
+      Note that this file is actually executed
+      like a Python script.
+      Now when we run <span class="application">SCons</span>:
+
+      </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o bar.o -c -DRELEASE_BUILD=1 bar.c
+cc -o foo.o -c -DRELEASE_BUILD=1 foo.c
+cc -o foo foo.o bar.o
+</pre><p>
+
+      And if we change the contents of <code class="filename">custom.py</code> to:
+
+      </p><pre class="programlisting">
+RELEASE = 0
+        </pre><p>
+
+      The object files are rebuilt appropriately
+      with the new variable:
+
+      </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o bar.o -c -DRELEASE_BUILD=0 bar.c
+cc -o foo.o -c -DRELEASE_BUILD=0 foo.c
+cc -o foo foo.o bar.o
+</pre><p>
+
+      Finally, you can combine both methods with:
+
+      </p><pre class="screen">
+vars = Variables('custom.py', ARGUMENTS)
+      </pre><p>
+      
+      where values in the option file <code class="filename">custom.py</code> get overwritten
+      by the ones specified on the command line.
+
+      </p></div><div class="section" title="10.2.4. Pre-Defined Build Variable Functions"><div class="titlepage"><div><div><h3 class="title"><a name="idp1371569364"></a>10.2.4. Pre-Defined Build Variable Functions</h3></div></div></div><p>
+
+      <span class="application">SCons</span> provides a number of functions
+      that provide ready-made behaviors
+      for various types of command-line build variables.
+
+      </p><div class="section" title="10.2.4.1. True/False Values: the BoolVariable Build Variable Function"><div class="titlepage"><div><div><h4 class="title"><a name="idp1371570260"></a>10.2.4.1. True/False Values:  the <code class="function">BoolVariable</code> Build Variable Function</h4></div></div></div><p>
+
+        It's often handy to be able to specify a
+        variable that controls a simple Boolean variable
+        with a <code class="literal">true</code> or <code class="literal">false</code> value.
+        It would be even more handy to accomodate
+        users who have different preferences for how to represent
+        <code class="literal">true</code> or <code class="literal">false</code> values.
+        The <code class="function">BoolVariable</code> function
+        makes it easy to accomodate these
+        common representations of
+        <code class="literal">true</code> or <code class="literal">false</code>.
+
+        </p><p>
+
+        The <code class="function">BoolVariable</code> function takes three arguments:
+        the name of the build variable,
+        the default value of the build variable,
+        and the help string for the variable.
+        It then returns appropriate information for
+        passing to the <code class="function">Add</code> method of a <code class="function">Variables</code> object, like so:
+
+        </p><pre class="programlisting">
+vars = Variables('custom.py')
+vars.Add(BoolVariable('RELEASE', 'Set to build for release', 0))
+env = Environment(variables = vars,
+                  CPPDEFINES={'RELEASE_BUILD' : '${RELEASE}'})
+env.Program('foo.c')
+          </pre><p>
+
+        With this build variable,
+        the <code class="varname">RELEASE</code> variable can now be enabled by
+        setting it to the value <code class="literal">yes</code>
+        or <code class="literal">t</code>:
+
+        </p><pre class="screen">% <strong class="userinput"><code>scons -Q RELEASE=yes foo.o</code></strong>
+cc -o foo.o -c -DRELEASE_BUILD=True foo.c
+</pre><pre class="screen">% <strong class="userinput"><code>scons -Q RELEASE=t foo.o</code></strong>
+cc -o foo.o -c -DRELEASE_BUILD=True foo.c
+</pre><p>
+
+        Other values that equate to <code class="literal">true</code> include
+        <code class="literal">y</code>,
+        <code class="literal">1</code>,
+        <code class="literal">on</code>
+        and
+        <code class="literal">all</code>.
+
+        </p><p>
+
+        Conversely, <code class="varname">RELEASE</code> may now be given a <code class="literal">false</code>
+        value by setting it to
+        <code class="literal">no</code>
+        or
+        <code class="literal">f</code>:
+
+        </p><pre class="screen">% <strong class="userinput"><code>scons -Q RELEASE=no foo.o</code></strong>
+cc -o foo.o -c -DRELEASE_BUILD=False foo.c
+</pre><pre class="screen">% <strong class="userinput"><code>scons -Q RELEASE=f foo.o</code></strong>
+cc -o foo.o -c -DRELEASE_BUILD=False foo.c
+</pre><p>
+
+        Other values that equate to <code class="literal">false</code> include
+        <code class="literal">n</code>,
+        <code class="literal">0</code>,
+        <code class="literal">off</code>
+        and
+        <code class="literal">none</code>.
+
+        </p><p>
+
+        Lastly, if a user tries to specify
+        any other value,
+        <span class="application">SCons</span> supplies an appropriate error message:
+
+        </p><pre class="screen">% <strong class="userinput"><code>scons -Q RELEASE=bad_value foo.o</code></strong>
+
+scons: *** Error converting option: RELEASE
+Invalid value for boolean option: bad_value
+File "/home/my/project/SConstruct", line 4, in &lt;module&gt;
+</pre></div><div class="section" title="10.2.4.2. Single Value From a List: the EnumVariable Build Variable Function"><div class="titlepage"><div><div><h4 class="title"><a name="idp1371584052"></a>10.2.4.2. Single Value From a List:  the <code class="function">EnumVariable</code> Build Variable Function</h4></div></div></div><p>
+
+        Suppose that we want a user to be able to
+        set a <code class="varname">COLOR</code> variable
+        that selects a background color to be
+        displayed by an application,
+        but that we want to restrict the
+        choices to a specific set of allowed colors.
+        This can be set up quite easily
+        using the <code class="function">EnumVariable</code>,
+        which takes a list of <code class="varname">allowed_values</code>
+        in addition to the variable name,
+        default value,
+        and help text arguments:
+
+        </p><pre class="programlisting">
+vars = Variables('custom.py')
+vars.Add(EnumVariable('COLOR', 'Set background color', 'red',
+                    allowed_values=('red', 'green', 'blue')))
+env = Environment(variables = vars,
+                  CPPDEFINES={'COLOR' : '"${COLOR}"'})
+env.Program('foo.c')
+          </pre><p>
+
+        The user can now explicity set the <code class="varname">COLOR</code> build variable
+        to any of the specified allowed values:
+
+        </p><pre class="screen">% <strong class="userinput"><code>scons -Q COLOR=red foo.o</code></strong>
+cc -o foo.o -c -DCOLOR="red" foo.c
+% <strong class="userinput"><code>scons -Q COLOR=blue foo.o</code></strong>
+cc -o foo.o -c -DCOLOR="blue" foo.c
+% <strong class="userinput"><code>scons -Q COLOR=green foo.o</code></strong>
+cc -o foo.o -c -DCOLOR="green" foo.c
+</pre><p>
+
+        But, almost more importantly,
+        an attempt to set <code class="varname">COLOR</code>
+        to a value that's not in the list
+        generates an error message:
+
+        </p><pre class="screen">% <strong class="userinput"><code>scons -Q COLOR=magenta foo.o</code></strong>
+
+scons: *** Invalid value for option COLOR: magenta.  Valid values are: ('red', 'green', 'blue')
+File "/home/my/project/SConstruct", line 5, in &lt;module&gt;
+</pre><p>
+
+        The <code class="function">EnumVariable</code> function also supports a way
+        to map alternate names to allowed values.
+        Suppose, for example,
+        that we want to allow the user
+        to use the word <code class="literal">navy</code> as a synonym for
+        <code class="literal">blue</code>.
+        We do this by adding a <code class="varname">map</code> dictionary
+        that will map its key values
+        to the desired legal value:
+
+        </p><pre class="programlisting">
+vars = Variables('custom.py')
+vars.Add(EnumVariable('COLOR', 'Set background color', 'red',
+                    allowed_values=('red', 'green', 'blue'),
+                    map={'navy':'blue'}))
+env = Environment(variables = vars,
+                  CPPDEFINES={'COLOR' : '"${COLOR}"'})
+env.Program('foo.c')
+          </pre><p>
+
+        As desired, the user can then use
+        <code class="literal">navy</code> on the command line,
+        and <span class="application">SCons</span> will translate it into <code class="literal">blue</code>
+        when it comes time to use the <code class="varname">COLOR</code>
+        variable to build a target:
+
+        </p><pre class="screen">% <strong class="userinput"><code>scons -Q COLOR=navy foo.o</code></strong>
+cc -o foo.o -c -DCOLOR="blue" foo.c
+</pre><p>
+
+        By default, when using the <code class="function">EnumVariable</code> function,
+        arguments that differ
+        from the legal values
+        only in case
+        are treated as illegal values:
+
+        </p><pre class="screen">% <strong class="userinput"><code>scons -Q COLOR=Red foo.o</code></strong>
+
+scons: *** Invalid value for option COLOR: Red.  Valid values are: ('red', 'green', 'blue')
+File "/home/my/project/SConstruct", line 5, in &lt;module&gt;
+% <strong class="userinput"><code>scons -Q COLOR=BLUE foo.o</code></strong>
+
+scons: *** Invalid value for option COLOR: BLUE.  Valid values are: ('red', 'green', 'blue')
+File "/home/my/project/SConstruct", line 5, in &lt;module&gt;
+% <strong class="userinput"><code>scons -Q COLOR=nAvY foo.o</code></strong>
+
+scons: *** Invalid value for option COLOR: nAvY.  Valid values are: ('red', 'green', 'blue')
+File "/home/my/project/SConstruct", line 5, in &lt;module&gt;
+</pre><p>
+
+        The <code class="function">EnumVariable</code> function can take an additional
+        <code class="varname">ignorecase</code> keyword argument that,
+        when set to <code class="literal">1</code>,
+        tells <span class="application">SCons</span> to allow case differences
+        when the values are specified:
+
+        </p><pre class="programlisting">
+vars = Variables('custom.py')
+vars.Add(EnumVariable('COLOR', 'Set background color', 'red',
+                    allowed_values=('red', 'green', 'blue'),
+                    map={'navy':'blue'},
+                    ignorecase=1))
+env = Environment(variables = vars,
+                  CPPDEFINES={'COLOR' : '"${COLOR}"'})
+env.Program('foo.c')
+          </pre><p>
+
+        Which yields the output:
+
+        </p><pre class="screen">% <strong class="userinput"><code>scons -Q COLOR=Red foo.o</code></strong>
+cc -o foo.o -c -DCOLOR="Red" foo.c
+% <strong class="userinput"><code>scons -Q COLOR=BLUE foo.o</code></strong>
+cc -o foo.o -c -DCOLOR="BLUE" foo.c
+% <strong class="userinput"><code>scons -Q COLOR=nAvY foo.o</code></strong>
+cc -o foo.o -c -DCOLOR="blue" foo.c
+% <strong class="userinput"><code>scons -Q COLOR=green foo.o</code></strong>
+cc -o foo.o -c -DCOLOR="green" foo.c
+</pre><p>
+
+        Notice that an <code class="varname">ignorecase</code> value of <code class="literal">1</code>
+        preserves the case-spelling that the user supplied.
+        If you want <span class="application">SCons</span> to translate the names
+        into lower-case,
+        regardless of the case used by the user,
+        specify an <code class="varname">ignorecase</code> value of <code class="literal">2</code>:
+
+        </p><pre class="programlisting">
+vars = Variables('custom.py')
+vars.Add(EnumVariable('COLOR', 'Set background color', 'red',
+                    allowed_values=('red', 'green', 'blue'),
+                    map={'navy':'blue'},
+                    ignorecase=2))
+env = Environment(variables = vars,
+                  CPPDEFINES={'COLOR' : '"${COLOR}"'})
+env.Program('foo.c')
+          </pre><p>
+
+        Now <span class="application">SCons</span> will use values of
+        <code class="literal">red</code>,
+        <code class="literal">green</code> or
+        <code class="literal">blue</code>
+        regardless of how the user spells
+        those values on the command line:
+
+        </p><pre class="screen">% <strong class="userinput"><code>scons -Q COLOR=Red foo.o</code></strong>
+cc -o foo.o -c -DCOLOR="red" foo.c
+% <strong class="userinput"><code>scons -Q COLOR=nAvY foo.o</code></strong>
+cc -o foo.o -c -DCOLOR="blue" foo.c
+% <strong class="userinput"><code>scons -Q COLOR=GREEN foo.o</code></strong>
+cc -o foo.o -c -DCOLOR="green" foo.c
+</pre></div><div class="section" title="10.2.4.3. Multiple Values From a List: the ListVariable Build Variable Function"><div class="titlepage"><div><div><h4 class="title"><a name="idp1371604980"></a>10.2.4.3. Multiple Values From a List:  the <code class="function">ListVariable</code> Build Variable Function</h4></div></div></div><p>
+
+        Another way in which you might want to allow users
+        to control a build variable is to
+        specify a list of one or more legal values.
+        <span class="application">SCons</span> supports this through the <code class="function">ListVariable</code> function.
+        If, for example, we want a user to be able to set a
+        <code class="varname">COLORS</code> variable to one or more of the legal list of values:
+
+        </p><pre class="programlisting">
+vars = Variables('custom.py')
+vars.Add(ListVariable('COLORS', 'List of colors', 0,
+                    ['red', 'green', 'blue']))
+env = Environment(variables = vars,
+                  CPPDEFINES={'COLORS' : '"${COLORS}"'})
+env.Program('foo.c')
+          </pre><p>
+
+        A user can now specify a comma-separated list
+        of legal values,
+        which will get translated into a space-separated
+        list for passing to the any build commands:
+
+        </p><pre class="screen">% <strong class="userinput"><code>scons -Q COLORS=red,blue foo.o</code></strong>
+cc -o foo.o -c -DCOLORS="red blue" foo.c
+% <strong class="userinput"><code>scons -Q COLORS=blue,green,red foo.o</code></strong>
+cc -o foo.o -c -DCOLORS="blue green red" foo.c
+</pre><p>
+
+        In addition, the <code class="function">ListVariable</code> function
+        allows the user to specify explicit keywords of
+        <code class="literal">all</code> or <code class="literal">none</code>
+        to select all of the legal values,
+        or none of them, respectively:
+
+        </p><pre class="screen">% <strong class="userinput"><code>scons -Q COLORS=all foo.o</code></strong>
+cc -o foo.o -c -DCOLORS="red green blue" foo.c
+% <strong class="userinput"><code>scons -Q COLORS=none foo.o</code></strong>
+cc -o foo.o -c -DCOLORS="" foo.c
+</pre><p>
+
+        And, of course, an illegal value
+        still generates an error message:
+
+        </p><pre class="screen">% <strong class="userinput"><code>scons -Q COLORS=magenta foo.o</code></strong>
+
+scons: *** Error converting option: COLORS
+Invalid value(s) for option: magenta
+File "/home/my/project/SConstruct", line 5, in &lt;module&gt;
+</pre></div><div class="section" title="10.2.4.4. Path Names: the PathVariable Build Variable Function"><div class="titlepage"><div><div><h4 class="title"><a name="idp1371612324"></a>10.2.4.4. Path Names:  the <code class="function">PathVariable</code> Build Variable Function</h4></div></div></div><p>
+
+        <span class="application">SCons</span> supports a <code class="function">PathVariable</code> function
+        to make it easy to create a build variable
+        to control an expected path name.
+        If, for example, you need to
+        define a variable in the preprocessor
+        that controls the location of a
+        configuration file:
+
+        </p><pre class="programlisting">
+vars = Variables('custom.py')
+vars.Add(PathVariable('CONFIG',
+                    'Path to configuration file',
+                    '/etc/my_config'))
+env = Environment(variables = vars,
+                  CPPDEFINES={'CONFIG_FILE' : '"$CONFIG"'})
+env.Program('foo.c')
+          </pre><p>
+
+        This then allows the user to
+        override the <code class="varname">CONFIG</code> build variable
+        on the command line as necessary:
+
+        </p><pre class="screen">% <strong class="userinput"><code>scons -Q foo.o</code></strong>
+cc -o foo.o -c -DCONFIG_FILE="/etc/my_config" foo.c
+% <strong class="userinput"><code>scons -Q CONFIG=/usr/local/etc/other_config foo.o</code></strong>
+scons: `foo.o' is up to date.
+</pre><p>
+
+        By default, <code class="function">PathVariable</code> checks to make sure
+        that the specified path exists and generates an error if it
+        doesn't:
+
+        </p><pre class="screen">% <strong class="userinput"><code>scons -Q CONFIG=/does/not/exist foo.o</code></strong>
+
+scons: *** Path for option CONFIG does not exist: /does/not/exist
+File "/home/my/project/SConstruct", line 6, in &lt;module&gt;
+</pre><p>
+
+        <code class="function">PathVariable</code> provides a number of methods
+        that you can use to change this behavior.
+        If you want to ensure that any specified paths are,
+        in fact, files and not directories,
+        use the <code class="function">PathVariable.PathIsFile</code> method:
+
+        </p><pre class="programlisting">
+vars = Variables('custom.py')
+vars.Add(PathVariable('CONFIG',
+                    'Path to configuration file',
+                    '/etc/my_config',
+                    PathVariable.PathIsFile))
+env = Environment(variables = vars,
+                  CPPDEFINES={'CONFIG_FILE' : '"$CONFIG"'})
+env.Program('foo.c')
+          </pre><p>
+
+        Conversely, to ensure that any specified paths are
+        directories and not files,
+        use the <code class="function">PathVariable.PathIsDir</code> method:
+
+        </p><pre class="programlisting">
+vars = Variables('custom.py')
+vars.Add(PathVariable('DBDIR',
+                    'Path to database directory',
+                    '/var/my_dbdir',
+                    PathVariable.PathIsDir))
+env = Environment(variables = vars,
+                  CPPDEFINES={'DBDIR' : '"$DBDIR"'})
+env.Program('foo.c')
+          </pre><p>
+
+        If you want to make sure that any specified paths
+        are directories,
+        and you would like the directory created
+        if it doesn't already exist,
+        use the <code class="function">PathVariable.PathIsDirCreate</code> method:
+
+        </p><pre class="programlisting">
+vars = Variables('custom.py')
+vars.Add(PathVariable('DBDIR',
+                    'Path to database directory',
+                    '/var/my_dbdir',
+                    PathVariable.PathIsDirCreate))
+env = Environment(variables = vars,
+                  CPPDEFINES={'DBDIR' : '"$DBDIR"'})
+env.Program('foo.c')
+          </pre><p>
+
+        Lastly, if you don't care whether the path exists,
+        is a file, or a directory,
+        use the <code class="function">PathVariable.PathAccept</code> method
+        to accept any path that the user supplies:
+
+        </p><pre class="programlisting">
+vars = Variables('custom.py')
+vars.Add(PathVariable('OUTPUT',
+                    'Path to output file or directory',
+                    None,
+                    PathVariable.PathAccept))
+env = Environment(variables = vars,
+                  CPPDEFINES={'OUTPUT' : '"$OUTPUT"'})
+env.Program('foo.c')
+          </pre></div><div class="section" title="10.2.4.5. Enabled/Disabled Path Names: the PackageVariable Build Variable Function"><div class="titlepage"><div><div><h4 class="title"><a name="idp1371622396"></a>10.2.4.5. Enabled/Disabled Path Names: the <code class="function">PackageVariable</code> Build Variable Function</h4></div></div></div><p>
+
+        Sometimes you want to give users
+        even more control over a path name variable,
+        allowing them to explicitly enable or
+        disable the path name
+        by using <code class="literal">yes</code> or <code class="literal">no</code> keywords,
+        in addition to allow them
+        to supply an explicit path name.
+        <span class="application">SCons</span> supports the <code class="function">PackageVariable</code>
+        function to support this:
+
+        </p><pre class="programlisting">
+vars = Variables('custom.py')
+vars.Add(PackageVariable('PACKAGE',
+                       'Location package',
+                       '/opt/location'))
+env = Environment(variables = vars,
+                  CPPDEFINES={'PACKAGE' : '"$PACKAGE"'})
+env.Program('foo.c')
+          </pre><p>
+
+        When the <code class="filename">SConscript</code> file uses the <code class="function">PackageVariable</code> funciton,
+        user can now still use the default
+        or supply an overriding path name,
+        but can now explicitly set the
+        specified variable to a value
+        that indicates the package should be enabled
+        (in which case the default should be used)
+        or disabled:
+
+        </p><pre class="screen">% <strong class="userinput"><code>scons -Q foo.o</code></strong>
+cc -o foo.o -c -DPACKAGE="/opt/location" foo.c
+% <strong class="userinput"><code>scons -Q PACKAGE=/usr/local/location foo.o</code></strong>
+cc -o foo.o -c -DPACKAGE="/usr/local/location" foo.c
+% <strong class="userinput"><code>scons -Q PACKAGE=yes foo.o</code></strong>
+cc -o foo.o -c -DPACKAGE="True" foo.c
+% <strong class="userinput"><code>scons -Q PACKAGE=no foo.o</code></strong>
+cc -o foo.o -c -DPACKAGE="False" foo.c
+</pre></div></div><div class="section" title="10.2.5. Adding Multiple Command-Line Build Variables at Once"><div class="titlepage"><div><div><h3 class="title"><a name="idp1371627636"></a>10.2.5. Adding Multiple Command-Line Build Variables at Once</h3></div></div></div><p>
+
+      Lastly, <span class="application">SCons</span> provides a way to add
+      multiple build variables to a <code class="function">Variables</code> object at once.
+      Instead of having to call the <code class="function">Add</code> method
+      multiple times,
+      you can call the <code class="function">AddVariables</code>
+      method with a list of build variables
+      to be added to the object.
+      Each build variable is specified
+      as either a tuple of arguments,
+      just like you'd pass to the <code class="function">Add</code> method itself,
+      or as a call to one of the pre-defined
+      functions for pre-packaged command-line build variables.
+      in any order:
+
+      </p><pre class="programlisting">
+vars = Variables()
+vars.AddVariables(
+    ('RELEASE', 'Set to 1 to build for release', 0),
+    ('CONFIG', 'Configuration file', '/etc/my_config'),
+    BoolVariable('warnings', 'compilation with -Wall and similiar', 1),
+    EnumVariable('debug', 'debug output and symbols', 'no',
+               allowed_values=('yes', 'no', 'full'),
+               map={}, ignorecase=0),  # case sensitive
+    ListVariable('shared',
+               'libraries to build as shared libraries',
+               'all',
+               names = list_of_libs),
+    PackageVariable('x11',
+                  'use X11 installed here (yes = search some places)',
+                  'yes'),
+    PathVariable('qtdir', 'where the root of Qt is installed', qtdir),
+)
+        </pre><p>
+      </p></div><div class="section" title="10.2.6. Handling Unknown Command-Line Build Variables: the UnknownVariables Function"><div class="titlepage"><div><div><h3 class="title"><a name="idp1371630964"></a>10.2.6. Handling Unknown Command-Line Build Variables:  the <code class="function">UnknownVariables</code> Function</h3></div></div></div><p>
+
+      Users may, of course,
+      occasionally misspell variable names in their command-line settings.
+      <span class="application">SCons</span> does not generate an error or warning
+      for any unknown variables the users specifies on the command line.
+      (This is in no small part because you may be
+      processing the arguments directly using the <code class="varname">ARGUMENTS</code> dictionary,
+      and therefore <span class="application">SCons</span> can't know in the general case
+      whether a given "misspelled" variable is
+      really unknown and a potential problem,
+      or something that your <code class="filename">SConscript</code> file
+      will handle directly with some Python code.)
+
+      </p><p>
+
+      If, however, you're using a <code class="function">Variables</code> object to
+      define a specific set of command-line build variables
+      that you expect users to be able to set,
+      you may want to provide an error
+      message or warning of your own
+      if the user supplies a variable setting
+      that is <span class="emphasis"><em>not</em></span> among
+      the defined list of variable names known to the <code class="function">Variables</code> object.
+      You can do this by calling the <code class="function">UnknownVariables</code>
+      method of the <code class="function">Variables</code> object:
+
+      </p><pre class="programlisting">
+vars = Variables(None)
+vars.Add('RELEASE', 'Set to 1 to build for release', 0)
+env = Environment(variables = vars,
+                  CPPDEFINES={'RELEASE_BUILD' : '${RELEASE}'})
+unknown = vars.UnknownVariables()
+if unknown:
+    print "Unknown variables:", unknown.keys()
+    Exit(1)
+env.Program('foo.c')
+        </pre><p>
+
+      The <code class="function">UnknownVariables</code> method returns a dictionary
+      containing the keywords and values
+      of any variables the user specified on the command line
+      that are <span class="emphasis"><em>not</em></span>
+      among the variables known to the <code class="function">Variables</code> object
+      (from having been specified using
+      the <code class="function">Variables</code> object's<code class="function">Add</code> method).
+      In the examble above,
+      we check for whether the dictionary
+      returned by the <code class="function">UnknownVariables</code> is non-empty,
+      and if so print the Python list
+      containing the names of the unknwown variables
+      and then call the <code class="function">Exit</code> function
+      to terminate <span class="application">SCons</span>:
+
+      </p><pre class="screen">% <strong class="userinput"><code>scons -Q NOT_KNOWN=foo</code></strong>
+Unknown variables: ['NOT_KNOWN']
+</pre><p>
+
+      Of course, you can process the items in the
+      dictionary returned by the <code class="function">UnknownVariables</code> function
+      in any way appropriate to your build configuration,
+      including just printing a warning message
+      but not exiting,
+      logging an error somewhere,
+      etc.
+
+      </p><p>
+
+      Note that you must delay the call of <code class="function">UnknownVariables</code>
+      until after you have applied the <code class="function">Variables</code> object
+      to a construction environment
+      with the <code class="literal">variables=</code>
+      keyword argument of an <code class="function">Environment</code> call.
+
+      </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch10.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch10.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch10s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 10. Controlling a Build From the Command Line </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 10.3. Command-Line Targets</td></tr></table></div></body></html>

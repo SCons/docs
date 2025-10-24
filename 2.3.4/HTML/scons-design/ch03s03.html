@@ -1,0 +1,116 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>3.3. Interfaces</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 2.3.4"><link rel="up" href="ch03.html" title="Chapter 3. Overview"><link rel="prev" href="ch03s02.html" title="3.2. Build Engine"><link rel="next" href="ch04.html" title="Chapter 4. Build Engine API"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">3.3. Interfaces</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch03s02.html">Prev</a> </td><th width="60%" align="center">Chapter 3. Overview</th><td width="20%" align="right"> <a accesskey="n" href="ch04.html">Next</a></td></tr></table><hr></div><div class="section" title="3.3. Interfaces"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="sect-interfaces"></a>3.3. Interfaces</h2></div></div></div><p>
+
+   As previously described,
+   the <span class="application">SCons</span> Build Engine
+   is interface-independent above its Python API,
+   and can be embedded in any software system
+   that can translate its dependency requirements
+   into the necessary Python calls.
+
+ </p><p>
+
+   The "main" <span class="application">SCons</span> interface
+   for implementation purposes,
+   uses Python scripts as configuration files.
+   Because this exposes the Build Engine's Python API to the user,
+   it is current called the "Native Python" interface.
+
+ </p><p>
+
+   This section will also discuss
+   how <span class="application">SCons</span> will function in the context
+   of two other interfaces:
+   the <code class="filename">Makefile</code> interface of the classic <span class="application">Make</span> utility,
+   and a hypothetical graphical user interface (GUI).
+
+ </p><div class="section" title="3.3.1. Native Python interface"><div class="titlepage"><div><div><h3 class="title"><a name="idp93464"></a>3.3.1. Native Python interface</h3></div></div></div><p>
+
+   The Native Python interface is intended to be the primary interface
+   by which users will know <span class="application">SCons</span>--that is,
+   it is the interface they will use
+   if they actually type <span class="application">SCons</span> at a command-line prompt.
+
+  </p><p>
+
+   In the Native Python interface, <span class="application">SCons</span> configuration files are simply
+   Python scripts that directly invoke methods from the Build Engine's
+   Python API to specify target files to be built, rules for building
+   the target files, and dependencies.  Additional methods, specific to
+   this interface, are added to handle functionality that is specific to
+   the Native Python interface:  reading a subsidiary configuration file;
+   copying target files to an installation directory; etc.
+
+  </p><p>
+
+   Because configuration files are Python scripts, Python flow control
+   can be used to provide very flexible manipulation of objects and
+   dependencies.  For example, a function could be used to invoke a common
+   set of methods on a file, and called iteratively over an array of
+   files.
+
+  </p><p>
+
+   As an additional advantage, syntax errors in <span class="application">SCons</span> Native Python
+   configuration files will be caught by the Python parser.  Target-building
+   does not begin until after all configuration files are read, so a syntax
+   error will not cause a build to fail half-way.
+
+  </p></div><div class="section" title="3.3.2. Makefile interface"><div class="titlepage"><div><div><h3 class="title"><a name="idp96720"></a>3.3.2. Makefile interface</h3></div></div></div><p>
+
+   An alternate <span class="application">SCons</span> interface would provide backwards
+   compatibility with the classic <span class="application">Make</span> utility.
+   This would be done by embedding the <span class="application">SCons</span> Build Engine
+   in a Python script that can translate existing
+   <code class="filename">Makefile</code>s into the underlying calls to the
+   Build Engine's Python API
+   for building and tracking dependencies.
+   Here are approaches to solving some of the issues
+   that arise from marrying these two pieces:
+
+  </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>
+   <code class="filename">Makefile</code> suffix rules can be translated
+   into an appropriate <code class="classname">Builder</code> object
+   with suffix maps from the Construction Environment.
+   </p></li><li class="listitem"><p>
+   Long lists of static dependences
+   appended to a <code class="filename">Makefile</code> by
+   various <span class="command"><strong>"make depend"</strong></span> schemes
+   can be preserved
+   but supplemented by
+   the more accurate dependency information
+   provided by <code class="classname">Scanner</code> objects.
+   </p></li><li class="listitem"><p>
+   Recursive invocations of <span class="application">Make</span>
+   can be avoided by reading up
+   the subsidiary <code class="filename">Makefile</code> instead.
+   </p></li></ul></div><p>
+
+   Lest this seem like too outlandish an undertaking,
+   there is a working example of this approach:
+   Gary Holt's <span class="application">Make++</span> utility
+   is a Perl script that provides
+   admirably complete parsing of complicated <code class="filename">Makefile</code>s
+   around an internal build engine inspired,
+   in part, by the classic <span class="application">Cons</span> utility.
+
+  </p></div><div class="section" title="3.3.3. Graphical interfaces"><div class="titlepage"><div><div><h3 class="title"><a name="idp102664"></a>3.3.3. Graphical interfaces</h3></div></div></div><p>
+
+   The <span class="application">SCons</span> Build Engine
+   is designed from the ground up to be embedded
+   into multiple interfaces.
+   Consequently, embedding the dependency capabilities
+   of <span class="application">SCons</span> into graphical interface
+   would be a matter of mapping the
+   GUI's dependency representation
+   (either implicit or explicit)
+   into corresponding calls to the Python API
+   of the <span class="application">SCons</span> Build Engine.
+
+  </p><p>
+
+   Note, however, that this proposal leaves the problem of
+   designed a good graphical interface
+   for representing software build dependencies
+   to people with actual GUI design experience...
+
+  </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch03s02.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch03.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch04.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">3.2. Build Engine </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 4. Build Engine API</td></tr></table></div></body></html>

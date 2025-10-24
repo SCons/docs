@@ -1,0 +1,410 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Order-Only Dependencies:  the Requires Function</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 1.2.0"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Dependencies"
+HREF="c792.html"><LINK
+REL="PREVIOUS"
+TITLE="Ignoring Dependencies:  the Ignore Function"
+HREF="x1234.html"><LINK
+REL="NEXT"
+TITLE="The AlwaysBuild Function"
+HREF="x1312.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 1.2.0</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x1234.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 6. Dependencies</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x1312.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN1261"
+>6.8. Order-Only Dependencies:  the <CODE
+CLASS="function"
+>Requires</CODE
+> Function</A
+></H1
+><P
+>&#13;
+    Occasionally,
+    it may be useful to specify that a certain
+    file or directory must, if necessary,
+    be built or created before some other target is built,
+    but that changes to that file or directory
+    do <SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>not</I
+></SPAN
+>
+    require that the target itself be rebuilt.
+    Such a relationship is called an
+    <SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>order-only dependency</I
+></SPAN
+>
+    because it only affects the order in which
+    things must be built--the dependency before the target--but
+    it is not a strict dependency relationship
+    because the target should not
+    change in response to changes in the dependent file.
+
+    </P
+><P
+>&#13;
+    For example, suppose that you want to create a file
+    every time you run a build
+    that identifies the time the build was performed,
+    the version number, etc.,
+    and which is included in every program that you build.
+    The version file's contents will change every build.
+    If you specify a normal dependency relationship,
+    then every program that depends on
+    that file would be rebuilt every time you ran <SPAN
+CLASS="application"
+>SCons</SPAN
+>.
+    For example, we could use some Python code in
+    a <TT
+CLASS="filename"
+>SConstruct</TT
+> file to create a new <TT
+CLASS="filename"
+>version.c</TT
+> file
+    with a string containing the current date every time
+    we run <SPAN
+CLASS="application"
+>SCons</SPAN
+>,
+    and then link a program with the resulting object file
+    by listing <TT
+CLASS="filename"
+>version.c</TT
+> in the sources:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;      import time
+
+      version_c_text = """
+      char *date = "%s";
+      """ % time.ctime(time.time())
+      open('version.c', 'w').write(version_c_text)
+
+      hello = Program(['hello.c', 'version.c'])
+    </PRE
+><P
+>&#13;
+    If we list <TT
+CLASS="filename"
+>version.c</TT
+> as an actual source file,
+    though, then <TT
+CLASS="filename"
+>version.o</TT
+>
+    will get rebuilt every time we run <SPAN
+CLASS="application"
+>SCons</SPAN
+>
+    (because the <TT
+CLASS="filename"
+>SConstruct</TT
+> file itself changes
+    the contents of <TT
+CLASS="filename"
+>version.c</TT
+>)
+    and the <TT
+CLASS="filename"
+>hello</TT
+> executable
+    will get re-linked every time
+    (because the <TT
+CLASS="filename"
+>version.o</TT
+> file changes):
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      gcc -o hello.o -c hello.c
+      gcc -o version.o -c version.c
+      gcc -o hello hello.o version.o
+      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      gcc -o version.o -c version.c
+      gcc -o hello hello.o version.o
+      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      gcc -o version.o -c version.c
+      gcc -o hello hello.o version.o
+    </PRE
+><P
+>&#13;
+    One solution is to use the <CODE
+CLASS="function"
+>Requires</CODE
+> function
+    to specify that the <TT
+CLASS="filename"
+>version.o</TT
+>
+    must be rebuilt before it is used by the link step,
+    but that changes to <TT
+CLASS="filename"
+>version.o</TT
+>
+    should not actually cause the <TT
+CLASS="filename"
+>hello</TT
+>
+    executable to be re-linked:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;      import time
+
+      version_c_text = """
+      char *date = "%s";
+      """ % time.ctime(time.time())
+      open('version.c', 'w').write(version_c_text)
+
+      version_obj = Object('version.c')
+
+      hello = Program('hello.c',
+                      LINKFLAGS = str(version_obj[0]))
+
+      Requires(hello, version_obj)
+    </PRE
+><P
+>&#13;
+    Notice that because we can no longer list <TT
+CLASS="filename"
+>version.c</TT
+>
+    as one of the sources for the <TT
+CLASS="filename"
+>hello</TT
+> program,
+    we have to find some other way to get it into the link command line.
+    For this example, we're cheating a bit and stuffing the
+    object file name (extracted from <TT
+CLASS="literal"
+>version_obj</TT
+>
+    list returned by the <CODE
+CLASS="function"
+>Object</CODE
+> call)
+    into the <A
+HREF="a4774.html#cv-LINKFLAGS"
+><CODE
+CLASS="envar"
+>$LINKFLAGS</CODE
+></A
+> variable,
+    because <CODE
+CLASS="envar"
+>$LINKFLAGS</CODE
+> is already included
+    in the <A
+HREF="a4774.html#cv-LINKCOM"
+><CODE
+CLASS="envar"
+>$LINKCOM</CODE
+></A
+> command line.
+
+    </P
+><P
+>&#13;
+    With these changes,
+    we get the desired behavior of
+    re-building the <TT
+CLASS="filename"
+>version.o</TT
+> file,
+    and therefore re-linking the <TT
+CLASS="filename"
+>hello</TT
+> executable,
+    only when the <TT
+CLASS="filename"
+>hello.c</TT
+> has changed:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      cc -o hello.o -c hello.c
+      cc -o version.o -c version.c
+      cc -o hello version.o hello.o
+      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      scons: `.' is up to date.
+      % <KBD
+CLASS="userinput"
+>edit hello.c</KBD
+>
+          [CHANGE THE CONTENTS OF hello.c]
+      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      cc -o hello.o -c hello.c
+      cc -o hello version.o hello.o
+      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      scons: `.' is up to date.
+    </PRE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x1234.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x1312.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Ignoring Dependencies:  the <CODE
+CLASS="function"
+>Ignore</CODE
+> Function</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c792.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>The <CODE
+CLASS="function"
+>AlwaysBuild</CODE
+> Function</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,276 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>The VariantDir Function</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 0.98.4"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Separating Source and Build Directories"
+HREF="c2353.html"><LINK
+REL="PREVIOUS"
+TITLE="Telling SCons to Not Duplicate Source Files in the Variant Directory Tree"
+HREF="x2412.html"><LINK
+REL="NEXT"
+TITLE="Using VariantDir With an SConscript File"
+HREF="x2457.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 0.98.4</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x2412.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 15. Separating Source and Build Directories</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x2457.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN2428"
+>15.4. The <CODE
+CLASS="function"
+>VariantDir</CODE
+> Function</A
+></H1
+><P
+>&#13;
+    Use the <CODE
+CLASS="function"
+>VariantDir</CODE
+> function to establish that target
+    files should be built in a separate directory
+    from the source files:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;      VariantDir('build', 'src')
+      env = Environment()
+      env.Program('build/hello.c')
+    </PRE
+><P
+>&#13;
+    Note that when you're not using
+    an <TT
+CLASS="filename"
+>SConscript</TT
+> file in the <TT
+CLASS="filename"
+>src</TT
+> subdirectory,
+    you must actually specify that
+    the program must be built from
+    the <TT
+CLASS="filename"
+>build/hello.c</TT
+>
+    file that <SPAN
+CLASS="application"
+>SCons</SPAN
+> will duplicate in the
+    <TT
+CLASS="filename"
+>build</TT
+> subdirectory.
+
+    </P
+><P
+>&#13;
+    When using the <CODE
+CLASS="function"
+>VariantDir</CODE
+> function directly,
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> still duplicates the source files
+    in the variant directory by default:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>ls src</KBD
+>
+      hello.c
+      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      cc -o build/hello.o -c build/hello.c
+      cc -o build/hello build/hello.o
+      % <KBD
+CLASS="userinput"
+>ls build</KBD
+>
+      hello  hello.c  hello.o
+    </PRE
+><P
+>&#13;
+    You can specify the same <TT
+CLASS="literal"
+>duplicate=0</TT
+> argument
+    that you can specify for an <TT
+CLASS="filename"
+>SConscript</TT
+> call:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;      VariantDir('build', 'src', duplicate=0)
+      env = Environment()
+      env.Program('build/hello.c')
+    </PRE
+><P
+>&#13;
+    In which case <SPAN
+CLASS="application"
+>SCons</SPAN
+>
+    will disable duplication of the source files:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>ls src</KBD
+>
+      hello.c
+      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      cc -o build/hello.o -c src/hello.c
+      cc -o build/hello build/hello.o
+      % <KBD
+CLASS="userinput"
+>ls build</KBD
+>
+      hello  hello.o
+    </PRE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x2412.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x2457.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Telling <SPAN
+CLASS="application"
+>SCons</SPAN
+> to Not Duplicate Source Files in the Variant Directory Tree</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c2353.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Using <CODE
+CLASS="function"
+>VariantDir</CODE
+> With an <TT
+CLASS="filename"
+>SConscript</TT
+> File</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

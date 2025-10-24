@@ -1,0 +1,470 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Controlling the Execution Environment for Issued Commands</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 1.0.0"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Environments"
+HREF="c1290.html"><LINK
+REL="PREVIOUS"
+TITLE="Construction Environments"
+HREF="x1349.html"><LINK
+REL="NEXT"
+TITLE="Merging Options into the Environment: the MergeFlags Function"
+HREF="c1698.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 1.0.0</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x1349.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 7. Environments</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="c1698.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="sect-execution-environments"
+>7.3. Controlling the Execution Environment for Issued Commands</A
+></H1
+><P
+>&#13;
+      When <SPAN
+CLASS="application"
+>SCons</SPAN
+> builds a target file,
+      it does not execute the commands with
+      the same external environment
+      that you used to execute <SPAN
+CLASS="application"
+>SCons</SPAN
+>.
+      Instead, it uses the dictionary
+      stored in the <A
+HREF="a4656.html#cv-ENV"
+><CODE
+CLASS="envar"
+>$ENV</CODE
+></A
+> construction variable
+      as the external environment
+      for executing commands.
+
+    </P
+><P
+>&#13;
+      The most important ramification of this behavior
+      is that the <CODE
+CLASS="varname"
+>PATH</CODE
+> environment variable,
+      which controls where the operating system
+      will look for commands and utilities,
+      is not the same as in the external environment
+      from which you called <SPAN
+CLASS="application"
+>SCons</SPAN
+>.
+      This means that <SPAN
+CLASS="application"
+>SCons</SPAN
+> will not, by default,
+      necessarily find all of the tools
+      that you can execute from the command line.
+
+    </P
+><P
+>&#13;
+      The default value of the <CODE
+CLASS="varname"
+>PATH</CODE
+> environment variable
+      on a POSIX system
+      is <TT
+CLASS="literal"
+>/usr/local/bin:/bin:/usr/bin</TT
+>.
+      The default value of the <CODE
+CLASS="varname"
+>PATH</CODE
+> environment variable
+      on a Windows system comes from the Windows registry
+      value for the command interpreter.
+      If you want to execute any commands--compilers, linkers, etc.--that
+      are not in these default locations,
+      you need to set the <CODE
+CLASS="varname"
+>PATH</CODE
+> value
+      in the <CODE
+CLASS="envar"
+>$ENV</CODE
+> dictionary
+      in your construction environment.
+
+    </P
+><P
+>&#13;
+      The simplest way to do this is to initialize explicitly
+      the value when you create the construction environment;
+      this is one way to do that:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;      path = ['/usr/local/bin', '/bin', '/usr/bin']
+      env = Environment(ENV = {'PATH' : path})
+    </PRE
+><P
+>&#13;
+    Assign a dictionary to the <CODE
+CLASS="envar"
+>$ENV</CODE
+>
+    construction variable in this way
+    completely resets the external environment
+    so that the only variable that will be
+    set when external commands are executed
+    will be the <CODE
+CLASS="varname"
+>PATH</CODE
+> value.
+    If you want to use the rest of
+    the values in <CODE
+CLASS="envar"
+>$ENV</CODE
+> and only
+    set the value of <CODE
+CLASS="varname"
+>PATH</CODE
+>,
+    the most straightforward way is probably:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;      env['ENV']['PATH'] = ['/usr/local/bin', '/bin', '/usr/bin']
+    </PRE
+><P
+>&#13;
+    Note that <SPAN
+CLASS="application"
+>SCons</SPAN
+> does allow you to define
+    the directories in the <CODE
+CLASS="varname"
+>PATH</CODE
+> in a string,
+    separated by the pathname-separator character
+    for your system (':' on POSIX systems, ';' on Windows):
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;      env['ENV']['PATH'] = '/usr/local/bin:/bin:/usr/bin'
+    </PRE
+><P
+>&#13;
+    But doing so makes your <TT
+CLASS="filename"
+>SConscript</TT
+> file less portable,
+    (although in this case that may not be a huge concern
+    since the directories you list are likley system-specific, anyway).
+
+    </P
+><DIV
+CLASS="section"
+><H2
+CLASS="section"
+><A
+NAME="AEN1661"
+>7.3.1. Propagating <CODE
+CLASS="varname"
+>PATH</CODE
+> From the External Environment</A
+></H2
+><P
+>&#13;
+      You may want to propagate the external <CODE
+CLASS="varname"
+>PATH</CODE
+>
+      to the execution environment for commands.
+      You do this by initializing the <CODE
+CLASS="varname"
+>PATH</CODE
+>
+      variable with the <CODE
+CLASS="varname"
+>PATH</CODE
+> value from
+      the <TT
+CLASS="literal"
+>os.environ</TT
+>
+      dictionary,
+      which is Python's way of letting you
+      get at the external environment:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;        import os
+        env = Environment(ENV = {'PATH' : os.environ['PATH']})
+      </PRE
+><P
+>&#13;
+      Alternatively, you may find it easier
+      to just propagate the entire external
+      environment to the execution environment
+      for commands.
+      This is simpler to code than explicity
+      selecting the <CODE
+CLASS="varname"
+>PATH</CODE
+> value:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;        import os
+        env = Environment(ENV = os.environ)
+      </PRE
+><P
+>&#13;
+      Either of these will guarantee that
+      <SPAN
+CLASS="application"
+>SCons</SPAN
+> will be able to execute
+      any command that you can execute from the command line.
+      The drawback is that the build can behave
+      differently if it's run by people with
+      different <CODE
+CLASS="varname"
+>PATH</CODE
+> values in their environment--for example,
+      if both the <TT
+CLASS="literal"
+>/bin</TT
+> and
+      <TT
+CLASS="literal"
+>/usr/local/bin</TT
+> directories
+      have different <SPAN
+CLASS="application"
+>cc</SPAN
+> commands,
+      then which one will be used to compile programs
+      will depend on which directory is listed
+      first in the user's <CODE
+CLASS="varname"
+>PATH</CODE
+> variable.
+
+      </P
+></DIV
+><DIV
+CLASS="section"
+><H2
+CLASS="section"
+><A
+NAME="AEN1680"
+>7.3.2. Adding to <CODE
+CLASS="varname"
+>PATH</CODE
+> Values in the Execution Environment</A
+></H2
+><P
+>&#13;
+      One of the most common requirements
+      for manipulating a variable in the execution environment
+      is to add one or more custom directories to a search
+      like the <CODE
+CLASS="envar"
+>$PATH</CODE
+> variable on Linux or POSIX systems,
+      or the <CODE
+CLASS="envar"
+>%PATH%</CODE
+> variable on Windows,
+      so that a locally-installed compiler or other utility
+      can be found when <SPAN
+CLASS="application"
+>SCons</SPAN
+> tries to execute it to update a target.
+      <SPAN
+CLASS="application"
+>SCons</SPAN
+> provides <CODE
+CLASS="function"
+>PrependENVPath</CODE
+> and <CODE
+CLASS="function"
+>AppendENVPath</CODE
+> functions
+      to make adding things to execution variables convenient.
+      You call these functions by specifying the variable
+      to which you want the value added,
+      and then value itself.
+      So to add some <TT
+CLASS="filename"
+>/usr/local</TT
+> directories
+      to the <CODE
+CLASS="envar"
+>$PATH</CODE
+> and <CODE
+CLASS="envar"
+>$LIB</CODE
+> variables,
+      you might:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;        env = Environment(ENV = os.environ)
+        env.PrependENVPath('PATH', '/usr/local/bin')
+        env.AppendENVPath('LIB', '/usr/local/lib')
+      </PRE
+><P
+>&#13;
+      Note that the added values are strings,
+      and if you want to add multiple directories to
+      a variable like <CODE
+CLASS="envar"
+>$PATH</CODE
+>,
+      you must include the path separate character
+      (<TT
+CLASS="literal"
+>:</TT
+> on Linux or POSIX,
+      <TT
+CLASS="literal"
+>;</TT
+> on Windows)
+      in the string.
+
+      </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x1349.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="c1698.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Construction Environments</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c1290.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Merging Options into the Environment: the <CODE
+CLASS="function"
+>MergeFlags</CODE
+> Function</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

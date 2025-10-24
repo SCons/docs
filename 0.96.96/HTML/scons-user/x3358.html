@@ -1,0 +1,243 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<HTML
+><HEAD
+><TITLE
+>Where is SCons Searching for Libraries?  the --debug=findlibs Option</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="HOME"
+TITLE="SCons User Guide 0.96.96"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Troubleshooting"
+HREF="c3196.html"><LINK
+REL="PREVIOUS"
+TITLE="How is SCons Constructing the Command Lines It Executes?  the --debug=presub Option"
+HREF="x3349.html"><LINK
+REL="NEXT"
+TITLE="Where is SCons Blowing Up?  the --debug=stacktrace Option"
+HREF="x3375.html"></HEAD
+><BODY
+CLASS="SECTION"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 0.96.96</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x3349.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Troubleshooting</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x3375.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECTION"
+><H1
+CLASS="SECTION"
+><A
+NAME="AEN3358"
+>Where is <TT
+CLASS="APPLICATION"
+>SCons</TT
+> Searching for Libraries?  the <TT
+CLASS="LITERAL"
+>--debug=findlibs</TT
+> Option</A
+></H1
+><P
+>&#13;    To get some insight into what library names
+    <TT
+CLASS="APPLICATION"
+>SCons</TT
+> is searching for,
+    and in which directories it is searching,
+    Use the <TT
+CLASS="LITERAL"
+>--debug=findlibs</TT
+> option.
+    Given the following input <TT
+CLASS="FILENAME"
+>SConstruct</TT
+> file:
+
+    </P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>        env = Environment(LIBPATH = ['libs1', 'libs2'])
+        env.Program('prog.c', LIBS=['foo', 'bar'])
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>&#13;    And the libraries <TT
+CLASS="FILENAME"
+>libfoo.a</TT
+>
+    and <TT
+CLASS="FILENAME"
+>libbar.a</TT
+>
+    in <TT
+CLASS="FILENAME"
+>libs1</TT
+> and <TT
+CLASS="FILENAME"
+>libs2</TT
+>,
+    respectively,
+    use of the <TT
+CLASS="LITERAL"
+>--debug=findlibs</TT
+> option yields:
+
+    </P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>      % <KBD
+CLASS="USERINPUT"
+>scons -Q --debug=findlibs</KBD
+>
+        findlibs: looking for 'libfoo.a' in 'libs1' ...
+        findlibs: ... FOUND 'libfoo.a' in 'libs1'
+        findlibs: looking for 'libfoo.so' in 'libs1' ...
+        findlibs: looking for 'libfoo.so' in 'libs2' ...
+        findlibs: looking for 'libbar.a' in 'libs1' ...
+        findlibs: looking for 'libbar.a' in 'libs2' ...
+        findlibs: ... FOUND 'libbar.a' in 'libs2'
+        findlibs: looking for 'libbar.so' in 'libs1' ...
+        findlibs: looking for 'libbar.so' in 'libs2' ...
+      cc -o prog.o -c prog.c
+      cc -o prog prog.o -Llibs1 -Llibs2 -lfoo -lbar
+    </PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x3349.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x3375.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>How is <TT
+CLASS="APPLICATION"
+>SCons</TT
+> Constructing the Command Lines It Executes?  the <TT
+CLASS="LITERAL"
+>--debug=presub</TT
+> Option</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c3196.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Where is <TT
+CLASS="APPLICATION"
+>SCons</TT
+> Blowing Up?  the <TT
+CLASS="LITERAL"
+>--debug=stacktrace</TT
+> Option</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

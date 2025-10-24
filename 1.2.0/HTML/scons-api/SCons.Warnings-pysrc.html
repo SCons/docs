@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>SCons.Warnings</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="SCons-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://www.scons.org/">SCons</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="SCons-module.html">Package&nbsp;SCons</a> ::
+        Module&nbsp;Warnings
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="SCons.Warnings-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="SCons.Warnings-module.html">Module SCons.Warnings</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># Copyright (c) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008 The SCons Foundation</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment">#</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># Permission is hereby granted, free of charge, to any person obtaining</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># a copy of this software and associated documentation files (the</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># "Software"), to deal in the Software without restriction, including</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># without limitation the rights to use, copy, modify, merge, publish,</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># distribute, sublicense, and/or sell copies of the Software, and to</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># permit persons to whom the Software is furnished to do so, subject to</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># the following conditions:</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment">#</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># The above copyright notice and this permission notice shall be included</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># in all copies or substantial portions of the Software.</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment">#</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment">#</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-comment"></tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-docstring">"""SCons.Warnings</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-docstring">This file implements the warnings framework for SCons.</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"><tt id="link-0" class="py-name" targets="Variable SCons.Action.__revision__=SCons.Action-module.html#__revision__,Variable SCons.Builder.__revision__=SCons.Builder-module.html#__revision__,Variable SCons.CacheDir.__revision__=SCons.CacheDir-module.html#__revision__,Variable SCons.Debug.__revision__=SCons.Debug-module.html#__revision__,Variable SCons.Defaults.__revision__=SCons.Defaults-module.html#__revision__,Variable SCons.Environment.__revision__=SCons.Environment-module.html#__revision__,Variable SCons.Errors.__revision__=SCons.Errors-module.html#__revision__,Variable SCons.Executor.__revision__=SCons.Executor-module.html#__revision__,Variable SCons.Job.__revision__=SCons.Job-module.html#__revision__,Variable SCons.Memoize.__revision__=SCons.Memoize-module.html#__revision__,Variable SCons.Node.Alias.__revision__=SCons.Node.Alias-module.html#__revision__,Variable SCons.Node.FS.__revision__=SCons.Node.FS-module.html#__revision__,Variable SCons.Node.Python.__revision__=SCons.Node.Python-module.html#__revision__,Variable SCons.Node.__revision__=SCons.Node-module.html#__revision__,Variable SCons.PathList.__revision__=SCons.PathList-module.html#__revision__,Variable SCons.SConf.__revision__=SCons.SConf-module.html#__revision__,Variable SCons.SConsign.__revision__=SCons.SConsign-module.html#__revision__,Variable SCons.Scanner.C.__revision__=SCons.Scanner.C-module.html#__revision__,Variable SCons.Scanner.D.__revision__=SCons.Scanner.D-module.html#__revision__,Variable SCons.Scanner.Dir.__revision__=SCons.Scanner.Dir-module.html#__revision__,Variable SCons.Scanner.Fortran.__revision__=SCons.Scanner.Fortran-module.html#__revision__,Variable SCons.Scanner.IDL.__revision__=SCons.Scanner.IDL-module.html#__revision__,Variable SCons.Scanner.LaTeX.__revision__=SCons.Scanner.LaTeX-module.html#__revision__,Variable SCons.Scanner.Prog.__revision__=SCons.Scanner.Prog-module.html#__revision__,Variable SCons.Scanner.RC.__revision__=SCons.Scanner.RC-module.html#__revision__,Variable SCons.Scanner.__revision__=SCons.Scanner-module.html#__revision__,Variable SCons.Script.Interactive.__revision__=SCons.Script.Interactive-module.html#__revision__,Variable SCons.Script.Main.__revision__=SCons.Script.Main-module.html#__revision__,Variable SCons.Script.SConscript'.__revision__=SCons.Script.SConscript%27-module.html#__revision__,Variable SCons.Script.__revision__=SCons.Script-module.html#__revision__,Variable SCons.Sig.__revision__=SCons.Sig-module.html#__revision__,Variable SCons.Subst.__revision__=SCons.Subst-module.html#__revision__,Variable SCons.Taskmaster.__revision__=SCons.Taskmaster-module.html#__revision__,Variable SCons.Variables.BoolVariable'.__revision__=SCons.Variables.BoolVariable%27-module.html#__revision__,Variable SCons.Variables.EnumVariable'.__revision__=SCons.Variables.EnumVariable%27-module.html#__revision__,Variable SCons.Variables.ListVariable'.__revision__=SCons.Variables.ListVariable%27-module.html#__revision__,Variable SCons.Variables.PackageVariable'.__revision__=SCons.Variables.PackageVariable%27-module.html#__revision__,Variable SCons.Variables.PathVariable'.__revision__=SCons.Variables.PathVariable%27-module.html#__revision__,Variable SCons.Variables.__revision__=SCons.Variables-module.html#__revision__,Variable SCons.Warnings.__revision__=SCons.Warnings-module.html#__revision__,Variable SCons.__revision__=SCons-module.html#__revision__,Variable SCons.compat.__revision__=SCons.compat-module.html#__revision__,Variable SCons.compat._scons_UserString.__revision__=SCons.compat._scons_UserString-module.html#__revision__,Variable SCons.compat._scons_hashlib.__revision__=SCons.compat._scons_hashlib-module.html#__revision__,Variable SCons.compat._scons_itertools.__revision__=SCons.compat._scons_itertools-module.html#__revision__,Variable SCons.compat._scons_textwrap.__revision__=SCons.compat._scons_textwrap-module.html#__revision__,Variable SCons.compat.builtins.__revision__=SCons.compat.builtins-module.html#__revision__,Variable SCons.exitfuncs.__revision__=SCons.exitfuncs-module.html#__revision__"><a title="SCons.Action.__revision__
+SCons.Builder.__revision__
+SCons.CacheDir.__revision__
+SCons.Debug.__revision__
+SCons.Defaults.__revision__
+SCons.Environment.__revision__
+SCons.Errors.__revision__
+SCons.Executor.__revision__
+SCons.Job.__revision__
+SCons.Memoize.__revision__
+SCons.Node.Alias.__revision__
+SCons.Node.FS.__revision__
+SCons.Node.Python.__revision__
+SCons.Node.__revision__
+SCons.PathList.__revision__
+SCons.SConf.__revision__
+SCons.SConsign.__revision__
+SCons.Scanner.C.__revision__
+SCons.Scanner.D.__revision__
+SCons.Scanner.Dir.__revision__
+SCons.Scanner.Fortran.__revision__
+SCons.Scanner.IDL.__revision__
+SCons.Scanner.LaTeX.__revision__
+SCons.Scanner.Prog.__revision__
+SCons.Scanner.RC.__revision__
+SCons.Scanner.__revision__
+SCons.Script.Interactive.__revision__
+SCons.Script.Main.__revision__
+SCons.Script.SConscript'.__revision__
+SCons.Script.__revision__
+SCons.Sig.__revision__
+SCons.Subst.__revision__
+SCons.Taskmaster.__revision__
+SCons.Variables.BoolVariable'.__revision__
+SCons.Variables.EnumVariable'.__revision__
+SCons.Variables.ListVariable'.__revision__
+SCons.Variables.PackageVariable'.__revision__
+SCons.Variables.PathVariable'.__revision__
+SCons.Variables.__revision__
+SCons.Warnings.__revision__
+SCons.__revision__
+SCons.compat.__revision__
+SCons.compat._scons_UserString.__revision__
+SCons.compat._scons_hashlib.__revision__
+SCons.compat._scons_itertools.__revision__
+SCons.compat._scons_textwrap.__revision__
+SCons.compat.builtins.__revision__
+SCons.exitfuncs.__revision__" class="py-name" href="#" onclick="return doclink('link-0', '__revision__', 'link-0');">__revision__</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"src/engine/SCons/Warnings.py 3842 2008/12/20 22:59:52 scons"</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Variable SCons.SConf.SConfBuildInfo.string=SCons.SConf.SConfBuildInfo-class.html#string,Method SCons.Script.Main.Progressor.string()=SCons.Script.Main.Progressor-class.html#string,Module string=string-module.html"><a title="SCons.SConf.SConfBuildInfo.string
+SCons.Script.Main.Progressor.string
+string" class="py-name" href="#" onclick="return doclink('link-1', 'string', 'link-1');">string</a></tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">sys</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Package SCons=SCons-module.html"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-2', 'SCons', 'link-2');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-3" class="py-name" targets="Module SCons.Errors=SCons.Errors-module.html"><a title="SCons.Errors" class="py-name" href="#" onclick="return doclink('link-3', 'Errors', 'link-3');">Errors</a></tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"> </tt>
+<a name="Warning"></a><div id="Warning-def"><a name="L37"></a><tt class="py-lineno"> 37</tt> <a class="py-toggle" href="#" id="Warning-toggle" onclick="return toggle('Warning');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="SCons.Warnings.Warning-class.html">Warning</a><tt class="py-op">(</tt><tt class="py-base-class">SCons</tt><tt class="py-op">.</tt><tt class="py-base-class">Errors</tt><tt class="py-op">.</tt><tt class="py-base-class">UserError</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Warning-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Warning-expanded"><a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line"> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"><tt class="py-comment"># NOTE:  If you add a new warning class, add it to the man page, too!</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"><tt class="py-comment"></tt> </tt>
+<a name="CacheWriteErrorWarning"></a><div id="CacheWriteErrorWarning-def"><a name="L43"></a><tt class="py-lineno"> 43</tt> <a class="py-toggle" href="#" id="CacheWriteErrorWarning-toggle" onclick="return toggle('CacheWriteErrorWarning');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="SCons.Warnings.CacheWriteErrorWarning-class.html">CacheWriteErrorWarning</a><tt class="py-op">(</tt><tt class="py-base-class">Warning</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="CacheWriteErrorWarning-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="CacheWriteErrorWarning-expanded"><a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"> </tt>
+<a name="CorruptSConsignWarning"></a><div id="CorruptSConsignWarning-def"><a name="L46"></a><tt class="py-lineno"> 46</tt> <a class="py-toggle" href="#" id="CorruptSConsignWarning-toggle" onclick="return toggle('CorruptSConsignWarning');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="SCons.Warnings.CorruptSConsignWarning-class.html">CorruptSConsignWarning</a><tt class="py-op">(</tt><tt class="py-base-class">Warning</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="CorruptSConsignWarning-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="CorruptSConsignWarning-expanded"><a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"> </tt>
+<a name="DependencyWarning"></a><div id="DependencyWarning-def"><a name="L49"></a><tt class="py-lineno"> 49</tt> <a class="py-toggle" href="#" id="DependencyWarning-toggle" onclick="return toggle('DependencyWarning');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="SCons.Warnings.DependencyWarning-class.html">DependencyWarning</a><tt class="py-op">(</tt><tt class="py-base-class">Warning</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DependencyWarning-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="DependencyWarning-expanded"><a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"> </tt>
+<a name="DeprecatedWarning"></a><div id="DeprecatedWarning-def"><a name="L52"></a><tt class="py-lineno"> 52</tt> <a class="py-toggle" href="#" id="DeprecatedWarning-toggle" onclick="return toggle('DeprecatedWarning');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="SCons.Warnings.DeprecatedWarning-class.html">DeprecatedWarning</a><tt class="py-op">(</tt><tt class="py-base-class">Warning</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DeprecatedWarning-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="DeprecatedWarning-expanded"><a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"> </tt>
+<a name="DeprecatedCopyWarning"></a><div id="DeprecatedCopyWarning-def"><a name="L55"></a><tt class="py-lineno"> 55</tt> <a class="py-toggle" href="#" id="DeprecatedCopyWarning-toggle" onclick="return toggle('DeprecatedCopyWarning');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="SCons.Warnings.DeprecatedCopyWarning-class.html">DeprecatedCopyWarning</a><tt class="py-op">(</tt><tt class="py-base-class">DeprecatedWarning</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DeprecatedCopyWarning-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="DeprecatedCopyWarning-expanded"><a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"> </tt>
+<a name="DeprecatedOptionsWarning"></a><div id="DeprecatedOptionsWarning-def"><a name="L58"></a><tt class="py-lineno"> 58</tt> <a class="py-toggle" href="#" id="DeprecatedOptionsWarning-toggle" onclick="return toggle('DeprecatedOptionsWarning');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="SCons.Warnings.DeprecatedOptionsWarning-class.html">DeprecatedOptionsWarning</a><tt class="py-op">(</tt><tt class="py-base-class">DeprecatedWarning</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DeprecatedOptionsWarning-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="DeprecatedOptionsWarning-expanded"><a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line"> </tt>
+<a name="DeprecatedSourceSignaturesWarning"></a><div id="DeprecatedSourceSignaturesWarning-def"><a name="L61"></a><tt class="py-lineno"> 61</tt> <a class="py-toggle" href="#" id="DeprecatedSourceSignaturesWarning-toggle" onclick="return toggle('DeprecatedSourceSignaturesWarning');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="SCons.Warnings.DeprecatedSourceSignaturesWarning-class.html">DeprecatedSourceSignaturesWarning</a><tt class="py-op">(</tt><tt class="py-base-class">DeprecatedWarning</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DeprecatedSourceSignaturesWarning-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="DeprecatedSourceSignaturesWarning-expanded"><a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line"> </tt>
+<a name="DeprecatedTargetSignaturesWarning"></a><div id="DeprecatedTargetSignaturesWarning-def"><a name="L64"></a><tt class="py-lineno"> 64</tt> <a class="py-toggle" href="#" id="DeprecatedTargetSignaturesWarning-toggle" onclick="return toggle('DeprecatedTargetSignaturesWarning');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="SCons.Warnings.DeprecatedTargetSignaturesWarning-class.html">DeprecatedTargetSignaturesWarning</a><tt class="py-op">(</tt><tt class="py-base-class">DeprecatedWarning</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DeprecatedTargetSignaturesWarning-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="DeprecatedTargetSignaturesWarning-expanded"><a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line"> </tt>
+<a name="DuplicateEnvironmentWarning"></a><div id="DuplicateEnvironmentWarning-def"><a name="L67"></a><tt class="py-lineno"> 67</tt> <a class="py-toggle" href="#" id="DuplicateEnvironmentWarning-toggle" onclick="return toggle('DuplicateEnvironmentWarning');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="SCons.Warnings.DuplicateEnvironmentWarning-class.html">DuplicateEnvironmentWarning</a><tt class="py-op">(</tt><tt class="py-base-class">Warning</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DuplicateEnvironmentWarning-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="DuplicateEnvironmentWarning-expanded"><a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line"> </tt>
+<a name="FutureReservedVariableWarning"></a><div id="FutureReservedVariableWarning-def"><a name="L70"></a><tt class="py-lineno"> 70</tt> <a class="py-toggle" href="#" id="FutureReservedVariableWarning-toggle" onclick="return toggle('FutureReservedVariableWarning');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="SCons.Warnings.FutureReservedVariableWarning-class.html">FutureReservedVariableWarning</a><tt class="py-op">(</tt><tt class="py-base-class">Warning</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FutureReservedVariableWarning-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="FutureReservedVariableWarning-expanded"><a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line"> </tt>
+<a name="LinkWarning"></a><div id="LinkWarning-def"><a name="L73"></a><tt class="py-lineno"> 73</tt> <a class="py-toggle" href="#" id="LinkWarning-toggle" onclick="return toggle('LinkWarning');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="SCons.Warnings.LinkWarning-class.html">LinkWarning</a><tt class="py-op">(</tt><tt class="py-base-class">Warning</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="LinkWarning-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="LinkWarning-expanded"><a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line"> </tt>
+<a name="MisleadingKeywordsWarning"></a><div id="MisleadingKeywordsWarning-def"><a name="L76"></a><tt class="py-lineno"> 76</tt> <a class="py-toggle" href="#" id="MisleadingKeywordsWarning-toggle" onclick="return toggle('MisleadingKeywordsWarning');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="SCons.Warnings.MisleadingKeywordsWarning-class.html">MisleadingKeywordsWarning</a><tt class="py-op">(</tt><tt class="py-base-class">Warning</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="MisleadingKeywordsWarning-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="MisleadingKeywordsWarning-expanded"><a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line"> </tt>
+<a name="MissingSConscriptWarning"></a><div id="MissingSConscriptWarning-def"><a name="L79"></a><tt class="py-lineno"> 79</tt> <a class="py-toggle" href="#" id="MissingSConscriptWarning-toggle" onclick="return toggle('MissingSConscriptWarning');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="SCons.Warnings.MissingSConscriptWarning-class.html">MissingSConscriptWarning</a><tt class="py-op">(</tt><tt class="py-base-class">Warning</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="MissingSConscriptWarning-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="MissingSConscriptWarning-expanded"><a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line"> </tt>
+<a name="NoMD5ModuleWarning"></a><div id="NoMD5ModuleWarning-def"><a name="L82"></a><tt class="py-lineno"> 82</tt> <a class="py-toggle" href="#" id="NoMD5ModuleWarning-toggle" onclick="return toggle('NoMD5ModuleWarning');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="SCons.Warnings.NoMD5ModuleWarning-class.html">NoMD5ModuleWarning</a><tt class="py-op">(</tt><tt class="py-base-class">Warning</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="NoMD5ModuleWarning-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="NoMD5ModuleWarning-expanded"><a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line"> </tt>
+<a name="NoMetaclassSupportWarning"></a><div id="NoMetaclassSupportWarning-def"><a name="L85"></a><tt class="py-lineno"> 85</tt> <a class="py-toggle" href="#" id="NoMetaclassSupportWarning-toggle" onclick="return toggle('NoMetaclassSupportWarning');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="SCons.Warnings.NoMetaclassSupportWarning-class.html">NoMetaclassSupportWarning</a><tt class="py-op">(</tt><tt class="py-base-class">Warning</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="NoMetaclassSupportWarning-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="NoMetaclassSupportWarning-expanded"><a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line"> </tt>
+<a name="NoObjectCountWarning"></a><div id="NoObjectCountWarning-def"><a name="L88"></a><tt class="py-lineno"> 88</tt> <a class="py-toggle" href="#" id="NoObjectCountWarning-toggle" onclick="return toggle('NoObjectCountWarning');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="SCons.Warnings.NoObjectCountWarning-class.html">NoObjectCountWarning</a><tt class="py-op">(</tt><tt class="py-base-class">Warning</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="NoObjectCountWarning-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="NoObjectCountWarning-expanded"><a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"> </tt>
+<a name="NoParallelSupportWarning"></a><div id="NoParallelSupportWarning-def"><a name="L91"></a><tt class="py-lineno"> 91</tt> <a class="py-toggle" href="#" id="NoParallelSupportWarning-toggle" onclick="return toggle('NoParallelSupportWarning');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="SCons.Warnings.NoParallelSupportWarning-class.html">NoParallelSupportWarning</a><tt class="py-op">(</tt><tt class="py-base-class">Warning</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="NoParallelSupportWarning-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="NoParallelSupportWarning-expanded"><a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line"> </tt>
+<a name="PythonVersionWarning"></a><div id="PythonVersionWarning-def"><a name="L94"></a><tt class="py-lineno"> 94</tt> <a class="py-toggle" href="#" id="PythonVersionWarning-toggle" onclick="return toggle('PythonVersionWarning');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="SCons.Warnings.PythonVersionWarning-class.html">PythonVersionWarning</a><tt class="py-op">(</tt><tt class="py-base-class">DeprecatedWarning</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="PythonVersionWarning-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="PythonVersionWarning-expanded"><a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line"> </tt>
+<a name="ReservedVariableWarning"></a><div id="ReservedVariableWarning-def"><a name="L97"></a><tt class="py-lineno"> 97</tt> <a class="py-toggle" href="#" id="ReservedVariableWarning-toggle" onclick="return toggle('ReservedVariableWarning');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="SCons.Warnings.ReservedVariableWarning-class.html">ReservedVariableWarning</a><tt class="py-op">(</tt><tt class="py-base-class">Warning</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ReservedVariableWarning-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ReservedVariableWarning-expanded"><a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line"> </tt>
+<a name="StackSizeWarning"></a><div id="StackSizeWarning-def"><a name="L100"></a><tt class="py-lineno">100</tt> <a class="py-toggle" href="#" id="StackSizeWarning-toggle" onclick="return toggle('StackSizeWarning');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="SCons.Warnings.StackSizeWarning-class.html">StackSizeWarning</a><tt class="py-op">(</tt><tt class="py-base-class">Warning</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="StackSizeWarning-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="StackSizeWarning-expanded"><a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line"> </tt>
+<a name="FortranCxxMixWarning"></a><div id="FortranCxxMixWarning-def"><a name="L103"></a><tt class="py-lineno">103</tt> <a class="py-toggle" href="#" id="FortranCxxMixWarning-toggle" onclick="return toggle('FortranCxxMixWarning');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="SCons.Warnings.FortranCxxMixWarning-class.html">FortranCxxMixWarning</a><tt class="py-op">(</tt><tt class="py-base-class">LinkWarning</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FortranCxxMixWarning-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="FortranCxxMixWarning-expanded"><a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line"> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line"><tt id="link-4" class="py-name" targets="Variable SCons.Warnings._warningAsException=SCons.Warnings-module.html#_warningAsException"><a title="SCons.Warnings._warningAsException" class="py-name" href="#" onclick="return doclink('link-4', '_warningAsException', 'link-4');">_warningAsException</a></tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line"> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line"><tt class="py-comment"># The below is a list of 2-tuples.  The first element is a class object.</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># The second element is true if that class is enabled, false if it is disabled.</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt id="link-5" class="py-name" targets="Variable SCons.Warnings._enabled=SCons.Warnings-module.html#_enabled"><a title="SCons.Warnings._enabled" class="py-name" href="#" onclick="return doclink('link-5', '_enabled', 'link-5');">_enabled</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line"> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line"><tt id="link-6" class="py-name" targets="Variable SCons.Warnings._warningOut=SCons.Warnings-module.html#_warningOut"><a title="SCons.Warnings._warningOut" class="py-name" href="#" onclick="return doclink('link-6', '_warningOut', 'link-6');">_warningOut</a></tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line"> </tt>
+<a name="suppressWarningClass"></a><div id="suppressWarningClass-def"><a name="L114"></a><tt class="py-lineno">114</tt> <a class="py-toggle" href="#" id="suppressWarningClass-toggle" onclick="return toggle('suppressWarningClass');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Warnings-module.html#suppressWarningClass">suppressWarningClass</a><tt class="py-op">(</tt><tt class="py-param">clazz</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="suppressWarningClass-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="suppressWarningClass-expanded"><a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">    <tt class="py-docstring">"""Suppresses all warnings that are of type clazz or</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line"><tt class="py-docstring">    derived from clazz."""</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">    <tt id="link-7" class="py-name"><a title="SCons.Warnings._enabled" class="py-name" href="#" onclick="return doclink('link-7', '_enabled', 'link-5');">_enabled</a></tt><tt class="py-op">.</tt><tt id="link-8" class="py-name" targets="Method SCons.Util.UniqueList.insert()=SCons.Util.UniqueList-class.html#insert"><a title="SCons.Util.UniqueList.insert" class="py-name" href="#" onclick="return doclink('link-8', 'insert', 'link-8');">insert</a></tt><tt class="py-op">(</tt><tt class="py-number">0</tt><tt class="py-op">,</tt> <tt class="py-op">(</tt><tt class="py-name">clazz</tt><tt class="py-op">,</tt> <tt class="py-number">0</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line"> </tt>
+<a name="enableWarningClass"></a><div id="enableWarningClass-def"><a name="L119"></a><tt class="py-lineno">119</tt> <a class="py-toggle" href="#" id="enableWarningClass-toggle" onclick="return toggle('enableWarningClass');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Warnings-module.html#enableWarningClass">enableWarningClass</a><tt class="py-op">(</tt><tt class="py-param">clazz</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="enableWarningClass-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="enableWarningClass-expanded"><a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">    <tt class="py-docstring">"""Suppresses all warnings that are of type clazz or</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line"><tt class="py-docstring">    derived from clazz."""</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">    <tt id="link-9" class="py-name"><a title="SCons.Warnings._enabled" class="py-name" href="#" onclick="return doclink('link-9', '_enabled', 'link-5');">_enabled</a></tt><tt class="py-op">.</tt><tt id="link-10" class="py-name"><a title="SCons.Util.UniqueList.insert" class="py-name" href="#" onclick="return doclink('link-10', 'insert', 'link-8');">insert</a></tt><tt class="py-op">(</tt><tt class="py-number">0</tt><tt class="py-op">,</tt> <tt class="py-op">(</tt><tt class="py-name">clazz</tt><tt class="py-op">,</tt> <tt class="py-number">1</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line"> </tt>
+<a name="warningAsException"></a><div id="warningAsException-def"><a name="L124"></a><tt class="py-lineno">124</tt> <a class="py-toggle" href="#" id="warningAsException-toggle" onclick="return toggle('warningAsException');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Warnings-module.html#warningAsException">warningAsException</a><tt class="py-op">(</tt><tt class="py-param">flag</tt><tt class="py-op">=</tt><tt class="py-number">1</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="warningAsException-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="warningAsException-expanded"><a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">    <tt class="py-docstring">"""Turn warnings into exceptions.  Returns the old value of the flag."""</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">    <tt class="py-keyword">global</tt> <tt id="link-11" class="py-name"><a title="SCons.Warnings._warningAsException" class="py-name" href="#" onclick="return doclink('link-11', '_warningAsException', 'link-4');">_warningAsException</a></tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">    <tt class="py-name">old</tt> <tt class="py-op">=</tt> <tt id="link-12" class="py-name"><a title="SCons.Warnings._warningAsException" class="py-name" href="#" onclick="return doclink('link-12', '_warningAsException', 'link-4');">_warningAsException</a></tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">    <tt id="link-13" class="py-name"><a title="SCons.Warnings._warningAsException" class="py-name" href="#" onclick="return doclink('link-13', '_warningAsException', 'link-4');">_warningAsException</a></tt> <tt class="py-op">=</tt> <tt class="py-name">flag</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">old</tt> </tt>
+</div><a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line"> </tt>
+<a name="warn"></a><div id="warn-def"><a name="L131"></a><tt class="py-lineno">131</tt> <a class="py-toggle" href="#" id="warn-toggle" onclick="return toggle('warn');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Warnings-module.html#warn">warn</a><tt class="py-op">(</tt><tt class="py-param">clazz</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="warn-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="warn-expanded"><a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">    <tt class="py-keyword">global</tt> <tt id="link-14" class="py-name"><a title="SCons.Warnings._enabled" class="py-name" href="#" onclick="return doclink('link-14', '_enabled', 'link-5');">_enabled</a></tt><tt class="py-op">,</tt> <tt id="link-15" class="py-name"><a title="SCons.Warnings._warningAsException" class="py-name" href="#" onclick="return doclink('link-15', '_warningAsException', 'link-4');">_warningAsException</a></tt><tt class="py-op">,</tt> <tt id="link-16" class="py-name"><a title="SCons.Warnings._warningOut" class="py-name" href="#" onclick="return doclink('link-16', '_warningOut', 'link-6');">_warningOut</a></tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line"> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line">    <tt class="py-name">warning</tt> <tt class="py-op">=</tt> <tt class="py-name">clazz</tt><tt class="py-op">(</tt><tt class="py-name">args</tt><tt class="py-op">)</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">clazz</tt><tt class="py-op">,</tt> <tt class="py-name">flag</tt> <tt class="py-keyword">in</tt> <tt id="link-17" class="py-name"><a title="SCons.Warnings._enabled" class="py-name" href="#" onclick="return doclink('link-17', '_enabled', 'link-5');">_enabled</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt class="py-name">warning</tt><tt class="py-op">,</tt> <tt class="py-name">clazz</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">flag</tt><tt class="py-op">:</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt id="link-18" class="py-name"><a title="SCons.Warnings._warningAsException" class="py-name" href="#" onclick="return doclink('link-18', '_warningAsException', 'link-4');">_warningAsException</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line">                    <tt class="py-keyword">raise</tt> <tt class="py-name">warning</tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line"> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt id="link-19" class="py-name"><a title="SCons.Warnings._warningOut" class="py-name" href="#" onclick="return doclink('link-19', '_warningOut', 'link-6');">_warningOut</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">                    <tt id="link-20" class="py-name"><a title="SCons.Warnings._warningOut" class="py-name" href="#" onclick="return doclink('link-20', '_warningOut', 'link-6');">_warningOut</a></tt><tt class="py-op">(</tt><tt class="py-name">warning</tt><tt class="py-op">)</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line">            <tt class="py-keyword">break</tt> </tt>
+</div><a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line"> </tt>
+<a name="process_warn_strings"></a><div id="process_warn_strings-def"><a name="L145"></a><tt class="py-lineno">145</tt> <a class="py-toggle" href="#" id="process_warn_strings-toggle" onclick="return toggle('process_warn_strings');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Warnings-module.html#process_warn_strings">process_warn_strings</a><tt class="py-op">(</tt><tt class="py-param">arguments</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="process_warn_strings-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="process_warn_strings-expanded"><a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">    <tt class="py-docstring">"""Process string specifications of enabling/disabling warnings,</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line"><tt class="py-docstring">    as passed to the --warn option or the SetOption('warn') function.</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line"><tt class="py-docstring">    </tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line"><tt class="py-docstring">    An argument to this option should be of the form &lt;warning-class&gt;</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line"><tt class="py-docstring">    or no-&lt;warning-class&gt;.  The warning class is munged in order</tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line"><tt class="py-docstring">    to get an actual class name from the classes above, which we</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line"><tt class="py-docstring">    need to pass to the {enable,disable}WarningClass() functions.</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line"><tt class="py-docstring">    The supplied &lt;warning-class&gt; is split on hyphens, each element</tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line"><tt class="py-docstring">    is capitalized, then smushed back together.  Then the string</tt> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line"><tt class="py-docstring">    "Warning" is appended to get the class name.</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line"><tt class="py-docstring">    For example, 'deprecated' will enable the DeprecatedWarning</tt> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line"><tt class="py-docstring">    class.  'no-dependency' will disable the .DependencyWarning</tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line"><tt class="py-docstring">    class.</tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line"><tt class="py-docstring">    As a special case, --warn=all and --warn=no-all will enable or</tt> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line"><tt class="py-docstring">    disable (respectively) the base Warning class of all warnings.</tt> </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line"> </tt>
+<a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line">    <tt class="py-keyword">def</tt> <tt class="py-def-name">_capitalize</tt><tt class="py-op">(</tt><tt class="py-param">s</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">s</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-number">5</tt><tt class="py-op">]</tt> <tt class="py-op">==</tt> <tt class="py-string">"scons"</tt><tt class="py-op">:</tt> </tt>
+<a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-string">"SCons"</tt> <tt class="py-op">+</tt> <tt class="py-name">s</tt><tt class="py-op">[</tt><tt class="py-number">5</tt><tt class="py-op">:</tt><tt class="py-op">]</tt> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt id="link-21" class="py-name"><a title="SCons.SConf.SConfBuildInfo.string
+SCons.Script.Main.Progressor.string
+string" class="py-name" href="#" onclick="return doclink('link-21', 'string', 'link-1');">string</a></tt><tt class="py-op">.</tt><tt class="py-name">capitalize</tt><tt class="py-op">(</tt><tt class="py-name">s</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line"> </tt>
+<a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">arg</tt> <tt class="py-keyword">in</tt> <tt class="py-name">arguments</tt><tt class="py-op">:</tt> </tt>
+<a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line"> </tt>
+<a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line">        <tt class="py-name">elems</tt> <tt class="py-op">=</tt> <tt id="link-22" class="py-name"><a title="SCons.SConf.SConfBuildInfo.string
+SCons.Script.Main.Progressor.string
+string" class="py-name" href="#" onclick="return doclink('link-22', 'string', 'link-1');">string</a></tt><tt class="py-op">.</tt><tt id="link-23" class="py-name" targets="Function SCons.compat._scons_shlex.split()=SCons.compat._scons_shlex-module.html#split"><a title="SCons.compat._scons_shlex.split" class="py-name" href="#" onclick="return doclink('link-23', 'split', 'link-23');">split</a></tt><tt class="py-op">(</tt><tt id="link-24" class="py-name"><a title="SCons.SConf.SConfBuildInfo.string
+SCons.Script.Main.Progressor.string
+string" class="py-name" href="#" onclick="return doclink('link-24', 'string', 'link-1');">string</a></tt><tt class="py-op">.</tt><tt class="py-name">lower</tt><tt class="py-op">(</tt><tt class="py-name">arg</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-string">'-'</tt><tt class="py-op">)</tt> </tt>
+<a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line">        <tt id="link-25" class="py-name" targets="Method SCons.Script.Main.Stats.enable()=SCons.Script.Main.Stats-class.html#enable"><a title="SCons.Script.Main.Stats.enable" class="py-name" href="#" onclick="return doclink('link-25', 'enable', 'link-25');">enable</a></tt> <tt class="py-op">=</tt> <tt class="py-number">1</tt> </tt>
+<a name="L177"></a><tt class="py-lineno">177</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">elems</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> <tt class="py-op">==</tt> <tt class="py-string">'no'</tt><tt class="py-op">:</tt> </tt>
+<a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line">            <tt id="link-26" class="py-name"><a title="SCons.Script.Main.Stats.enable" class="py-name" href="#" onclick="return doclink('link-26', 'enable', 'link-25');">enable</a></tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line">            <tt class="py-keyword">del</tt> <tt class="py-name">elems</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line"> </tt>
+<a name="L181"></a><tt class="py-lineno">181</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">elems</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-number">1</tt> <tt class="py-keyword">and</tt> <tt class="py-name">elems</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> <tt class="py-op">==</tt> <tt class="py-string">'all'</tt><tt class="py-op">:</tt> </tt>
+<a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line">            <tt class="py-name">class_name</tt> <tt class="py-op">=</tt> <tt class="py-string">"Warning"</tt> </tt>
+<a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line">            <tt class="py-name">class_name</tt> <tt class="py-op">=</tt> <tt id="link-27" class="py-name"><a title="SCons.SConf.SConfBuildInfo.string
+SCons.Script.Main.Progressor.string
+string" class="py-name" href="#" onclick="return doclink('link-27', 'string', 'link-1');">string</a></tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt class="py-name">map</tt><tt class="py-op">(</tt><tt class="py-name">_capitalize</tt><tt class="py-op">,</tt> <tt class="py-name">elems</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-string">''</tt><tt class="py-op">)</tt> <tt class="py-op">+</tt> <tt class="py-string">"Warning"</tt> </tt>
+<a name="L185"></a><tt class="py-lineno">185</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L186"></a><tt class="py-lineno">186</tt>  <tt class="py-line">            <tt class="py-name">clazz</tt> <tt class="py-op">=</tt> <tt class="py-name">globals</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-name">class_name</tt><tt class="py-op">]</tt> </tt>
+<a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt> <tt class="py-name">KeyError</tt><tt class="py-op">:</tt> </tt>
+<a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line">            <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">stderr</tt><tt class="py-op">.</tt><tt id="link-28" class="py-name" targets="Method SCons.Node.Python.Value.write()=SCons.Node.Python.Value-class.html#write,Method SCons.SConf.Streamer.write()=SCons.SConf.Streamer-class.html#write,Method SCons.SConsign.DB.write()=SCons.SConsign.DB-class.html#write,Method SCons.SConsign.DirFile.write()=SCons.SConsign.DirFile-class.html#write,Function SCons.SConsign.write()=SCons.SConsign-module.html#write,Method SCons.Script.Main.Progressor.write()=SCons.Script.Main.Progressor-class.html#write,Method SCons.Util.Unbuffered.write()=SCons.Util.Unbuffered-class.html#write"><a title="SCons.Node.Python.Value.write
+SCons.SConf.Streamer.write
+SCons.SConsign.DB.write
+SCons.SConsign.DirFile.write
+SCons.SConsign.write
+SCons.Script.Main.Progressor.write
+SCons.Util.Unbuffered.write" class="py-name" href="#" onclick="return doclink('link-28', 'write', 'link-28');">write</a></tt><tt class="py-op">(</tt><tt class="py-string">"No warning type: '%s'\n"</tt> <tt class="py-op">%</tt> <tt class="py-name">arg</tt><tt class="py-op">)</tt> </tt>
+<a name="L189"></a><tt class="py-lineno">189</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L190"></a><tt class="py-lineno">190</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt id="link-29" class="py-name"><a title="SCons.Script.Main.Stats.enable" class="py-name" href="#" onclick="return doclink('link-29', 'enable', 'link-25');">enable</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L191"></a><tt class="py-lineno">191</tt>  <tt class="py-line">                <tt class="py-name">enableWarningClass</tt><tt class="py-op">(</tt><tt class="py-name">clazz</tt><tt class="py-op">)</tt> </tt>
+<a name="L192"></a><tt class="py-lineno">192</tt>  <tt class="py-line">            <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L193"></a><tt class="py-lineno">193</tt>  <tt class="py-line">                <tt class="py-name">suppressWarningClass</tt><tt class="py-op">(</tt><tt class="py-name">clazz</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L194"></a><tt class="py-lineno">194</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="SCons-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://www.scons.org/">SCons</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0beta1 on Sat Dec 20 23:02:29 2008
+    </td>
+    <td align="right" class="footer">
+      <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie()
+  // -->
+</script>
+  
+</body>
+</html>

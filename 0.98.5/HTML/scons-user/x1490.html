@@ -1,0 +1,218 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Getting at Command-Line Targets</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 0.98.5"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Controlling a Build From the Command Line"
+HREF="c1460.html"><LINK
+REL="PREVIOUS"
+TITLE="Controlling a Build From the Command Line"
+HREF="c1460.html"><LINK
+REL="NEXT"
+TITLE="Controlling the Default Targets"
+HREF="x1506.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 0.98.5</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="c1460.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 9. Controlling a Build From the Command Line</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x1506.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN1490"
+>9.2. Getting at Command-Line Targets</A
+></H1
+><P
+>&#13;
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> supports a <CODE
+CLASS="varname"
+>COMMAND_LINE_TARGETS</CODE
+> variable
+    that lets you get at the list of targets that the
+    user specified on the command line.
+    You can use the targets to manipulate the
+    build in any way you wish.
+    As a simple example,
+    suppose that you want to print a reminder
+    to the user whenever a specific program is built.
+    You can do this by checking for the
+    target in the <CODE
+CLASS="varname"
+>COMMAND_LINE_TARGETS</CODE
+> list:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;      if 'bar' in COMMAND_LINE_TARGETS:
+          print "Don't forget to copy `bar' to the archive!"
+      Default(Program('foo.c'))
+      Program('bar.c')
+    </PRE
+><P
+>&#13;
+    Then, running <SPAN
+CLASS="application"
+>SCons</SPAN
+> with the default target
+    works as it always does,
+    but explicity specifying the <SPAN
+CLASS="application"
+>bar</SPAN
+> target
+    on the command line generates the warning message:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      cc -o foo.o -c foo.c
+      cc -o foo foo.o
+      % <KBD
+CLASS="userinput"
+>scons -Q bar</KBD
+>
+      Don't forget to copy `bar' to the archive!
+      cc -o bar.o -c bar.c
+      cc -o bar bar.o
+    </PRE
+><P
+>&#13;
+    Another practical use for the <CODE
+CLASS="varname"
+>COMMAND_LINE_TARGETS</CODE
+> variable
+    might be to speed up a build
+    by only reading certain subsidiary <TT
+CLASS="filename"
+>SConscript</TT
+>
+    files if a specific target is requested.
+
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="c1460.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x1506.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Controlling a Build From the Command Line</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c1460.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Controlling the Default Targets</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

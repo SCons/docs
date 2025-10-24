@@ -1,0 +1,723 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>SCons.Job &mdash; SCons 4.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex/" />
+    <link rel="search" title="Search" href="../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../" class="icon icon-home"> SCons
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                4.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons/">SCons package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Variables/">SCons.Variables package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.compat/">SCons.compat package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Action">SCons.Action module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Builder">SCons.Builder module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.CacheDir">SCons.CacheDir module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Conftest">SCons.Conftest module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Debug">SCons.Debug module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Defaults">SCons.Defaults module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Environment">SCons.Environment module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Errors">SCons.Errors module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Executor">SCons.Executor module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Job">SCons.Job module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Memoize">SCons.Memoize module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.PathList">SCons.PathList module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.SConf">SCons.SConf module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.SConsign">SCons.SConsign module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Subst">SCons.Subst module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Taskmaster">SCons.Taskmaster module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Util">SCons.Util module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Warnings">SCons.Warnings module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.cpp">SCons.cpp module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.dblite">SCons.dblite module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.exitfuncs">SCons.exitfuncs module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.compat/">SCons.compat package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.compat/#module-SCons.compat">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Node/">SCons.Node package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#module-SCons.Node.Alias">SCons.Node.Alias module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#module-SCons.Node.FS">SCons.Node.FS module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#module-SCons.Node.Python">SCons.Node.Python module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#module-SCons.Node">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Platform/">SCons.Platform package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.aix">SCons.Platform.aix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.cygwin">SCons.Platform.cygwin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.darwin">SCons.Platform.darwin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.hpux">SCons.Platform.hpux module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.irix">SCons.Platform.irix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.mingw">SCons.Platform.mingw module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.os2">SCons.Platform.os2 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.posix">SCons.Platform.posix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.sunos">SCons.Platform.sunos module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.virtualenv">SCons.Platform.virtualenv module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.win32">SCons.Platform.win32 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Scanner/">SCons.Scanner package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.C">SCons.Scanner.C module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.D">SCons.Scanner.D module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.Dir">SCons.Scanner.Dir module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.Fortran">SCons.Scanner.Fortran module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.IDL">SCons.Scanner.IDL module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.LaTeX">SCons.Scanner.LaTeX module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.Prog">SCons.Scanner.Prog module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.RC">SCons.Scanner.RC module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.SWIG">SCons.Scanner.SWIG module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Script/">SCons.Script package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script.Interactive">SCons.Script.Interactive module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script.Main">SCons.Script.Main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script.SConsOptions">SCons.Script.SConsOptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script.SConscript">SCons.Script.SConscript module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Tool/">SCons.Tool package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Tool/#module-SCons.Tool">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Variables/">SCons.Variables package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.BoolVariable">SCons.Variables.BoolVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.EnumVariable">SCons.Variables.EnumVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.ListVariable">SCons.Variables.ListVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.PackageVariable">SCons.Variables.PackageVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.PathVariable">SCons.Variables.PathVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../">SCons</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../">Docs</a> &raquo;</li>
+        
+          <li><a href="../../">Module code</a> &raquo;</li>
+        
+      <li>SCons.Job</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for SCons.Job</h1><div class="highlight"><pre>
+<span></span><span class="c1"># MIT License</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright The SCons Foundation</span>
+<span class="c1">#</span>
+<span class="c1"># Permission is hereby granted, free of charge, to any person obtaining</span>
+<span class="c1"># a copy of this software and associated documentation files (the</span>
+<span class="c1"># &quot;Software&quot;), to deal in the Software without restriction, including</span>
+<span class="c1"># without limitation the rights to use, copy, modify, merge, publish,</span>
+<span class="c1"># distribute, sublicense, and/or sell copies of the Software, and to</span>
+<span class="c1"># permit persons to whom the Software is furnished to do so, subject to</span>
+<span class="c1"># the following conditions:</span>
+<span class="c1">#</span>
+<span class="c1"># The above copyright notice and this permission notice shall be included</span>
+<span class="c1"># in all copies or substantial portions of the Software.</span>
+<span class="c1">#</span>
+<span class="c1"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY</span>
+<span class="c1"># KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND</span>
+<span class="c1"># NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE</span>
+<span class="c1"># LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION</span>
+<span class="c1"># OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</span>
+<span class="c1"># WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</span>
+
+<span class="sd">&quot;&quot;&quot;Serial and Parallel classes to execute build tasks.</span>
+
+<span class="sd">The Jobs class provides a higher level interface to start,</span>
+<span class="sd">stop, and wait on jobs.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">SCons.compat</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">signal</span>
+
+<span class="kn">import</span> <span class="nn">SCons.Errors</span>
+
+<span class="c1"># The default stack size (in kilobytes) of the threads used to execute</span>
+<span class="c1"># jobs in parallel.</span>
+<span class="c1">#</span>
+<span class="c1"># We use a stack size of 256 kilobytes. The default on some platforms</span>
+<span class="c1"># is too large and prevents us from creating enough threads to fully</span>
+<span class="c1"># parallelized the build. For example, the default stack size on linux</span>
+<span class="c1"># is 8 MBytes.</span>
+
+<span class="n">explicit_stack_size</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">default_stack_size</span> <span class="o">=</span> <span class="mi">256</span>
+
+<span class="n">interrupt_msg</span> <span class="o">=</span> <span class="s1">&#39;Build interrupted.&#39;</span>
+
+
+<div class="viewcode-block" id="InterruptState"><a class="viewcode-back" href="../../../SCons/#SCons.Job.InterruptState">[docs]</a><span class="k">class</span> <span class="nc">InterruptState</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interrupted</span> <span class="o">=</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="InterruptState.set"><a class="viewcode-back" href="../../../SCons/#SCons.Job.InterruptState.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interrupted</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">interrupted</span></div>
+
+
+<div class="viewcode-block" id="Jobs"><a class="viewcode-back" href="../../../SCons/#SCons.Job.Jobs">[docs]</a><span class="k">class</span> <span class="nc">Jobs</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;An instance of this class initializes N jobs, and provides</span>
+<span class="sd">    methods for starting, stopping, and waiting on all N jobs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">taskmaster</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create &#39;num&#39; jobs using the given taskmaster.</span>
+
+<span class="sd">        If &#39;num&#39; is 1 or less, then a serial job will be used,</span>
+<span class="sd">        otherwise a parallel job with &#39;num&#39; worker threads will</span>
+<span class="sd">        be used.</span>
+
+<span class="sd">        The &#39;num_jobs&#39; attribute will be set to the actual number of jobs</span>
+<span class="sd">        allocated.  If more than one job is requested but the Parallel</span>
+<span class="sd">        class can&#39;t do it, it gets reset to 1.  Wrapping interfaces that</span>
+<span class="sd">        care should check the value of &#39;num_jobs&#39; after initialization.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">job</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">num</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">stack_size</span> <span class="o">=</span> <span class="n">explicit_stack_size</span>
+            <span class="k">if</span> <span class="n">stack_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">stack_size</span> <span class="o">=</span> <span class="n">default_stack_size</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">job</span> <span class="o">=</span> <span class="n">Parallel</span><span class="p">(</span><span class="n">taskmaster</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">stack_size</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">num_jobs</span> <span class="o">=</span> <span class="n">num</span>
+            <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">job</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">job</span> <span class="o">=</span> <span class="n">Serial</span><span class="p">(</span><span class="n">taskmaster</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">num_jobs</span> <span class="o">=</span> <span class="mi">1</span>
+
+<div class="viewcode-block" id="Jobs.run"><a class="viewcode-back" href="../../../SCons/#SCons.Job.Jobs.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">postfunc</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Run the jobs.</span>
+
+<span class="sd">        postfunc() will be invoked after the jobs has run. It will be</span>
+<span class="sd">        invoked even if the jobs are interrupted by a keyboard</span>
+<span class="sd">        interrupt (well, in fact by a signal such as either SIGINT,</span>
+<span class="sd">        SIGTERM or SIGHUP). The execution of postfunc() is protected</span>
+<span class="sd">        against keyboard interrupts and is guaranteed to run to</span>
+<span class="sd">        completion.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_setup_sig_handler</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">job</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">postfunc</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reset_sig_handler</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Jobs.were_interrupted"><a class="viewcode-back" href="../../../SCons/#SCons.Job.Jobs.were_interrupted">[docs]</a>    <span class="k">def</span> <span class="nf">were_interrupted</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns whether the jobs were interrupted by a signal.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">job</span><span class="o">.</span><span class="n">interrupted</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Jobs._setup_sig_handler"><a class="viewcode-back" href="../../../SCons/#SCons.Job.Jobs._setup_sig_handler">[docs]</a>    <span class="k">def</span> <span class="nf">_setup_sig_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Setup an interrupt handler so that SCons can shutdown cleanly in</span>
+<span class="sd">        various conditions:</span>
+
+<span class="sd">          a) SIGINT: Keyboard interrupt</span>
+<span class="sd">          b) SIGTERM: kill or system shutdown</span>
+<span class="sd">          c) SIGHUP: Controlling shell exiting</span>
+
+<span class="sd">        We handle all of these cases by stopping the taskmaster. It</span>
+<span class="sd">        turns out that it&#39;s very difficult to stop the build process</span>
+<span class="sd">        by throwing asynchronously an exception such as</span>
+<span class="sd">        KeyboardInterrupt. For example, the python Condition</span>
+<span class="sd">        variables (threading.Condition) and queues do not seem to be</span>
+<span class="sd">        asynchronous-exception-safe. It would require adding a whole</span>
+<span class="sd">        bunch of try/finally block and except KeyboardInterrupt all</span>
+<span class="sd">        over the place.</span>
+
+<span class="sd">        Note also that we have to be careful to handle the case when</span>
+<span class="sd">        SCons forks before executing another process. In that case, we</span>
+<span class="sd">        want the child to exit immediately.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">handler</span><span class="p">(</span><span class="n">signum</span><span class="p">,</span> <span class="n">stack</span><span class="p">,</span> <span class="bp">self</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">parentpid</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">()):</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">()</span> <span class="o">==</span> <span class="n">parentpid</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">job</span><span class="o">.</span><span class="n">taskmaster</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">job</span><span class="o">.</span><span class="n">interrupted</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">_exit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">old_sigint</span>  <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span> <span class="n">handler</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">old_sigterm</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGTERM</span><span class="p">,</span> <span class="n">handler</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">old_sighup</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGHUP</span><span class="p">,</span> <span class="n">handler</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Jobs._reset_sig_handler"><a class="viewcode-back" href="../../../SCons/#SCons.Job.Jobs._reset_sig_handler">[docs]</a>    <span class="k">def</span> <span class="nf">_reset_sig_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Restore the signal handlers to their previous state (before the</span>
+<span class="sd">         call to _setup_sig_handler().&quot;&quot;&quot;</span>
+
+        <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">old_sigint</span><span class="p">)</span>
+        <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGTERM</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">old_sigterm</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGHUP</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">old_sighup</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span></div></div>
+
+<div class="viewcode-block" id="Serial"><a class="viewcode-back" href="../../../SCons/#SCons.Job.Serial">[docs]</a><span class="k">class</span> <span class="nc">Serial</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;This class is used to execute tasks in series, and is more efficient</span>
+<span class="sd">    than Parallel, but is only appropriate for non-parallel builds. Only</span>
+<span class="sd">    one instance of this class should be in existence at a time.</span>
+
+<span class="sd">    This class is not thread safe.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">taskmaster</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a new serial job given a taskmaster.</span>
+
+<span class="sd">        The taskmaster&#39;s next_task() method should return the next task</span>
+<span class="sd">        that needs to be executed, or None if there are no more tasks. The</span>
+<span class="sd">        taskmaster&#39;s executed() method will be called for each task when it</span>
+<span class="sd">        is successfully executed, or failed() will be called if it failed to</span>
+<span class="sd">        execute (e.g. execute() raised an exception).&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">taskmaster</span> <span class="o">=</span> <span class="n">taskmaster</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interrupted</span> <span class="o">=</span> <span class="n">InterruptState</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Serial.start"><a class="viewcode-back" href="../../../SCons/#SCons.Job.Serial.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Start the job. This will begin pulling tasks from the taskmaster</span>
+<span class="sd">        and executing them, and return when there are no more tasks. If a task</span>
+<span class="sd">        fails to execute (i.e. execute() raises an exception), then the job will</span>
+<span class="sd">        stop.&quot;&quot;&quot;</span>
+
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">task</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">taskmaster</span><span class="o">.</span><span class="n">next_task</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">task</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">task</span><span class="o">.</span><span class="n">prepare</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">task</span><span class="o">.</span><span class="n">needs_execute</span><span class="p">():</span>
+                    <span class="n">task</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">interrupted</span><span class="p">():</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">BuildError</span><span class="p">(</span>
+                            <span class="n">task</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">errstr</span><span class="o">=</span><span class="n">interrupt_msg</span><span class="p">)</span>
+                    <span class="k">except</span><span class="p">:</span>
+                        <span class="n">task</span><span class="o">.</span><span class="n">exception_set</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">task</span><span class="o">.</span><span class="n">exception_set</span><span class="p">()</span>
+
+                <span class="c1"># Let the failed() callback function arrange for the</span>
+                <span class="c1"># build to stop if that&#39;s appropriate.</span>
+                <span class="n">task</span><span class="o">.</span><span class="n">failed</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">task</span><span class="o">.</span><span class="n">executed</span><span class="p">()</span>
+
+            <span class="n">task</span><span class="o">.</span><span class="n">postprocess</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">taskmaster</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span></div></div>
+
+
+<span class="c1"># Trap import failure so that everything in the Job module but the</span>
+<span class="c1"># Parallel class (and its dependent classes) will work if the interpreter</span>
+<span class="c1"># doesn&#39;t support threads.</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">queue</span>
+    <span class="kn">import</span> <span class="nn">threading</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">pass</span>
+<span class="k">else</span><span class="p">:</span>
+<div class="viewcode-block" id="Worker"><a class="viewcode-back" href="../../../SCons/#SCons.Job.Worker">[docs]</a>    <span class="k">class</span> <span class="nc">Worker</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A worker thread waits on a task to be posted to its request queue,</span>
+<span class="sd">        dequeues the task, executes it, and posts a tuple including the task</span>
+<span class="sd">        and a boolean indicating whether the task executed successfully. &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">requestQueue</span><span class="p">,</span> <span class="n">resultsQueue</span><span class="p">,</span> <span class="n">interrupted</span><span class="p">):</span>
+            <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setDaemon</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">requestQueue</span> <span class="o">=</span> <span class="n">requestQueue</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">resultsQueue</span> <span class="o">=</span> <span class="n">resultsQueue</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">interrupted</span> <span class="o">=</span> <span class="n">interrupted</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Worker.run"><a class="viewcode-back" href="../../../SCons/#SCons.Job.Worker.run">[docs]</a>        <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">task</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">requestQueue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+                <span class="k">if</span> <span class="n">task</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="c1"># The &quot;None&quot; value is used as a sentinel by</span>
+                    <span class="c1"># ThreadPool.cleanup().  This indicates that there</span>
+                    <span class="c1"># are no more tasks, so we should quit.</span>
+                    <span class="k">break</span>
+
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">interrupted</span><span class="p">():</span>
+                        <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">BuildError</span><span class="p">(</span>
+                            <span class="n">task</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">errstr</span><span class="o">=</span><span class="n">interrupt_msg</span><span class="p">)</span>
+                    <span class="n">task</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="n">task</span><span class="o">.</span><span class="n">exception_set</span><span class="p">()</span>
+                    <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">resultsQueue</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="n">task</span><span class="p">,</span> <span class="n">ok</span><span class="p">))</span></div></div>
+
+<div class="viewcode-block" id="ThreadPool"><a class="viewcode-back" href="../../../SCons/#SCons.Job.ThreadPool">[docs]</a>    <span class="k">class</span> <span class="nc">ThreadPool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;This class is responsible for spawning and managing worker threads.&quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">stack_size</span><span class="p">,</span> <span class="n">interrupted</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Create the request and reply queues, and &#39;num&#39; worker threads.</span>
+
+<span class="sd">            One must specify the stack size of the worker threads. The</span>
+<span class="sd">            stack size is specified in kilobytes.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">requestQueue</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">Queue</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">resultsQueue</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">Queue</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">prev_size</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">stack_size</span><span class="p">(</span><span class="n">stack_size</span><span class="o">*</span><span class="mi">1024</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="c1"># Only print a warning if the stack size has been</span>
+                <span class="c1"># explicitly set.</span>
+                <span class="k">if</span> <span class="n">explicit_stack_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Setting stack size is unsupported by this version of Python:</span><span class="se">\n</span><span class="s2">    &quot;</span> <span class="o">+</span> \
+                        <span class="n">e</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">SCons</span><span class="o">.</span><span class="n">Warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Warnings</span><span class="o">.</span><span class="n">StackSizeWarning</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Setting stack size failed:</span><span class="se">\n</span><span class="s2">    &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                <span class="n">SCons</span><span class="o">.</span><span class="n">Warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Warnings</span><span class="o">.</span><span class="n">StackSizeWarning</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+
+            <span class="c1"># Create worker threads</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">workers</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
+                <span class="n">worker</span> <span class="o">=</span> <span class="n">Worker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">requestQueue</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">resultsQueue</span><span class="p">,</span> <span class="n">interrupted</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">workers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">worker</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="s1">&#39;prev_size&#39;</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">():</span>
+                <span class="n">threading</span><span class="o">.</span><span class="n">stack_size</span><span class="p">(</span><span class="n">prev_size</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ThreadPool.put"><a class="viewcode-back" href="../../../SCons/#SCons.Job.ThreadPool.put">[docs]</a>        <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Put task into request queue.&quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">requestQueue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">task</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ThreadPool.get"><a class="viewcode-back" href="../../../SCons/#SCons.Job.ThreadPool.get">[docs]</a>        <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Remove and return a result tuple from the results queue.&quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">resultsQueue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ThreadPool.preparation_failed"><a class="viewcode-back" href="../../../SCons/#SCons.Job.ThreadPool.preparation_failed">[docs]</a>        <span class="k">def</span> <span class="nf">preparation_failed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">resultsQueue</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="n">task</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="ThreadPool.cleanup"><a class="viewcode-back" href="../../../SCons/#SCons.Job.ThreadPool.cleanup">[docs]</a>        <span class="k">def</span> <span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Shuts down the thread pool, giving each worker thread a</span>
+<span class="sd">            chance to shut down gracefully.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="c1"># For each worker thread, put a sentinel &quot;None&quot; value</span>
+            <span class="c1"># on the requestQueue (indicating that there&#39;s no work</span>
+            <span class="c1"># to be done) so that each worker thread will get one and</span>
+            <span class="c1"># terminate gracefully.</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">workers</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">requestQueue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+
+            <span class="c1"># Wait for all of the workers to terminate.</span>
+            <span class="c1">#</span>
+            <span class="c1"># If we don&#39;t do this, later Python versions (2.4, 2.5) often</span>
+            <span class="c1"># seem to raise exceptions during shutdown.  This happens</span>
+            <span class="c1"># in requestQueue.get(), as an assertion failure that</span>
+            <span class="c1"># requestQueue.not_full is notified while not acquired,</span>
+            <span class="c1"># seemingly because the main thread has shut down (or is</span>
+            <span class="c1"># in the process of doing so) while the workers are still</span>
+            <span class="c1"># trying to pull sentinels off the requestQueue.</span>
+            <span class="c1">#</span>
+            <span class="c1"># Normally these terminations should happen fairly quickly,</span>
+            <span class="c1"># but we&#39;ll stick a one-second timeout on here just in case</span>
+            <span class="c1"># someone gets hung.</span>
+            <span class="k">for</span> <span class="n">worker</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">workers</span><span class="p">:</span>
+                <span class="n">worker</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">workers</span> <span class="o">=</span> <span class="p">[]</span></div></div>
+
+<div class="viewcode-block" id="Parallel"><a class="viewcode-back" href="../../../SCons/#SCons.Job.Parallel">[docs]</a>    <span class="k">class</span> <span class="nc">Parallel</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;This class is used to execute tasks in parallel, and is somewhat</span>
+<span class="sd">        less efficient than Serial, but is appropriate for parallel builds.</span>
+
+<span class="sd">        This class is thread safe.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">taskmaster</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">stack_size</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Create a new parallel job given a taskmaster.</span>
+
+<span class="sd">            The taskmaster&#39;s next_task() method should return the next</span>
+<span class="sd">            task that needs to be executed, or None if there are no more</span>
+<span class="sd">            tasks. The taskmaster&#39;s executed() method will be called</span>
+<span class="sd">            for each task when it is successfully executed, or failed()</span>
+<span class="sd">            will be called if the task failed to execute (i.e. execute()</span>
+<span class="sd">            raised an exception).</span>
+
+<span class="sd">            Note: calls to taskmaster are serialized, but calls to</span>
+<span class="sd">            execute() on distinct tasks are not serialized, because</span>
+<span class="sd">            that is the whole point of parallel jobs: they can execute</span>
+<span class="sd">            multiple tasks simultaneously. &quot;&quot;&quot;</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">taskmaster</span> <span class="o">=</span> <span class="n">taskmaster</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">interrupted</span> <span class="o">=</span> <span class="n">InterruptState</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tp</span> <span class="o">=</span> <span class="n">ThreadPool</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="n">stack_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">interrupted</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">maxjobs</span> <span class="o">=</span> <span class="n">num</span>
+
+<div class="viewcode-block" id="Parallel.start"><a class="viewcode-back" href="../../../SCons/#SCons.Job.Parallel.start">[docs]</a>        <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Start the job. This will begin pulling tasks from the</span>
+<span class="sd">            taskmaster and executing them, and return when there are no</span>
+<span class="sd">            more tasks. If a task fails to execute (i.e. execute() raises</span>
+<span class="sd">            an exception), then the job will stop.&quot;&quot;&quot;</span>
+
+            <span class="n">jobs</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="c1"># Start up as many available tasks as we&#39;re</span>
+                <span class="c1"># allowed to.</span>
+                <span class="k">while</span> <span class="n">jobs</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxjobs</span><span class="p">:</span>
+                    <span class="n">task</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">taskmaster</span><span class="o">.</span><span class="n">next_task</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">task</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">break</span>
+
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="c1"># prepare task for execution</span>
+                        <span class="n">task</span><span class="o">.</span><span class="n">prepare</span><span class="p">()</span>
+                    <span class="k">except</span><span class="p">:</span>
+                        <span class="n">task</span><span class="o">.</span><span class="n">exception_set</span><span class="p">()</span>
+                        <span class="n">task</span><span class="o">.</span><span class="n">failed</span><span class="p">()</span>
+                        <span class="n">task</span><span class="o">.</span><span class="n">postprocess</span><span class="p">()</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">task</span><span class="o">.</span><span class="n">needs_execute</span><span class="p">():</span>
+                            <span class="c1"># dispatch task</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">tp</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+                            <span class="n">jobs</span> <span class="o">=</span> <span class="n">jobs</span> <span class="o">+</span> <span class="mi">1</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">task</span><span class="o">.</span><span class="n">executed</span><span class="p">()</span>
+                            <span class="n">task</span><span class="o">.</span><span class="n">postprocess</span><span class="p">()</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">task</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">jobs</span><span class="p">:</span> <span class="k">break</span>
+
+                <span class="c1"># Let any/all completed tasks finish up before we go</span>
+                <span class="c1"># back and put the next batch of tasks on the queue.</span>
+                <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="n">task</span><span class="p">,</span> <span class="n">ok</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tp</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+                    <span class="n">jobs</span> <span class="o">=</span> <span class="n">jobs</span> <span class="o">-</span> <span class="mi">1</span>
+
+                    <span class="k">if</span> <span class="n">ok</span><span class="p">:</span>
+                        <span class="n">task</span><span class="o">.</span><span class="n">executed</span><span class="p">()</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">interrupted</span><span class="p">():</span>
+                            <span class="k">try</span><span class="p">:</span>
+                                <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">BuildError</span><span class="p">(</span>
+                                    <span class="n">task</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">errstr</span><span class="o">=</span><span class="n">interrupt_msg</span><span class="p">)</span>
+                            <span class="k">except</span><span class="p">:</span>
+                                <span class="n">task</span><span class="o">.</span><span class="n">exception_set</span><span class="p">()</span>
+
+                        <span class="c1"># Let the failed() callback function arrange</span>
+                        <span class="c1"># for the build to stop if that&#39;s appropriate.</span>
+                        <span class="n">task</span><span class="o">.</span><span class="n">failed</span><span class="p">()</span>
+
+                    <span class="n">task</span><span class="o">.</span><span class="n">postprocess</span><span class="p">()</span>
+
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tp</span><span class="o">.</span><span class="n">resultsQueue</span><span class="o">.</span><span class="n">empty</span><span class="p">():</span>
+                        <span class="k">break</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">tp</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">taskmaster</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span></div></div>
+
+<span class="c1"># Local Variables:</span>
+<span class="c1"># tab-width:4</span>
+<span class="c1"># indent-tabs-mode:nil</span>
+<span class="c1"># End:</span>
+<span class="c1"># vim: set expandtab tabstop=4 shiftwidth=4:</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, SCons Project
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

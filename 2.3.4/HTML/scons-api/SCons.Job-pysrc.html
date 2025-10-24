@@ -1,0 +1,780 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>SCons.Job</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="SCons-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://www.scons.org/">SCons</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="SCons-module.html">Package&nbsp;SCons</a> ::
+        Module&nbsp;Job
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="SCons.Job-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="SCons.Job-module.html">Module SCons.Job</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-docstring">"""SCons.Job</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring">This module defines the Serial and Parallel classes that execute tasks to</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring">complete a build. The Jobs class provides a higher level interface to start,</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-docstring">stop, and wait on jobs.</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-comment"># Copyright (c) 2001 - 2014 The SCons Foundation</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-comment"># Permission is hereby granted, free of charge, to any person obtaining</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-comment"># a copy of this software and associated documentation files (the</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-comment"># "Software"), to deal in the Software without restriction, including</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-comment"># without limitation the rights to use, copy, modify, merge, publish,</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-comment"># distribute, sublicense, and/or sell copies of the Software, and to</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-comment"># permit persons to whom the Software is furnished to do so, subject to</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-comment"># the following conditions:</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-comment"># The above copyright notice and this permission notice shall be included</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-comment"># in all copies or substantial portions of the Software.</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-comment"># THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-comment"># KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-comment"># WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-comment"># NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-comment"># LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-comment"># OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt class="py-comment"># WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"><tt id="link-0" class="py-name" targets="Variable SCons.Action.__revision__=SCons.Action-module.html#__revision__,Variable SCons.Builder.__revision__=SCons.Builder-module.html#__revision__,Variable SCons.CacheDir.__revision__=SCons.CacheDir-module.html#__revision__,Variable SCons.Debug.__revision__=SCons.Debug-module.html#__revision__,Variable SCons.Defaults.__revision__=SCons.Defaults-module.html#__revision__,Variable SCons.Environment.__revision__=SCons.Environment-module.html#__revision__,Variable SCons.Errors.__revision__=SCons.Errors-module.html#__revision__,Variable SCons.Executor.__revision__=SCons.Executor-module.html#__revision__,Variable SCons.Job.__revision__=SCons.Job-module.html#__revision__,Variable SCons.Memoize.__revision__=SCons.Memoize-module.html#__revision__,Variable SCons.Node.Alias.__revision__=SCons.Node.Alias-module.html#__revision__,Variable SCons.Node.FS.__revision__=SCons.Node.FS-module.html#__revision__,Variable SCons.Node.Python.__revision__=SCons.Node.Python-module.html#__revision__,Variable SCons.Node.__revision__=SCons.Node-module.html#__revision__,Variable SCons.PathList.__revision__=SCons.PathList-module.html#__revision__,Variable SCons.SConf.__revision__=SCons.SConf-module.html#__revision__,Variable SCons.SConsign.__revision__=SCons.SConsign-module.html#__revision__,Variable SCons.Scanner.C.__revision__=SCons.Scanner.C-module.html#__revision__,Variable SCons.Scanner.D.__revision__=SCons.Scanner.D-module.html#__revision__,Variable SCons.Scanner.Dir.__revision__=SCons.Scanner.Dir-module.html#__revision__,Variable SCons.Scanner.Fortran.__revision__=SCons.Scanner.Fortran-module.html#__revision__,Variable SCons.Scanner.IDL.__revision__=SCons.Scanner.IDL-module.html#__revision__,Variable SCons.Scanner.LaTeX.__revision__=SCons.Scanner.LaTeX-module.html#__revision__,Variable SCons.Scanner.Prog.__revision__=SCons.Scanner.Prog-module.html#__revision__,Variable SCons.Scanner.RC.__revision__=SCons.Scanner.RC-module.html#__revision__,Variable SCons.Scanner.__revision__=SCons.Scanner-module.html#__revision__,Variable SCons.Script.Interactive.__revision__=SCons.Script.Interactive-module.html#__revision__,Variable SCons.Script.Main.__revision__=SCons.Script.Main-module.html#__revision__,Variable SCons.Script.SConscript'.__revision__=SCons.Script.SConscript%27-module.html#__revision__,Variable SCons.Script.__revision__=SCons.Script-module.html#__revision__,Variable SCons.Sig.__revision__=SCons.Sig-module.html#__revision__,Variable SCons.Subst.__revision__=SCons.Subst-module.html#__revision__,Variable SCons.Taskmaster.__revision__=SCons.Taskmaster-module.html#__revision__,Variable SCons.Variables.BoolVariable'.__revision__=SCons.Variables.BoolVariable%27-module.html#__revision__,Variable SCons.Variables.EnumVariable'.__revision__=SCons.Variables.EnumVariable%27-module.html#__revision__,Variable SCons.Variables.ListVariable'.__revision__=SCons.Variables.ListVariable%27-module.html#__revision__,Variable SCons.Variables.PackageVariable'.__revision__=SCons.Variables.PackageVariable%27-module.html#__revision__,Variable SCons.Variables.PathVariable'.__revision__=SCons.Variables.PathVariable%27-module.html#__revision__,Variable SCons.Variables.__revision__=SCons.Variables-module.html#__revision__,Variable SCons.Warnings.__revision__=SCons.Warnings-module.html#__revision__,Variable SCons.__revision__=SCons-module.html#__revision__,Variable SCons.exitfuncs.__revision__=SCons.exitfuncs-module.html#__revision__"><a title="SCons.Action.__revision__
+SCons.Builder.__revision__
+SCons.CacheDir.__revision__
+SCons.Debug.__revision__
+SCons.Defaults.__revision__
+SCons.Environment.__revision__
+SCons.Errors.__revision__
+SCons.Executor.__revision__
+SCons.Job.__revision__
+SCons.Memoize.__revision__
+SCons.Node.Alias.__revision__
+SCons.Node.FS.__revision__
+SCons.Node.Python.__revision__
+SCons.Node.__revision__
+SCons.PathList.__revision__
+SCons.SConf.__revision__
+SCons.SConsign.__revision__
+SCons.Scanner.C.__revision__
+SCons.Scanner.D.__revision__
+SCons.Scanner.Dir.__revision__
+SCons.Scanner.Fortran.__revision__
+SCons.Scanner.IDL.__revision__
+SCons.Scanner.LaTeX.__revision__
+SCons.Scanner.Prog.__revision__
+SCons.Scanner.RC.__revision__
+SCons.Scanner.__revision__
+SCons.Script.Interactive.__revision__
+SCons.Script.Main.__revision__
+SCons.Script.SConscript'.__revision__
+SCons.Script.__revision__
+SCons.Sig.__revision__
+SCons.Subst.__revision__
+SCons.Taskmaster.__revision__
+SCons.Variables.BoolVariable'.__revision__
+SCons.Variables.EnumVariable'.__revision__
+SCons.Variables.ListVariable'.__revision__
+SCons.Variables.PackageVariable'.__revision__
+SCons.Variables.PathVariable'.__revision__
+SCons.Variables.__revision__
+SCons.Warnings.__revision__
+SCons.__revision__
+SCons.exitfuncs.__revision__" class="py-name" href="#" onclick="return doclink('link-0', '__revision__', 'link-0');">__revision__</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"src/engine/SCons/Job.py  2014/09/27 12:51:43 garyo"</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Package SCons=SCons-module.html"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-1', 'SCons', 'link-1');">SCons</a></tt><tt class="py-op">.</tt><tt class="py-name">compat</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">os</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">signal</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-2" class="py-name"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-2', 'SCons', 'link-1');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-3" class="py-name" targets="Module SCons.Errors=SCons.Errors-module.html"><a title="SCons.Errors" class="py-name" href="#" onclick="return doclink('link-3', 'Errors', 'link-3');">Errors</a></tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"><tt class="py-comment"># The default stack size (in kilobytes) of the threads used to execute</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"><tt class="py-comment"># jobs in parallel.</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"><tt class="py-comment"># We use a stack size of 256 kilobytes. The default on some platforms</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"><tt class="py-comment"># is too large and prevents us from creating enough threads to fully</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"><tt class="py-comment"># parallelized the build. For example, the default stack size on linux</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"><tt class="py-comment"># is 8 MBytes.</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"><tt id="link-4" class="py-name" targets="Variable SCons.Job.explicit_stack_size=SCons.Job-module.html#explicit_stack_size"><a title="SCons.Job.explicit_stack_size" class="py-name" href="#" onclick="return doclink('link-4', 'explicit_stack_size', 'link-4');">explicit_stack_size</a></tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"><tt id="link-5" class="py-name" targets="Variable SCons.Job.default_stack_size=SCons.Job-module.html#default_stack_size"><a title="SCons.Job.default_stack_size" class="py-name" href="#" onclick="return doclink('link-5', 'default_stack_size', 'link-5');">default_stack_size</a></tt> <tt class="py-op">=</tt> <tt class="py-number">256</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"><tt id="link-6" class="py-name" targets="Variable SCons.Job.interrupt_msg=SCons.Job-module.html#interrupt_msg"><a title="SCons.Job.interrupt_msg" class="py-name" href="#" onclick="return doclink('link-6', 'interrupt_msg', 'link-6');">interrupt_msg</a></tt> <tt class="py-op">=</tt> <tt class="py-string">'Build interrupted.'</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line"> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"> </tt>
+<a name="InterruptState"></a><div id="InterruptState-def"><a name="L55"></a><tt class="py-lineno"> 55</tt> <a class="py-toggle" href="#" id="InterruptState-toggle" onclick="return toggle('InterruptState');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="SCons.Job.InterruptState-class.html">InterruptState</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="InterruptState-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="InterruptState-expanded"><a name="InterruptState.__init__"></a><div id="InterruptState.__init__-def"><a name="L56"></a><tt class="py-lineno"> 56</tt> <a class="py-toggle" href="#" id="InterruptState.__init__-toggle" onclick="return toggle('InterruptState.__init__');">-</a><tt class="py-line">   <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Job.InterruptState-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="InterruptState.__init__-collapsed" style="display:none;" pad="+++" indent="+++++++"></div><div id="InterruptState.__init__-expanded"><a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">       <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">interrupted</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+</div><a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line"> </tt>
+<a name="InterruptState.set"></a><div id="InterruptState.set-def"><a name="L59"></a><tt class="py-lineno"> 59</tt> <a class="py-toggle" href="#" id="InterruptState.set-toggle" onclick="return toggle('InterruptState.set');">-</a><tt class="py-line">   <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Job.InterruptState-class.html#set">set</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="InterruptState.set-collapsed" style="display:none;" pad="+++" indent="+++++++"></div><div id="InterruptState.set-expanded"><a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">       <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">interrupted</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+</div><a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"> </tt>
+<a name="InterruptState.__call__"></a><div id="InterruptState.__call__-def"><a name="L62"></a><tt class="py-lineno"> 62</tt> <a class="py-toggle" href="#" id="InterruptState.__call__-toggle" onclick="return toggle('InterruptState.__call__');">-</a><tt class="py-line">   <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Job.InterruptState-class.html#__call__">__call__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="InterruptState.__call__-collapsed" style="display:none;" pad="+++" indent="+++++++"></div><div id="InterruptState.__call__-expanded"><a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">       <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">interrupted</tt> </tt>
+</div></div><a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line"> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line"> </tt>
+<a name="Jobs"></a><div id="Jobs-def"><a name="L66"></a><tt class="py-lineno"> 66</tt> <a class="py-toggle" href="#" id="Jobs-toggle" onclick="return toggle('Jobs');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="SCons.Job.Jobs-class.html">Jobs</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Jobs-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Jobs-expanded"><a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">    <tt class="py-docstring">"""An instance of this class initializes N jobs, and provides</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line"><tt class="py-docstring">    methods for starting, stopping, and waiting on all N jobs.</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line"> </tt>
+<a name="Jobs.__init__"></a><div id="Jobs.__init__-def"><a name="L71"></a><tt class="py-lineno"> 71</tt> <a class="py-toggle" href="#" id="Jobs.__init__-toggle" onclick="return toggle('Jobs.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Job.Jobs-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">num</tt><tt class="py-op">,</tt> <tt class="py-param">taskmaster</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Jobs.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Jobs.__init__-expanded"><a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line"><tt class="py-docstring">        create 'num' jobs using the given taskmaster.</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line"><tt class="py-docstring">        If 'num' is 1 or less, then a serial job will be used,</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line"><tt class="py-docstring">        otherwise a parallel job with 'num' worker threads will</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line"><tt class="py-docstring">        be used.</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line"><tt class="py-docstring">        The 'num_jobs' attribute will be set to the actual number of jobs</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line"><tt class="py-docstring">        allocated.  If more than one job is requested but the Parallel</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line"><tt class="py-docstring">        class can't do it, it gets reset to 1.  Wrapping interfaces that</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line"><tt class="py-docstring">        care should check the value of 'num_jobs' after initialization.</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line"> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">job</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">num</tt> <tt class="py-op">&gt;</tt> <tt class="py-number">1</tt><tt class="py-op">:</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">            <tt class="py-name">stack_size</tt> <tt class="py-op">=</tt> <tt id="link-7" class="py-name"><a title="SCons.Job.explicit_stack_size" class="py-name" href="#" onclick="return doclink('link-7', 'explicit_stack_size', 'link-4');">explicit_stack_size</a></tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">stack_size</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">                <tt class="py-name">stack_size</tt> <tt class="py-op">=</tt> <tt id="link-8" class="py-name"><a title="SCons.Job.default_stack_size" class="py-name" href="#" onclick="return doclink('link-8', 'default_stack_size', 'link-5');">default_stack_size</a></tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">                 </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">            <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">job</tt> <tt class="py-op">=</tt> <tt id="link-9" class="py-name" targets="Class SCons.Job.Parallel=SCons.Job.Parallel-class.html"><a title="SCons.Job.Parallel" class="py-name" href="#" onclick="return doclink('link-9', 'Parallel', 'link-9');">Parallel</a></tt><tt class="py-op">(</tt><tt class="py-name">taskmaster</tt><tt class="py-op">,</tt> <tt class="py-name">num</tt><tt class="py-op">,</tt> <tt class="py-name">stack_size</tt><tt class="py-op">)</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-10" class="py-name" targets="Variable SCons.Script.Main.num_jobs=SCons.Script.Main-module.html#num_jobs"><a title="SCons.Script.Main.num_jobs" class="py-name" href="#" onclick="return doclink('link-10', 'num_jobs', 'link-10');">num_jobs</a></tt> <tt class="py-op">=</tt> <tt class="py-name">num</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">            <tt class="py-keyword">except</tt> <tt class="py-name">NameError</tt><tt class="py-op">:</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">                <tt class="py-keyword">pass</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">job</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">job</tt> <tt class="py-op">=</tt> <tt id="link-11" class="py-name" targets="Class SCons.Job.Serial=SCons.Job.Serial-class.html"><a title="SCons.Job.Serial" class="py-name" href="#" onclick="return doclink('link-11', 'Serial', 'link-11');">Serial</a></tt><tt class="py-op">(</tt><tt class="py-name">taskmaster</tt><tt class="py-op">)</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-12" class="py-name"><a title="SCons.Script.Main.num_jobs" class="py-name" href="#" onclick="return doclink('link-12', 'num_jobs', 'link-10');">num_jobs</a></tt> <tt class="py-op">=</tt> <tt class="py-number">1</tt> </tt>
+</div><a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line"> </tt>
+<a name="Jobs.run"></a><div id="Jobs.run-def"><a name="L100"></a><tt class="py-lineno">100</tt> <a class="py-toggle" href="#" id="Jobs.run-toggle" onclick="return toggle('Jobs.run');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Job.Jobs-class.html#run">run</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">postfunc</tt><tt class="py-op">=</tt><tt class="py-keyword">lambda</tt><tt class="py-op">:</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Jobs.run-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Jobs.run-expanded"><a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">        <tt class="py-docstring">"""Run the jobs.</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line"><tt class="py-docstring">        postfunc() will be invoked after the jobs has run. It will be</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line"><tt class="py-docstring">        invoked even if the jobs are interrupted by a keyboard</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line"><tt class="py-docstring">        interrupt (well, in fact by a signal such as either SIGINT,</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line"><tt class="py-docstring">        SIGTERM or SIGHUP). The execution of postfunc() is protected</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line"><tt class="py-docstring">        against keyboard interrupts and is guaranteed to run to</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line"><tt class="py-docstring">        completion."""</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-13" class="py-name" targets="Method SCons.Job.Jobs._setup_sig_handler()=SCons.Job.Jobs-class.html#_setup_sig_handler"><a title="SCons.Job.Jobs._setup_sig_handler" class="py-name" href="#" onclick="return doclink('link-13', '_setup_sig_handler', 'link-13');">_setup_sig_handler</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">job</tt><tt class="py-op">.</tt><tt id="link-14" class="py-name" targets="Method SCons.Job.Parallel.start()=SCons.Job.Parallel-class.html#start,Method SCons.Job.Serial.start()=SCons.Job.Serial-class.html#start"><a title="SCons.Job.Parallel.start
+SCons.Job.Serial.start" class="py-name" href="#" onclick="return doclink('link-14', 'start', 'link-14');">start</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">        <tt class="py-keyword">finally</tt><tt class="py-op">:</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">            <tt class="py-name">postfunc</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-15" class="py-name" targets="Method SCons.Job.Jobs._reset_sig_handler()=SCons.Job.Jobs-class.html#_reset_sig_handler"><a title="SCons.Job.Jobs._reset_sig_handler" class="py-name" href="#" onclick="return doclink('link-15', '_reset_sig_handler', 'link-15');">_reset_sig_handler</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line"> </tt>
+<a name="Jobs.were_interrupted"></a><div id="Jobs.were_interrupted-def"><a name="L116"></a><tt class="py-lineno">116</tt> <a class="py-toggle" href="#" id="Jobs.were_interrupted-toggle" onclick="return toggle('Jobs.were_interrupted');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Job.Jobs-class.html#were_interrupted">were_interrupted</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Jobs.were_interrupted-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Jobs.were_interrupted-expanded"><a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">        <tt class="py-docstring">"""Returns whether the jobs were interrupted by a signal."""</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">job</tt><tt class="py-op">.</tt><tt class="py-name">interrupted</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line"> </tt>
+<a name="Jobs._setup_sig_handler"></a><div id="Jobs._setup_sig_handler-def"><a name="L120"></a><tt class="py-lineno">120</tt> <a class="py-toggle" href="#" id="Jobs._setup_sig_handler-toggle" onclick="return toggle('Jobs._setup_sig_handler');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Job.Jobs-class.html#_setup_sig_handler">_setup_sig_handler</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Jobs._setup_sig_handler-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Jobs._setup_sig_handler-expanded"><a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">        <tt class="py-docstring">"""Setup an interrupt handler so that SCons can shutdown cleanly in</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line"><tt class="py-docstring">        various conditions:</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line"><tt class="py-docstring">          a) SIGINT: Keyboard interrupt</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line"><tt class="py-docstring">          b) SIGTERM: kill or system shutdown</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line"><tt class="py-docstring">          c) SIGHUP: Controlling shell exiting</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line"><tt class="py-docstring">        We handle all of these cases by stopping the taskmaster. It</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line"><tt class="py-docstring">        turns out that it very difficult to stop the build process</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line"><tt class="py-docstring">        by throwing asynchronously an exception such as</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line"><tt class="py-docstring">        KeyboardInterrupt. For example, the python Condition</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line"><tt class="py-docstring">        variables (threading.Condition) and queue's do not seem to</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line"><tt class="py-docstring">        asynchronous-exception-safe. It would require adding a whole</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line"><tt class="py-docstring">        bunch of try/finally block and except KeyboardInterrupt all</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line"><tt class="py-docstring">        over the place.</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line"><tt class="py-docstring">        Note also that we have to be careful to handle the case when</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line"><tt class="py-docstring">        SCons forks before executing another process. In that case, we</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line"><tt class="py-docstring">        want the child to exit immediately.</tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line">        <tt class="py-keyword">def</tt> <tt class="py-def-name">handler</tt><tt class="py-op">(</tt><tt class="py-param">signum</tt><tt class="py-op">,</tt> <tt class="py-param">stack</tt><tt class="py-op">,</tt> <tt class="py-param">self</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-param">parentpid</tt><tt class="py-op">=</tt><tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">getpid</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">getpid</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-name">parentpid</tt><tt class="py-op">:</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">job</tt><tt class="py-op">.</tt><tt class="py-name">taskmaster</tt><tt class="py-op">.</tt><tt id="link-16" class="py-name" targets="Method SCons.Taskmaster.Taskmaster.stop()=SCons.Taskmaster.Taskmaster-class.html#stop"><a title="SCons.Taskmaster.Taskmaster.stop" class="py-name" href="#" onclick="return doclink('link-16', 'stop', 'link-16');">stop</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">job</tt><tt class="py-op">.</tt><tt class="py-name">interrupted</tt><tt class="py-op">.</tt><tt id="link-17" class="py-name" targets="Method SCons.Job.InterruptState.set()=SCons.Job.InterruptState-class.html#set,Method SCons.Node.FS.DiskChecker.set()=SCons.Node.FS.DiskChecker-class.html#set"><a title="SCons.Job.InterruptState.set
+SCons.Node.FS.DiskChecker.set" class="py-name" href="#" onclick="return doclink('link-17', 'set', 'link-17');">set</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line">            <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">                <tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">_exit</tt><tt class="py-op">(</tt><tt class="py-number">2</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line"> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">old_sigint</tt>  <tt class="py-op">=</tt> <tt class="py-name">signal</tt><tt class="py-op">.</tt><tt class="py-name">signal</tt><tt class="py-op">(</tt><tt class="py-name">signal</tt><tt class="py-op">.</tt><tt class="py-name">SIGINT</tt><tt class="py-op">,</tt> <tt class="py-name">handler</tt><tt class="py-op">)</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">old_sigterm</tt> <tt class="py-op">=</tt> <tt class="py-name">signal</tt><tt class="py-op">.</tt><tt class="py-name">signal</tt><tt class="py-op">(</tt><tt class="py-name">signal</tt><tt class="py-op">.</tt><tt class="py-name">SIGTERM</tt><tt class="py-op">,</tt> <tt class="py-name">handler</tt><tt class="py-op">)</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">old_sighup</tt> <tt class="py-op">=</tt> <tt class="py-name">signal</tt><tt class="py-op">.</tt><tt class="py-name">signal</tt><tt class="py-op">(</tt><tt class="py-name">signal</tt><tt class="py-op">.</tt><tt class="py-name">SIGHUP</tt><tt class="py-op">,</tt> <tt class="py-name">handler</tt><tt class="py-op">)</tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt> <tt class="py-name">AttributeError</tt><tt class="py-op">:</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line">            <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line"> </tt>
+<a name="Jobs._reset_sig_handler"></a><div id="Jobs._reset_sig_handler-def"><a name="L155"></a><tt class="py-lineno">155</tt> <a class="py-toggle" href="#" id="Jobs._reset_sig_handler-toggle" onclick="return toggle('Jobs._reset_sig_handler');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Job.Jobs-class.html#_reset_sig_handler">_reset_sig_handler</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Jobs._reset_sig_handler-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Jobs._reset_sig_handler-expanded"><a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line">        <tt class="py-docstring">"""Restore the signal handlers to their previous state (before the</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line"><tt class="py-docstring">         call to _setup_sig_handler()."""</tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line"> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line">        <tt class="py-name">signal</tt><tt class="py-op">.</tt><tt class="py-name">signal</tt><tt class="py-op">(</tt><tt class="py-name">signal</tt><tt class="py-op">.</tt><tt class="py-name">SIGINT</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">old_sigint</tt><tt class="py-op">)</tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line">        <tt class="py-name">signal</tt><tt class="py-op">.</tt><tt class="py-name">signal</tt><tt class="py-op">(</tt><tt class="py-name">signal</tt><tt class="py-op">.</tt><tt class="py-name">SIGTERM</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">old_sigterm</tt><tt class="py-op">)</tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line">            <tt class="py-name">signal</tt><tt class="py-op">.</tt><tt class="py-name">signal</tt><tt class="py-op">(</tt><tt class="py-name">signal</tt><tt class="py-op">.</tt><tt class="py-name">SIGHUP</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">old_sighup</tt><tt class="py-op">)</tt> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt> <tt class="py-name">AttributeError</tt><tt class="py-op">:</tt> </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line">            <tt class="py-keyword">pass</tt> </tt>
+</div></div><a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line"> </tt>
+<a name="Serial"></a><div id="Serial-def"><a name="L166"></a><tt class="py-lineno">166</tt> <a class="py-toggle" href="#" id="Serial-toggle" onclick="return toggle('Serial');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="SCons.Job.Serial-class.html">Serial</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Serial-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Serial-expanded"><a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line">    <tt class="py-docstring">"""This class is used to execute tasks in series, and is more efficient</tt> </tt>
+<a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line"><tt class="py-docstring">    than Parallel, but is only appropriate for non-parallel builds. Only</tt> </tt>
+<a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line"><tt class="py-docstring">    one instance of this class should be in existence at a time.</tt> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line"><tt class="py-docstring">    This class is not thread safe.</tt> </tt>
+<a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line"> </tt>
+<a name="Serial.__init__"></a><div id="Serial.__init__-def"><a name="L174"></a><tt class="py-lineno">174</tt> <a class="py-toggle" href="#" id="Serial.__init__-toggle" onclick="return toggle('Serial.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Job.Serial-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">taskmaster</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Serial.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Serial.__init__-expanded"><a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line">        <tt class="py-docstring">"""Create a new serial job given a taskmaster. </tt> </tt>
+<a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L177"></a><tt class="py-lineno">177</tt>  <tt class="py-line"><tt class="py-docstring">        The taskmaster's next_task() method should return the next task</tt> </tt>
+<a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line"><tt class="py-docstring">        that needs to be executed, or None if there are no more tasks. The</tt> </tt>
+<a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line"><tt class="py-docstring">        taskmaster's executed() method will be called for each task when it</tt> </tt>
+<a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line"><tt class="py-docstring">        is successfully executed or failed() will be called if it failed to</tt> </tt>
+<a name="L181"></a><tt class="py-lineno">181</tt>  <tt class="py-line"><tt class="py-docstring">        execute (e.g. execute() raised an exception)."""</tt> </tt>
+<a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line">         </tt>
+<a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">taskmaster</tt> <tt class="py-op">=</tt> <tt class="py-name">taskmaster</tt> </tt>
+<a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">interrupted</tt> <tt class="py-op">=</tt> <tt id="link-18" class="py-name" targets="Class SCons.Job.InterruptState=SCons.Job.InterruptState-class.html"><a title="SCons.Job.InterruptState" class="py-name" href="#" onclick="return doclink('link-18', 'InterruptState', 'link-18');">InterruptState</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L185"></a><tt class="py-lineno">185</tt>  <tt class="py-line"> </tt>
+<a name="Serial.start"></a><div id="Serial.start-def"><a name="L186"></a><tt class="py-lineno">186</tt> <a class="py-toggle" href="#" id="Serial.start-toggle" onclick="return toggle('Serial.start');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Job.Serial-class.html#start">start</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Serial.start-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Serial.start-expanded"><a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line">        <tt class="py-docstring">"""Start the job. This will begin pulling tasks from the taskmaster</tt> </tt>
+<a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line"><tt class="py-docstring">        and executing them, and return when there are no more tasks. If a task</tt> </tt>
+<a name="L189"></a><tt class="py-lineno">189</tt>  <tt class="py-line"><tt class="py-docstring">        fails to execute (i.e. execute() raises an exception), then the job will</tt> </tt>
+<a name="L190"></a><tt class="py-lineno">190</tt>  <tt class="py-line"><tt class="py-docstring">        stop."""</tt> </tt>
+<a name="L191"></a><tt class="py-lineno">191</tt>  <tt class="py-line">         </tt>
+<a name="L192"></a><tt class="py-lineno">192</tt>  <tt class="py-line">        <tt class="py-keyword">while</tt> <tt class="py-name">True</tt><tt class="py-op">:</tt> </tt>
+<a name="L193"></a><tt class="py-lineno">193</tt>  <tt class="py-line">            <tt class="py-name">task</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">taskmaster</tt><tt class="py-op">.</tt><tt id="link-19" class="py-name" targets="Method SCons.Taskmaster.Taskmaster.next_task()=SCons.Taskmaster.Taskmaster-class.html#next_task"><a title="SCons.Taskmaster.Taskmaster.next_task" class="py-name" href="#" onclick="return doclink('link-19', 'next_task', 'link-19');">next_task</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L194"></a><tt class="py-lineno">194</tt>  <tt class="py-line"> </tt>
+<a name="L195"></a><tt class="py-lineno">195</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">task</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L196"></a><tt class="py-lineno">196</tt>  <tt class="py-line">                <tt class="py-keyword">break</tt> </tt>
+<a name="L197"></a><tt class="py-lineno">197</tt>  <tt class="py-line"> </tt>
+<a name="L198"></a><tt class="py-lineno">198</tt>  <tt class="py-line">            <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L199"></a><tt class="py-lineno">199</tt>  <tt class="py-line">                <tt class="py-name">task</tt><tt class="py-op">.</tt><tt id="link-20" class="py-name" targets="Method SCons.Executor.Executor.prepare()=SCons.Executor.Executor-class.html#prepare,Method SCons.Executor.Null.prepare()=SCons.Executor.Null-class.html#prepare,Method SCons.Node.FS.Dir.prepare()=SCons.Node.FS.Dir-class.html#prepare,Method SCons.Node.FS.File.prepare()=SCons.Node.FS.File-class.html#prepare,Method SCons.Node.Node.prepare()=SCons.Node.Node-class.html#prepare,Method SCons.Script.Main.BuildTask.prepare()=SCons.Script.Main.BuildTask-class.html#prepare,Method SCons.Script.Main.CleanTask.prepare()=SCons.Script.Main.CleanTask-class.html#prepare,Method SCons.Script.Main.QuestionTask.prepare()=SCons.Script.Main.QuestionTask-class.html#prepare,Method SCons.Taskmaster.Task.prepare()=SCons.Taskmaster.Task-class.html#prepare"><a title="SCons.Executor.Executor.prepare
+SCons.Executor.Null.prepare
+SCons.Node.FS.Dir.prepare
+SCons.Node.FS.File.prepare
+SCons.Node.Node.prepare
+SCons.Script.Main.BuildTask.prepare
+SCons.Script.Main.CleanTask.prepare
+SCons.Script.Main.QuestionTask.prepare
+SCons.Taskmaster.Task.prepare" class="py-name" href="#" onclick="return doclink('link-20', 'prepare', 'link-20');">prepare</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L200"></a><tt class="py-lineno">200</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">task</tt><tt class="py-op">.</tt><tt id="link-21" class="py-name" targets="Method SCons.Script.Main.BuildTask.needs_execute()=SCons.Script.Main.BuildTask-class.html#needs_execute,Method SCons.Taskmaster.AlwaysTask.needs_execute()=SCons.Taskmaster.AlwaysTask-class.html#needs_execute,Method SCons.Taskmaster.OutOfDateTask.needs_execute()=SCons.Taskmaster.OutOfDateTask-class.html#needs_execute,Method SCons.Taskmaster.Task.needs_execute()=SCons.Taskmaster.Task-class.html#needs_execute"><a title="SCons.Script.Main.BuildTask.needs_execute
+SCons.Taskmaster.AlwaysTask.needs_execute
+SCons.Taskmaster.OutOfDateTask.needs_execute
+SCons.Taskmaster.Task.needs_execute" class="py-name" href="#" onclick="return doclink('link-21', 'needs_execute', 'link-21');">needs_execute</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L201"></a><tt class="py-lineno">201</tt>  <tt class="py-line">                    <tt class="py-name">task</tt><tt class="py-op">.</tt><tt id="link-22" class="py-name" targets="Method SCons.Action.CommandAction.execute()=SCons.Action.CommandAction-class.html#execute,Method SCons.Action.FunctionAction.execute()=SCons.Action.FunctionAction-class.html#execute,Method SCons.SConf.SConfBuildTask.execute()=SCons.SConf.SConfBuildTask-class.html#execute,Method SCons.Script.Main.BuildTask.execute()=SCons.Script.Main.BuildTask-class.html#execute,Method SCons.Script.Main.QuestionTask.execute()=SCons.Script.Main.QuestionTask-class.html#execute,Method SCons.Taskmaster.Task.execute()=SCons.Taskmaster.Task-class.html#execute"><a title="SCons.Action.CommandAction.execute
+SCons.Action.FunctionAction.execute
+SCons.SConf.SConfBuildTask.execute
+SCons.Script.Main.BuildTask.execute
+SCons.Script.Main.QuestionTask.execute
+SCons.Taskmaster.Task.execute" class="py-name" href="#" onclick="return doclink('link-22', 'execute', 'link-22');">execute</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L202"></a><tt class="py-lineno">202</tt>  <tt class="py-line">            <tt class="py-keyword">except</tt><tt class="py-op">:</tt> </tt>
+<a name="L203"></a><tt class="py-lineno">203</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">interrupted</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L204"></a><tt class="py-lineno">204</tt>  <tt class="py-line">                    <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L205"></a><tt class="py-lineno">205</tt>  <tt class="py-line">                        <tt class="py-keyword">raise</tt> <tt id="link-23" class="py-name"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-23', 'SCons', 'link-1');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-24" class="py-name"><a title="SCons.Errors" class="py-name" href="#" onclick="return doclink('link-24', 'Errors', 'link-3');">Errors</a></tt><tt class="py-op">.</tt><tt id="link-25" class="py-name" targets="Class SCons.Errors.BuildError=SCons.Errors.BuildError-class.html"><a title="SCons.Errors.BuildError" class="py-name" href="#" onclick="return doclink('link-25', 'BuildError', 'link-25');">BuildError</a></tt><tt class="py-op">(</tt> </tt>
+<a name="L206"></a><tt class="py-lineno">206</tt>  <tt class="py-line">                            <tt class="py-name">task</tt><tt class="py-op">.</tt><tt class="py-name">targets</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-name">errstr</tt><tt class="py-op">=</tt><tt id="link-26" class="py-name"><a title="SCons.Job.interrupt_msg" class="py-name" href="#" onclick="return doclink('link-26', 'interrupt_msg', 'link-6');">interrupt_msg</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L207"></a><tt class="py-lineno">207</tt>  <tt class="py-line">                    <tt class="py-keyword">except</tt><tt class="py-op">:</tt> </tt>
+<a name="L208"></a><tt class="py-lineno">208</tt>  <tt class="py-line">                        <tt class="py-name">task</tt><tt class="py-op">.</tt><tt id="link-27" class="py-name" targets="Method SCons.Taskmaster.Task.exception_set()=SCons.Taskmaster.Task-class.html#exception_set"><a title="SCons.Taskmaster.Task.exception_set" class="py-name" href="#" onclick="return doclink('link-27', 'exception_set', 'link-27');">exception_set</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L209"></a><tt class="py-lineno">209</tt>  <tt class="py-line">                <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L210"></a><tt class="py-lineno">210</tt>  <tt class="py-line">                    <tt class="py-name">task</tt><tt class="py-op">.</tt><tt id="link-28" class="py-name"><a title="SCons.Taskmaster.Task.exception_set" class="py-name" href="#" onclick="return doclink('link-28', 'exception_set', 'link-27');">exception_set</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L211"></a><tt class="py-lineno">211</tt>  <tt class="py-line"> </tt>
+<a name="L212"></a><tt class="py-lineno">212</tt>  <tt class="py-line">                <tt class="py-comment"># Let the failed() callback function arrange for the</tt> </tt>
+<a name="L213"></a><tt class="py-lineno">213</tt>  <tt class="py-line">                <tt class="py-comment"># build to stop if that's appropriate.</tt> </tt>
+<a name="L214"></a><tt class="py-lineno">214</tt>  <tt class="py-line">                <tt class="py-name">task</tt><tt class="py-op">.</tt><tt id="link-29" class="py-name" targets="Variable SCons.Node.failed=SCons.Node-module.html#failed,Method SCons.SConf.SConfBuildTask.failed()=SCons.SConf.SConfBuildTask-class.html#failed,Method SCons.Script.Main.BuildTask.failed()=SCons.Script.Main.BuildTask-class.html#failed,Method SCons.Taskmaster.Task.failed()=SCons.Taskmaster.Task-class.html#failed"><a title="SCons.Node.failed
+SCons.SConf.SConfBuildTask.failed
+SCons.Script.Main.BuildTask.failed
+SCons.Taskmaster.Task.failed" class="py-name" href="#" onclick="return doclink('link-29', 'failed', 'link-29');">failed</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L215"></a><tt class="py-lineno">215</tt>  <tt class="py-line">            <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L216"></a><tt class="py-lineno">216</tt>  <tt class="py-line">                <tt class="py-name">task</tt><tt class="py-op">.</tt><tt id="link-30" class="py-name" targets="Variable SCons.Node.executed=SCons.Node-module.html#executed,Method SCons.Script.Main.BuildTask.executed()=SCons.Script.Main.BuildTask-class.html#executed,Method SCons.Script.Main.CleanTask.executed()=SCons.Script.Main.CleanTask-class.html#executed,Method SCons.Script.Main.QuestionTask.executed()=SCons.Script.Main.QuestionTask-class.html#executed"><a title="SCons.Node.executed
+SCons.Script.Main.BuildTask.executed
+SCons.Script.Main.CleanTask.executed
+SCons.Script.Main.QuestionTask.executed" class="py-name" href="#" onclick="return doclink('link-30', 'executed', 'link-30');">executed</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L217"></a><tt class="py-lineno">217</tt>  <tt class="py-line"> </tt>
+<a name="L218"></a><tt class="py-lineno">218</tt>  <tt class="py-line">            <tt class="py-name">task</tt><tt class="py-op">.</tt><tt id="link-31" class="py-name" targets="Method SCons.Node.Node.postprocess()=SCons.Node.Node-class.html#postprocess,Method SCons.Script.Main.BuildTask.postprocess()=SCons.Script.Main.BuildTask-class.html#postprocess,Method SCons.Taskmaster.Task.postprocess()=SCons.Taskmaster.Task-class.html#postprocess"><a title="SCons.Node.Node.postprocess
+SCons.Script.Main.BuildTask.postprocess
+SCons.Taskmaster.Task.postprocess" class="py-name" href="#" onclick="return doclink('link-31', 'postprocess', 'link-31');">postprocess</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L219"></a><tt class="py-lineno">219</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">taskmaster</tt><tt class="py-op">.</tt><tt id="link-32" class="py-name" targets="Method SCons.Executor.Executor.cleanup()=SCons.Executor.Executor-class.html#cleanup,Method SCons.Executor.Null.cleanup()=SCons.Executor.Null-class.html#cleanup,Method SCons.Job.ThreadPool.cleanup()=SCons.Job.ThreadPool-class.html#cleanup,Method SCons.Taskmaster.Taskmaster.cleanup()=SCons.Taskmaster.Taskmaster-class.html#cleanup"><a title="SCons.Executor.Executor.cleanup
+SCons.Executor.Null.cleanup
+SCons.Job.ThreadPool.cleanup
+SCons.Taskmaster.Taskmaster.cleanup" class="py-name" href="#" onclick="return doclink('link-32', 'cleanup', 'link-32');">cleanup</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L220"></a><tt class="py-lineno">220</tt>  <tt class="py-line"> </tt>
+<a name="L221"></a><tt class="py-lineno">221</tt>  <tt class="py-line"> </tt>
+<a name="L222"></a><tt class="py-lineno">222</tt>  <tt class="py-line"><tt class="py-comment"># Trap import failure so that everything in the Job module but the</tt> </tt>
+<a name="L223"></a><tt class="py-lineno">223</tt>  <tt class="py-line"><tt class="py-comment"># Parallel class (and its dependent classes) will work if the interpreter</tt> </tt>
+<a name="L224"></a><tt class="py-lineno">224</tt>  <tt class="py-line"><tt class="py-comment"># doesn't support threads.</tt> </tt>
+<a name="L225"></a><tt class="py-lineno">225</tt>  <tt class="py-line"><tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L226"></a><tt class="py-lineno">226</tt>  <tt class="py-line">    <tt class="py-keyword">import</tt> <tt class="py-name">queue</tt> </tt>
+<a name="L227"></a><tt class="py-lineno">227</tt>  <tt class="py-line">    <tt class="py-keyword">import</tt> <tt class="py-name">threading</tt> </tt>
+<a name="L228"></a><tt class="py-lineno">228</tt>  <tt class="py-line"><tt class="py-keyword">except</tt> <tt class="py-name">ImportError</tt><tt class="py-op">:</tt> </tt>
+<a name="L229"></a><tt class="py-lineno">229</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
+<a name="L230"></a><tt class="py-lineno">230</tt>  <tt class="py-line"><tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="Worker"></a><div id="Worker-def"><a name="L231"></a><tt class="py-lineno">231</tt> <a class="py-toggle" href="#" id="Worker-toggle" onclick="return toggle('Worker');">-</a><tt class="py-line">    <tt class="py-keyword">class</tt> <a class="py-def-name" href="SCons.Job.Worker-class.html">Worker</a><tt class="py-op">(</tt><tt class="py-base-class">threading</tt><tt class="py-op">.</tt><tt class="py-base-class">Thread</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Worker-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Worker-expanded"><a name="L232"></a><tt class="py-lineno">232</tt>  <tt class="py-line">        <tt class="py-docstring">"""A worker thread waits on a task to be posted to its request queue,</tt> </tt>
+<a name="L233"></a><tt class="py-lineno">233</tt>  <tt class="py-line"><tt class="py-docstring">        dequeues the task, executes it, and posts a tuple including the task</tt> </tt>
+<a name="L234"></a><tt class="py-lineno">234</tt>  <tt class="py-line"><tt class="py-docstring">        and a boolean indicating whether the task executed successfully. """</tt> </tt>
+<a name="L235"></a><tt class="py-lineno">235</tt>  <tt class="py-line"> </tt>
+<a name="Worker.__init__"></a><div id="Worker.__init__-def"><a name="L236"></a><tt class="py-lineno">236</tt> <a class="py-toggle" href="#" id="Worker.__init__-toggle" onclick="return toggle('Worker.__init__');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Job.Worker-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">requestQueue</tt><tt class="py-op">,</tt> <tt class="py-param">resultsQueue</tt><tt class="py-op">,</tt> <tt class="py-param">interrupted</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Worker.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++++++++++"></div><div id="Worker.__init__-expanded"><a name="L237"></a><tt class="py-lineno">237</tt>  <tt class="py-line">            <tt class="py-name">threading</tt><tt class="py-op">.</tt><tt class="py-name">Thread</tt><tt class="py-op">.</tt><tt id="link-33" class="py-name" targets="Method SCons.Action.ActionCaller.__init__()=SCons.Action.ActionCaller-class.html#__init__,Method SCons.Action.ActionFactory.__init__()=SCons.Action.ActionFactory-class.html#__init__,Method SCons.Action.CommandAction.__init__()=SCons.Action.CommandAction-class.html#__init__,Method SCons.Action.CommandGeneratorAction.__init__()=SCons.Action.CommandGeneratorAction-class.html#__init__,Method SCons.Action.FunctionAction.__init__()=SCons.Action.FunctionAction-class.html#__init__,Method SCons.Action.LazyAction.__init__()=SCons.Action.LazyAction-class.html#__init__,Method SCons.Action.ListAction.__init__()=SCons.Action.ListAction-class.html#__init__,Method SCons.Action._ActionAction.__init__()=SCons.Action._ActionAction-class.html#__init__,Method SCons.Builder.BuilderBase.__init__()=SCons.Builder.BuilderBase-class.html#__init__,Method SCons.Builder.CompositeBuilder.__init__()=SCons.Builder.CompositeBuilder-class.html#__init__,Method SCons.Builder.DictCmdGenerator.__init__()=SCons.Builder.DictCmdGenerator-class.html#__init__,Method SCons.Builder.EmitterProxy.__init__()=SCons.Builder.EmitterProxy-class.html#__init__,Method SCons.Builder.OverrideWarner.__init__()=SCons.Builder.OverrideWarner-class.html#__init__,Method SCons.CacheDir.CacheDir.__init__()=SCons.CacheDir.CacheDir-class.html#__init__,Method SCons.Defaults.NullCmdGenerator.__init__()=SCons.Defaults.NullCmdGenerator-class.html#__init__,Method SCons.Defaults.Variable_Method_Caller.__init__()=SCons.Defaults.Variable_Method_Caller-class.html#__init__,Method SCons.Environment.Base.__init__()=SCons.Environment.Base-class.html#__init__,Method SCons.Environment.BuilderDict.__init__()=SCons.Environment.BuilderDict-class.html#__init__,Method SCons.Environment.MethodWrapper.__init__()=SCons.Environment.MethodWrapper-class.html#__init__,Method SCons.Environment.OverrideEnvironment.__init__()=SCons.Environment.OverrideEnvironment-class.html#__init__,Method SCons.Environment.SubstitutionEnvironment.__init__()=SCons.Environment.SubstitutionEnvironment-class.html#__init__,Method SCons.Errors.BuildError.__init__()=SCons.Errors.BuildError-class.html#__init__,Method SCons.Errors.ExplicitExit.__init__()=SCons.Errors.ExplicitExit-class.html#__init__,Method SCons.Executor.Batch.__init__()=SCons.Executor.Batch-class.html#__init__,Method SCons.Executor.Executor.__init__()=SCons.Executor.Executor-class.html#__init__,Method SCons.Executor.Null.__init__()=SCons.Executor.Null-class.html#__init__,Method SCons.Executor.TSList.__init__()=SCons.Executor.TSList-class.html#__init__,Method SCons.Executor.TSObject.__init__()=SCons.Executor.TSObject-class.html#__init__,Method SCons.Job.InterruptState.__init__()=SCons.Job.InterruptState-class.html#__init__,Method SCons.Job.Jobs.__init__()=SCons.Job.Jobs-class.html#__init__,Method SCons.Job.Parallel.__init__()=SCons.Job.Parallel-class.html#__init__,Method SCons.Job.Serial.__init__()=SCons.Job.Serial-class.html#__init__,Method SCons.Job.ThreadPool.__init__()=SCons.Job.ThreadPool-class.html#__init__,Method SCons.Job.Worker.__init__()=SCons.Job.Worker-class.html#__init__,Method SCons.Memoize.CountDict.__init__()=SCons.Memoize.CountDict-class.html#__init__,Method SCons.Memoize.Counter.__init__()=SCons.Memoize.Counter-class.html#__init__,Method SCons.Memoize.Memoized_Metaclass.__init__()=SCons.Memoize.Memoized_Metaclass-class.html#__init__,Method SCons.Memoize.Memoizer.__init__()=SCons.Memoize.Memoizer-class.html#__init__,Method SCons.Node.Alias.Alias.__init__()=SCons.Node.Alias.Alias-class.html#__init__,Method SCons.Node.BuildInfoBase.__init__()=SCons.Node.BuildInfoBase-class.html#__init__,Method SCons.Node.FS.Base.__init__()=SCons.Node.FS.Base-class.html#__init__,Method SCons.Node.FS.Dir.__init__()=SCons.Node.FS.Dir-class.html#__init__,Method SCons.Node.FS.DiskChecker.__init__()=SCons.Node.FS.DiskChecker-class.html#__init__,Method SCons.Node.FS.EntryProxyAttributeError.__init__()=SCons.Node.FS.EntryProxyAttributeError-class.html#__init__,Method SCons.Node.FS.FS.__init__()=SCons.Node.FS.FS-class.html#__init__,Method SCons.Node.FS.File.__init__()=SCons.Node.FS.File-class.html#__init__,Method SCons.Node.FS.FileFinder.__init__()=SCons.Node.FS.FileFinder-class.html#__init__,Method SCons.Node.FS.RootDir.__init__()=SCons.Node.FS.RootDir-class.html#__init__,Method SCons.Node.Node.__init__()=SCons.Node.Node-class.html#__init__,Method SCons.Node.NodeInfoBase.__init__()=SCons.Node.NodeInfoBase-class.html#__init__,Method SCons.Node.Python.Value.__init__()=SCons.Node.Python.Value-class.html#__init__,Method SCons.Node.Walker.__init__()=SCons.Node.Walker-class.html#__init__,Method SCons.PathList._PathList.__init__()=SCons.PathList._PathList-class.html#__init__,Method SCons.SConf.CheckContext.__init__()=SCons.SConf.CheckContext-class.html#__init__,Method SCons.SConf.ConfigureCacheError.__init__()=SCons.SConf.ConfigureCacheError-class.html#__init__,Method SCons.SConf.ConfigureDryRunError.__init__()=SCons.SConf.ConfigureDryRunError-class.html#__init__,Method SCons.SConf.SConfBase.TestWrapper.__init__()=SCons.SConf.SConfBase.TestWrapper-class.html#__init__,Method SCons.SConf.SConfBase.__init__()=SCons.SConf.SConfBase-class.html#__init__,Method SCons.SConf.SConfError.__init__()=SCons.SConf.SConfError-class.html#__init__,Method SCons.SConf.Streamer.__init__()=SCons.SConf.Streamer-class.html#__init__,Method SCons.SConsign.Base.__init__()=SCons.SConsign.Base-class.html#__init__,Method SCons.SConsign.DB.__init__()=SCons.SConsign.DB-class.html#__init__,Method SCons.SConsign.Dir.__init__()=SCons.SConsign.Dir-class.html#__init__,Method SCons.SConsign.DirFile.__init__()=SCons.SConsign.DirFile-class.html#__init__,Method SCons.SConsign.SConsignEntry.__init__()=SCons.SConsign.SConsignEntry-class.html#__init__,Method SCons.Scanner.Base.__init__()=SCons.Scanner.Base-class.html#__init__,Method SCons.Scanner.C.SConsCPPScanner.__init__()=SCons.Scanner.C.SConsCPPScanner-class.html#__init__,Method SCons.Scanner.C.SConsCPPScannerWrapper.__init__()=SCons.Scanner.C.SConsCPPScannerWrapper-class.html#__init__,Method SCons.Scanner.Classic.__init__()=SCons.Scanner.Classic-class.html#__init__,Method SCons.Scanner.Current.__init__()=SCons.Scanner.Current-class.html#__init__,Method SCons.Scanner.D.D.__init__()=SCons.Scanner.D.D-class.html#__init__,Method SCons.Scanner.FindPathDirs.__init__()=SCons.Scanner.FindPathDirs-class.html#__init__,Method SCons.Scanner.Fortran.F90Scanner.__init__()=SCons.Scanner.Fortran.F90Scanner-class.html#__init__,Method SCons.Scanner.LaTeX.FindENVPathDirs.__init__()=SCons.Scanner.LaTeX.FindENVPathDirs-class.html#__init__,Method SCons.Scanner.LaTeX.LaTeX.__init__()=SCons.Scanner.LaTeX.LaTeX-class.html#__init__,Method SCons.Scanner.Selector.__init__()=SCons.Scanner.Selector-class.html#__init__,Method SCons.Script.Interactive.SConsInteractiveCmd.__init__()=SCons.Script.Interactive.SConsInteractiveCmd-class.html#__init__,Method SCons.Script.Main.Progressor.__init__()=SCons.Script.Main.Progressor-class.html#__init__,Method SCons.Script.Main.Stats.__init__()=SCons.Script.Main.Stats-class.html#__init__,Method SCons.Script.Main.TreePrinter.__init__()=SCons.Script.Main.TreePrinter-class.html#__init__,Method SCons.Script.SConscript'.DefaultEnvironmentCall.__init__()=SCons.Script.SConscript%27.DefaultEnvironmentCall-class.html#__init__,Method SCons.Script.SConscript'.Frame.__init__()=SCons.Script.SConscript%27.Frame-class.html#__init__,Method SCons.Subst.CmdStringHolder.__init__()=SCons.Subst.CmdStringHolder-class.html#__init__,Method SCons.Subst.Literal.__init__()=SCons.Subst.Literal-class.html#__init__,Method SCons.Subst.NLWrapper.__init__()=SCons.Subst.NLWrapper-class.html#__init__,Method SCons.Subst.SpecialAttrWrapper.__init__()=SCons.Subst.SpecialAttrWrapper-class.html#__init__,Method SCons.Subst.Target_or_Source.__init__()=SCons.Subst.Target_or_Source-class.html#__init__,Method SCons.Subst.Targets_or_Sources.__init__()=SCons.Subst.Targets_or_Sources-class.html#__init__,Method SCons.Taskmaster.Stats.__init__()=SCons.Taskmaster.Stats-class.html#__init__,Method SCons.Taskmaster.Task.__init__()=SCons.Taskmaster.Task-class.html#__init__,Method SCons.Taskmaster.Taskmaster.__init__()=SCons.Taskmaster.Taskmaster-class.html#__init__,Method SCons.Util.CLVar.__init__()=SCons.Util.CLVar-class.html#__init__,Method SCons.Util.Delegate.__init__()=SCons.Util.Delegate-class.html#__init__,Method SCons.Util.LogicalLines.__init__()=SCons.Util.LogicalLines-class.html#__init__,Method SCons.Util.Null.__init__()=SCons.Util.Null-class.html#__init__,Method SCons.Util.OrderedDict.__init__()=SCons.Util.OrderedDict-class.html#__init__,Method SCons.Util.Proxy.__init__()=SCons.Util.Proxy-class.html#__init__,Method SCons.Util.Unbuffered.__init__()=SCons.Util.Unbuffered-class.html#__init__,Method SCons.Util.UniqueList.__init__()=SCons.Util.UniqueList-class.html#__init__,Method SCons.Variables.ListVariable'._ListVariable.__init__()=SCons.Variables.ListVariable%27._ListVariable-class.html#__init__,Method SCons.Variables.Variables.__init__()=SCons.Variables.Variables-class.html#__init__,Method SCons.cpp.DumbPreProcessor.__init__()=SCons.cpp.DumbPreProcessor-class.html#__init__,Method SCons.cpp.FunctionEvaluator.__init__()=SCons.cpp.FunctionEvaluator-class.html#__init__,Method SCons.cpp.PreProcessor.__init__()=SCons.cpp.PreProcessor-class.html#__init__,Method SCons.dblite.dblite.__init__()=SCons.dblite.dblite-class.html#__init__"><a title="SCons.Action.ActionCaller.__init__
+SCons.Action.ActionFactory.__init__
+SCons.Action.CommandAction.__init__
+SCons.Action.CommandGeneratorAction.__init__
+SCons.Action.FunctionAction.__init__
+SCons.Action.LazyAction.__init__
+SCons.Action.ListAction.__init__
+SCons.Action._ActionAction.__init__
+SCons.Builder.BuilderBase.__init__
+SCons.Builder.CompositeBuilder.__init__
+SCons.Builder.DictCmdGenerator.__init__
+SCons.Builder.EmitterProxy.__init__
+SCons.Builder.OverrideWarner.__init__
+SCons.CacheDir.CacheDir.__init__
+SCons.Defaults.NullCmdGenerator.__init__
+SCons.Defaults.Variable_Method_Caller.__init__
+SCons.Environment.Base.__init__
+SCons.Environment.BuilderDict.__init__
+SCons.Environment.MethodWrapper.__init__
+SCons.Environment.OverrideEnvironment.__init__
+SCons.Environment.SubstitutionEnvironment.__init__
+SCons.Errors.BuildError.__init__
+SCons.Errors.ExplicitExit.__init__
+SCons.Executor.Batch.__init__
+SCons.Executor.Executor.__init__
+SCons.Executor.Null.__init__
+SCons.Executor.TSList.__init__
+SCons.Executor.TSObject.__init__
+SCons.Job.InterruptState.__init__
+SCons.Job.Jobs.__init__
+SCons.Job.Parallel.__init__
+SCons.Job.Serial.__init__
+SCons.Job.ThreadPool.__init__
+SCons.Job.Worker.__init__
+SCons.Memoize.CountDict.__init__
+SCons.Memoize.Counter.__init__
+SCons.Memoize.Memoized_Metaclass.__init__
+SCons.Memoize.Memoizer.__init__
+SCons.Node.Alias.Alias.__init__
+SCons.Node.BuildInfoBase.__init__
+SCons.Node.FS.Base.__init__
+SCons.Node.FS.Dir.__init__
+SCons.Node.FS.DiskChecker.__init__
+SCons.Node.FS.EntryProxyAttributeError.__init__
+SCons.Node.FS.FS.__init__
+SCons.Node.FS.File.__init__
+SCons.Node.FS.FileFinder.__init__
+SCons.Node.FS.RootDir.__init__
+SCons.Node.Node.__init__
+SCons.Node.NodeInfoBase.__init__
+SCons.Node.Python.Value.__init__
+SCons.Node.Walker.__init__
+SCons.PathList._PathList.__init__
+SCons.SConf.CheckContext.__init__
+SCons.SConf.ConfigureCacheError.__init__
+SCons.SConf.ConfigureDryRunError.__init__
+SCons.SConf.SConfBase.TestWrapper.__init__
+SCons.SConf.SConfBase.__init__
+SCons.SConf.SConfError.__init__
+SCons.SConf.Streamer.__init__
+SCons.SConsign.Base.__init__
+SCons.SConsign.DB.__init__
+SCons.SConsign.Dir.__init__
+SCons.SConsign.DirFile.__init__
+SCons.SConsign.SConsignEntry.__init__
+SCons.Scanner.Base.__init__
+SCons.Scanner.C.SConsCPPScanner.__init__
+SCons.Scanner.C.SConsCPPScannerWrapper.__init__
+SCons.Scanner.Classic.__init__
+SCons.Scanner.Current.__init__
+SCons.Scanner.D.D.__init__
+SCons.Scanner.FindPathDirs.__init__
+SCons.Scanner.Fortran.F90Scanner.__init__
+SCons.Scanner.LaTeX.FindENVPathDirs.__init__
+SCons.Scanner.LaTeX.LaTeX.__init__
+SCons.Scanner.Selector.__init__
+SCons.Script.Interactive.SConsInteractiveCmd.__init__
+SCons.Script.Main.Progressor.__init__
+SCons.Script.Main.Stats.__init__
+SCons.Script.Main.TreePrinter.__init__
+SCons.Script.SConscript'.DefaultEnvironmentCall.__init__
+SCons.Script.SConscript'.Frame.__init__
+SCons.Subst.CmdStringHolder.__init__
+SCons.Subst.Literal.__init__
+SCons.Subst.NLWrapper.__init__
+SCons.Subst.SpecialAttrWrapper.__init__
+SCons.Subst.Target_or_Source.__init__
+SCons.Subst.Targets_or_Sources.__init__
+SCons.Taskmaster.Stats.__init__
+SCons.Taskmaster.Task.__init__
+SCons.Taskmaster.Taskmaster.__init__
+SCons.Util.CLVar.__init__
+SCons.Util.Delegate.__init__
+SCons.Util.LogicalLines.__init__
+SCons.Util.Null.__init__
+SCons.Util.OrderedDict.__init__
+SCons.Util.Proxy.__init__
+SCons.Util.Unbuffered.__init__
+SCons.Util.UniqueList.__init__
+SCons.Variables.ListVariable'._ListVariable.__init__
+SCons.Variables.Variables.__init__
+SCons.cpp.DumbPreProcessor.__init__
+SCons.cpp.FunctionEvaluator.__init__
+SCons.cpp.PreProcessor.__init__
+SCons.dblite.dblite.__init__" class="py-name" href="#" onclick="return doclink('link-33', '__init__', 'link-33');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">)</tt> </tt>
+<a name="L238"></a><tt class="py-lineno">238</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">setDaemon</tt><tt class="py-op">(</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L239"></a><tt class="py-lineno">239</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">requestQueue</tt> <tt class="py-op">=</tt> <tt class="py-name">requestQueue</tt> </tt>
+<a name="L240"></a><tt class="py-lineno">240</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">resultsQueue</tt> <tt class="py-op">=</tt> <tt class="py-name">resultsQueue</tt> </tt>
+<a name="L241"></a><tt class="py-lineno">241</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">interrupted</tt> <tt class="py-op">=</tt> <tt class="py-name">interrupted</tt> </tt>
+<a name="L242"></a><tt class="py-lineno">242</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-34" class="py-name"><a title="SCons.Job.Parallel.start
+SCons.Job.Serial.start" class="py-name" href="#" onclick="return doclink('link-34', 'start', 'link-14');">start</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L243"></a><tt class="py-lineno">243</tt>  <tt class="py-line"> </tt>
+<a name="Worker.run"></a><div id="Worker.run-def"><a name="L244"></a><tt class="py-lineno">244</tt> <a class="py-toggle" href="#" id="Worker.run-toggle" onclick="return toggle('Worker.run');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Job.Worker-class.html#run">run</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Worker.run-collapsed" style="display:none;" pad="+++" indent="++++++++++++++++"></div><div id="Worker.run-expanded"><a name="L245"></a><tt class="py-lineno">245</tt>  <tt class="py-line">            <tt class="py-keyword">while</tt> <tt class="py-name">True</tt><tt class="py-op">:</tt> </tt>
+<a name="L246"></a><tt class="py-lineno">246</tt>  <tt class="py-line">                <tt class="py-name">task</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">requestQueue</tt><tt class="py-op">.</tt><tt id="link-35" class="py-name" targets="Method SCons.Environment.OverrideEnvironment.get()=SCons.Environment.OverrideEnvironment-class.html#get,Method SCons.Environment.SubstitutionEnvironment.get()=SCons.Environment.SubstitutionEnvironment-class.html#get,Method SCons.Job.ThreadPool.get()=SCons.Job.ThreadPool-class.html#get,Method SCons.Util.Proxy.get()=SCons.Util.Proxy-class.html#get"><a title="SCons.Environment.OverrideEnvironment.get
+SCons.Environment.SubstitutionEnvironment.get
+SCons.Job.ThreadPool.get
+SCons.Util.Proxy.get" class="py-name" href="#" onclick="return doclink('link-35', 'get', 'link-35');">get</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L247"></a><tt class="py-lineno">247</tt>  <tt class="py-line"> </tt>
+<a name="L248"></a><tt class="py-lineno">248</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">task</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L249"></a><tt class="py-lineno">249</tt>  <tt class="py-line">                    <tt class="py-comment"># The "None" value is used as a sentinel by</tt> </tt>
+<a name="L250"></a><tt class="py-lineno">250</tt>  <tt class="py-line">                    <tt class="py-comment"># ThreadPool.cleanup().  This indicates that there</tt> </tt>
+<a name="L251"></a><tt class="py-lineno">251</tt>  <tt class="py-line">                    <tt class="py-comment"># are no more tasks, so we should quit.</tt> </tt>
+<a name="L252"></a><tt class="py-lineno">252</tt>  <tt class="py-line">                    <tt class="py-keyword">break</tt> </tt>
+<a name="L253"></a><tt class="py-lineno">253</tt>  <tt class="py-line"> </tt>
+<a name="L254"></a><tt class="py-lineno">254</tt>  <tt class="py-line">                <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L255"></a><tt class="py-lineno">255</tt>  <tt class="py-line">                    <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">interrupted</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L256"></a><tt class="py-lineno">256</tt>  <tt class="py-line">                        <tt class="py-keyword">raise</tt> <tt id="link-36" class="py-name"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-36', 'SCons', 'link-1');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-37" class="py-name"><a title="SCons.Errors" class="py-name" href="#" onclick="return doclink('link-37', 'Errors', 'link-3');">Errors</a></tt><tt class="py-op">.</tt><tt id="link-38" class="py-name"><a title="SCons.Errors.BuildError" class="py-name" href="#" onclick="return doclink('link-38', 'BuildError', 'link-25');">BuildError</a></tt><tt class="py-op">(</tt> </tt>
+<a name="L257"></a><tt class="py-lineno">257</tt>  <tt class="py-line">                            <tt class="py-name">task</tt><tt class="py-op">.</tt><tt class="py-name">targets</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-name">errstr</tt><tt class="py-op">=</tt><tt id="link-39" class="py-name"><a title="SCons.Job.interrupt_msg" class="py-name" href="#" onclick="return doclink('link-39', 'interrupt_msg', 'link-6');">interrupt_msg</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L258"></a><tt class="py-lineno">258</tt>  <tt class="py-line">                    <tt class="py-name">task</tt><tt class="py-op">.</tt><tt id="link-40" class="py-name"><a title="SCons.Action.CommandAction.execute
+SCons.Action.FunctionAction.execute
+SCons.SConf.SConfBuildTask.execute
+SCons.Script.Main.BuildTask.execute
+SCons.Script.Main.QuestionTask.execute
+SCons.Taskmaster.Task.execute" class="py-name" href="#" onclick="return doclink('link-40', 'execute', 'link-22');">execute</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L259"></a><tt class="py-lineno">259</tt>  <tt class="py-line">                <tt class="py-keyword">except</tt><tt class="py-op">:</tt> </tt>
+<a name="L260"></a><tt class="py-lineno">260</tt>  <tt class="py-line">                    <tt class="py-name">task</tt><tt class="py-op">.</tt><tt id="link-41" class="py-name"><a title="SCons.Taskmaster.Task.exception_set" class="py-name" href="#" onclick="return doclink('link-41', 'exception_set', 'link-27');">exception_set</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L261"></a><tt class="py-lineno">261</tt>  <tt class="py-line">                    <tt class="py-name">ok</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+<a name="L262"></a><tt class="py-lineno">262</tt>  <tt class="py-line">                <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L263"></a><tt class="py-lineno">263</tt>  <tt class="py-line">                    <tt class="py-name">ok</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L264"></a><tt class="py-lineno">264</tt>  <tt class="py-line"> </tt>
+<a name="L265"></a><tt class="py-lineno">265</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">resultsQueue</tt><tt class="py-op">.</tt><tt id="link-42" class="py-name" targets="Method SCons.Job.ThreadPool.put()=SCons.Job.ThreadPool-class.html#put"><a title="SCons.Job.ThreadPool.put" class="py-name" href="#" onclick="return doclink('link-42', 'put', 'link-42');">put</a></tt><tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-name">task</tt><tt class="py-op">,</tt> <tt class="py-name">ok</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L266"></a><tt class="py-lineno">266</tt>  <tt class="py-line"> </tt>
+<a name="ThreadPool"></a><div id="ThreadPool-def"><a name="L267"></a><tt class="py-lineno">267</tt> <a class="py-toggle" href="#" id="ThreadPool-toggle" onclick="return toggle('ThreadPool');">-</a><tt class="py-line">    <tt class="py-keyword">class</tt> <a class="py-def-name" href="SCons.Job.ThreadPool-class.html">ThreadPool</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ThreadPool-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="ThreadPool-expanded"><a name="L268"></a><tt class="py-lineno">268</tt>  <tt class="py-line">        <tt class="py-docstring">"""This class is responsible for spawning and managing worker threads."""</tt> </tt>
+<a name="L269"></a><tt class="py-lineno">269</tt>  <tt class="py-line"> </tt>
+<a name="ThreadPool.__init__"></a><div id="ThreadPool.__init__-def"><a name="L270"></a><tt class="py-lineno">270</tt> <a class="py-toggle" href="#" id="ThreadPool.__init__-toggle" onclick="return toggle('ThreadPool.__init__');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Job.ThreadPool-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">num</tt><tt class="py-op">,</tt> <tt class="py-param">stack_size</tt><tt class="py-op">,</tt> <tt class="py-param">interrupted</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ThreadPool.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++++++++++"></div><div id="ThreadPool.__init__-expanded"><a name="L271"></a><tt class="py-lineno">271</tt>  <tt class="py-line">            <tt class="py-docstring">"""Create the request and reply queues, and 'num' worker threads.</tt> </tt>
+<a name="L272"></a><tt class="py-lineno">272</tt>  <tt class="py-line"><tt class="py-docstring">            </tt> </tt>
+<a name="L273"></a><tt class="py-lineno">273</tt>  <tt class="py-line"><tt class="py-docstring">            One must specify the stack size of the worker threads. The</tt> </tt>
+<a name="L274"></a><tt class="py-lineno">274</tt>  <tt class="py-line"><tt class="py-docstring">            stack size is specified in kilobytes.</tt> </tt>
+<a name="L275"></a><tt class="py-lineno">275</tt>  <tt class="py-line"><tt class="py-docstring">            """</tt> </tt>
+<a name="L276"></a><tt class="py-lineno">276</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">requestQueue</tt> <tt class="py-op">=</tt> <tt class="py-name">queue</tt><tt class="py-op">.</tt><tt class="py-name">Queue</tt><tt class="py-op">(</tt><tt class="py-number">0</tt><tt class="py-op">)</tt> </tt>
+<a name="L277"></a><tt class="py-lineno">277</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">resultsQueue</tt> <tt class="py-op">=</tt> <tt class="py-name">queue</tt><tt class="py-op">.</tt><tt class="py-name">Queue</tt><tt class="py-op">(</tt><tt class="py-number">0</tt><tt class="py-op">)</tt> </tt>
+<a name="L278"></a><tt class="py-lineno">278</tt>  <tt class="py-line"> </tt>
+<a name="L279"></a><tt class="py-lineno">279</tt>  <tt class="py-line">            <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L280"></a><tt class="py-lineno">280</tt>  <tt class="py-line">                <tt class="py-name">prev_size</tt> <tt class="py-op">=</tt> <tt class="py-name">threading</tt><tt class="py-op">.</tt><tt class="py-name">stack_size</tt><tt class="py-op">(</tt><tt class="py-name">stack_size</tt><tt class="py-op">*</tt><tt class="py-number">1024</tt><tt class="py-op">)</tt>  </tt>
+<a name="L281"></a><tt class="py-lineno">281</tt>  <tt class="py-line">            <tt class="py-keyword">except</tt> <tt class="py-name">AttributeError</tt><tt class="py-op">,</tt> <tt id="link-43" class="py-name" targets="Variable SCons.cpp.e=SCons.cpp-module.html#e"><a title="SCons.cpp.e" class="py-name" href="#" onclick="return doclink('link-43', 'e', 'link-43');">e</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L282"></a><tt class="py-lineno">282</tt>  <tt class="py-line">                <tt class="py-comment"># Only print a warning if the stack size has been</tt> </tt>
+<a name="L283"></a><tt class="py-lineno">283</tt>  <tt class="py-line">                <tt class="py-comment"># explicitly set.</tt> </tt>
+<a name="L284"></a><tt class="py-lineno">284</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt id="link-44" class="py-name"><a title="SCons.Job.explicit_stack_size" class="py-name" href="#" onclick="return doclink('link-44', 'explicit_stack_size', 'link-4');">explicit_stack_size</a></tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L285"></a><tt class="py-lineno">285</tt>  <tt class="py-line">                    <tt id="link-45" class="py-name" targets="Variable SCons.Sig.msg=SCons.Sig-module.html#msg"><a title="SCons.Sig.msg" class="py-name" href="#" onclick="return doclink('link-45', 'msg', 'link-45');">msg</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"Setting stack size is unsupported by this version of Python:\n    "</tt> <tt class="py-op">+</tt> \ </tt>
+<a name="L286"></a><tt class="py-lineno">286</tt>  <tt class="py-line">                        <tt id="link-46" class="py-name"><a title="SCons.cpp.e" class="py-name" href="#" onclick="return doclink('link-46', 'e', 'link-43');">e</a></tt><tt class="py-op">.</tt><tt class="py-name">args</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L287"></a><tt class="py-lineno">287</tt>  <tt class="py-line">                    <tt id="link-47" class="py-name"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-47', 'SCons', 'link-1');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-48" class="py-name" targets="Module SCons.Warnings=SCons.Warnings-module.html"><a title="SCons.Warnings" class="py-name" href="#" onclick="return doclink('link-48', 'Warnings', 'link-48');">Warnings</a></tt><tt class="py-op">.</tt><tt id="link-49" class="py-name" targets="Method SCons.Builder.OverrideWarner.warn()=SCons.Builder.OverrideWarner-class.html#warn"><a title="SCons.Builder.OverrideWarner.warn" class="py-name" href="#" onclick="return doclink('link-49', 'warn', 'link-49');">warn</a></tt><tt class="py-op">(</tt><tt id="link-50" class="py-name"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-50', 'SCons', 'link-1');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-51" class="py-name"><a title="SCons.Warnings" class="py-name" href="#" onclick="return doclink('link-51', 'Warnings', 'link-48');">Warnings</a></tt><tt class="py-op">.</tt><tt id="link-52" class="py-name" targets="Class SCons.Warnings.StackSizeWarning=SCons.Warnings.StackSizeWarning-class.html"><a title="SCons.Warnings.StackSizeWarning" class="py-name" href="#" onclick="return doclink('link-52', 'StackSizeWarning', 'link-52');">StackSizeWarning</a></tt><tt class="py-op">,</tt> <tt id="link-53" class="py-name"><a title="SCons.Sig.msg" class="py-name" href="#" onclick="return doclink('link-53', 'msg', 'link-45');">msg</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L288"></a><tt class="py-lineno">288</tt>  <tt class="py-line">            <tt class="py-keyword">except</tt> <tt class="py-name">ValueError</tt><tt class="py-op">,</tt> <tt id="link-54" class="py-name"><a title="SCons.cpp.e" class="py-name" href="#" onclick="return doclink('link-54', 'e', 'link-43');">e</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L289"></a><tt class="py-lineno">289</tt>  <tt class="py-line">                <tt id="link-55" class="py-name"><a title="SCons.Sig.msg" class="py-name" href="#" onclick="return doclink('link-55', 'msg', 'link-45');">msg</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"Setting stack size failed:\n    "</tt> <tt class="py-op">+</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt id="link-56" class="py-name"><a title="SCons.cpp.e" class="py-name" href="#" onclick="return doclink('link-56', 'e', 'link-43');">e</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L290"></a><tt class="py-lineno">290</tt>  <tt class="py-line">                <tt id="link-57" class="py-name"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-57', 'SCons', 'link-1');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-58" class="py-name"><a title="SCons.Warnings" class="py-name" href="#" onclick="return doclink('link-58', 'Warnings', 'link-48');">Warnings</a></tt><tt class="py-op">.</tt><tt id="link-59" class="py-name"><a title="SCons.Builder.OverrideWarner.warn" class="py-name" href="#" onclick="return doclink('link-59', 'warn', 'link-49');">warn</a></tt><tt class="py-op">(</tt><tt id="link-60" class="py-name"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-60', 'SCons', 'link-1');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-61" class="py-name"><a title="SCons.Warnings" class="py-name" href="#" onclick="return doclink('link-61', 'Warnings', 'link-48');">Warnings</a></tt><tt class="py-op">.</tt><tt id="link-62" class="py-name"><a title="SCons.Warnings.StackSizeWarning" class="py-name" href="#" onclick="return doclink('link-62', 'StackSizeWarning', 'link-52');">StackSizeWarning</a></tt><tt class="py-op">,</tt> <tt id="link-63" class="py-name"><a title="SCons.Sig.msg" class="py-name" href="#" onclick="return doclink('link-63', 'msg', 'link-45');">msg</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L291"></a><tt class="py-lineno">291</tt>  <tt class="py-line"> </tt>
+<a name="L292"></a><tt class="py-lineno">292</tt>  <tt class="py-line">            <tt class="py-comment"># Create worker threads</tt> </tt>
+<a name="L293"></a><tt class="py-lineno">293</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">workers</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L294"></a><tt class="py-lineno">294</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">_</tt> <tt class="py-keyword">in</tt> <tt class="py-name">range</tt><tt class="py-op">(</tt><tt class="py-name">num</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L295"></a><tt class="py-lineno">295</tt>  <tt class="py-line">                <tt class="py-name">worker</tt> <tt class="py-op">=</tt> <tt id="link-64" class="py-name" targets="Class SCons.Job.Worker=SCons.Job.Worker-class.html"><a title="SCons.Job.Worker" class="py-name" href="#" onclick="return doclink('link-64', 'Worker', 'link-64');">Worker</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">requestQueue</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">resultsQueue</tt><tt class="py-op">,</tt> <tt class="py-name">interrupted</tt><tt class="py-op">)</tt> </tt>
+<a name="L296"></a><tt class="py-lineno">296</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">workers</tt><tt class="py-op">.</tt><tt id="link-65" class="py-name" targets="Method SCons.Util.UniqueList.append()=SCons.Util.UniqueList-class.html#append"><a title="SCons.Util.UniqueList.append" class="py-name" href="#" onclick="return doclink('link-65', 'append', 'link-65');">append</a></tt><tt class="py-op">(</tt><tt class="py-name">worker</tt><tt class="py-op">)</tt> </tt>
+<a name="L297"></a><tt class="py-lineno">297</tt>  <tt class="py-line"> </tt>
+<a name="L298"></a><tt class="py-lineno">298</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-string">'prev_size'</tt> <tt class="py-keyword">in</tt> <tt class="py-name">locals</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L299"></a><tt class="py-lineno">299</tt>  <tt class="py-line">                <tt class="py-name">threading</tt><tt class="py-op">.</tt><tt class="py-name">stack_size</tt><tt class="py-op">(</tt><tt class="py-name">prev_size</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L300"></a><tt class="py-lineno">300</tt>  <tt class="py-line"> </tt>
+<a name="ThreadPool.put"></a><div id="ThreadPool.put-def"><a name="L301"></a><tt class="py-lineno">301</tt> <a class="py-toggle" href="#" id="ThreadPool.put-toggle" onclick="return toggle('ThreadPool.put');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Job.ThreadPool-class.html#put">put</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">task</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ThreadPool.put-collapsed" style="display:none;" pad="+++" indent="++++++++++++++++"></div><div id="ThreadPool.put-expanded"><a name="L302"></a><tt class="py-lineno">302</tt>  <tt class="py-line">            <tt class="py-docstring">"""Put task into request queue."""</tt> </tt>
+<a name="L303"></a><tt class="py-lineno">303</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">requestQueue</tt><tt class="py-op">.</tt><tt id="link-66" class="py-name"><a title="SCons.Job.ThreadPool.put" class="py-name" href="#" onclick="return doclink('link-66', 'put', 'link-42');">put</a></tt><tt class="py-op">(</tt><tt class="py-name">task</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L304"></a><tt class="py-lineno">304</tt>  <tt class="py-line"> </tt>
+<a name="ThreadPool.get"></a><div id="ThreadPool.get-def"><a name="L305"></a><tt class="py-lineno">305</tt> <a class="py-toggle" href="#" id="ThreadPool.get-toggle" onclick="return toggle('ThreadPool.get');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Job.ThreadPool-class.html#get">get</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ThreadPool.get-collapsed" style="display:none;" pad="+++" indent="++++++++++++++++"></div><div id="ThreadPool.get-expanded"><a name="L306"></a><tt class="py-lineno">306</tt>  <tt class="py-line">            <tt class="py-docstring">"""Remove and return a result tuple from the results queue."""</tt> </tt>
+<a name="L307"></a><tt class="py-lineno">307</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">resultsQueue</tt><tt class="py-op">.</tt><tt id="link-67" class="py-name"><a title="SCons.Environment.OverrideEnvironment.get
+SCons.Environment.SubstitutionEnvironment.get
+SCons.Job.ThreadPool.get
+SCons.Util.Proxy.get" class="py-name" href="#" onclick="return doclink('link-67', 'get', 'link-35');">get</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L308"></a><tt class="py-lineno">308</tt>  <tt class="py-line"> </tt>
+<a name="ThreadPool.preparation_failed"></a><div id="ThreadPool.preparation_failed-def"><a name="L309"></a><tt class="py-lineno">309</tt> <a class="py-toggle" href="#" id="ThreadPool.preparation_failed-toggle" onclick="return toggle('ThreadPool.preparation_failed');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Job.ThreadPool-class.html#preparation_failed">preparation_failed</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">task</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ThreadPool.preparation_failed-collapsed" style="display:none;" pad="+++" indent="++++++++++++++++"></div><div id="ThreadPool.preparation_failed-expanded"><a name="L310"></a><tt class="py-lineno">310</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">resultsQueue</tt><tt class="py-op">.</tt><tt id="link-68" class="py-name"><a title="SCons.Job.ThreadPool.put" class="py-name" href="#" onclick="return doclink('link-68', 'put', 'link-42');">put</a></tt><tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-name">task</tt><tt class="py-op">,</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L311"></a><tt class="py-lineno">311</tt>  <tt class="py-line"> </tt>
+<a name="ThreadPool.cleanup"></a><div id="ThreadPool.cleanup-def"><a name="L312"></a><tt class="py-lineno">312</tt> <a class="py-toggle" href="#" id="ThreadPool.cleanup-toggle" onclick="return toggle('ThreadPool.cleanup');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Job.ThreadPool-class.html#cleanup">cleanup</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ThreadPool.cleanup-collapsed" style="display:none;" pad="+++" indent="++++++++++++++++"></div><div id="ThreadPool.cleanup-expanded"><a name="L313"></a><tt class="py-lineno">313</tt>  <tt class="py-line">            <tt class="py-docstring">"""</tt> </tt>
+<a name="L314"></a><tt class="py-lineno">314</tt>  <tt class="py-line"><tt class="py-docstring">            Shuts down the thread pool, giving each worker thread a</tt> </tt>
+<a name="L315"></a><tt class="py-lineno">315</tt>  <tt class="py-line"><tt class="py-docstring">            chance to shut down gracefully.</tt> </tt>
+<a name="L316"></a><tt class="py-lineno">316</tt>  <tt class="py-line"><tt class="py-docstring">            """</tt> </tt>
+<a name="L317"></a><tt class="py-lineno">317</tt>  <tt class="py-line">            <tt class="py-comment"># For each worker thread, put a sentinel "None" value</tt> </tt>
+<a name="L318"></a><tt class="py-lineno">318</tt>  <tt class="py-line">            <tt class="py-comment"># on the requestQueue (indicating that there's no work</tt> </tt>
+<a name="L319"></a><tt class="py-lineno">319</tt>  <tt class="py-line">            <tt class="py-comment"># to be done) so that each worker thread will get one and</tt> </tt>
+<a name="L320"></a><tt class="py-lineno">320</tt>  <tt class="py-line">            <tt class="py-comment"># terminate gracefully.</tt> </tt>
+<a name="L321"></a><tt class="py-lineno">321</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">_</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">workers</tt><tt class="py-op">:</tt> </tt>
+<a name="L322"></a><tt class="py-lineno">322</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">requestQueue</tt><tt class="py-op">.</tt><tt id="link-69" class="py-name"><a title="SCons.Job.ThreadPool.put" class="py-name" href="#" onclick="return doclink('link-69', 'put', 'link-42');">put</a></tt><tt class="py-op">(</tt><tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
+<a name="L323"></a><tt class="py-lineno">323</tt>  <tt class="py-line"> </tt>
+<a name="L324"></a><tt class="py-lineno">324</tt>  <tt class="py-line">            <tt class="py-comment"># Wait for all of the workers to terminate.</tt> </tt>
+<a name="L325"></a><tt class="py-lineno">325</tt>  <tt class="py-line">            <tt class="py-comment"># </tt> </tt>
+<a name="L326"></a><tt class="py-lineno">326</tt>  <tt class="py-line">            <tt class="py-comment"># If we don't do this, later Python versions (2.4, 2.5) often</tt> </tt>
+<a name="L327"></a><tt class="py-lineno">327</tt>  <tt class="py-line">            <tt class="py-comment"># seem to raise exceptions during shutdown.  This happens</tt> </tt>
+<a name="L328"></a><tt class="py-lineno">328</tt>  <tt class="py-line">            <tt class="py-comment"># in requestQueue.get(), as an assertion failure that</tt> </tt>
+<a name="L329"></a><tt class="py-lineno">329</tt>  <tt class="py-line">            <tt class="py-comment"># requestQueue.not_full is notified while not acquired,</tt> </tt>
+<a name="L330"></a><tt class="py-lineno">330</tt>  <tt class="py-line">            <tt class="py-comment"># seemingly because the main thread has shut down (or is</tt> </tt>
+<a name="L331"></a><tt class="py-lineno">331</tt>  <tt class="py-line">            <tt class="py-comment"># in the process of doing so) while the workers are still</tt> </tt>
+<a name="L332"></a><tt class="py-lineno">332</tt>  <tt class="py-line">            <tt class="py-comment"># trying to pull sentinels off the requestQueue.</tt> </tt>
+<a name="L333"></a><tt class="py-lineno">333</tt>  <tt class="py-line">            <tt class="py-comment">#</tt> </tt>
+<a name="L334"></a><tt class="py-lineno">334</tt>  <tt class="py-line">            <tt class="py-comment"># Normally these terminations should happen fairly quickly,</tt> </tt>
+<a name="L335"></a><tt class="py-lineno">335</tt>  <tt class="py-line">            <tt class="py-comment"># but we'll stick a one-second timeout on here just in case</tt> </tt>
+<a name="L336"></a><tt class="py-lineno">336</tt>  <tt class="py-line">            <tt class="py-comment"># someone gets hung.</tt> </tt>
+<a name="L337"></a><tt class="py-lineno">337</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">worker</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">workers</tt><tt class="py-op">:</tt> </tt>
+<a name="L338"></a><tt class="py-lineno">338</tt>  <tt class="py-line">                <tt class="py-name">worker</tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt class="py-number">1.0</tt><tt class="py-op">)</tt> </tt>
+<a name="L339"></a><tt class="py-lineno">339</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">workers</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+</div></div><a name="L340"></a><tt class="py-lineno">340</tt>  <tt class="py-line"> </tt>
+<a name="Parallel"></a><div id="Parallel-def"><a name="L341"></a><tt class="py-lineno">341</tt> <a class="py-toggle" href="#" id="Parallel-toggle" onclick="return toggle('Parallel');">-</a><tt class="py-line">    <tt class="py-keyword">class</tt> <a class="py-def-name" href="SCons.Job.Parallel-class.html">Parallel</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Parallel-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Parallel-expanded"><a name="L342"></a><tt class="py-lineno">342</tt>  <tt class="py-line">        <tt class="py-docstring">"""This class is used to execute tasks in parallel, and is somewhat </tt> </tt>
+<a name="L343"></a><tt class="py-lineno">343</tt>  <tt class="py-line"><tt class="py-docstring">        less efficient than Serial, but is appropriate for parallel builds.</tt> </tt>
+<a name="L344"></a><tt class="py-lineno">344</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L345"></a><tt class="py-lineno">345</tt>  <tt class="py-line"><tt class="py-docstring">        This class is thread safe.</tt> </tt>
+<a name="L346"></a><tt class="py-lineno">346</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L347"></a><tt class="py-lineno">347</tt>  <tt class="py-line"> </tt>
+<a name="Parallel.__init__"></a><div id="Parallel.__init__-def"><a name="L348"></a><tt class="py-lineno">348</tt> <a class="py-toggle" href="#" id="Parallel.__init__-toggle" onclick="return toggle('Parallel.__init__');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Job.Parallel-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">taskmaster</tt><tt class="py-op">,</tt> <tt class="py-param">num</tt><tt class="py-op">,</tt> <tt class="py-param">stack_size</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Parallel.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++++++++++"></div><div id="Parallel.__init__-expanded"><a name="L349"></a><tt class="py-lineno">349</tt>  <tt class="py-line">            <tt class="py-docstring">"""Create a new parallel job given a taskmaster.</tt> </tt>
+<a name="L350"></a><tt class="py-lineno">350</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L351"></a><tt class="py-lineno">351</tt>  <tt class="py-line"><tt class="py-docstring">            The taskmaster's next_task() method should return the next</tt> </tt>
+<a name="L352"></a><tt class="py-lineno">352</tt>  <tt class="py-line"><tt class="py-docstring">            task that needs to be executed, or None if there are no more</tt> </tt>
+<a name="L353"></a><tt class="py-lineno">353</tt>  <tt class="py-line"><tt class="py-docstring">            tasks. The taskmaster's executed() method will be called</tt> </tt>
+<a name="L354"></a><tt class="py-lineno">354</tt>  <tt class="py-line"><tt class="py-docstring">            for each task when it is successfully executed or failed()</tt> </tt>
+<a name="L355"></a><tt class="py-lineno">355</tt>  <tt class="py-line"><tt class="py-docstring">            will be called if the task failed to execute (i.e. execute()</tt> </tt>
+<a name="L356"></a><tt class="py-lineno">356</tt>  <tt class="py-line"><tt class="py-docstring">            raised an exception).</tt> </tt>
+<a name="L357"></a><tt class="py-lineno">357</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L358"></a><tt class="py-lineno">358</tt>  <tt class="py-line"><tt class="py-docstring">            Note: calls to taskmaster are serialized, but calls to</tt> </tt>
+<a name="L359"></a><tt class="py-lineno">359</tt>  <tt class="py-line"><tt class="py-docstring">            execute() on distinct tasks are not serialized, because</tt> </tt>
+<a name="L360"></a><tt class="py-lineno">360</tt>  <tt class="py-line"><tt class="py-docstring">            that is the whole point of parallel jobs: they can execute</tt> </tt>
+<a name="L361"></a><tt class="py-lineno">361</tt>  <tt class="py-line"><tt class="py-docstring">            multiple tasks simultaneously. """</tt> </tt>
+<a name="L362"></a><tt class="py-lineno">362</tt>  <tt class="py-line"> </tt>
+<a name="L363"></a><tt class="py-lineno">363</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">taskmaster</tt> <tt class="py-op">=</tt> <tt class="py-name">taskmaster</tt> </tt>
+<a name="L364"></a><tt class="py-lineno">364</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">interrupted</tt> <tt class="py-op">=</tt> <tt id="link-70" class="py-name"><a title="SCons.Job.InterruptState" class="py-name" href="#" onclick="return doclink('link-70', 'InterruptState', 'link-18');">InterruptState</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L365"></a><tt class="py-lineno">365</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">tp</tt> <tt class="py-op">=</tt> <tt id="link-71" class="py-name" targets="Class SCons.Job.ThreadPool=SCons.Job.ThreadPool-class.html"><a title="SCons.Job.ThreadPool" class="py-name" href="#" onclick="return doclink('link-71', 'ThreadPool', 'link-71');">ThreadPool</a></tt><tt class="py-op">(</tt><tt class="py-name">num</tt><tt class="py-op">,</tt> <tt class="py-name">stack_size</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">interrupted</tt><tt class="py-op">)</tt> </tt>
+<a name="L366"></a><tt class="py-lineno">366</tt>  <tt class="py-line"> </tt>
+<a name="L367"></a><tt class="py-lineno">367</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">maxjobs</tt> <tt class="py-op">=</tt> <tt class="py-name">num</tt> </tt>
+</div><a name="L368"></a><tt class="py-lineno">368</tt>  <tt class="py-line"> </tt>
+<a name="Parallel.start"></a><div id="Parallel.start-def"><a name="L369"></a><tt class="py-lineno">369</tt> <a class="py-toggle" href="#" id="Parallel.start-toggle" onclick="return toggle('Parallel.start');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Job.Parallel-class.html#start">start</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Parallel.start-collapsed" style="display:none;" pad="+++" indent="++++++++++++++++"></div><div id="Parallel.start-expanded"><a name="L370"></a><tt class="py-lineno">370</tt>  <tt class="py-line">            <tt class="py-docstring">"""Start the job. This will begin pulling tasks from the</tt> </tt>
+<a name="L371"></a><tt class="py-lineno">371</tt>  <tt class="py-line"><tt class="py-docstring">            taskmaster and executing them, and return when there are no</tt> </tt>
+<a name="L372"></a><tt class="py-lineno">372</tt>  <tt class="py-line"><tt class="py-docstring">            more tasks. If a task fails to execute (i.e. execute() raises</tt> </tt>
+<a name="L373"></a><tt class="py-lineno">373</tt>  <tt class="py-line"><tt class="py-docstring">            an exception), then the job will stop."""</tt> </tt>
+<a name="L374"></a><tt class="py-lineno">374</tt>  <tt class="py-line"> </tt>
+<a name="L375"></a><tt class="py-lineno">375</tt>  <tt class="py-line">            <tt class="py-name">jobs</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L376"></a><tt class="py-lineno">376</tt>  <tt class="py-line">             </tt>
+<a name="L377"></a><tt class="py-lineno">377</tt>  <tt class="py-line">            <tt class="py-keyword">while</tt> <tt class="py-name">True</tt><tt class="py-op">:</tt> </tt>
+<a name="L378"></a><tt class="py-lineno">378</tt>  <tt class="py-line">                <tt class="py-comment"># Start up as many available tasks as we're</tt> </tt>
+<a name="L379"></a><tt class="py-lineno">379</tt>  <tt class="py-line">                <tt class="py-comment"># allowed to.</tt> </tt>
+<a name="L380"></a><tt class="py-lineno">380</tt>  <tt class="py-line">                <tt class="py-keyword">while</tt> <tt class="py-name">jobs</tt> <tt class="py-op">&lt;</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">maxjobs</tt><tt class="py-op">:</tt> </tt>
+<a name="L381"></a><tt class="py-lineno">381</tt>  <tt class="py-line">                    <tt class="py-name">task</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">taskmaster</tt><tt class="py-op">.</tt><tt id="link-72" class="py-name"><a title="SCons.Taskmaster.Taskmaster.next_task" class="py-name" href="#" onclick="return doclink('link-72', 'next_task', 'link-19');">next_task</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L382"></a><tt class="py-lineno">382</tt>  <tt class="py-line">                    <tt class="py-keyword">if</tt> <tt class="py-name">task</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L383"></a><tt class="py-lineno">383</tt>  <tt class="py-line">                        <tt class="py-keyword">break</tt> </tt>
+<a name="L384"></a><tt class="py-lineno">384</tt>  <tt class="py-line"> </tt>
+<a name="L385"></a><tt class="py-lineno">385</tt>  <tt class="py-line">                    <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L386"></a><tt class="py-lineno">386</tt>  <tt class="py-line">                        <tt class="py-comment"># prepare task for execution</tt> </tt>
+<a name="L387"></a><tt class="py-lineno">387</tt>  <tt class="py-line">                        <tt class="py-name">task</tt><tt class="py-op">.</tt><tt id="link-73" class="py-name"><a title="SCons.Executor.Executor.prepare
+SCons.Executor.Null.prepare
+SCons.Node.FS.Dir.prepare
+SCons.Node.FS.File.prepare
+SCons.Node.Node.prepare
+SCons.Script.Main.BuildTask.prepare
+SCons.Script.Main.CleanTask.prepare
+SCons.Script.Main.QuestionTask.prepare
+SCons.Taskmaster.Task.prepare" class="py-name" href="#" onclick="return doclink('link-73', 'prepare', 'link-20');">prepare</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L388"></a><tt class="py-lineno">388</tt>  <tt class="py-line">                    <tt class="py-keyword">except</tt><tt class="py-op">:</tt> </tt>
+<a name="L389"></a><tt class="py-lineno">389</tt>  <tt class="py-line">                        <tt class="py-name">task</tt><tt class="py-op">.</tt><tt id="link-74" class="py-name"><a title="SCons.Taskmaster.Task.exception_set" class="py-name" href="#" onclick="return doclink('link-74', 'exception_set', 'link-27');">exception_set</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L390"></a><tt class="py-lineno">390</tt>  <tt class="py-line">                        <tt class="py-name">task</tt><tt class="py-op">.</tt><tt id="link-75" class="py-name"><a title="SCons.Node.failed
+SCons.SConf.SConfBuildTask.failed
+SCons.Script.Main.BuildTask.failed
+SCons.Taskmaster.Task.failed" class="py-name" href="#" onclick="return doclink('link-75', 'failed', 'link-29');">failed</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L391"></a><tt class="py-lineno">391</tt>  <tt class="py-line">                        <tt class="py-name">task</tt><tt class="py-op">.</tt><tt id="link-76" class="py-name"><a title="SCons.Node.Node.postprocess
+SCons.Script.Main.BuildTask.postprocess
+SCons.Taskmaster.Task.postprocess" class="py-name" href="#" onclick="return doclink('link-76', 'postprocess', 'link-31');">postprocess</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L392"></a><tt class="py-lineno">392</tt>  <tt class="py-line">                    <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L393"></a><tt class="py-lineno">393</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt class="py-name">task</tt><tt class="py-op">.</tt><tt id="link-77" class="py-name"><a title="SCons.Script.Main.BuildTask.needs_execute
+SCons.Taskmaster.AlwaysTask.needs_execute
+SCons.Taskmaster.OutOfDateTask.needs_execute
+SCons.Taskmaster.Task.needs_execute" class="py-name" href="#" onclick="return doclink('link-77', 'needs_execute', 'link-21');">needs_execute</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L394"></a><tt class="py-lineno">394</tt>  <tt class="py-line">                            <tt class="py-comment"># dispatch task</tt> </tt>
+<a name="L395"></a><tt class="py-lineno">395</tt>  <tt class="py-line">                            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">tp</tt><tt class="py-op">.</tt><tt id="link-78" class="py-name"><a title="SCons.Job.ThreadPool.put" class="py-name" href="#" onclick="return doclink('link-78', 'put', 'link-42');">put</a></tt><tt class="py-op">(</tt><tt class="py-name">task</tt><tt class="py-op">)</tt> </tt>
+<a name="L396"></a><tt class="py-lineno">396</tt>  <tt class="py-line">                            <tt class="py-name">jobs</tt> <tt class="py-op">=</tt> <tt class="py-name">jobs</tt> <tt class="py-op">+</tt> <tt class="py-number">1</tt> </tt>
+<a name="L397"></a><tt class="py-lineno">397</tt>  <tt class="py-line">                        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L398"></a><tt class="py-lineno">398</tt>  <tt class="py-line">                            <tt class="py-name">task</tt><tt class="py-op">.</tt><tt id="link-79" class="py-name"><a title="SCons.Node.executed
+SCons.Script.Main.BuildTask.executed
+SCons.Script.Main.CleanTask.executed
+SCons.Script.Main.QuestionTask.executed" class="py-name" href="#" onclick="return doclink('link-79', 'executed', 'link-30');">executed</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L399"></a><tt class="py-lineno">399</tt>  <tt class="py-line">                            <tt class="py-name">task</tt><tt class="py-op">.</tt><tt id="link-80" class="py-name"><a title="SCons.Node.Node.postprocess
+SCons.Script.Main.BuildTask.postprocess
+SCons.Taskmaster.Task.postprocess" class="py-name" href="#" onclick="return doclink('link-80', 'postprocess', 'link-31');">postprocess</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L400"></a><tt class="py-lineno">400</tt>  <tt class="py-line"> </tt>
+<a name="L401"></a><tt class="py-lineno">401</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">task</tt> <tt class="py-keyword">and</tt> <tt class="py-keyword">not</tt> <tt class="py-name">jobs</tt><tt class="py-op">:</tt> <tt class="py-keyword">break</tt> </tt>
+<a name="L402"></a><tt class="py-lineno">402</tt>  <tt class="py-line"> </tt>
+<a name="L403"></a><tt class="py-lineno">403</tt>  <tt class="py-line">                <tt class="py-comment"># Let any/all completed tasks finish up before we go</tt> </tt>
+<a name="L404"></a><tt class="py-lineno">404</tt>  <tt class="py-line">                <tt class="py-comment"># back and put the next batch of tasks on the queue.</tt> </tt>
+<a name="L405"></a><tt class="py-lineno">405</tt>  <tt class="py-line">                <tt class="py-keyword">while</tt> <tt class="py-name">True</tt><tt class="py-op">:</tt> </tt>
+<a name="L406"></a><tt class="py-lineno">406</tt>  <tt class="py-line">                    <tt class="py-name">task</tt><tt class="py-op">,</tt> <tt class="py-name">ok</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">tp</tt><tt class="py-op">.</tt><tt id="link-81" class="py-name"><a title="SCons.Environment.OverrideEnvironment.get
+SCons.Environment.SubstitutionEnvironment.get
+SCons.Job.ThreadPool.get
+SCons.Util.Proxy.get" class="py-name" href="#" onclick="return doclink('link-81', 'get', 'link-35');">get</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L407"></a><tt class="py-lineno">407</tt>  <tt class="py-line">                    <tt class="py-name">jobs</tt> <tt class="py-op">=</tt> <tt class="py-name">jobs</tt> <tt class="py-op">-</tt> <tt class="py-number">1</tt> </tt>
+<a name="L408"></a><tt class="py-lineno">408</tt>  <tt class="py-line"> </tt>
+<a name="L409"></a><tt class="py-lineno">409</tt>  <tt class="py-line">                    <tt class="py-keyword">if</tt> <tt class="py-name">ok</tt><tt class="py-op">:</tt> </tt>
+<a name="L410"></a><tt class="py-lineno">410</tt>  <tt class="py-line">                        <tt class="py-name">task</tt><tt class="py-op">.</tt><tt id="link-82" class="py-name"><a title="SCons.Node.executed
+SCons.Script.Main.BuildTask.executed
+SCons.Script.Main.CleanTask.executed
+SCons.Script.Main.QuestionTask.executed" class="py-name" href="#" onclick="return doclink('link-82', 'executed', 'link-30');">executed</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L411"></a><tt class="py-lineno">411</tt>  <tt class="py-line">                    <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L412"></a><tt class="py-lineno">412</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">interrupted</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L413"></a><tt class="py-lineno">413</tt>  <tt class="py-line">                            <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L414"></a><tt class="py-lineno">414</tt>  <tt class="py-line">                                <tt class="py-keyword">raise</tt> <tt id="link-83" class="py-name"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-83', 'SCons', 'link-1');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-84" class="py-name"><a title="SCons.Errors" class="py-name" href="#" onclick="return doclink('link-84', 'Errors', 'link-3');">Errors</a></tt><tt class="py-op">.</tt><tt id="link-85" class="py-name"><a title="SCons.Errors.BuildError" class="py-name" href="#" onclick="return doclink('link-85', 'BuildError', 'link-25');">BuildError</a></tt><tt class="py-op">(</tt> </tt>
+<a name="L415"></a><tt class="py-lineno">415</tt>  <tt class="py-line">                                    <tt class="py-name">task</tt><tt class="py-op">.</tt><tt class="py-name">targets</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-name">errstr</tt><tt class="py-op">=</tt><tt id="link-86" class="py-name"><a title="SCons.Job.interrupt_msg" class="py-name" href="#" onclick="return doclink('link-86', 'interrupt_msg', 'link-6');">interrupt_msg</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L416"></a><tt class="py-lineno">416</tt>  <tt class="py-line">                            <tt class="py-keyword">except</tt><tt class="py-op">:</tt> </tt>
+<a name="L417"></a><tt class="py-lineno">417</tt>  <tt class="py-line">                                <tt class="py-name">task</tt><tt class="py-op">.</tt><tt id="link-87" class="py-name"><a title="SCons.Taskmaster.Task.exception_set" class="py-name" href="#" onclick="return doclink('link-87', 'exception_set', 'link-27');">exception_set</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L418"></a><tt class="py-lineno">418</tt>  <tt class="py-line"> </tt>
+<a name="L419"></a><tt class="py-lineno">419</tt>  <tt class="py-line">                        <tt class="py-comment"># Let the failed() callback function arrange</tt> </tt>
+<a name="L420"></a><tt class="py-lineno">420</tt>  <tt class="py-line">                        <tt class="py-comment"># for the build to stop if that's appropriate.</tt> </tt>
+<a name="L421"></a><tt class="py-lineno">421</tt>  <tt class="py-line">                        <tt class="py-name">task</tt><tt class="py-op">.</tt><tt id="link-88" class="py-name"><a title="SCons.Node.failed
+SCons.SConf.SConfBuildTask.failed
+SCons.Script.Main.BuildTask.failed
+SCons.Taskmaster.Task.failed" class="py-name" href="#" onclick="return doclink('link-88', 'failed', 'link-29');">failed</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L422"></a><tt class="py-lineno">422</tt>  <tt class="py-line"> </tt>
+<a name="L423"></a><tt class="py-lineno">423</tt>  <tt class="py-line">                    <tt class="py-name">task</tt><tt class="py-op">.</tt><tt id="link-89" class="py-name"><a title="SCons.Node.Node.postprocess
+SCons.Script.Main.BuildTask.postprocess
+SCons.Taskmaster.Task.postprocess" class="py-name" href="#" onclick="return doclink('link-89', 'postprocess', 'link-31');">postprocess</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L424"></a><tt class="py-lineno">424</tt>  <tt class="py-line"> </tt>
+<a name="L425"></a><tt class="py-lineno">425</tt>  <tt class="py-line">                    <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">tp</tt><tt class="py-op">.</tt><tt class="py-name">resultsQueue</tt><tt class="py-op">.</tt><tt class="py-name">empty</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L426"></a><tt class="py-lineno">426</tt>  <tt class="py-line">                        <tt class="py-keyword">break</tt> </tt>
+<a name="L427"></a><tt class="py-lineno">427</tt>  <tt class="py-line"> </tt>
+<a name="L428"></a><tt class="py-lineno">428</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">tp</tt><tt class="py-op">.</tt><tt id="link-90" class="py-name"><a title="SCons.Executor.Executor.cleanup
+SCons.Executor.Null.cleanup
+SCons.Job.ThreadPool.cleanup
+SCons.Taskmaster.Taskmaster.cleanup" class="py-name" href="#" onclick="return doclink('link-90', 'cleanup', 'link-32');">cleanup</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L429"></a><tt class="py-lineno">429</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">taskmaster</tt><tt class="py-op">.</tt><tt id="link-91" class="py-name"><a title="SCons.Executor.Executor.cleanup
+SCons.Executor.Null.cleanup
+SCons.Job.ThreadPool.cleanup
+SCons.Taskmaster.Taskmaster.cleanup" class="py-name" href="#" onclick="return doclink('link-91', 'cleanup', 'link-32');">cleanup</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L430"></a><tt class="py-lineno">430</tt>  <tt class="py-line"> </tt>
+<a name="L431"></a><tt class="py-lineno">431</tt>  <tt class="py-line"><tt class="py-comment"># Local Variables:</tt> </tt>
+<a name="L432"></a><tt class="py-lineno">432</tt>  <tt class="py-line"><tt class="py-comment"># tab-width:4</tt> </tt>
+<a name="L433"></a><tt class="py-lineno">433</tt>  <tt class="py-line"><tt class="py-comment"># indent-tabs-mode:nil</tt> </tt>
+<a name="L434"></a><tt class="py-lineno">434</tt>  <tt class="py-line"><tt class="py-comment"># End:</tt> </tt>
+<a name="L435"></a><tt class="py-lineno">435</tt>  <tt class="py-line"><tt class="py-comment"># vim: set expandtab tabstop=4 shiftwidth=4:</tt> </tt>
+<a name="L436"></a><tt class="py-lineno">436</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="SCons-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://www.scons.org/">SCons</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Sep 27 12:53:23 2014
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

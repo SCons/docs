@@ -1,0 +1,71 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>8.3. Finding Installed Library Information: the ParseConfig Function</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 2.5.1"><link rel="up" href="ch08.html" title="Chapter 8. Automatically Putting Command-line Options into their Construction Variables"><link rel="prev" href="ch08s02.html" title="8.2. Separating Compile Arguments into their Variables: the ParseFlags Function"><link rel="next" href="ch09.html" title="Chapter 9. Controlling Build Output"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">8.3. Finding Installed Library Information: the <code class="function">ParseConfig</code> Function</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch08s02.html">Prev</a> </td><th width="60%" align="center">Chapter 8. Automatically Putting Command-line Options into their Construction Variables</th><td width="20%" align="right"> <a accesskey="n" href="ch09.html">Next</a></td></tr></table><hr></div><div class="section" title="8.3. Finding Installed Library Information: the ParseConfig Function"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="sect-parseconfig"></a>8.3. Finding Installed Library Information: the <code class="function">ParseConfig</code> Function</h2></div></div></div><p>
+
+ Configuring the right options to build programs to work with
+ libraries--especially shared libraries--that are available
+ on POSIX systems can be very complicated.
+ To help this situation,
+ various utilies with names that end in <code class="filename">config</code>
+ return the command-line options for the GNU Compiler Collection (GCC)
+ that are needed to use these libraries;
+ for example, the command-line options
+ to use a library named <code class="filename">lib</code>
+ would be found by calling a utility named <code class="filename">lib-config</code>.
+
+ </p><p>
+
+ A more recent convention is that these options
+ are available from the generic <code class="filename">pkg-config</code> program,
+ which has common framework, error handling, and the like,
+ so that all the package creator has to do is provide the set of strings
+ for his particular package.
+
+ </p><p>
+
+ <span class="application">SCons</span> construction environments have a <code class="function">ParseConfig</code> method
+ that executes a <code class="filename">*config</code> utility
+ (either <code class="filename">pkg-config</code> or a
+ more specific utility)
+ and configures the appropriate construction variables
+ in the environment
+ based on the command-line options
+ returned by the specified command.
+
+ </p><pre class="programlisting">
+env = Environment()
+env['CPPPATH'] = ['/lib/compat']
+env.ParseConfig("pkg-config x11 --cflags --libs")
+print env['CPPPATH']
+   </pre><p>
+
+ <span class="application">SCons</span> will execute the specified command string,
+ parse the resultant flags,
+ and add the flags to the appropriate environment variables.
+
+ </p><pre class="screen">
+% <strong class="userinput"><code>scons -Q</code></strong>
+['/lib/compat', '/usr/X11/include']
+scons: `.' is up to date.
+ </pre><p>
+
+ In the example above, <span class="application">SCons</span> has added the include directory to
+ <code class="varname">CPPPATH</code>.
+ (Depending upon what other flags are emitted by the
+ <code class="filename">pkg-config</code> command,
+ other variables may have been extended as well.)
+
+ </p><p>
+
+ Note that the options are merged with existing options using
+ the <code class="function">MergeFlags</code> method,
+ so that each option only occurs once in the construction variable:
+
+ </p><pre class="programlisting">
+env = Environment()
+env.ParseConfig("pkg-config x11 --cflags --libs")
+env.ParseConfig("pkg-config x11 --cflags --libs")
+print env['CPPPATH']
+   </pre><pre class="screen">
+% <strong class="userinput"><code>scons -Q</code></strong>
+['/usr/X11/include']
+scons: `.' is up to date.
+ </pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch08s02.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch08.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch09.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">8.2. Separating Compile Arguments into their Variables: the <code class="function">ParseFlags</code> Function </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 9. Controlling Build Output</td></tr></table></div></body></html>

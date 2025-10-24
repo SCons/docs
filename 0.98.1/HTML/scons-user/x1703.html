@@ -1,0 +1,1069 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Canned Build Options</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 0.98.1"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Controlling a Build From the Command Line"
+HREF="c1454.html"><LINK
+REL="PREVIOUS"
+TITLE="Reading Build Options From a File"
+HREF="x1681.html"><LINK
+REL="NEXT"
+TITLE="Adding Multiple Command-Line Build Options at Once"
+HREF="x1889.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 0.98.1</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x1681.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 9. Controlling a Build From the Command Line</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x1889.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN1703"
+>9.9. Canned Build Options</A
+></H1
+><P
+>&#13;
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> provides a number of functions
+    that provide ready-made behaviors
+    for various types of command-line build options.
+
+    </P
+><DIV
+CLASS="section"
+><H2
+CLASS="section"
+><A
+NAME="AEN1707"
+>9.9.1. True/False Values:  the <CODE
+CLASS="function"
+>BoolOption</CODE
+> Build Option</A
+></H2
+><P
+>&#13;
+      It's often handy to be able to specify an
+      option that controls a simple Boolean variable
+      with a <TT
+CLASS="literal"
+>true</TT
+> or <TT
+CLASS="literal"
+>false</TT
+> value.
+      It would be even more handy to accomodate
+      users who have different preferences for how to represent
+      <TT
+CLASS="literal"
+>true</TT
+> or <TT
+CLASS="literal"
+>false</TT
+> values.
+      The <CODE
+CLASS="function"
+>BoolOption</CODE
+> function
+      makes it easy to accomodate a variety of
+      common values that represent
+      <TT
+CLASS="literal"
+>true</TT
+> or <TT
+CLASS="literal"
+>false</TT
+>.
+
+      </P
+><P
+>&#13;
+      The <CODE
+CLASS="function"
+>BoolOption</CODE
+> function takes three arguments:
+      the name of the build option,
+      the default value of the build option,
+      and the help string for the option.
+      It then returns appropriate information for
+      passing to the <CODE
+CLASS="function"
+>Add</CODE
+> method of an <CODE
+CLASS="function"
+>Options</CODE
+> object, like so:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;           opts = Options('custom.py')
+           opts.Add(BoolOption('RELEASE', 'Set to build for release', 0))
+           env = Environment(options = opts,
+                             CPPDEFINES={'RELEASE_BUILD' : '${RELEASE}'})
+           env.Program('foo.c')
+      </PRE
+><P
+>&#13;
+      With this build option,
+      the <CODE
+CLASS="varname"
+>RELEASE</CODE
+> variable can now be enabled by
+      setting it to the value <TT
+CLASS="literal"
+>yes</TT
+>
+      or <TT
+CLASS="literal"
+>t</TT
+>:
+
+      </P
+><PRE
+CLASS="screen"
+>&#13;        % <KBD
+CLASS="userinput"
+>scons -Q RELEASE=yes foo.o</KBD
+>
+        cc -o foo.o -c -DRELEASE_BUILD=True foo.c
+      </PRE
+><PRE
+CLASS="screen"
+>&#13;        % <KBD
+CLASS="userinput"
+>scons -Q RELEASE=t foo.o</KBD
+>
+        cc -o foo.o -c -DRELEASE_BUILD=True foo.c
+      </PRE
+><P
+>&#13;
+      Other values that equate to <TT
+CLASS="literal"
+>true</TT
+> include
+      <TT
+CLASS="literal"
+>y</TT
+>,
+      <TT
+CLASS="literal"
+>1</TT
+>,
+      <TT
+CLASS="literal"
+>on</TT
+>
+      and
+      <TT
+CLASS="literal"
+>all</TT
+>.
+
+      </P
+><P
+>&#13;
+      Conversely, <CODE
+CLASS="varname"
+>RELEASE</CODE
+> may now be given a <TT
+CLASS="literal"
+>false</TT
+>
+      value by setting it to
+      <TT
+CLASS="literal"
+>no</TT
+>
+      or
+      <TT
+CLASS="literal"
+>f</TT
+>:
+
+      </P
+><PRE
+CLASS="screen"
+>&#13;        % <KBD
+CLASS="userinput"
+>scons -Q RELEASE=no foo.o</KBD
+>
+        cc -o foo.o -c -DRELEASE_BUILD=False foo.c
+      </PRE
+><PRE
+CLASS="screen"
+>&#13;        % <KBD
+CLASS="userinput"
+>scons -Q RELEASE=f foo.o</KBD
+>
+        cc -o foo.o -c -DRELEASE_BUILD=False foo.c
+      </PRE
+><P
+>&#13;
+      Other values that equate to <TT
+CLASS="literal"
+>false</TT
+> include
+      <TT
+CLASS="literal"
+>n</TT
+>,
+      <TT
+CLASS="literal"
+>0</TT
+>,
+      <TT
+CLASS="literal"
+>off</TT
+>
+      and
+      <TT
+CLASS="literal"
+>none</TT
+>.
+
+      </P
+><P
+>&#13;
+      Lastly, if a user tries to specify
+      any other value,
+      <SPAN
+CLASS="application"
+>SCons</SPAN
+> supplies an appropriate error message:
+
+      </P
+><PRE
+CLASS="screen"
+>&#13;        % <KBD
+CLASS="userinput"
+>scons -Q RELEASE=bad_value foo.o</KBD
+>
+        
+        scons: *** Error converting option: RELEASE
+        Invalid value for boolean option: bad_value
+        File "/home/my/project/SConstruct", line 4, in &#60;module&#62;
+      </PRE
+></DIV
+><DIV
+CLASS="section"
+><H2
+CLASS="section"
+><A
+NAME="AEN1756"
+>9.9.2. Single Value From a List:  the <CODE
+CLASS="function"
+>EnumOption</CODE
+> Build Option</A
+></H2
+><P
+>&#13;
+      Suppose that we want a user to be able to
+      set a <CODE
+CLASS="varname"
+>COLOR</CODE
+> option
+      that selects a background color to be
+      displayed by an application,
+      but that we want to restrict the
+      choices to a specific set of allowed colors.
+      This can be set up quite easily
+      using the <CODE
+CLASS="function"
+>EnumOption</CODE
+>,
+      which takes a list of <CODE
+CLASS="varname"
+>allowed_values</CODE
+>      in addition to the variable name,
+      default value,
+      and help text arguments:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;           opts = Options('custom.py')
+           opts.Add(EnumOption('COLOR', 'Set background color', 'red',
+                               allowed_values=('red', 'green', 'blue')))
+           env = Environment(options = opts,
+                             CPPDEFINES={'COLOR' : '"${COLOR}"'})
+           env.Program('foo.c')
+      </PRE
+><P
+>&#13;
+      The user can now explicity set the <CODE
+CLASS="varname"
+>COLOR</CODE
+> build option
+      to any of the specified allowed values:
+
+      </P
+><PRE
+CLASS="screen"
+>&#13;        % <KBD
+CLASS="userinput"
+>scons -Q COLOR=red foo.o</KBD
+>
+        cc -o foo.o -c -DCOLOR="red" foo.c
+        % <KBD
+CLASS="userinput"
+>scons -Q COLOR=blue foo.o</KBD
+>
+        cc -o foo.o -c -DCOLOR="blue" foo.c
+        % <KBD
+CLASS="userinput"
+>scons -Q COLOR=green foo.o</KBD
+>
+        cc -o foo.o -c -DCOLOR="green" foo.c
+      </PRE
+><P
+>&#13;
+      But, almost more importantly,
+      an attempt to set <CODE
+CLASS="varname"
+>COLOR</CODE
+>
+      to a value that's not in the list
+      generates an error message:
+
+      </P
+><PRE
+CLASS="screen"
+>&#13;        % <KBD
+CLASS="userinput"
+>scons -Q COLOR=magenta foo.o</KBD
+>
+        
+        scons: *** Invalid value for option COLOR: magenta
+        File "/home/my/project/SConstruct", line 5, in &#60;module&#62;
+      </PRE
+><P
+>&#13;
+      The <CODE
+CLASS="function"
+>EnumOption</CODE
+> function also supports a way
+      to map alternate names to allowed values.
+      Suppose, for example,
+      that we want to allow the user
+      to use the word <TT
+CLASS="literal"
+>navy</TT
+> as a synonym for
+      <TT
+CLASS="literal"
+>blue</TT
+>.
+      We do this by adding a <CODE
+CLASS="varname"
+>map</CODE
+> dictionary
+      that will map its key values
+      to the desired legal value:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;           opts = Options('custom.py')
+           opts.Add(EnumOption('COLOR', 'Set background color', 'red',
+                               allowed_values=('red', 'green', 'blue'),
+                               map={'navy':'blue'}))
+           env = Environment(options = opts,
+                             CPPDEFINES={'COLOR' : '"${COLOR}"'})
+           env.Program('foo.c')
+      </PRE
+><P
+>&#13;
+      As desired, the user can then use
+      <TT
+CLASS="literal"
+>navy</TT
+> on the command line,
+      and <SPAN
+CLASS="application"
+>SCons</SPAN
+> will translate it into <TT
+CLASS="literal"
+>blue</TT
+>
+      when it comes time to use the <CODE
+CLASS="varname"
+>COLOR</CODE
+>
+      option to build a target:
+
+      </P
+><PRE
+CLASS="screen"
+>&#13;        % <KBD
+CLASS="userinput"
+>scons -Q COLOR=navy foo.o</KBD
+>
+        cc -o foo.o -c -DCOLOR="blue" foo.c
+      </PRE
+><P
+>&#13;
+      By default, when using the <CODE
+CLASS="function"
+>EnumOption</CODE
+> function,
+      arguments that differ
+      from the legal values
+      only in case
+      are treated as illegal values:
+
+      </P
+><PRE
+CLASS="screen"
+>&#13;        % <KBD
+CLASS="userinput"
+>scons -Q COLOR=Red foo.o</KBD
+>
+        
+        scons: *** Invalid value for option COLOR: Red
+        File "/home/my/project/SConstruct", line 5, in &#60;module&#62;
+        % <KBD
+CLASS="userinput"
+>scons -Q COLOR=BLUE foo.o</KBD
+>
+        
+        scons: *** Invalid value for option COLOR: BLUE
+        File "/home/my/project/SConstruct", line 5, in &#60;module&#62;
+        % <KBD
+CLASS="userinput"
+>scons -Q COLOR=nAvY foo.o</KBD
+>
+        
+        scons: *** Invalid value for option COLOR: nAvY
+        File "/home/my/project/SConstruct", line 5, in &#60;module&#62;
+      </PRE
+><P
+>&#13;
+      The <CODE
+CLASS="function"
+>EnumOption</CODE
+> function can take an additional
+      <CODE
+CLASS="varname"
+>ignorecase</CODE
+> keyword argument that,
+      when set to <TT
+CLASS="literal"
+>1</TT
+>,
+      tells <SPAN
+CLASS="application"
+>SCons</SPAN
+> to allow case differences
+      when the values are specified:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;           opts = Options('custom.py')
+           opts.Add(EnumOption('COLOR', 'Set background color', 'red',
+                               allowed_values=('red', 'green', 'blue'),
+                               map={'navy':'blue'},
+                               ignorecase=1))
+           env = Environment(options = opts,
+                             CPPDEFINES={'COLOR' : '"${COLOR}"'})
+           env.Program('foo.c')
+      </PRE
+><P
+>&#13;
+      Which yields the output:
+
+      </P
+><PRE
+CLASS="screen"
+>&#13;        % <KBD
+CLASS="userinput"
+>scons -Q COLOR=Red foo.o</KBD
+>
+        cc -o foo.o -c -DCOLOR="Red" foo.c
+        % <KBD
+CLASS="userinput"
+>scons -Q COLOR=BLUE foo.o</KBD
+>
+        cc -o foo.o -c -DCOLOR="BLUE" foo.c
+        % <KBD
+CLASS="userinput"
+>scons -Q COLOR=nAvY foo.o</KBD
+>
+        cc -o foo.o -c -DCOLOR="blue" foo.c
+        % <KBD
+CLASS="userinput"
+>scons -Q COLOR=green foo.o</KBD
+>
+        cc -o foo.o -c -DCOLOR="green" foo.c
+      </PRE
+><P
+>&#13;
+      Notice that an <CODE
+CLASS="varname"
+>ignorecase</CODE
+> value of <TT
+CLASS="literal"
+>1</TT
+>
+      preserves the case-spelling that the user supplied.
+      If you want <SPAN
+CLASS="application"
+>SCons</SPAN
+> to translate the names
+      into lower-case,
+      regardless of the case used by the user,
+      specify an <CODE
+CLASS="varname"
+>ignorecase</CODE
+> value of <TT
+CLASS="literal"
+>2</TT
+>:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;           opts = Options('custom.py')
+           opts.Add(EnumOption('COLOR', 'Set background color', 'red',
+                               allowed_values=('red', 'green', 'blue'),
+                               map={'navy':'blue'},
+                               ignorecase=2))
+           env = Environment(options = opts,
+                             CPPDEFINES={'COLOR' : '"${COLOR}"'})
+           env.Program('foo.c')
+      </PRE
+><P
+>&#13;
+      Now <SPAN
+CLASS="application"
+>SCons</SPAN
+> will use values of
+      <TT
+CLASS="literal"
+>red</TT
+>,
+      <TT
+CLASS="literal"
+>green</TT
+> or
+      <TT
+CLASS="literal"
+>blue</TT
+>
+      regardless of how the user spells
+      those values on the command line:
+
+      </P
+><PRE
+CLASS="screen"
+>&#13;        % <KBD
+CLASS="userinput"
+>scons -Q COLOR=Red foo.o</KBD
+>
+        cc -o foo.o -c -DCOLOR="red" foo.c
+        % <KBD
+CLASS="userinput"
+>scons -Q COLOR=nAvY foo.o</KBD
+>
+        cc -o foo.o -c -DCOLOR="blue" foo.c
+        % <KBD
+CLASS="userinput"
+>scons -Q COLOR=GREEN foo.o</KBD
+>
+        cc -o foo.o -c -DCOLOR="green" foo.c
+      </PRE
+></DIV
+><DIV
+CLASS="section"
+><H2
+CLASS="section"
+><A
+NAME="AEN1821"
+>9.9.3. Multiple Values From a List:  the <CODE
+CLASS="function"
+>ListOption</CODE
+> Build Option</A
+></H2
+><P
+>&#13;
+      Another way in which you might want to allow users
+      to control build option is to
+      specify a list of one or more legal values.
+      <SPAN
+CLASS="application"
+>SCons</SPAN
+> supports this through the <CODE
+CLASS="function"
+>ListOption</CODE
+> function.
+      If, for example, we want a user to be able to set a
+      <CODE
+CLASS="varname"
+>COLORS</CODE
+> option to one or more of the legal list of values:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;           opts = Options('custom.py')
+           opts.Add(ListOption('COLORS', 'List of colors', 0,
+                               ['red', 'green', 'blue']))
+           env = Environment(options = opts,
+                             CPPDEFINES={'COLORS' : '"${COLORS}"'})
+           env.Program('foo.c')
+      </PRE
+><P
+>&#13;
+      A user can now specify a comma-separated list
+      of legal values,
+      which will get translated into a space-separated
+      list for passing to the any build commands:
+
+      </P
+><PRE
+CLASS="screen"
+>&#13;        % <KBD
+CLASS="userinput"
+>scons -Q COLORS=red,blue foo.o</KBD
+>
+        cc -o foo.o -c -DCOLORS="red blue" foo.c
+        % <KBD
+CLASS="userinput"
+>scons -Q COLORS=blue,green,red foo.o</KBD
+>
+        cc -o foo.o -c -DCOLORS="blue green red" foo.c
+      </PRE
+><P
+>&#13;
+      In addition, the <CODE
+CLASS="function"
+>ListOption</CODE
+> function
+      allows the user to specify explicit keywords of
+      <TT
+CLASS="literal"
+>all</TT
+> or <TT
+CLASS="literal"
+>none</TT
+>
+      to select all of the legal values,
+      or none of them, respectively:
+
+      </P
+><PRE
+CLASS="screen"
+>&#13;        % <KBD
+CLASS="userinput"
+>scons -Q COLORS=all foo.o</KBD
+>
+        cc -o foo.o -c -DCOLORS="red green blue" foo.c
+        % <KBD
+CLASS="userinput"
+>scons -Q COLORS=none foo.o</KBD
+>
+        cc -o foo.o -c -DCOLORS="" foo.c
+      </PRE
+><P
+>&#13;
+      And, of course, an illegal value
+      still generates an error message:
+
+      </P
+><PRE
+CLASS="screen"
+>&#13;        % <KBD
+CLASS="userinput"
+>scons -Q COLORS=magenta foo.o</KBD
+>
+        
+        scons: *** Error converting option: COLORS
+        Invalid value(s) for option: magenta
+        File "/home/my/project/SConstruct", line 5, in &#60;module&#62;
+      </PRE
+></DIV
+><DIV
+CLASS="section"
+><H2
+CLASS="section"
+><A
+NAME="AEN1843"
+>9.9.4. Path Names:  the <CODE
+CLASS="function"
+>PathOption</CODE
+> Build Option</A
+></H2
+><P
+>&#13;
+      <SPAN
+CLASS="application"
+>SCons</SPAN
+> supports a <CODE
+CLASS="function"
+>PathOption</CODE
+> function
+      to make it easy to create a build option
+      to control an expected path name.
+      If, for example, you need to
+      define a variable in the preprocessor
+      that controls the location of a
+      configuration file:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;           opts = Options('custom.py')
+           opts.Add(PathOption('CONFIG',
+                               'Path to configuration file',
+                               '/etc/my_config'))
+           env = Environment(options = opts,
+                             CPPDEFINES={'CONFIG_FILE' : '"$CONFIG"'})
+           env.Program('foo.c')
+      </PRE
+><P
+>&#13;
+      This then allows the user to
+      override the <CODE
+CLASS="varname"
+>CONFIG</CODE
+> build option
+      on the command line as necessary:
+
+      </P
+><PRE
+CLASS="screen"
+>&#13;        % <KBD
+CLASS="userinput"
+>scons -Q foo.o</KBD
+>
+        cc -o foo.o -c -DCONFIG_FILE="/etc/my_config" foo.c
+        % <KBD
+CLASS="userinput"
+>scons -Q CONFIG=/usr/local/etc/other_config foo.o</KBD
+>
+        scons: `foo.o' is up to date.
+      </PRE
+><P
+>&#13;
+      By default, <CODE
+CLASS="function"
+>PathOption</CODE
+> checks to make sure
+      that the specified path exists and generates an error if it
+      doesn't:
+
+      </P
+><PRE
+CLASS="screen"
+>&#13;        % <KBD
+CLASS="userinput"
+>scons -Q CONFIG=/does/not/exist foo.o</KBD
+>
+        
+        scons: *** Path for option CONFIG does not exist: /does/not/exist
+        File "/home/my/project/SConstruct", line 6, in &#60;module&#62;
+      </PRE
+><P
+>&#13;
+      <CODE
+CLASS="function"
+>PathOption</CODE
+> provides a number of methods
+      that you can use to change this behavior.
+      If you want to ensure that any specified paths are,
+      in fact, files and not directories,
+      use the <CODE
+CLASS="function"
+>PathOption.PathIsFile</CODE
+> method:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;           opts = Options('custom.py')
+           opts.Add(PathOption('CONFIG',
+                               'Path to configuration file',
+                               '/etc/my_config',
+                               PathOption.PathIsFile))
+           env = Environment(options = opts,
+                             CPPDEFINES={'CONFIG_FILE' : '"$CONFIG"'})
+           env.Program('foo.c')
+      </PRE
+><P
+>&#13;
+      Conversely, to ensure that any specified paths are
+      directories and not files,
+      use the <CODE
+CLASS="function"
+>PathOption.PathIsDir</CODE
+> method:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;           opts = Options('custom.py')
+           opts.Add(PathOption('DBDIR',
+                               'Path to database directory',
+                               '/var/my_dbdir',
+                               PathOption.PathIsDir))
+           env = Environment(options = opts,
+                             CPPDEFINES={'DBDIR' : '"$DBDIR"'})
+           env.Program('foo.c')
+      </PRE
+><P
+>&#13;
+      If you want to make sure that any specified paths
+      are directories,
+      and you would like the directory created
+      if it doesn't already exist,
+      use the <CODE
+CLASS="function"
+>PathOption.PathIsDirCreate</CODE
+> method:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;           opts = Options('custom.py')
+           opts.Add(PathOption('DBDIR',
+                               'Path to database directory',
+                               '/var/my_dbdir',
+                               PathOption.PathIsDirCreate))
+           env = Environment(options = opts,
+                             CPPDEFINES={'DBDIR' : '"$DBDIR"'})
+           env.Program('foo.c')
+      </PRE
+><P
+>&#13;
+      Lastly, if you don't care whether the path exists,
+      is a file, or a directory,
+      use the <CODE
+CLASS="function"
+>PathOption.PathAccept</CODE
+> method
+      to accept any path that the user supplies:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;           opts = Options('custom.py')
+           opts.Add(PathOption('OUTPUT',
+                               'Path to output file or directory',
+                               None,
+                               PathOption.PathAccept))
+           env = Environment(options = opts,
+                             CPPDEFINES={'OUTPUT' : '"$OUTPUT"'})
+           env.Program('foo.c')
+      </PRE
+></DIV
+><DIV
+CLASS="section"
+><H2
+CLASS="section"
+><A
+NAME="AEN1872"
+>9.9.5. Enabled/Disabled Path Names: the <CODE
+CLASS="function"
+>PackageOption</CODE
+> Build Option</A
+></H2
+><P
+>&#13;
+      Sometimes you want to give users
+      even more control over a path name variable,
+      allowing them to explicitly enable or
+      disable the path name
+      by using <TT
+CLASS="literal"
+>yes</TT
+> or <TT
+CLASS="literal"
+>no</TT
+> keywords,
+      in addition to allow them
+      to supply an explicit path name.
+      <SPAN
+CLASS="application"
+>SCons</SPAN
+> supports the <CODE
+CLASS="function"
+>PackageOption</CODE
+>
+      function to support this:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;           opts = Options('custom.py')
+           opts.Add(PackageOption('PACKAGE',
+                                  'Location package',
+                                  '/opt/location'))
+           env = Environment(options = opts,
+                             CPPDEFINES={'PACKAGE' : '"$PACKAGE"'})
+           env.Program('foo.c')
+      </PRE
+><P
+>&#13;
+      When the <TT
+CLASS="filename"
+>SConscript</TT
+> file uses the <CODE
+CLASS="function"
+>PackageOption</CODE
+> funciton,
+      user can now still use the default
+      or supply an overriding path name,
+      but can now explicitly set the
+      specified variable to a value
+      that indicates the package should be enabled
+      (in which case the default should be used)
+      or disabled:
+
+      </P
+><PRE
+CLASS="screen"
+>&#13;        % <KBD
+CLASS="userinput"
+>scons -Q foo.o</KBD
+>
+        cc -o foo.o -c -DPACKAGE="/opt/location" foo.c
+        % <KBD
+CLASS="userinput"
+>scons -Q PACKAGE=/usr/local/location foo.o</KBD
+>
+        cc -o foo.o -c -DPACKAGE="/usr/local/location" foo.c
+        % <KBD
+CLASS="userinput"
+>scons -Q PACKAGE=yes foo.o</KBD
+>
+        cc -o foo.o -c -DPACKAGE="True" foo.c
+        % <KBD
+CLASS="userinput"
+>scons -Q PACKAGE=no foo.o</KBD
+>
+        cc -o foo.o -c -DPACKAGE="False" foo.c
+      </PRE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x1681.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x1889.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Reading Build Options From a File</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c1454.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Adding Multiple Command-Line Build Options at Once</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,291 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>How is SCons Making Its Decisions?  the --taskmastertrace Option</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 1.3.1"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Troubleshooting"
+HREF="c4601.html"><LINK
+REL="PREVIOUS"
+TITLE="Where is SCons Blowing Up?  the --debug=stacktrace Option"
+HREF="x4780.html"><LINK
+REL="NEXT"
+TITLE="Construction Variables"
+HREF="a4819.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 1.3.1</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x4780.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 29. Troubleshooting</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="a4819.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN4801"
+>29.7. How is <SPAN
+CLASS="application"
+>SCons</SPAN
+> Making Its Decisions?  the <TT
+CLASS="literal"
+>--taskmastertrace</TT
+> Option</A
+></H1
+><P
+>&#13;
+    The internal <SPAN
+CLASS="application"
+>SCons</SPAN
+> subsystem that handles walking
+    the dependency graph
+    and controls the decision-making about what to rebuild
+    is the <TT
+CLASS="literal"
+>Taskmaster</TT
+>.
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> supports a <TT
+CLASS="literal"
+>--taskmastertrace</TT
+>
+    option that tells the Taskmaster to print
+    information about the children (dependencies)
+    of the various Nodes on its walk down the graph,
+    which specific dependent Nodes are being evaluated,
+    and in what order.
+
+    </P
+><P
+>&#13;
+    The <TT
+CLASS="literal"
+>--taskmastertrace</TT
+> option
+    takes as an argument the name of a file in
+    which to put the trace output,
+    with <TT
+CLASS="filename"
+>-</TT
+> (a single hyphen)
+    indicating that the trace messages
+    should be printed to the standard output:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;      env = Environment(CPPPATH = ['.'])
+      env.Program('prog.c')
+    </PRE
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q --taskmastertrace=- prog</KBD
+>
+      
+      Taskmaster: Looking for a node to evaluate
+      Taskmaster:     Considering node &#60;no_state   0   'prog'&#62; and its children:
+      Taskmaster:        &#60;no_state   0   'prog.o'&#62;
+      Taskmaster:      adjusted ref count: &#60;pending    1   'prog'&#62;, child 'prog.o'
+      Taskmaster:     Considering node &#60;no_state   0   'prog.o'&#62; and its children:
+      Taskmaster:        &#60;no_state   0   'prog.c'&#62;
+      Taskmaster:        &#60;no_state   0   'inc.h'&#62;
+      Taskmaster:      adjusted ref count: &#60;pending    1   'prog.o'&#62;, child 'prog.c'
+      Taskmaster:      adjusted ref count: &#60;pending    2   'prog.o'&#62;, child 'inc.h'
+      Taskmaster:     Considering node &#60;no_state   0   'prog.c'&#62; and its children:
+      Taskmaster: Evaluating &#60;pending    0   'prog.c'&#62;
+      
+      Task.make_ready_current(): node &#60;pending    0   'prog.c'&#62;
+      Task.prepare():      node &#60;up_to_date 0   'prog.c'&#62;
+      Task.executed_with_callbacks(): node &#60;up_to_date 0   'prog.c'&#62;
+      Task.postprocess():  node &#60;up_to_date 0   'prog.c'&#62;
+      Task.postprocess():  removing &#60;up_to_date 0   'prog.c'&#62;
+      Task.postprocess():  adjusted parent ref count &#60;pending    1   'prog.o'&#62;
+      
+      Taskmaster: Looking for a node to evaluate
+      Taskmaster:     Considering node &#60;no_state   0   'inc.h'&#62; and its children:
+      Taskmaster: Evaluating &#60;pending    0   'inc.h'&#62;
+      
+      Task.make_ready_current(): node &#60;pending    0   'inc.h'&#62;
+      Task.prepare():      node &#60;up_to_date 0   'inc.h'&#62;
+      Task.executed_with_callbacks(): node &#60;up_to_date 0   'inc.h'&#62;
+      Task.postprocess():  node &#60;up_to_date 0   'inc.h'&#62;
+      Task.postprocess():  removing &#60;up_to_date 0   'inc.h'&#62;
+      Task.postprocess():  adjusted parent ref count &#60;pending    0   'prog.o'&#62;
+      
+      Taskmaster: Looking for a node to evaluate
+      Taskmaster:     Considering node &#60;pending    0   'prog.o'&#62; and its children:
+      Taskmaster:        &#60;up_to_date 0   'prog.c'&#62;
+      Taskmaster:        &#60;up_to_date 0   'inc.h'&#62;
+      Taskmaster: Evaluating &#60;pending    0   'prog.o'&#62;
+      
+      Task.make_ready_current(): node &#60;pending    0   'prog.o'&#62;
+      Task.prepare():      node &#60;executing  0   'prog.o'&#62;
+      Task.execute():      node &#60;executing  0   'prog.o'&#62;
+      cc -o prog.o -c -I. prog.c
+      Task.executed_with_callbacks(): node &#60;executing  0   'prog.o'&#62;
+      Task.postprocess():  node &#60;executed   0   'prog.o'&#62;
+      Task.postprocess():  removing &#60;executed   0   'prog.o'&#62;
+      Task.postprocess():  adjusted parent ref count &#60;pending    0   'prog'&#62;
+      
+      Taskmaster: Looking for a node to evaluate
+      Taskmaster:     Considering node &#60;pending    0   'prog'&#62; and its children:
+      Taskmaster:        &#60;executed   0   'prog.o'&#62;
+      Taskmaster: Evaluating &#60;pending    0   'prog'&#62;
+      
+      Task.make_ready_current(): node &#60;pending    0   'prog'&#62;
+      Task.prepare():      node &#60;executing  0   'prog'&#62;
+      Task.execute():      node &#60;executing  0   'prog'&#62;
+      cc -o prog prog.o
+      Task.executed_with_callbacks(): node &#60;executing  0   'prog'&#62;
+      Task.postprocess():  node &#60;executed   0   'prog'&#62;
+      
+      Taskmaster: Looking for a node to evaluate
+      Taskmaster: No candidate anymore.
+    </PRE
+><P
+>&#13;
+    The <TT
+CLASS="literal"
+>--taskmastertrace</TT
+> option
+    doesn't provide information about the actual
+    calculations involved in deciding if a file is up-to-date,
+    but it does show all of the dependencies
+    it knows about for each Node,
+    and the order in which those dependencies are evaluated.
+    This can be useful as an alternate way to determine
+    whether or not your <SPAN
+CLASS="application"
+>SCons</SPAN
+> configuration,
+    or the implicit dependency scan,
+    has actually identified all the correct dependencies
+    you want it to.
+
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x4780.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="a4819.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Where is <SPAN
+CLASS="application"
+>SCons</SPAN
+> Blowing Up?  the <TT
+CLASS="literal"
+>--debug=stacktrace</TT
+> Option</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c4601.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Construction Variables</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

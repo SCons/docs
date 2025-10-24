@@ -1,0 +1,29 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>5.6. Sharing construction environments</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 3.0.1"><link rel="up" href="ch05.html" title="Chapter 5. Native Python Interface"><link rel="prev" href="ch05s05.html" title="5.5. Hierarchical builds"><link rel="next" href="ch05s07.html" title="5.7. Help"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.6. Sharing <code class="literal">construction environments</code></th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05s05.html">Prev</a> </td><th width="60%" align="center">Chapter 5. Native Python Interface</th><td width="20%" align="right"> <a accesskey="n" href="ch05s07.html">Next</a></td></tr></table><hr></div><div class="section" title="5.6. Sharing construction environments"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="sect-sharing"></a>5.6. Sharing <code class="literal">construction environments</code></h2></div></div></div><p>
+
+  <span class="application">SCons</span> will allow users to share <code class="literal">construction environments</code>, as well as other <span class="application">SCons</span>
+  objects and Python variables, by importing them from a central, shared
+  repository using normal Python syntax:
+
+ </p><pre class="programlisting">
+	from LocalEnvironments import optimized, debug
+
+	optimized.Make('foo', 'foo.c')
+	debug.Make('foo-d', 'foo.c')
+	</pre><p>
+
+  The expectation is that some local tool-master, integrator or
+  administrator will be responsible for assembling environments (creating
+  the <code class="classname">Builder</code> objects that specify the tools, options, etc.) and make
+  these available for sharing by all users.
+
+ </p><p>
+
+  The modules containing shared <code class="literal">construction environments</code>
+  (<code class="literal">LocalEnvironments</code> in the above example) can be
+  checked in and controlled with the rest of the source files.  This
+  allows a project to track the combinations of tools and command-line
+  options that work on different platforms, at different times, and with
+  different tool versions, by using already-familiar revision control
+  tools.
+
+ </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05s05.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch05s07.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">5.5. Hierarchical builds </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 5.7. Help</td></tr></table></div></body></html>

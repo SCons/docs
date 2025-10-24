@@ -1,0 +1,212 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Using a Node's File Name as a String</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 2.0.0.final.0"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Node Objects"
+HREF="c718.html"><LINK
+REL="PREVIOUS"
+TITLE="Printing Node File Names"
+HREF="x776.html"><LINK
+REL="NEXT"
+TITLE="GetBuildPath: Getting the Path From a Node or String"
+HREF="x806.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 2.0.0.final.0</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x776.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 5. Node Objects</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x806.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN793"
+>5.4. Using a <CODE
+CLASS="classname"
+>Node</CODE
+>'s File Name as a String</A
+></H1
+><P
+>&#13;
+    Printing a <CODE
+CLASS="classname"
+>Node</CODE
+>'s name
+    as described in the previous section
+    works because the string representation of a <CODE
+CLASS="classname"
+>Node</CODE
+> object
+    is the name of the file.
+    If you want to do something other than
+    print the name of the file,
+    you can fetch it by using the builtin Python
+    <CODE
+CLASS="function"
+>str</CODE
+> function.
+    For example, if you want to use the Python
+    <CODE
+CLASS="function"
+>os.path.exists</CODE
+>
+    to figure out whether a file
+    exists while the <TT
+CLASS="filename"
+>SConstruct</TT
+> file
+    is being read and executed,
+    you can fetch the string as follows:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;      import os.path
+      program_list = Program('hello.c')
+      program_name = str(program_list[0])
+      if not os.path.exists(program_name):
+          print program_name, "does not exist!"
+    </PRE
+><P
+>&#13;
+    Which executes as follows on a POSIX system:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      hello does not exist!
+      cc -o hello.o -c hello.c
+      cc -o hello hello.o
+    </PRE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x776.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x806.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Printing <CODE
+CLASS="classname"
+>Node</CODE
+> File Names</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c718.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><CODE
+CLASS="function"
+>GetBuildPath</CODE
+>: Getting the Path From a <CODE
+CLASS="classname"
+>Node</CODE
+> or String</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

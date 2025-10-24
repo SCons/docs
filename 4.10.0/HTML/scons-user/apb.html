@@ -1,0 +1,2100 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Appendix B. Builders</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.10.0"><link rel="up" href="index.html" title="SCons 4.10.0"><link rel="prev" href="apa.html" title="Appendix A. Construction Variables"><link rel="next" href="apc.html" title="Appendix C. Tools"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Appendix B. Builders</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="apa.html">Prev</a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="apc.html">Next</a></td></tr></table><hr></div><div class="appendix" title="Appendix B. Builders"><div class="titlepage"><div><div><h2 class="title"><a name="app-builders"></a>Appendix B. Builders</h2></div></div></div><p>
+
+This appendix contains descriptions of all of the
+Builders that are <span class="emphasis"><em>potentially</em></span>
+available "out of the box" in this version of SCons.
+
+</p><div class="variablelist"><dl><dt><a name="b-CFile"></a><span class="term"><code class="function">CFile</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">CFile</code>()</span></dt><dd><p>
+Builds a C source file given a lex (<code class="filename">.l</code>)
+or yacc (<code class="filename">.y</code>) input file.
+The suffix specified by the <a class="link" href="apa.html#cv-CFILESUFFIX"><code class="envar">$CFILESUFFIX</code></a> <span>construction variable</span>
+(<code class="filename">.c</code> by default)
+is automatically added to the target
+if it is not already present.
+Example:
+</p><pre class="screen">
+# builds foo.c
+env.CFile(target='foo.c', source='foo.l')
+
+# builds bar.c
+env.CFile(target='bar', source='bar.y')
+</pre></dd><dt><a name="b-Command"></a><span class="term"><code class="function">Command</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">Command</code>()</span></dt><dd><p>
+There is actually no Builder named <code class="function">Command</code>,
+rather the term "Command Builder" refers to
+a function which, on each call, creates and calls
+an anonymous Builder.
+This is useful for "one-off" builds
+where a full Builder is not needed.
+Since the anonymous Builder is never hooked
+into the standard Builder framework,
+an Action must always be specified.
+See the <a class="link" href="apd.html#f-Command"><code class="function">Command</code></a> function description
+for the calling syntax and details.
+</p></dd><dt><a name="b-CompilationDatabase"></a><span class="term"><code class="function">CompilationDatabase</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">CompilationDatabase</code>()</span></dt><dd><p>
+                <code class="function">CompilationDatabase</code> is a special builder which
+                adds a target to create a JSON formatted
+                compilation database compatible with
+                <code class="systemitem">clang</code> tooling
+                (see the
+                <a class="ulink" href="https://clang.llvm.org/docs/JSONCompilationDatabase.html" target="_top">LLVM specification</a>).
+                This database is suitable for consumption by various
+                tools and editors who can use it to obtain build and
+                dependency information which otherwise would be
+                internal to <span class="application">SCons</span>.
+                The builder does not require any source files to be specified,
+                rather it arranges to emit information about all
+                of the C, C++ and assembler source/output pairs
+                identified in the build that are not excluded by the
+                optional filter <a class="link" href="apa.html#cv-COMPILATIONDB_PATH_FILTER"><code class="envar">$COMPILATIONDB_PATH_FILTER</code></a>.
+                The target is subject to the usual <span class="application">SCons</span> target
+                selection rules.
+            </p><p>
+                If called with no arguments,
+                the builder will default to a target name of
+                <code class="filename">compile_commands.json</code>.
+            </p><p>
+                If called with a single positional argument,
+                <span class="command"><strong>scons</strong></span> will "deduce" the target name from that source
+                argument, giving it the same name, and then
+                ignore the source.
+                This is the usual way to call the builder if a
+                non-default target name is wanted.
+            </p><p>
+                If called with either the <em class="parameter"><code>target=</code></em>
+                or <em class="parameter"><code>source=</code></em> keyword arguments,
+                the value of the argument is taken as the target name.
+                If called with both, the <em class="parameter"><code>target=</code></em>
+                value is used and <em class="parameter"><code>source=</code></em> is ignored.
+                If called with multiple sources,
+                the source list will be ignored,
+                since there is no way to deduce what the intent was;
+                in this case the default target name will be used.
+            </p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+                You must load the <code class="literal">compilation_db</code> tool prior to specifying
+                any part of your build or some source/output
+                files will not show up in the compilation database.
+              </p></div><p>
+                <span class="emphasis"><em>Available since <span class="command"><strong>scons</strong></span> 4.0.</em></span>
+            </p></dd><dt><a name="b-CXXFile"></a><span class="term"><code class="function">CXXFile</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">CXXFile</code>()</span></dt><dd><p>
+Builds a C++ source file given a lex (<code class="filename">.ll</code>)
+or yacc (<code class="filename">.yy</code>)
+input file.
+The suffix specified by the <a class="link" href="apa.html#cv-CXXFILESUFFIX"><code class="envar">$CXXFILESUFFIX</code></a> <span>construction variable</span>
+(<code class="filename">.cc</code> by default)
+is automatically added to the target
+if it is not already present.
+Example:
+</p><pre class="screen">
+# builds foo.cc
+env.CXXFile(target='foo.cc', source='foo.ll')
+
+# builds bar.cc
+env.CXXFile(target='bar', source='bar.yy')
+</pre></dd><dt><a name="b-DocbookEpub"></a><span class="term"><code class="function">DocbookEpub</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">DocbookEpub</code>()</span></dt><dd><p>
+A pseudo-Builder, providing a Docbook toolchain for EPUB output.
+</p><pre class="screen">env = Environment(tools=['docbook'])
+env.DocbookEpub('manual.epub', 'manual.xml')
+</pre><p>
+or simply
+</p><pre class="screen">env = Environment(tools=['docbook'])
+env.DocbookEpub('manual')
+</pre></dd><dt><a name="b-DocbookHtml"></a><span class="term"><code class="function">DocbookHtml</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">DocbookHtml</code>()</span></dt><dd><p>
+A pseudo-Builder, providing a Docbook toolchain for HTML output.
+</p><pre class="screen">env = Environment(tools=['docbook'])
+env.DocbookHtml('manual.html', 'manual.xml')
+</pre><p>
+or simply
+</p><pre class="screen">env = Environment(tools=['docbook'])
+env.DocbookHtml('manual')
+</pre></dd><dt><a name="b-DocbookHtmlChunked"></a><span class="term"><code class="function">DocbookHtmlChunked</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">DocbookHtmlChunked</code>()</span></dt><dd><p>
+A pseudo-Builder providing a Docbook toolchain for chunked HTML output.
+It supports the <em class="parameter"><code>base.dir</code></em> parameter. The
+<code class="filename">chunkfast.xsl</code> file (requires "EXSLT") is used as the
+default stylesheet. Basic syntax:
+</p><pre class="screen">env = Environment(tools=['docbook'])
+env.DocbookHtmlChunked('manual')
+</pre><p>
+where <code class="filename">manual.xml</code> is the input file.
+</p><p>If you use the <em class="parameter"><code>root.filename</code></em>
+parameter in your own stylesheets you have to specify the new target name.
+This ensures that the dependencies get correct, especially for the cleanup via <span class="quote">&#8220;<span class="quote"><code class="literal">scons -c</code></span>&#8221;</span>:
+</p><pre class="screen">env = Environment(tools=['docbook'])
+env.DocbookHtmlChunked('mymanual.html', 'manual', xsl='htmlchunk.xsl')
+</pre><p>Some basic support for the <em class="parameter"><code>base.dir</code></em> parameter
+is provided.  You can add the <em class="parameter"><code>base_dir</code></em> keyword to
+your Builder call, and the given prefix gets prepended to all the
+created filenames:
+</p><pre class="screen">env = Environment(tools=['docbook'])
+env.DocbookHtmlChunked('manual', xsl='htmlchunk.xsl', base_dir='output/')
+</pre><p>Make sure that you don't forget the trailing slash for the base folder, else
+your files get renamed only!
+</p></dd><dt><a name="b-DocbookHtmlhelp"></a><span class="term"><code class="function">DocbookHtmlhelp</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">DocbookHtmlhelp</code>()</span></dt><dd><p>
+A pseudo-Builder, providing a Docbook toolchain for HTMLHELP output.
+Its basic syntax is:
+</p><pre class="screen">env = Environment(tools=['docbook'])
+env.DocbookHtmlhelp('manual')
+</pre><p>
+where <code class="filename">manual.xml</code> is the input file.
+</p><p>If you use the <em class="parameter"><code>root.filename</code></em>
+parameter in your own stylesheets you have to specify the new target name.
+This ensures that the dependencies get correct, especially for the cleanup via <span class="quote">&#8220;<span class="quote"><strong class="userinput"><code>scons -c</code></strong></span>&#8221;</span>:
+</p><pre class="screen">env = Environment(tools=['docbook'])
+env.DocbookHtmlhelp('mymanual.html', 'manual', xsl='htmlhelp.xsl')
+</pre><p>Some basic support for the <em class="parameter"><code>base.dir</code></em> parameter
+is provided. You can add the <em class="parameter"><code>base_dir</code></em> keyword to
+your Builder call, and the given prefix gets prepended to all the
+created filenames:
+</p><pre class="screen">env = Environment(tools=['docbook'])
+env.DocbookHtmlhelp('manual', xsl='htmlhelp.xsl', base_dir='output/')
+</pre><p>Make sure that you don't forget the trailing slash for the base folder, else
+your files get renamed only!
+</p></dd><dt><a name="b-DocbookMan"></a><span class="term"><code class="function">DocbookMan</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">DocbookMan</code>()</span></dt><dd><p>
+A pseudo-Builder, providing a Docbook toolchain for Man page output.
+Its basic syntax is:
+</p><pre class="screen">env = Environment(tools=['docbook'])
+env.DocbookMan('manual')
+</pre><p>
+where <code class="filename">manual.xml</code> is the input file. Note, that
+you can specify a target name, but the actual output names are automatically
+set from the <code class="literal">refname</code> entries in your XML source.
+</p></dd><dt><a name="b-DocbookPdf"></a><span class="term"><code class="function">DocbookPdf</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">DocbookPdf</code>()</span></dt><dd><p>
+A pseudo-Builder, providing a Docbook toolchain for PDF output.
+</p><pre class="screen">env = Environment(tools=['docbook'])
+env.DocbookPdf('manual.pdf', 'manual.xml')
+</pre><p>
+or simply
+</p><pre class="screen">env = Environment(tools=['docbook'])
+env.DocbookPdf('manual')
+</pre></dd><dt><a name="b-DocbookSlidesHtml"></a><span class="term"><code class="function">DocbookSlidesHtml</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">DocbookSlidesHtml</code>()</span></dt><dd><p>
+A pseudo-Builder, providing a Docbook toolchain for HTML slides output.
+</p><pre class="screen">env = Environment(tools=['docbook'])
+env.DocbookSlidesHtml('manual')
+</pre><p>If you use the <em class="parameter"><code>titlefoil.html</code></em> parameter in
+your own stylesheets you have to give the new target name. This ensures
+that the dependencies get correct, especially for the cleanup via
+<span class="quote">&#8220;<span class="quote"><strong class="userinput"><code>scons -c</code></strong></span>&#8221;</span>:
+</p><pre class="screen">env = Environment(tools=['docbook'])
+env.DocbookSlidesHtml('mymanual.html','manual', xsl='slideshtml.xsl')
+</pre><p>Some basic support for the <em class="parameter"><code>base.dir</code></em> parameter
+is provided. You
+can add the <em class="parameter"><code>base_dir</code></em> keyword to your Builder
+call, and the given prefix gets prepended to all the created filenames:
+</p><pre class="screen">env = Environment(tools=['docbook'])
+env.DocbookSlidesHtml('manual', xsl='slideshtml.xsl', base_dir='output/')
+</pre><p>Make sure that you don't forget the trailing slash for the base folder, else
+your files get renamed only!
+</p></dd><dt><a name="b-DocbookSlidesPdf"></a><span class="term"><code class="function">DocbookSlidesPdf</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">DocbookSlidesPdf</code>()</span></dt><dd><p>
+A pseudo-Builder, providing a Docbook toolchain for PDF slides output.
+</p><pre class="screen">env = Environment(tools=['docbook'])
+env.DocbookSlidesPdf('manual.pdf', 'manual.xml')
+</pre><p>
+or simply
+</p><pre class="screen">env = Environment(tools=['docbook'])
+env.DocbookSlidesPdf('manual')
+</pre></dd><dt><a name="b-DocbookXInclude"></a><span class="term"><code class="function">DocbookXInclude</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">DocbookXInclude</code>()</span></dt><dd><p>
+A pseudo-Builder, for resolving XIncludes in a separate processing step.
+</p><pre class="screen">env = Environment(tools=['docbook'])
+env.DocbookXInclude('manual_xincluded.xml', 'manual.xml')
+</pre></dd><dt><a name="b-DocbookXslt"></a><span class="term"><code class="function">DocbookXslt</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">DocbookXslt</code>()</span></dt><dd><p>
+A pseudo-Builder, applying a given XSL transformation to the input file.
+</p><pre class="screen">env = Environment(tools=['docbook'])
+env.DocbookXslt('manual_transformed.xml', 'manual.xml', xsl='transform.xslt')
+</pre><p>Note, that this builder requires the <em class="parameter"><code>xsl</code></em> parameter
+to be set.
+</p></dd><dt><a name="b-DVI"></a><span class="term"><code class="function">DVI</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">DVI</code>()</span></dt><dd><p>
+Builds a <code class="filename">.dvi</code> file
+from a <code class="filename">.tex</code>,
+<code class="filename">.ltx</code> or <code class="filename">.latex</code> input file.
+If the source file suffix is <code class="filename">.tex</code>,
+<span class="command"><strong>scons</strong></span>
+will examine the contents of the file;
+if the string
+<code class="literal">\documentclass</code>
+or
+<code class="literal">\documentstyle</code>
+is found, the file is assumed to be a LaTeX file and
+the target is built by invoking the <a class="link" href="apa.html#cv-LATEXCOM"><code class="envar">$LATEXCOM</code></a> command line;
+otherwise, the <a class="link" href="apa.html#cv-TEXCOM"><code class="envar">$TEXCOM</code></a> command line is used.
+If the file is a LaTeX file,
+the
+<code class="function">DVI</code>
+builder method will also examine the contents
+of the
+<code class="filename">.aux</code>
+file and invoke the <a class="link" href="apa.html#cv-BIBTEX"><code class="envar">$BIBTEX</code></a> command line
+if the string
+<code class="literal">bibdata</code>
+is found,
+start <a class="link" href="apa.html#cv-MAKEINDEX"><code class="envar">$MAKEINDEX</code></a> to generate an index if a
+<code class="filename">.ind</code>
+file is found
+and will examine the contents
+<code class="filename">.log</code>
+file and re-run the <a class="link" href="apa.html#cv-LATEXCOM"><code class="envar">$LATEXCOM</code></a> command
+if the log file says it is necessary.
+</p><p>
+The suffix <code class="filename">.dvi</code>
+(hard-coded within TeX itself)
+is automatically added to the target
+if it is not already present.
+Examples:
+</p><pre class="screen">
+# builds from aaa.tex
+env.DVI(target = 'aaa.dvi', source = 'aaa.tex')
+# builds bbb.dvi
+env.DVI(target = 'bbb', source = 'bbb.ltx')
+# builds from ccc.latex
+env.DVI(target = 'ccc.dvi', source = 'ccc.latex')
+</pre></dd><dt><a name="b-Gs"></a><span class="term"><code class="function">Gs</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">Gs</code>()</span></dt><dd><p>
+A Builder for explicitly calling the <span class="application">gs</span> executable.
+Depending on the underlying OS, the different names <span class="application">gs</span>,
+<span class="application">gsos2</span> and <span class="application">gswin32c</span>
+are tried.
+</p><pre class="screen">
+env = Environment(tools=['gs'])
+env.Gs(
+    'cover.jpg',
+    'scons-scons.pdf',
+    GSFLAGS='-dNOPAUSE -dBATCH -sDEVICE=jpeg -dFirstPage=1 -dLastPage=1 -q',
+)
+</pre></dd><dt><a name="b-Install"></a><span class="term"><code class="function">Install</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">Install</code>()</span></dt><dd><p>
+Installs one or more source files or directories
+in the specified target,
+which must be a directory.
+The names of the specified source files or directories
+remain the same within the destination directory. The
+sources may be given as a string or as a node returned by
+a builder.
+</p><pre class="screen">
+env.Install(target='/usr/local/bin', source=['foo', 'bar'])
+</pre><p>
+Note that if target paths chosen for the
+<code class="function">Install</code> builder (and the related <code class="function">InstallAs</code> and
+<code class="function">InstallVersionedLib</code> builders) are outside the
+project tree, such as in the example above,
+they may not be selected for "building" by default,
+since in the absence of other instructions
+<span class="command"><strong>scons</strong></span> builds targets that are underneath the top directory
+(the directory that contains the <code class="filename">SConstruct</code> file,
+usually the current directory).
+Use command line targets or the <code class="function">Default</code> function
+in this case.
+</p><p>
+If the <code class="option">--install-sandbox</code> command line
+option is given, the target directory will be prefixed
+by the directory path specified.
+This is useful to test installation behavior without installing to
+a "live" location in the system.
+</p><p>
+See also <a class="link" href="apd.html#f-FindInstalledFiles"><code class="function">FindInstalledFiles</code></a>.
+For more thoughts on installation, see the User Guide
+(particularly the section on Command-Line Targets
+and the chapters on Installing Files and on Alias Targets).
+</p></dd><dt><a name="b-InstallAs"></a><span class="term"><code class="function">InstallAs</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">InstallAs</code>()</span></dt><dd><p>
+Installs one or more source files or directories
+to specific names,
+allowing changing a file or directory name
+as part of the installation.
+It is an error if the
+target
+and
+source
+arguments list different numbers of files or directories.
+</p><pre class="screen">
+env.InstallAs(target='/usr/local/bin/foo',
+              source='foo_debug')
+env.InstallAs(target=['../lib/libfoo.a', '../lib/libbar.a'],
+              source=['libFOO.a', 'libBAR.a'])
+</pre><p>
+See the note under <code class="function">Install</code>.
+</p></dd><dt><a name="b-InstallVersionedLib"></a><span class="term"><code class="function">InstallVersionedLib</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">InstallVersionedLib</code>()</span></dt><dd><p>
+Installs a versioned shared library. The symlinks appropriate to the
+architecture will be generated based on symlinks of the source library.
+</p><pre class="screen">
+env.InstallVersionedLib(target='/usr/local/bin/foo',
+                        source='libxyz.1.5.2.so')
+</pre><p>
+See the note under <code class="function">Install</code>.
+</p></dd><dt><a name="b-Jar"></a><span class="term"><code class="function">Jar</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">Jar</code>()</span></dt><dd><p>
+Builds a Java archive (<code class="filename">.jar</code>) file
+from the specified list of sources.
+Any directories in the source list
+will be searched for <code class="filename">.class</code> files).
+Any <code class="filename">.java</code> files in the source list
+will be compiled  to <code class="filename">.class</code> files
+by calling the <a class="link" href="apb.html#b-Java"><code class="function">Java</code></a> Builder.
+</p><p>
+If the <a class="link" href="apa.html#cv-JARCHDIR"><code class="envar">$JARCHDIR</code></a> value is set, the
+<span class="application">jar</span>
+command will change to the specified directory using the
+<code class="option">-C</code>
+option.
+If <code class="envar">$JARCHDIR</code> is not set explicitly,
+<span class="application">SCons</span> will use the top of any subdirectory tree
+in which Java <code class="filename">.class</code>
+were built by the <a class="link" href="apb.html#b-Java"><code class="function">Java</code></a> Builder.
+</p><p>
+If the contents any of the source files begin with the string
+<code class="literal">Manifest-Version</code>,
+the file is assumed to be a manifest
+and is passed to the
+<span class="application">jar</span>
+command with the
+<code class="option">m</code>
+option set.
+</p><pre class="screen">
+env.Jar(target = 'foo.jar', source = 'classes')
+
+env.Jar(target = 'bar.jar',
+        source = ['bar1.java', 'bar2.java'])
+</pre></dd><dt><a name="b-Java"></a><span class="term"><code class="function">Java</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">Java</code>()</span></dt><dd><p>
+                Builds one or more Java class files.
+                The sources may be any combination of explicit
+                <code class="filename">.java</code>
+                files,
+                or directory trees which will be scanned
+                for <code class="filename">.java</code> files.
+            </p><p>
+                SCons will parse each source <code class="filename">.java</code> file
+                to find the classes
+                (including inner classes)
+                defined within that file,
+                and from that figure out the
+                target <code class="filename">.class</code> files that will be created.
+                The class files will be placed underneath
+                the specified target directory.
+            </p><p>
+                SCons will also search each Java file
+                for the Java package name,
+                which it assumes can be found on a line
+                beginning with the string
+                <code class="literal">package</code>
+                in the first column;
+                the resulting <code class="filename">.class</code> files
+                will be placed in a directory reflecting
+                the specified package name.
+                For example,
+                the file
+                <code class="filename">Foo.java</code>
+                defining a single public
+                <code class="classname">Foo</code>
+                class and
+                containing a package name of
+                <code class="classname">sub.dir</code>
+                will generate a corresponding
+                <code class="filename">sub/dir/Foo.class</code>
+                class file.
+            </p><p>
+                Examples:
+            </p><pre class="screen">
+env.Java(target='classes', source='src')
+env.Java(target='classes', source=['src1', 'src2'])
+env.Java(target='classes', source=['File1.java', 'File2.java'])
+            </pre><p>
+                Java source files can use the native encoding for the underlying OS.
+                Since SCons compiles in simple ASCII mode by default,
+                the compiler will generate warnings about unmappable characters,
+                which may lead to errors as the file is processed further.
+                In this case, the user must specify the
+                <code class="literal">LANG</code>
+                environment variable to tell the compiler what encoding is used.
+                For portability, it's best if the encoding is hard-coded,
+                so that the compilation works when run on a system
+                with a different encoding.
+            </p><pre class="screen">
+env = Environment()
+env['ENV']['LANG'] = 'en_GB.UTF-8'
+            </pre></dd><dt><a name="b-JavaH"></a><span class="term"><code class="function">JavaH</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">JavaH</code>()</span></dt><dd><p>
+Builds C header and source files for
+implementing Java native methods.
+The target can be either a directory
+in which the header files will be written,
+or a header file name which
+will contain all of the definitions.
+The source can be the names of <code class="filename">.class</code> files,
+the names of <code class="filename">.java</code> files
+to be compiled into <code class="filename">.class</code> files
+by calling the <a class="link" href="apb.html#b-Java"><code class="function">Java</code></a> builder method,
+or the objects returned from the
+<code class="function">Java</code>
+builder method.
+</p><p>
+If the construction variable
+<a class="link" href="apa.html#cv-JAVACLASSDIR"><code class="envar">$JAVACLASSDIR</code></a>
+is set, either in the environment
+or in the call to the
+<code class="function">JavaH</code>
+builder method itself,
+then the value of the variable
+will be stripped from the
+beginning of any <code class="filename">.class</code> file names.
+</p><p>
+Examples:
+</p><pre class="screen">
+# builds java_native.h
+classes = env.Java(target="classdir", source="src")
+env.JavaH(target="java_native.h", source=classes)
+
+# builds include/package_foo.h and include/package_bar.h
+env.JavaH(target="include", source=["package/foo.class", "package/bar.class"])
+
+# builds export/foo.h and export/bar.h
+env.JavaH(
+    target="export",
+    source=["classes/foo.class", "classes/bar.class"],
+    JAVACLASSDIR="classes",
+)
+</pre><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+Java versions starting with 10.0 no longer use the
+<span class="command"><strong>javah</strong></span> command for generating JNI
+headers/sources, and indeed have removed the command entirely
+(see Java Enhancement Proposal
+<a class="ulink" href="https:openjdk.java.net/jeps/313" target="_top">JEP 313</a>),
+making this tool harder to use for that purpose.
+<span class="application">SCons</span> may autodiscover a <span class="command"><strong>javah</strong></span>
+belonging to an older release if there are multiple Java
+versions on the system, which will lead to incorrect results.
+To use with a newer Java, override the default values of <a class="link" href="apa.html#cv-JAVAH"><code class="envar">$JAVAH</code></a>
+(to contain the path to the <span class="command"><strong>javac</strong></span>)
+and <a class="link" href="apa.html#cv-JAVAHFLAGS"><code class="envar">$JAVAHFLAGS</code></a> (to contain at least a <code class="option">-h</code>
+flag) and note that generating headers with
+<span class="command"><strong>javac</strong></span> requires supplying source
+<code class="filename">.java</code> files only,
+not <code class="filename">.class</code> files.
+</p></div></dd><dt><a name="b-Library"></a><span class="term"><code class="function">Library</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">Library</code>()</span></dt><dd><p>
+A synonym for the
+<code class="function">StaticLibrary</code>
+builder method.
+</p></dd><dt><a name="b-LoadableModule"></a><span class="term"><code class="function">LoadableModule</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">LoadableModule</code>()</span></dt><dd><p>
+On most systems,
+this is the same as
+<code class="function">SharedLibrary</code>.
+On Mac OS X (Darwin) platforms,
+this creates a loadable module bundle.
+</p></dd><dt><a name="b-M4"></a><span class="term"><code class="function">M4</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">M4</code>()</span></dt><dd><p>
+Builds an output file from an M4 input file.
+This uses a default <a class="link" href="apa.html#cv-M4FLAGS"><code class="envar">$M4FLAGS</code></a> value of
+<code class="option">-E</code>,
+which considers all warnings to be fatal
+and stops on the first warning
+when using the GNU version of m4.
+Example:
+</p><pre class="screen">
+env.M4(target = 'foo.c', source = 'foo.c.m4')
+</pre></dd><dt><a name="b-Moc"></a><span class="term"><code class="function">Moc</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">Moc</code>()</span></dt><dd><p>
+Builds an output file from a <span class="command"><strong>moc</strong></span> input file.
+<span class="command"><strong>moc</strong></span> input files are either header files or C++ files.
+This builder is only available after using the
+tool <a class="link" href="apc.html#t-qt3"><code class="literal">qt3</code></a>. See the <a class="link" href="apa.html#cv-QT3DIR"><code class="envar">$QT3DIR</code></a> variable for more information.
+Example:
+</p><pre class="screen">
+env.Moc('foo.h')  # generates moc_foo.cc
+env.Moc('foo.cpp')  # generates foo.moc
+</pre></dd><dt><a name="b-MOFiles"></a><span class="term"><code class="function">MOFiles</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">MOFiles</code>()</span></dt><dd><p>
+This builder is set up by the <a class="link" href="apc.html#t-msgfmt"><code class="literal">msgfmt</code></a> tool.
+The builder compiles
+<code class="literal">PO</code> files to <code class="literal">MO</code> files.
+<code class="function">MOFiles</code> is a single-source builder.
+The <em class="parameter"><code>source</code></em> parameter
+can also be omitted if <a class="link" href="apa.html#cv-LINGUAS_FILE"><code class="envar">$LINGUAS_FILE</code></a> is set.
+</p><p>
+<span class="emphasis"><em>Example 1</em></span>.
+Create <code class="filename">pl.mo</code> and <code class="filename">en.mo</code> by compiling
+<code class="filename">pl.po</code> and <code class="filename">en.po</code>:
+</p><pre class="programlisting">
+env.MOFiles(['pl', 'en'])
+</pre><p>
+<span class="emphasis"><em>Example 2</em></span>.
+Compile files for languages defined in <code class="filename">LINGUAS</code> file:
+</p><pre class="programlisting">
+env.MOFiles(LINGUAS_FILE=True)
+</pre><p>
+<span class="emphasis"><em>Example 3</em></span>.
+Create <code class="filename">pl.mo</code> and <code class="filename">en.mo</code> by compiling
+<code class="filename">pl.po</code> and <code class="filename">en.po</code> plus files for
+languages defined in <code class="filename">LINGUAS</code> file:
+</p><pre class="programlisting">
+env.MOFiles(['pl', 'en'], LINGUAS_FILE=True)
+</pre><p>
+<span class="emphasis"><em>Example 4</em></span>.
+Compile files for languages defined in <code class="filename">LINGUAS</code> file
+(another version):
+</p><pre class="programlisting">
+env['LINGUAS_FILE'] = True
+env.MOFiles()
+</pre></dd><dt><a name="b-MSVSProject"></a><span class="term"><code class="function">MSVSProject</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">MSVSProject</code>()</span></dt><dd><p>
+        Build a <span class="application">Microsoft Visual C++</span> project file and solution file.
+      </p><p>
+        Builds a <span class="application">Microsoft Visual C++</span> project file based on the
+        version of Visual Studio (or to be more precise, of
+        <span class="application">MSBuild</span>)
+        that is configured: either the latest installed version,
+        or the version specified by
+        <a class="link" href="apa.html#cv-MSVC_VERSION"><code class="envar">$MSVC_VERSION</code></a> in the current <span>construction environment</span>.
+        For Visual Studio 6.0 a <code class="filename">.dsp</code> file is generated.
+        For Visual Studio versions 2002-2008,
+        a <code class="filename">.vcproj</code> file is generated.
+        For Visual Studio 2010 and later a <code class="filename">.vcxproj</code>
+        file is generated.
+        Note there are multiple versioning schemes involved in
+        the Microsoft compilation environment -
+        see the description of <a class="link" href="apa.html#cv-MSVC_VERSION"><code class="envar">$MSVC_VERSION</code></a> for equivalences.
+        Note <span class="application">SCons</span> does not know how to construct project files for
+        other languages (e.g. <code class="filename">.csproj</code> for C#,
+        <code class="filename">.vbproj</code> for Visual Basic or
+        <code class="filename">.pyproject</code> for Python).
+        </p><p>
+        For the <code class="filename">.vcxproj</code> file, the underlying
+        format is the MSBuild XML Schema, and the details conform to:
+        <a class="ulink" href="https://learn.microsoft.com/en-us/cpp/build/reference/vcxproj-file-structure" target="_top">
+        https://learn.microsoft.com/en-us/cpp/build/reference/vcxproj-file-structure</a>.
+        The generated solution file enables Visual Studio to
+        understand the project structure, and allows building it
+        using <span class="application">MSBuild</span> to call back to <span class="application">SCons</span>.
+        The project file encodes a toolset version that has been
+        selected by <span class="application">SCons</span> as described above. Since recent Visual
+        Studio versions support multiple concurrent toolsets,
+        use <a class="link" href="apa.html#cv-MSVC_VERSION"><code class="envar">$MSVC_VERSION</code></a> to select the desired one if
+        it does not match the <span class="application">SCons</span> default.
+        The project file also includes entries which describe
+        how to call <span class="application">SCons</span> to build the project from within Visual Studio
+        (or from an <span class="application">MSBuild</span> command line).
+        In some situations <span class="application">SCons</span> may generate this incorrectly -
+        notably when using the <span class="emphasis"><em>scons-local</em></span>
+        distribution, which is not installed in a way that that
+        matches the default invocation line.
+        If so, the <a class="link" href="apa.html#cv-SCONS_HOME"><code class="envar">$SCONS_HOME</code></a> <span>construction variable</span> can be used to describe
+        the right way to locate the <span class="application">SCons</span> code so that it can be imported.
+      </p><p>
+        By default, a matching solution file for the project is also generated.
+        This behavior may be disabled by
+        specifying <em class="parameter"><code>auto_build_solution=0</code></em>
+        to the <code class="function">MSVSProject</code> builder.
+        The solution file can also be independently
+        generated by calling the <code class="function">MSVSSolution</code> builder,
+        such as in the case where a solution should describe
+        multiple projects.
+        See the <a class="link" href="apb.html#b-MSVSSolution"><code class="function">MSVSSolution</code></a> description for further information.
+      </p><p>
+        The <code class="function">MSVSProject</code> builder accepts several keyword arguments
+        describing lists of filenames to be placed into the project file.
+        Currently,
+        <em class="parameter"><code>srcs</code></em>,
+        <em class="parameter"><code>incs</code></em>,
+        <em class="parameter"><code>localincs</code></em>,
+        <em class="parameter"><code>resources</code></em>,
+        and <em class="parameter"><code>misc</code></em>
+        are recognized.
+        The names are intended to be self-explanatory, but note that the
+        filenames need to be specified as strings, <span class="emphasis"><em>not</em></span>
+        as <span class="application">SCons</span> File Nodes
+        (for example if you generate files for inclusion by using the
+        <a class="link" href="apd.html#f-Glob"><code class="function">Glob</code></a> function, the results should be converted to
+        a list of strings before passing them to <code class="function">MSVSProject</code>).
+        This is because Visual Studio and
+        <span class="application">MSBuild</span> know nothing about <span class="application">SCons</span>
+        Node types.
+        Each of the filename lists are individually optional, but at
+        least one list must be specified for the resulting project file to
+        be non-empty.
+      </p><p>
+        In addition to the above lists of values, the following values
+        may be specified as keyword arguments:
+      </p><div class="variablelist"><dl><dt><span class="term"><em class="parameter"><code>target</code></em></span></dt><dd><p>
+              The name of the target <code class="filename">.dsp</code>
+              or <code class="filename">.vcproj</code> file.
+              The correct suffix for the version of Visual Studio
+              must be used, but the <a class="link" href="apa.html#cv-MSVSPROJECTSUFFIX"><code class="envar">$MSVSPROJECTSUFFIX</code></a>
+              <span>construction variable</span> will be defined to the correct
+              value (see example below).
+            </p></dd><dt><span class="term"><em class="parameter"><code>variant</code></em></span></dt><dd><p>
+              The name of this particular variant. Except for Visual Studio 6
+              projects, this can also be a list of variant names. These
+              are typically things like "Debug" or "Release", but
+              really can be anything you want. For Visual Studio
+              7 projects, they may also specify a target platform
+              separated from the variant name by a <code class="literal">|</code>
+              (vertical pipe) character: <code class="literal">Debug|Xbox</code>.
+              The default target platform is Win32. Multiple calls
+              to <code class="function">MSVSProject</code> with different variants are allowed;
+              all variants will be added to the project file with
+              their appropriate build targets and sources.
+            </p></dd><dt><span class="term"><em class="parameter"><code>cmdargs</code></em></span></dt><dd><p>
+              Additional command line arguments
+              for the different variants. The number of
+              <em class="parameter"><code>cmdargs</code></em> entries must match the number
+              of <em class="parameter"><code>variant</code></em> entries, or be empty (not
+              specified). If you give only one, it will automatically
+              be propagated to all variants.
+            </p></dd><dt><span class="term"><em class="parameter"><code>cppdefines</code></em></span></dt><dd><p>
+              Preprocessor definitions for the different variants.
+              The number of <em class="parameter"><code>cppdefines</code></em> entries
+              must match the number of <em class="parameter"><code>variant</code></em>
+              entries, or be empty (not specified). If you give
+              only one, it will automatically be propagated to all
+              variants. If you don't give this parameter, <span class="application">SCons</span>
+              will use the invoking environment's
+              <a class="link" href="apa.html#cv-CPPDEFINES"><code class="envar">$CPPDEFINES</code></a> entry for all variants.
+            </p></dd><dt><span class="term"><em class="parameter"><code>cppflags</code></em></span></dt><dd><p>
+              Compiler flags for the different variants.
+              If a <code class="option">/std:c++</code> flag is found then
+              <code class="option">/Zc:__cplusplus</code> is appended to the
+              flags if not already found, this ensures that Intellisense
+              uses the <code class="option">/std:c++</code> switch.
+              The number of <em class="parameter"><code>cppflags</code></em> entries
+              must match the number of <em class="parameter"><code>variant</code></em>
+              entries, or be empty (not specified). If you give
+              only one, it will automatically be propagated to all
+              variants. If you don't give this parameter, SCons
+              will combine the invoking environment's
+              <a class="link" href="apa.html#cv-CCFLAGS"><code class="envar">$CCFLAGS</code></a>, <a class="link" href="apa.html#cv-CXXFLAGS"><code class="envar">$CXXFLAGS</code></a>,
+              <a class="link" href="apa.html#cv-CPPFLAGS"><code class="envar">$CPPFLAGS</code></a> entries for all variants.
+            </p></dd><dt><span class="term"><em class="parameter"><code>cpppaths</code></em></span></dt><dd><p>
+              Compiler include paths for the different variants.
+              The number of <em class="parameter"><code>cpppaths</code></em> entries
+              must match the number of <em class="parameter"><code>variant</code></em>
+              entries, or be empty (not specified). If you give
+              only one, it will automatically be propagated to all
+              variants. If you don't give this parameter, SCons
+              will use the invoking environment's
+              <a class="link" href="apa.html#cv-CPPPATH"><code class="envar">$CPPPATH</code></a> entry for all variants.
+            </p></dd><dt><span class="term"><em class="parameter"><code>buildtarget</code></em></span></dt><dd><p>
+              An optional string, node, or list of strings
+              or nodes (one per build variant), to tell
+              the Visual Studio debugger what output target
+              to use in what build variant. The number of
+              <em class="parameter"><code>buildtarget</code></em> entries must match the
+              number of <em class="parameter"><code>variant</code></em> entries.
+            </p></dd><dt><span class="term"><em class="parameter"><code>runfile</code></em></span></dt><dd><p>
+              The name of the file that Visual Studio 7 and
+              later will run and debug. This appears as the
+              value of the <em class="parameter"><code>Output</code></em> field in the
+              resulting <span class="application">Microsoft Visual C++</span> project file. If this is not
+              specified, the default is the same as the specified
+              <em class="parameter"><code>buildtarget</code></em> value.
+            </p></dd></dl></div><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+        <span class="application">SCons</span> and Microsoft Visual Studio understand projects in
+        different ways, and the mapping is sometimes imperfect:
+      </p><p>
+        Because <span class="application">SCons</span> always executes its build commands
+        from the directory in which the <code class="filename">SConstruct</code> file is located,
+        if you generate a project file in a different directory
+        than the directory of the <code class="filename">SConstruct</code> file, users will not be able to
+        double-click on the file name in compilation error messages
+        displayed in the Visual Studio console output window. This can
+        be remedied by adding the <span class="application">Microsoft Visual C++</span> <code class="option">/FC</code>
+        compiler option to the <a class="link" href="apa.html#cv-CCFLAGS"><code class="envar">$CCFLAGS</code></a> variable so that
+        the compiler will print the full path name of any files that
+        cause compilation errors.
+      </p><p>
+        If the project file is only used to teach the Visual Studio
+        project browser about the file layout there should be no issues,
+        However, Visual Studio should not be used to make changes
+        to the project structure, build options, etc. as these will
+        (a) not feed back to the <span class="application">SCons</span> description of the project
+        and (b) be lost if <span class="application">SCons</span> regenerates the project file.
+        The SConscript files should remain the definitive description
+        of the build.
+      </p><p>
+        If the project file is used to drive
+        <span class="application">MSBuild</span> (such as selecting
+        "build" from the Visual Studio interface) you lose the direct
+        control of target selection and command-line options you would
+        have if launching the build directly from <span class="application">SCons</span>,
+        because these will be hard-coded in the project file to the
+        values specified in the <code class="function">MSVSProject</code> call.
+        You can regain some of this control by defining multiple variants,
+        using multiple <code class="function">MSVSProject</code> calls to arrange different build
+        targets, arguments, defines, flags and paths for different variants.
+      </p><p>
+        If the build is divided into a solution with multiple
+        <span class="application">MSBuild</span>
+        projects the mapping is further strained.  In this case,
+        it is important not to set Visual Studio to do parallel builds,
+        as it will then launch the separate project builds in parallel,
+        and <span class="application">SCons</span> does not work well if called that way.
+        Instead, you can set up the <span class="application">SCons</span> build for parallel building -
+        see the <a class="link" href="apd.html#f-SetOption"><code class="function">SetOption</code></a> function for how to do this with
+        <em class="parameter"><code>num_jobs</code></em>.
+      </p></div><p>Example usage:</p><pre class="screen">
+barsrcs = ['bar.cpp']
+barincs = ['bar.h']
+barlocalincs = ['StdAfx.h']
+barresources = ['bar.rc', 'resource.h']
+barmisc = ['bar_readme.txt']
+
+dll = env.SharedLibrary(target='bar.dll', source=barsrcs)
+buildtarget = [s for s in dll if str(s).endswith('dll')]
+env.MSVSProject(
+    target='Bar' + env['MSVSPROJECTSUFFIX'],
+    srcs=barsrcs,
+    incs=barincs,
+    localincs=barlocalincs,
+    resources=barresources,
+    misc=barmisc,
+    buildtarget=buildtarget,
+    variant='Release',
+)
+      </pre><div class="variablelist"><dl><dt><span class="term"><em class="parameter"><code>DebugSettings</code></em></span></dt><dd><p>
+              A dictionary of debug settings that get written
+              to the <code class="filename">.vcproj.user</code> or the
+              <code class="filename">.vcxproj.user</code> file, depending on the
+              version installed. As for <em class="parameter"><code>cmdargs</code></em>,
+              you can specify a <em class="parameter"><code>DebugSettings</code></em>
+              dictionary per variant. If you give only one, it will
+              be propagated to all variants.
+            </p><p>
+             <span class="emphasis"><em>Changed in version 2.4:</em></span>
+             Added the optional <em class="parameter"><code>DebugSettings</code></em> parameter.
+            </p></dd></dl></div><p>
+        Currently, only Visual Studio v9.0 and Visual Studio
+        version v11 are implemented, for other versions no file
+        is generated. To generate the user file, you just need to
+        add a <em class="parameter"><code>DebugSettings</code></em> dictionary to the
+        environment with the right parameters for your MSVS version. If
+        the dictionary is empty, or does not contain any good value,
+        no file will be generated.
+      </p><p>
+        Following is a more contrived example, involving the setup
+        of a project for variants and DebugSettings:
+      </p><pre class="screen">
+# Assuming you store your defaults in a file
+vars = Variables('variables.py')
+msvcver = vars.args.get('vc', '9')
+
+# Check command args to force one Microsoft Visual Studio version
+if msvcver == '9' or msvcver == '11':
+    env = Environment(MSVC_VERSION=msvcver + '.0', MSVC_BATCH=False)
+else:
+    env = Environment()
+
+AddOption(
+    '--userfile',
+    action='store_true',
+    dest='userfile',
+    default=False,
+    help="Create Visual C++ project file",
+)
+
+#
+# 1. Configure your Debug Setting dictionary with options you want in the list
+# of allowed options, for instance if you want to create a user file to launch
+# a specific application for testing your dll with Microsoft Visual Studio 2008 (v9):
+#
+V9DebugSettings = {
+    'Command': 'c:\\myapp\\using\\thisdll.exe',
+    'WorkingDirectory': 'c:\\myapp\\using\\',
+    'CommandArguments': '-p password',
+    # 'Attach':'false',
+    # 'DebuggerType':'3',
+    # 'Remote':'1',
+    # 'RemoteMachine': None,
+    # 'RemoteCommand': None,
+    # 'HttpUrl': None,
+    # 'PDBPath': None,
+    # 'SQLDebugging': None,
+    # 'Environment': '',
+    # 'EnvironmentMerge':'true',
+    # 'DebuggerFlavor': None,
+    # 'MPIRunCommand': None,
+    # 'MPIRunArguments': None,
+    # 'MPIRunWorkingDirectory': None,
+    # 'ApplicationCommand': None,
+    # 'ApplicationArguments': None,
+    # 'ShimCommand': None,
+    # 'MPIAcceptMode': None,
+    # 'MPIAcceptFilter': None,
+}
+
+#
+# 2. Because there are a lot of different options depending on the Microsoft
+# Visual Studio version, if you use more than one version you have to
+# define a dictionary per version, for instance if you want to create a user
+# file to launch a specific application for testing your dll with Microsoft
+# Visual Studio 2012 (v11):
+#
+V10DebugSettings = {
+    'LocalDebuggerCommand': 'c:\\myapp\\using\\thisdll.exe',
+    'LocalDebuggerWorkingDirectory': 'c:\\myapp\\using\\',
+    'LocalDebuggerCommandArguments': '-p password',
+    # 'LocalDebuggerEnvironment': None,
+    # 'DebuggerFlavor': 'WindowsLocalDebugger',
+    # 'LocalDebuggerAttach': None,
+    # 'LocalDebuggerDebuggerType': None,
+    # 'LocalDebuggerMergeEnvironment': None,
+    # 'LocalDebuggerSQLDebugging': None,
+    # 'RemoteDebuggerCommand': None,
+    # 'RemoteDebuggerCommandArguments': None,
+    # 'RemoteDebuggerWorkingDirectory': None,
+    # 'RemoteDebuggerServerName': None,
+    # 'RemoteDebuggerConnection': None,
+    # 'RemoteDebuggerDebuggerType': None,
+    # 'RemoteDebuggerAttach': None,
+    # 'RemoteDebuggerSQLDebugging': None,
+    # 'DeploymentDirectory': None,
+    # 'AdditionalFiles': None,
+    # 'RemoteDebuggerDeployDebugCppRuntime': None,
+    # 'WebBrowserDebuggerHttpUrl': None,
+    # 'WebBrowserDebuggerDebuggerType': None,
+    # 'WebServiceDebuggerHttpUrl': None,
+    # 'WebServiceDebuggerDebuggerType': None,
+    # 'WebServiceDebuggerSQLDebugging': None,
+}
+
+#
+# 3. Select the dictionary you want depending on the version of Visual Studio
+# Files you want to generate.
+#
+if not env.GetOption('userfile'):
+    dbgSettings = None
+elif env.get('MSVC_VERSION', None) == '9.0':
+    dbgSettings = V9DebugSettings
+elif env.get('MSVC_VERSION', None) == '11.0':
+    dbgSettings = V10DebugSettings
+else:
+    dbgSettings = None
+
+#
+# 4. Add the dictionary to the DebugSettings keyword.
+#
+barsrcs = ['bar.cpp', 'dllmain.cpp', 'stdafx.cpp']
+barincs = ['targetver.h']
+barlocalincs = ['StdAfx.h']
+barresources = ['bar.rc', 'resource.h']
+barmisc = ['ReadMe.txt']
+
+dll = env.SharedLibrary(target='bar.dll', source=barsrcs)
+
+env.MSVSProject(
+    target='Bar' + env['MSVSPROJECTSUFFIX'],
+    srcs=barsrcs,
+    incs=barincs,
+    localincs=barlocalincs,
+    resources=barresources,
+    misc=barmisc,
+    buildtarget=[dll[0]] * 2,
+    variant=('Debug|Win32', 'Release|Win32'),
+    cmdargs=f'vc={msvcver}',
+    DebugSettings=(dbgSettings, {}),
+)
+      </pre></dd><dt><a name="b-MSVSSolution"></a><span class="term"><code class="function">MSVSSolution</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">MSVSSolution</code>()</span></dt><dd><p>Build a Microsoft Visual Studio Solution file.</p><p>
+        Builds a Visual Studio solution file based on the
+        version of Visual Studio that is configured: either the
+        latest installed version, or the version specified by
+        <a class="link" href="apa.html#cv-MSVC_VERSION"><code class="envar">$MSVC_VERSION</code></a> in the <span>construction environment</span>. For
+        Visual Studio 6, a <code class="filename">.dsw</code> file is generated.
+        For Visual Studio .NET 2002 and later,
+        it will generate a <code class="filename">.sln</code> file.
+        Note there are multiple versioning schemes involved in
+        the Microsoft compilation environment -
+        see the description of <a class="link" href="apa.html#cv-MSVC_VERSION"><code class="envar">$MSVC_VERSION</code></a> for equivalences.
+      </p><p>
+        The solution file is a container for one or more projects,
+        and follows the format described at
+        <a class="ulink" href="https://learn.microsoft.com/en-us/visualstudio/extensibility/internals/solution-dot-sln-file" target="_top">
+        https://learn.microsoft.com/en-us/visualstudio/extensibility/internals/solution-dot-sln-file</a>.
+      </p><p>The following values must be specified:</p><div class="variablelist"><dl><dt><span class="term"><em class="parameter"><code>target</code></em></span></dt><dd><p>
+              The name of the target <code class="filename">.dsw</code> or
+              <code class="filename">.sln</code> file. The correct
+              suffix for the version of Visual Studio must be used,
+              but the value <a class="link" href="apa.html#cv-MSVSSOLUTIONSUFFIX"><code class="envar">$MSVSSOLUTIONSUFFIX</code></a> will be
+              defined to the correct value (see example below).
+            </p></dd><dt><span class="term"><em class="parameter"><code>variant</code></em></span></dt><dd><p>
+              The name of this particular variant, or a list of
+              variant names (the latter is only supported for MSVS
+              7 solutions). These are typically things like "Debug"
+              or "Release", but really can be anything you want. For
+              MSVS 7 they may also specify target platform, like this
+              <code class="literal">"Debug|Xbox"</code>. Default platform is Win32.
+            </p></dd><dt><span class="term"><em class="parameter"><code>projects</code></em></span></dt><dd><p>
+              A list of project file names, or Project nodes returned
+              by calls to the <a class="link" href="apb.html#b-MSVSProject"><code class="function">MSVSProject</code></a> Builder, to be placed
+              into the solution file.
+              Note that these filenames need to be specified as strings,
+              NOT as <span class="application">SCons</span> File Nodes.
+              This is because the solution file will be interpreted by
+              <span class="application">MSBuild</span>
+              and by Visual Studio, which know nothing about <span class="application">SCons</span> Node types.
+            </p></dd></dl></div><p>
+        In addition to the mandatory arguments above, the following optional
+        values may be specified as keyword arguments:
+      </p><div class="variablelist"><dl><dt><span class="term"><em class="parameter"><code>auto_filter_projects</code></em></span></dt><dd><p>
+              Under certain circumstances, solution file names or
+              solution file nodes may be present in the
+              <em class="parameter"><code>projects</code></em> argument list.
+              When solution file names or nodes are present in the
+              <em class="parameter"><code>projects</code></em> argument list, the generated
+              solution file may contain erroneous Project records resulting
+              in VS IDE error messages when opening the generated solution
+              file.
+              By default, an exception is raised when a solution file
+              name or solution file node is detected in the
+              <em class="parameter"><code>projects</code></em> argument list.
+            </p><p>
+              The accepted values for <em class="parameter"><code>auto_filter_projects</code></em>
+              are:
+            </p><div class="variablelist"><dl><dt><span class="term"><em class="parameter"><code>None</code></em></span></dt><dd><p>
+                    An exception is raised when a solution file name or solution
+                    file node is detected in the <em class="parameter"><code>projects</code></em>
+                    argument list.
+                  </p><p>
+                    <em class="parameter"><code>None</code></em> is the default value.
+                  </p></dd><dt><span class="term"><em class="parameter"><code>True or evaluates True</code></em></span></dt><dd><p>
+                    Automatically remove solution file names and solution file
+                    nodes from the <em class="parameter"><code>projects</code></em> argument list.
+                  </p></dd><dt><span class="term"><em class="parameter"><code>False or evaluates False</code></em></span></dt><dd><p>
+                    Leave the solution file names and solution file nodes
+                    in the <em class="parameter"><code>projects</code></em> argument list.
+                    An exception is not raised.
+                  </p><p>
+                    When opening the generated solution file with the VS IDE,
+                    the VS IDE will likely report that there are erroneous
+                    Project records that are not supported or that need to be
+                    modified.
+                  </p></dd></dl></div></dd></dl></div><p>Example Usage:</p><pre class="screen">
+env.MSVSSolution(
+    target="Bar" + env["MSVSSOLUTIONSUFFIX"],
+    projects=["bar" + env["MSVSPROJECTSUFFIX"]],
+    variant="Release",
+)
+      </pre></dd><dt><a name="b-Ninja"></a><span class="term"><code class="function">Ninja</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">Ninja</code>()</span></dt><dd><p>
+                A special builder which
+                adds a target to create a Ninja build file.
+                The builder does not require any source files to be specified.
+            </p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>This is an experimental feature. To enable it you must use one of the following methods
+                </p><pre class="screen">
+# On the command line
+--experimental=ninja
+
+# Or in your SConstruct
+SetOption('experimental', 'ninja')
+                </pre><p>This functionality is subject to change and/or removal without deprecation cycle.</p><p>
+                    To use this tool you need to install the <span class="application">Python</span> <span class="application">ninja</span> package,
+                    as the tool by default depends on being able to do an
+                    <code class="systemitem">import</code> of the package
+
+                    This can be done via:
+                    </p><pre class="screen">
+python -m pip install ninja
+                    </pre><p>
+                </p></div><p>
+                If called with no arguments,
+                the builder will default to a target name of
+                <code class="filename">ninja.build</code>.
+            </p><p>
+                If called with a single positional argument,
+                <span class="command"><strong>scons</strong></span> will "deduce" the target name from that source
+                argument, giving it the same name, and then
+                ignore the source.
+                This is the usual way to call the builder if a
+                non-default target name is wanted.
+            </p><p>
+                If called with either the
+                <em class="parameter"><code>target=</code></em>
+                or <em class="parameter"><code>source=</code></em> keyword arguments,
+                the value of the argument is taken as the target name.
+                If called with both, the
+                <em class="parameter"><code>target=</code></em>
+                value is used and <em class="parameter"><code>source=</code></em> is ignored.
+                If called with multiple sources,
+                the source list will be ignored,
+                since there is no way to deduce what the intent was;
+                in this case the default target name will be used.
+            </p><p>
+                <span class="emphasis"><em>Available since <span class="command"><strong>scons</strong></span> 4.2.</em></span>
+            </p></dd><dt><a name="b-Object"></a><span class="term"><code class="function">Object</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">Object</code>()</span></dt><dd><p>
+A synonym for the
+<code class="function">StaticObject</code>
+builder method.
+</p></dd><dt><a name="b-Package"></a><span class="term"><code class="function">Package</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">Package</code>()</span></dt><dd><p>
+Builds software distribution packages.
+A <em class="firstterm">package</em> is a container format which
+includes files to install along with metadata.
+Packaging is optional, and must be enabled by specifying
+the <a class="link" href="apc.html#t-packaging"><code class="literal">packaging</code></a> tool. For example:
+</p><pre class="screen">
+env = Environment(tools=['default', 'packaging'])
+</pre><p>
+<span class="application">SCons</span> can build packages in a number of well known packaging formats.
+The target package type may be selected with the
+<a class="link" href="apa.html#cv-PACKAGETYPE"><code class="envar">$PACKAGETYPE</code></a> construction variable
+or the <code class="option">--package-type</code> command line option.
+The package type may be a list, in which case <span class="application">SCons</span> will attempt
+to build packages for each type in the list. Example:
+</p><pre class="screen">
+env.Package(PACKAGETYPE=['src_zip', 'src_targz'], <em class="replaceable"><code>...other args...</code></em>)
+</pre><p>
+The currently supported packagers are:
+</p><div class="informaltable"><table border="1"><colgroup><col><col></colgroup><tbody><tr><td><code class="literal">msi</code></td><td>Microsoft Installer package</td></tr><tr><td><code class="literal">rpm</code></td><td>RPM Package Manager package</td></tr><tr><td><code class="literal">ipkg</code></td><td>Itsy Package Management package</td></tr><tr><td><code class="literal">tarbz2</code></td><td>bzip2-compressed tar file</td></tr><tr><td><code class="literal">targz</code></td><td>gzip-compressed tar file</td></tr><tr><td><code class="literal">tarxz</code></td><td>xz-compressed tar file</td></tr><tr><td><code class="literal">zip</code></td><td>zip file</td></tr><tr><td><code class="literal">src_tarbz2</code></td><td>bzip2-compressed tar file suitable as source to another packager</td></tr><tr><td><code class="literal">src_targz</code></td><td>gzip-compressed tar file suitable as source to another packager</td></tr><tr><td><code class="literal">src_tarxz</code></td><td>xz-compressed tar file suitable as source to another packager</td></tr><tr><td><code class="literal">src_zip</code></td><td>zip file suitable as source to another packager</td></tr></tbody></table></div><p>
+The file list to include in the package may be specified with
+the <code class="varname">source</code> keyword argument. If omitted,
+the <a class="link" href="apd.html#f-FindInstalledFiles"><code class="function">FindInstalledFiles</code></a> function is called behind the scenes
+to select all files that have an <a class="link" href="apb.html#b-Install"><code class="function">Install</code></a>, <a class="link" href="apb.html#b-InstallAs"><code class="function">InstallAs</code></a>
+or <a class="link" href="apb.html#b-InstallVersionedLib"><code class="function">InstallVersionedLib</code></a> Builder attached.
+If the <code class="varname">target</code> keyword argument is omitted, the target name(s)
+will be deduced from the package type(s).
+</p><p>
+The metadata comes partly from attributes of the files to be packaged,
+and partly from packaging <em class="firstterm">tags</em>.
+Tags can be passed as keyword arguments
+to the <code class="function">Package</code> builder call,
+and may also be attached to files
+(or more accurately, Nodes representing files)
+with the <a class="link" href="apd.html#f-Tag"><code class="function">Tag</code></a> function.
+Some package-level tags are mandatory, and will lead to errors if omitted.
+The mandatory tags vary depending on the package type.
+
+</p><p>
+While packaging, the builder uses a temporary location named
+by the value of the <a class="link" href="apa.html#cv-PACKAGEROOT"><code class="envar">$PACKAGEROOT</code></a> variable -
+the package sources are copied there before packaging.
+</p><p>
+Packaging example:
+</p><pre class="screen">
+env = Environment(tools=["default", "packaging"])
+env.Install("/bin/", "my_program")
+env.Package(
+    NAME="foo",
+    VERSION="1.2.3",
+    PACKAGEVERSION=0,
+    PACKAGETYPE="rpm",
+    LICENSE="gpl",
+    SUMMARY="balalalalal",
+    DESCRIPTION="this should be really really long",
+    X_RPM_GROUP="Application/fu",
+    SOURCE_URL="https://foo.org/foo-1.2.3.tar.gz",
+)
+</pre><p>
+In this example, the target <code class="filename">/bin/my_program</code>
+created by the <code class="function">Install</code> call would not be built by default
+since it is not under the project top directory.
+However, since no <em class="parameter"><code>source</code></em>
+is specified to the <code class="function">Package</code> builder,
+it is selected for packaging by the default sources rule.
+Since packaging is done using <a class="link" href="apa.html#cv-PACKAGEROOT"><code class="envar">$PACKAGEROOT</code></a>, no write is
+actually done to the system's <code class="filename">/bin</code> directory,
+and the target <span class="emphasis"><em>will</em></span> be selected since
+after rebasing to underneath <code class="envar">$PACKAGEROOT</code> it is now under
+the top directory of the project.
+</p></dd><dt><a name="b-PCH"></a><span class="term"><code class="function">PCH</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">PCH</code>()</span></dt><dd><p>
+Builds a <span class="application">Microsoft Visual C++</span> precompiled header.
+Calling this builder
+returns a list of two target nodes: the PCH as the first element,
+and the object file as the second element.
+Normally the object file is ignored.
+The <code class="function">PCH</code> builder is generally used in
+conjunction with the <a class="link" href="apa.html#cv-PCH"><code class="envar">$PCH</code></a> <span>construction variable</span> to force object files to use
+the precompiled header:
+</p><pre class="screen">
+env['PCH'] = env.PCH('StdAfx.cpp')[0]
+</pre><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+This builder is specific to the PCH implementation in  <span class="application">Microsoft Visual C++</span>.
+Other compiler chains also implement precompiled header support,
+but <code class="function">PCH</code> does not work with them at this time.
+As a result, the builder is only generated into the
+construction environment when
+<span class="application">Microsoft Visual C++</span> is being used as the compiler.
+</p><p>
+The builder only works correctly in a C++ project.
+The Microsoft implementation distinguishes between
+precompiled headers from C and C++.
+Use of the builder will cause the PCH generation to happen with a flag
+that tells <span class="application">cl.exe</span> all of the
+files are C++ files; if that PCH file is then supplied when
+compiling a C source file,
+<span class="application">cl.exe</span> will fail the build with
+a compatibility violation.
+</p><p>
+If possible, arrange the project so that a
+C++ source file passed to the <code class="function">PCH</code> builder
+is not also included in the list of sources
+to be otherwise compiled in the project.
+<span class="application">SCons</span> will correctly track that file in the dependency tree
+as a result of the <code class="function">PCH</code> call,
+and (for MSVC 11.0 and greater) automatically add the
+corresponding object file to the link line.
+If the source list is automatically generated,
+for example using the <a class="link" href="apd.html#f-Glob"><code class="function">Glob</code></a> function,
+it may be necessary to remove that file from the list.
+</p></div></dd><dt><a name="b-PDF"></a><span class="term"><code class="function">PDF</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">PDF</code>()</span></dt><dd><p>
+Builds a <code class="filename">.pdf</code> file
+from a <code class="filename">.dvi</code> input file
+(or, by extension, a <code class="filename">.tex</code>,
+<code class="filename">.ltx</code>,
+or
+<code class="filename">.latex</code> input file).
+The suffix specified by the <a class="link" href="apa.html#cv-PDFSUFFIX"><code class="envar">$PDFSUFFIX</code></a> construction variable
+(<code class="filename">.pdf</code> by default)
+is added automatically to the target
+if it is not already present.
+<code class="function">PDF</code> is a single-source builder.
+Example:
+</p><pre class="programlisting">
+# builds from aaa.tex
+env.PDF(target = 'aaa.pdf', source = 'aaa.tex')
+# builds bbb.pdf from bbb.dvi
+env.PDF(target = 'bbb', source = 'bbb.dvi')
+</pre></dd><dt><a name="b-POInit"></a><span class="term"><code class="function">POInit</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">POInit</code>()</span></dt><dd><p>
+This builder is set up by the <a class="link" href="apc.html#t-msginit"><code class="literal">msginit</code></a> tool.
+The builder initializes missing
+<code class="literal">PO</code> file(s) if <a class="link" href="apa.html#cv-POAUTOINIT"><code class="envar">$POAUTOINIT</code></a> is set.
+If <a class="link" href="apa.html#cv-POAUTOINIT"><code class="envar">$POAUTOINIT</code></a> is not set (the default),
+<code class="function">POInit</code> prints instruction for the user (such as a translator),
+telling how the <code class="literal">PO</code> file should be initialized.
+In normal projects
+<span class="emphasis"><em>you should not use <code class="function">POInit</code> and use <a class="link" href="apb.html#b-POUpdate"><code class="function">POUpdate</code></a>
+instead</em></span>. <a class="link" href="apb.html#b-POUpdate"><code class="function">POUpdate</code></a> chooses intelligently between
+<span class="command"><strong>msgmerge(1)</strong></span> and <span class="command"><strong>msginit(1)</strong></span>. <code class="function">POInit</code>
+always uses <span class="command"><strong>msginit(1)</strong></span> and should be regarded as builder for
+special purposes or for temporary use (e.g. for quick, one time initialization
+of a bunch of <code class="literal">PO</code> files) or for tests.
+<code class="function">POInit</code> is a single-source builder.
+The <em class="parameter"><code>source</code></em> parameter
+can also be omitted if <a class="link" href="apa.html#cv-LINGUAS_FILE"><code class="envar">$LINGUAS_FILE</code></a> is set.
+</p><p>
+Target nodes defined through <code class="function">POInit</code> are not built by default (they're
+<code class="literal">Ignore</code>d from <code class="literal">'.'</code> node) but are added to
+special <a class="link" href="apd.html#f-Alias"><code class="function">Alias</code></a> (<code class="literal">'po-create'</code> by default).
+The alias name may be changed through the <a class="link" href="apa.html#cv-POCREATE_ALIAS"><code class="envar">$POCREATE_ALIAS</code></a>
+<span>construction variable</span>. All <code class="literal">PO</code> files defined through
+<code class="function">POInit</code> may be easily initialized by <strong class="userinput"><code>scons po-create</code></strong>.
+</p><p>
+<span class="emphasis"><em>Example 1</em></span>.
+Initialize <code class="filename">en.po</code> and <code class="filename">pl.po</code> from
+<code class="filename">messages.pot</code>:
+</p><pre class="programlisting">
+env.POInit(['en', 'pl']) # messages.pot --&gt; [en.po, pl.po]
+</pre><p>
+<span class="emphasis"><em>Example 2</em></span>.
+Initialize <code class="filename">en.po</code> and <code class="filename">pl.po</code> from
+<code class="filename">foo.pot</code>:
+</p><pre class="programlisting">
+env.POInit(['en', 'pl'], ['foo']) # foo.pot --&gt; [en.po, pl.po]
+</pre><p>
+<span class="emphasis"><em>Example 3</em></span>.
+Initialize <code class="filename">en.po</code> and <code class="filename">pl.po</code> from
+<code class="filename">foo.pot</code> but using the <a class="link" href="apa.html#cv-POTDOMAIN"><code class="envar">$POTDOMAIN</code></a> <span>construction variable</span>:
+</p><pre class="programlisting">
+env.POInit(['en', 'pl'], POTDOMAIN='foo') # foo.pot --&gt; [en.po, pl.po]
+</pre><p>
+<span class="emphasis"><em>Example 4</em></span>.
+Initialize <code class="literal">PO</code> files for languages defined in
+<code class="filename">LINGUAS</code> file. The files will be initialized from template
+<code class="filename">messages.pot</code>:
+</p><pre class="programlisting">
+env.POInit(LINGUAS_FILE=True)  # needs 'LINGUAS' file
+</pre><p>
+<span class="emphasis"><em>Example 5</em></span>.
+Initialize <code class="filename">en.po</code> and <code class="filename">pl.pl</code>
+<code class="literal">PO</code> files plus files for languages defined in
+<code class="filename">LINGUAS</code> file. The files will be initialized from template
+<code class="filename">messages.pot</code>:
+</p><pre class="programlisting">
+env.POInit(['en', 'pl'], LINGUAS_FILE=True)
+</pre><p>
+<span class="emphasis"><em>Example 6</em></span>.
+You may preconfigure your environment first, and then initialize
+<code class="literal">PO</code> files:
+</p><pre class="programlisting">
+env['POAUTOINIT'] = True
+env['LINGUAS_FILE'] = True
+env['POTDOMAIN'] = 'foo'
+env.POInit()
+</pre><p>
+which has same efect as:
+</p><pre class="programlisting">
+env.POInit(POAUTOINIT=True, LINGUAS_FILE=True, POTDOMAIN='foo')
+</pre></dd><dt><a name="b-PostScript"></a><span class="term"><code class="function">PostScript</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">PostScript</code>()</span></dt><dd><p>
+Builds a <code class="filename">.ps</code> file
+from a <code class="filename">.dvi</code> input file
+(or, by extension, a <code class="filename">.tex</code>,
+<code class="filename">.ltx</code>,
+or
+<code class="filename">.latex</code> input file).
+The suffix specified by the <a class="link" href="apa.html#cv-PSSUFFIX"><code class="envar">$PSSUFFIX</code></a> construction variable
+(<code class="filename">.ps</code> by default)
+is added automatically to the target
+if it is not already present.
+<code class="function">PostScript</code> is a single-source builder.
+Example:
+</p><pre class="programlisting">
+# builds from aaa.tex
+env.PostScript(target = 'aaa.ps', source = 'aaa.tex')
+# builds bbb.ps from bbb.dvi
+env.PostScript(target = 'bbb', source = 'bbb.dvi')
+</pre></dd><dt><a name="b-POTUpdate"></a><span class="term"><code class="function">POTUpdate</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">POTUpdate</code>()</span></dt><dd><p>
+The builder is set up by the <a class="link" href="apc.html#t-xgettext"><code class="literal">xgettext</code></a> tool,
+part of the <a class="link" href="apc.html#t-gettext"><code class="literal">gettext</code></a> toolset.
+The builder updates the target
+<code class="literal">POT</code> file if exists or creates it if it doesn't.
+The target node is <span class="emphasis"><em>not</em></span>
+selected for building by default (e.g. <strong class="userinput"><code>scons .</code></strong>),
+but only on demand (i.e.  when the given
+<code class="literal">POT</code> file is required or when special alias is invoked).
+This builder adds its target node (<code class="filename">messages.pot</code>, say) to a
+special alias (<code class="literal">pot-update</code> by default, see
+<a class="link" href="apa.html#cv-POTUPDATE_ALIAS"><code class="envar">$POTUPDATE_ALIAS</code></a>) so you can update/create them easily with
+<strong class="userinput"><code>scons pot-update</code></strong>. The file is not written until there is no
+real change in internationalized messages (or in comments that enter
+<code class="literal">POT</code> file).
+</p><p>
+</p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>You may see <span class="command"><strong>xgettext(1)</strong></span> being invoked by the
+<a class="link" href="apc.html#t-xgettext"><code class="literal">xgettext</code></a> tool even if there is no real change in internationalized
+messages (so the <code class="literal">POT</code> file is not being updated).  This
+happens every time  a source file has changed. In such case we invoke
+<span class="command"><strong>xgettext(1)</strong></span> and compare its output with the content of
+<code class="literal">POT</code> file to decide whether the file should be updated or
+not.</p></div><p>
+</p><p>
+<span class="emphasis"><em>Example 1.</em></span>
+Let's create <code class="filename">po/</code> directory and place following
+<code class="filename">SConstruct</code> script there:
+</p><pre class="programlisting">
+# SConstruct in 'po/' subdir
+env = Environment(tools=['default', 'xgettext'])
+env.POTUpdate(['foo'], ['../a.cpp', '../b.cpp'])
+env.POTUpdate(['bar'], ['../c.cpp', '../d.cpp'])
+</pre><p>
+Then invoke scons few times:
+</p><pre class="screen">
+$ scons             # Does not create foo.pot nor bar.pot
+$ scons foo.pot     # Updates or creates foo.pot
+$ scons pot-update  # Updates or creates foo.pot and bar.pot
+$ scons -c          # Does not clean foo.pot nor bar.pot.
+</pre><p>
+the results shall be as the comments above say.
+</p><p>
+<span class="emphasis"><em>Example 2.</em></span>
+The <em class="parameter"><code>target</code></em> argument can be omitted, in which
+case the default target name <code class="filename">messages.pot</code> is used.
+The target may also be overridden by setting the <a class="link" href="apa.html#cv-POTDOMAIN"><code class="envar">$POTDOMAIN</code></a>
+<span>construction variable</span> or providing it as an override to the <code class="function">POTUpdate</code> builder:
+</p><pre class="programlisting">
+# SConstruct script
+env = Environment(tools=['default', 'xgettext'])
+env['POTDOMAIN'] = "foo"
+env.POTUpdate(source=["a.cpp", "b.cpp"])  # Creates foo.pot ...
+env.POTUpdate(POTDOMAIN="bar", source=["c.cpp", "d.cpp"])  # and bar.pot
+</pre><p>
+<span class="emphasis"><em>Example 3.</em></span>
+The <em class="parameter"><code>source</code></em> parameter may also be omitted,
+if it is specified in a separate file, for example
+<code class="filename">POTFILES.in</code>:
+</p><pre class="programlisting">
+# POTFILES.in in 'po/' subdirectory
+../a.cpp
+../b.cpp
+# end of file
+</pre><p>
+The name of the file (<code class="filename">POTFILES.in</code>) containing the list of
+sources is provided via <a class="link" href="apa.html#cv-XGETTEXTFROM"><code class="envar">$XGETTEXTFROM</code></a>:
+</p><pre class="programlisting">
+# SConstruct file in 'po/' subdirectory
+env = Environment(tools=['default', 'xgettext'])
+env.POTUpdate(XGETTEXTFROM='POTFILES.in')
+</pre><p>
+<span class="emphasis"><em>Example 4.</em></span>
+You can use <a class="link" href="apa.html#cv-XGETTEXTPATH"><code class="envar">$XGETTEXTPATH</code></a> to define the source search path.
+Assume, for example, that you have files <code class="filename">a.cpp</code>,
+<code class="filename">b.cpp</code>, <code class="filename">po/SConstruct</code>,
+<code class="filename">po/POTFILES.in</code>.
+Then your <code class="literal">POT</code>-related files could look like this:
+</p><pre class="programlisting">
+# POTFILES.in in 'po/' subdirectory
+a.cpp
+b.cpp
+# end of file
+</pre><pre class="programlisting">
+# SConstruct file in 'po/' subdirectory
+env = Environment(tools=['default', 'xgettext'])
+env.POTUpdate(XGETTEXTFROM='POTFILES.in', XGETTEXTPATH='../')
+</pre><p>
+<span class="emphasis"><em>Example 5.</em></span>
+Multiple search directories may be defined as a list, i.e.
+<code class="literal">XGETTEXTPATH=['dir1', 'dir2', ...]</code>. The order in the list
+determines the search order of source files. The path to the first file found
+is used.
+</p><p>
+Let's create <code class="filename">0/1/po/SConstruct</code> script:
+</p><pre class="programlisting">
+# SConstruct file in '0/1/po/' subdirectory
+env = Environment(tools=['default', 'xgettext'])
+env.POTUpdate(XGETTEXTFROM='POTFILES.in', XGETTEXTPATH=['../', '../../'])
+</pre><p>
+and <code class="filename">0/1/po/POTFILES.in</code>:
+</p><pre class="programlisting">
+# POTFILES.in in '0/1/po/' subdirectory
+a.cpp
+# end of file
+</pre><p>
+Write two <code class="filename">*.cpp</code> files, the first one is
+<code class="filename">0/a.cpp</code>:
+</p><pre class="programlisting">
+/* 0/a.cpp */
+gettext("Hello from ../../a.cpp")
+</pre><p>
+and the second is <code class="filename">0/1/a.cpp</code>:
+</p><pre class="programlisting">
+/* 0/1/a.cpp */
+gettext("Hello from ../a.cpp")
+</pre><p>
+then run scons. You'll obtain <code class="literal">0/1/po/messages.pot</code> with the
+message <code class="literal">"Hello from ../a.cpp"</code>. When you reverse order in
+<code class="varname">$XGETTEXTFOM</code>, i.e. when you write SConscript as
+</p><pre class="programlisting">
+# SConstruct file in '0/1/po/' subdirectory
+env = Environment(tools=['default', 'xgettext'])
+env.POTUpdate(XGETTEXTFROM='POTFILES.in', XGETTEXTPATH=['../../', '../'])
+</pre><p>
+then the <code class="filename">messages.pot</code> will contain
+<code class="literal">msgid "Hello from ../../a.cpp"</code> line and not
+<code class="literal">msgid "Hello from ../a.cpp"</code>.
+</p></dd><dt><a name="b-POUpdate"></a><span class="term"><code class="function">POUpdate</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">POUpdate</code>()</span></dt><dd><p>
+The builder is set up by the <a class="link" href="apc.html#t-msgmerge"><code class="literal">msgmerge</code></a> tool.
+part of the <a class="link" href="apc.html#t-gettext"><code class="literal">gettext</code></a> toolset.
+The builder updates
+<code class="literal">PO</code> files with <span class="command"><strong>msgmerge(1)</strong></span>, or initializes
+missing <code class="literal">PO</code> files as described in the documentation of the
+<a class="link" href="apc.html#t-msginit"><code class="literal">msginit</code></a> tool and the <a class="link" href="apb.html#b-POInit"><code class="function">POInit</code></a> builder (see also
+<a class="link" href="apa.html#cv-POAUTOINIT"><code class="envar">$POAUTOINIT</code></a>).
+<code class="function">POUpdate</code> is a single-source builder.
+The <em class="parameter"><code>source</code></em> parameter
+can also be omitted if <a class="link" href="apa.html#cv-LINGUAS_FILE"><code class="envar">$LINGUAS_FILE</code></a> is set.
+</p><p>
+The target nodes are <span class="emphasis"><em>not</em></span>
+selected for building by default (e.g. <strong class="userinput"><code>scons .</code></strong>).
+Instead, they are added automatically to special <a class="link" href="apd.html#f-Alias"><code class="function">Alias</code></a>
+(<code class="literal">'po-update'</code> by default). The alias name may be changed
+through the <a class="link" href="apa.html#cv-POUPDATE_ALIAS"><code class="envar">$POUPDATE_ALIAS</code></a> <span>construction variable</span>.  You can easily
+update <code class="literal">PO</code> files in your project by
+<strong class="userinput"><code>scons po-update</code></strong>.
+Note that <code class="function">POUpdate</code> does not add its
+targets to the <code class="literal">po-create</code> alias as <a class="link" href="apb.html#b-POInit"><code class="function">POInit</code></a>
+does.
+</p><p>
+<span class="emphasis"><em>Example 1.</em></span>
+Update <code class="filename">en.po</code> and <code class="filename">pl.po</code> from
+<code class="filename">messages.pot</code> template (see also <a class="link" href="apa.html#cv-POTDOMAIN"><code class="envar">$POTDOMAIN</code></a>),
+assuming that the later one exists or there is rule to build it (see
+<a class="link" href="apb.html#b-POTUpdate"><code class="function">POTUpdate</code></a>):
+</p><pre class="programlisting">
+env.POUpdate(['en','pl'])  # messages.pot --&gt; [en.po, pl.po]
+</pre><p>
+<span class="emphasis"><em>Example 2.</em></span>
+Update <code class="filename">en.po</code> and <code class="filename">pl.po</code> from
+<code class="filename">foo.pot</code> template:
+</p><pre class="programlisting">
+env.POUpdate(['en', 'pl'], ['foo'])  # foo.pot --&gt;  [en.po, pl.pl]
+</pre><p>
+<span class="emphasis"><em>Example 3.</em></span>
+Update <code class="filename">en.po</code> and <code class="filename">pl.po</code> from
+<code class="filename">foo.pot</code> (another version):
+</p><pre class="programlisting">
+env.POUpdate(['en', 'pl'], POTDOMAIN='foo')  # foo.pot -- &gt; [en.po, pl.pl]
+</pre><p>
+<span class="emphasis"><em>Example 4.</em></span>
+Update files for languages defined in <code class="filename">LINGUAS</code> file. The
+files are updated from <code class="filename">messages.pot</code> template:
+</p><pre class="programlisting">
+env.POUpdate(LINGUAS_FILE=True)  # needs 'LINGUAS' file
+</pre><p>
+<span class="emphasis"><em>Example 5.</em></span>
+Same as above, but update from <code class="filename">foo.pot</code> template:
+</p><pre class="programlisting">
+env.POUpdate(LINGUAS_FILE=True, source=['foo'])
+</pre><p>
+<span class="emphasis"><em>Example 6.</em></span>
+Update <code class="filename">en.po</code> and <code class="filename">pl.po</code> plus files for
+languages defined in <code class="filename">LINGUAS</code> file. The files are updated
+from <code class="filename">messages.pot</code> template:
+</p><pre class="programlisting">
+# produce 'en.po', 'pl.po' + files defined in 'LINGUAS':
+env.POUpdate(['en', 'pl' ], LINGUAS_FILE=True)
+</pre><p>
+<span class="emphasis"><em>Example 7.</em></span>
+Use <a class="link" href="apa.html#cv-POAUTOINIT"><code class="envar">$POAUTOINIT</code></a> to automatically initialize <code class="literal">PO</code> file
+if it doesn't exist:
+</p><pre class="programlisting">
+env.POUpdate(LINGUAS_FILE=True, POAUTOINIT=True)
+</pre><p>
+<span class="emphasis"><em>Example 8.</em></span>
+Update <code class="literal">PO</code> files for languages defined in
+<code class="filename">LINGUAS</code> file. The files are updated from
+<code class="filename">foo.pot</code> template. All necessary settings are
+pre-configured via environment.
+</p><pre class="programlisting">
+env['POAUTOINIT'] = True
+env['LINGUAS_FILE'] = True
+env['POTDOMAIN'] = 'foo'
+env.POUpdate()
+</pre></dd><dt><a name="b-Program"></a><span class="term"><code class="function">Program</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">Program</code>()</span></dt><dd><p>
+Builds an executable given one or more object files
+or C, C++, D, or Fortran source files.
+If any C, C++, D or Fortran source files are specified,
+then they will be automatically
+compiled to object files using the
+<code class="function">Object</code>
+builder method;
+see that builder method's description for
+a list of legal source file suffixes
+and how they are interpreted.
+The target executable file prefix,
+specified by the <a class="link" href="apa.html#cv-PROGPREFIX"><code class="envar">$PROGPREFIX</code></a> <span>construction variable</span>
+(nothing by default),
+and suffix,
+specified by the <a class="link" href="apa.html#cv-PROGSUFFIX"><code class="envar">$PROGSUFFIX</code></a> <span>construction variable</span>
+(by default, <code class="filename">.exe</code> on Windows systems,
+nothing on POSIX systems),
+are automatically added to the target if not already present.
+Example:
+</p><pre class="screen">
+env.Program(target='foo', source=['foo.o', 'bar.c', 'baz.f'])
+</pre></dd><dt><a name="b-ProgramAllAtOnce"></a><span class="term"><code class="function">ProgramAllAtOnce</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">ProgramAllAtOnce</code>()</span></dt><dd><p>
+    Builds an executable from D sources without first creating individual
+    objects for each file.
+  </p><p>
+    D sources can be compiled file-by-file as C and C++ source are, and
+    D is integrated into the <span class="command"><strong>scons</strong></span> Object and Program builders for
+    this model of build. D codes can though do whole source
+    meta-programming (some of the testing frameworks do this). For this
+    it is imperative that all sources are compiled and linked in a single
+    call to the D compiler. This builder serves that purpose.
+  </p><pre class="screen">
+    env.ProgramAllAtOnce('executable', ['mod_a.d, mod_b.d', 'mod_c.d'])
+  </pre><p>
+    This command will compile the modules mod_a, mod_b, and mod_c in a
+    single compilation process without first creating object files for
+    the modules. Some of the D compilers will create executable.o others
+    will not.
+  </p></dd><dt><a name="b-RES"></a><span class="term"><code class="function">RES</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">RES</code>()</span></dt><dd><p>
+Builds a <span class="application">Microsoft Visual C++</span> resource file.
+This builder method is only provided
+when <span class="application">Microsoft Visual C++</span> or MinGW is being used as the compiler. The
+<code class="filename">.res</code>
+(or
+<code class="filename">.o</code>
+for MinGW) suffix is added to the target name if no other suffix is given.
+The source
+file is scanned for implicit dependencies as though it were a C file.
+Example:
+</p><pre class="screen">
+env.RES('resource.rc')
+</pre></dd><dt><a name="b-RMIC"></a><span class="term"><code class="function">RMIC</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">RMIC</code>()</span></dt><dd><p>
+Builds stub and skeleton class files
+for remote objects
+from Java <code class="filename">.class</code> files.
+The target is a directory
+relative to which the stub
+and skeleton class files will be written.
+The source can be the names of <code class="filename">.class</code> files,
+or the objects return from the
+<code class="function">Java</code>
+builder method.
+</p><p>
+If the construction variable
+<a class="link" href="apa.html#cv-JAVACLASSDIR"><code class="envar">$JAVACLASSDIR</code></a>
+is set, either in the environment
+or in the call to the
+<code class="function">RMIC</code>
+builder method itself,
+then the value of the variable
+will be stripped from the
+beginning of any <code class="filename">.class </code>
+file names.
+</p><pre class="screen">
+classes = env.Java(target='classdir', source='src')
+env.RMIC(target='outdir1', source=classes)
+env.RMIC(
+    target='outdir2',
+    source=['package/foo.class', 'package/bar.class'],
+)
+env.RMIC(
+    target='outdir3',
+    source=['classes/foo.class', 'classes/bar.class'],
+    JAVACLASSDIR='classes',
+)
+</pre></dd><dt><a name="b-RPCGenClient"></a><span class="term"><code class="function">RPCGenClient</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">RPCGenClient</code>()</span></dt><dd><p>
+Generates an RPC client stub (<code class="filename">_clnt.c</code>) file
+from a specified RPC (<code class="filename">.x</code>) source file.
+Because rpcgen only builds output files
+in the local directory,
+the command will be executed
+in the source file's directory by default.
+</p><pre class="screen">
+# Builds src/rpcif_clnt.c
+env.RPCGenClient('src/rpcif.x')
+</pre></dd><dt><a name="b-RPCGenHeader"></a><span class="term"><code class="function">RPCGenHeader</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">RPCGenHeader</code>()</span></dt><dd><p>
+Generates an RPC header (<code class="filename">.h</code>) file
+from a specified RPC (<code class="filename">.x</code>) source file.
+Because rpcgen only builds output files
+in the local directory,
+the command will be executed
+in the source file's directory by default.
+</p><pre class="screen">
+# Builds src/rpcif.h
+env.RPCGenHeader('src/rpcif.x')
+</pre></dd><dt><a name="b-RPCGenService"></a><span class="term"><code class="function">RPCGenService</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">RPCGenService</code>()</span></dt><dd><p>
+Generates an RPC server-skeleton (<code class="filename">_svc.c</code>) file
+from a specified RPC (<code class="filename">.x</code>) source file.
+Because rpcgen only builds output files
+in the local directory,
+the command will be executed
+in the source file's directory by default.
+</p><pre class="screen">
+# Builds src/rpcif_svc.c
+env.RPCGenClient('src/rpcif.x')
+</pre></dd><dt><a name="b-RPCGenXDR"></a><span class="term"><code class="function">RPCGenXDR</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">RPCGenXDR</code>()</span></dt><dd><p>
+Generates an RPC XDR routine (<code class="filename">_xdr.c</code>) file
+from a specified RPC (<code class="filename">.x</code>) source file.
+Because rpcgen only builds output files
+in the local directory,
+the command will be executed
+in the source file's directory by default.
+</p><pre class="screen">
+# Builds src/rpcif_xdr.c
+env.RPCGenClient('src/rpcif.x')
+</pre></dd><dt><a name="b-SharedLibrary"></a><span class="term"><code class="function">SharedLibrary</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">SharedLibrary</code>()</span></dt><dd><p>
+Builds a shared library
+given one or more object files
+and/or C, C++, D or Fortran source files.
+Any source files listed in the
+<em class="parameter"><code>source</code></em> parameter
+will be automatically
+compiled to object files suitable
+for use in a shared library.
+Any object files listed in the
+<em class="parameter"><code>source</code></em> parameter
+must have been built for a shared library
+(that is, using the
+<code class="function">SharedObject</code>
+builder method).
+<span class="command"><strong>scons</strong></span>
+will raise an error if there is any mismatch.
+</p><p>
+The target library file prefix,
+specified by the <a class="link" href="apa.html#cv-SHLIBPREFIX"><code class="envar">$SHLIBPREFIX</code></a> <span>construction variable</span>
+(by default, <code class="filename">lib</code> on POSIX systems,
+nothing on Windows systems),
+and suffix,
+specified by the <a class="link" href="apa.html#cv-SHLIBSUFFIX"><code class="envar">$SHLIBSUFFIX</code></a> <span>construction variable</span>
+(by default, <code class="filename">.dll</code> on Windows systems,
+<code class="filename">.so</code> on POSIX systems),
+are automatically added (if not already present)
+to the target name to make up the library filename.
+On a POSIX system, if the <a class="link" href="apa.html#cv-SHLIBVERSION"><code class="envar">$SHLIBVERSION</code></a> <span>construction variable</span> is set,
+it is appended (following a period) to the resulting library name.
+</p><p>
+Example:
+</p><pre class="screen">
+env.SharedLibrary(target='bar', source=['bar.c', 'foo.o'])
+</pre><p>
+On Windows systems, the
+<code class="function">SharedLibrary</code>
+builder method will always build an import library
+(<code class="filename">.lib</code>)
+in addition to the shared library (<code class="filename">.dll</code>),
+adding a <code class="filename">.lib</code> library with the same basename
+if there is not already a <code class="filename">.lib</code> file explicitly
+listed in the targets.
+</p><p>
+On Cygwin systems, the
+<code class="function">SharedLibrary</code>
+builder method will always build an import library
+(<code class="filename">.dll.a</code>)
+in addition to the shared library (<code class="filename">.dll</code>),
+adding a <code class="filename">.dll.a</code> library with the same basename
+if there is not already a <code class="filename">.dll.a</code> file explicitly
+listed in the targets.
+</p><p>
+On some platforms, there is a distinction between a shared library
+(loaded automatically by the system to resolve external references)
+and a loadable module (explicitly loaded by user action).
+For maximum portability, use the <a class="link" href="apb.html#b-LoadableModule"><code class="function">LoadableModule</code></a> builder for the latter.
+</p><p>
+If <a class="link" href="apa.html#cv-SHLIBVERSION"><code class="envar">$SHLIBVERSION</code></a> is defined, a versioned
+shared library is created. This modifies <a class="link" href="apa.html#cv-SHLINKFLAGS"><code class="envar">$SHLINKFLAGS</code></a> as required,
+adds the version number to the library name, and creates any
+symbolic links that are needed.
+</p><pre class="screen">
+env.SharedLibrary(target='bar', source=['bar.c', 'foo.o'], SHLIBVERSION='1.5.2')
+</pre><p>
+On a POSIX system, supplying a simple version string (no dots)
+creates exactly one symbolic link: <code class="literal">SHLIBVERSION="1"</code>
+would create (for example) library <code class="filename">libbar.so.1</code>
+and symbolic link <code class="filename">libbar.so</code>.
+Supplying a dotted version string will create two symbolic links
+(irrespective of the number of segments in the version):
+<code class="literal">SHLIBVERSION="1.5.2"</code> for the same library
+would create library <code class="filename">libbar.so.1.5.2</code>
+and symbolic links <code class="filename">libbar.so</code> and
+<code class="filename">libbar.so.1</code>. A Darwin (OSX)
+system creates one symlink in either case,
+for the second example the library would be
+<code class="filename">libbar.1.5.2.dylib</code>
+and the link would be <code class="filename">libbar.dylib</code>.
+</p><p>
+On Windows systems, specifying the
+<em class="parameter"><code>register=1</code></em> keyword argument
+will cause the <code class="filename">.dll</code> to be
+registered after it is built.
+The command that is run is determined by the <a class="link" href="apa.html#cv-REGSVR"><code class="envar">$REGSVR</code></a> <span>construction variable</span>
+(<span class="command"><strong>regsvr32</strong></span> by default),
+and the flags passed are determined by <a class="link" href="apa.html#cv-REGSVRFLAGS"><code class="envar">$REGSVRFLAGS</code></a>.  By
+default, <a class="link" href="apa.html#cv-REGSVRFLAGS"><code class="envar">$REGSVRFLAGS</code></a> includes the <code class="option">/s</code> option,
+to prevent dialogs from popping
+up and requiring user attention when it is run.  If you change
+<a class="link" href="apa.html#cv-REGSVRFLAGS"><code class="envar">$REGSVRFLAGS</code></a>, be sure to include the <code class="option">/s</code> option.
+For example,
+</p><pre class="screen">
+env.SharedLibrary(target='bar', source=['bar.cxx', 'foo.obj'], register=1)
+</pre><p>
+will register <code class="filename">bar.dll</code> as a COM object
+when it is done linking it.
+</p></dd><dt><a name="b-SharedObject"></a><span class="term"><code class="function">SharedObject</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">SharedObject</code>()</span></dt><dd><p>
+Builds an object file intended for
+inclusion in a shared library.
+Source files must have one of the same set of extensions
+specified for the
+<a class="link" href="apb.html#b-StaticObject"><code class="function">StaticObject</code></a>
+builder method.
+The target object file prefix,
+specified by the <a class="link" href="apa.html#cv-SHOBJPREFIX"><code class="envar">$SHOBJPREFIX</code></a> <span>construction variable</span>
+(by default, the same as <a class="link" href="apa.html#cv-OBJPREFIX"><code class="envar">$OBJPREFIX</code></a>),
+and suffix,
+specified by the <a class="link" href="apa.html#cv-SHOBJSUFFIX"><code class="envar">$SHOBJSUFFIX</code></a> <span>construction variable</span>,
+are automatically added to the target if not already present.
+<code class="function">SharedObject</code> is a single-source builder.
+Examples:
+</p><pre class="screen">
+env.SharedObject(target='ddd', source='ddd.c')
+env.SharedObject(target='eee.o', source='eee.cpp')
+env.SharedObject(target='fff.obj', source='fff.for')
+env.SharedObject(source=Glob('*.c'))
+</pre><p>
+On some platforms building a shared object requires additional
+compiler option(s)
+(e.g. <code class="option">-fPIC</code> for <span class="command"><strong>gcc</strong></span>)
+in addition to those needed to build a
+normal (static) object.
+If shared and static objects differ,
+<span class="application">SCons</span> will allow only shared objects
+to be linked into a shared library,
+and will use a different suffix for shared objects
+to help indicate and track the difference.
+</p><p>
+Source files will be scanned
+according to the suffix mappings in the
+<code class="classname">SourceFileScanner</code>
+object.
+See the manpage section "Scanner Objects"
+for more information.
+</p></dd><dt><a name="b-StaticLibrary"></a><span class="term"><code class="function">StaticLibrary</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">StaticLibrary</code>()</span></dt><dd><p>
+Builds a static library given one or more object files
+or C, C++, D or Fortran source files.
+If any source files are given,
+then they will be automatically
+compiled to object files.
+The static library file prefix,
+specified by the <a class="link" href="apa.html#cv-LIBPREFIX"><code class="envar">$LIBPREFIX</code></a> <span>construction variable</span>
+(by default, <code class="filename">lib</code> on POSIX systems,
+nothing on Windows systems),
+and suffix,
+specified by the <a class="link" href="apa.html#cv-LIBSUFFIX"><code class="envar">$LIBSUFFIX</code></a> <span>construction variable</span>
+(by default, <code class="filename">.lib</code> on Windows systems,
+<code class="filename">.a</code> on POSIX systems),
+are automatically added to the target if not already present.
+Example:
+</p><pre class="screen">
+env.StaticLibrary(target='bar', source=['bar.c', 'foo.o'])
+</pre><p>
+Any object files listed in the
+<em class="parameter"><code>source</code></em>
+must have been built for a static library
+(that is, using the
+<code class="function">StaticObject</code>
+builder method).
+<span class="command"><strong>scons</strong></span>
+will raise an error if there is any mismatch.
+</p></dd><dt><a name="b-StaticObject"></a><span class="term"><code class="function">StaticObject</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">StaticObject</code>()</span></dt><dd><p>
+Builds a static object file
+from one or more C, C++, D, or Fortran source files.
+The file extension mapping is shown in the table:
+</p><div class="literallayout"><p><code class="literal"><br>
+  .asm    assembly language file<br>
+  .ASM    assembly language file<br>
+  .c      C file<br>
+  .C      Windows:  C file<br>
+          POSIX:  C++ file<br>
+  .cc     C++ file<br>
+  .cpp    C++ file<br>
+  .cxx    C++ file<br>
+  .cxx    C++ file<br>
+  .c++    C++ file<br>
+  .C++    C++ file<br>
+  .d      D file<br>
+  .f      Fortran file<br>
+  .F      Windows:  Fortran file<br>
+          POSIX:  Fortran file + C pre-processor<br>
+  .for    Fortran file<br>
+  .FOR    Fortran file<br>
+  .fpp    Fortran file + C pre-processor<br>
+  .FPP    Fortran file + C pre-processor<br>
+  .m      Object C file<br>
+  .mm     Object C++ file<br>
+  .s      assembly language file<br>
+  .S      Windows:  assembly language file<br>
+          ARM: CodeSourcery Sourcery Lite<br>
+  .sx     assembly language file + C pre-processor<br>
+          POSIX:  assembly language file + C pre-processor<br>
+  .spp    assembly language file + C pre-processor<br>
+  .SPP    assembly language file + C pre-processor<br>
+</code></p></div><p>
+The target object file prefix,
+specified by the <a class="link" href="apa.html#cv-OBJPREFIX"><code class="envar">$OBJPREFIX</code></a> <span>construction variable</span>
+(empty string by default),
+and suffix,
+specified by the <a class="link" href="apa.html#cv-OBJSUFFIX"><code class="envar">$OBJSUFFIX</code></a> <span>construction variable</span>
+(<code class="filename">.obj</code> on Windows systems,
+<code class="filename">.o</code> on POSIX systems),
+are automatically added to the target if not already present.
+<code class="function">StaticObject</code> is a single-source builder.
+Examples:
+</p><pre class="screen">
+env.StaticObject(target='aaa', source='aaa.c')
+env.StaticObject(target='bbb.o', source='bbb.c++')
+env.StaticObject(target='ccc.obj', source='ccc.f')
+env.StaticObject(source=Glob('*.c'))
+</pre><p>
+Source files will be scanned
+according to the suffix mappings in the
+<code class="classname">SourceFileScanner</code>
+object.
+See the manpage section "Scanner Objects"
+for more information.
+</p></dd><dt><a name="b-Substfile"></a><span class="term"><code class="function">Substfile</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">Substfile</code>()</span></dt><dd><p>
+The <code class="function">Substfile</code> builder creates a single text file from
+a template consisting of a file or set of files (or nodes),
+replacing text using the <a class="link" href="apa.html#cv-SUBST_DICT"><code class="envar">$SUBST_DICT</code></a> <span>construction variable</span> (if set).
+If a set, they are concatenated into the target file
+using the value of the
+<a class="link" href="apa.html#cv-LINESEPARATOR"><code class="envar">$LINESEPARATOR</code></a> <span>construction variable</span> as a separator between contents;
+the separator is not emitted after the contents of the last  file.
+Nested lists of source files
+are flattened. See also <a class="link" href="apb.html#b-Textfile"><code class="function">Textfile</code></a>.
+</p><p>
+By default, the target file encoding is "utf-8" and can be changed by <a class="link" href="apa.html#cv-FILE_ENCODING"><code class="envar">$FILE_ENCODING</code></a>
+Examples:
+</p><p>
+If a single source file name is specified and has a <code class="filename">.in</code> suffix,
+the suffix is stripped and the remainder of the name is used as the default target name.
+</p><p>
+The prefix and suffix specified by the <a class="link" href="apa.html#cv-SUBSTFILEPREFIX"><code class="envar">$SUBSTFILEPREFIX</code></a>
+and <a class="link" href="apa.html#cv-SUBSTFILESUFFIX"><code class="envar">$SUBSTFILESUFFIX</code></a> <span>construction variables</span>
+(an empty string by default in both cases)
+are automatically added to the target if they are not already present.
+</p><p>
+If a construction variable named <a class="link" href="apa.html#cv-SUBST_DICT"><code class="envar">$SUBST_DICT</code></a> is present,
+it may be either a Python dictionary or a sequence of
+(<em class="replaceable"><code>key</code></em>, <em class="replaceable"><code>value</code></em>) tuples.
+If it is a dictionary it is converted into a list of tuples
+with unspecified order,
+so if one key is a prefix of another key
+or if one substitution could be further expanded by another substitution,
+it is unpredictable whether the expansion will occur.
+</p><p>
+Any occurrences of a key in the source
+are replaced by the corresponding value,
+which may be a Python callable function or a string.
+If the value is a callable, it is called with no arguments to get a string.
+Strings are <span class="emphasis"><em>subst</em></span>-expanded
+and the result replaces the key.
+</p><pre class="screen">
+env = Environment(tools=['default'])
+
+env['prefix'] = '/usr/bin'
+script_dict = {'@prefix@': '/bin', '@exec_prefix@': '$prefix'}
+env.Substfile('script.in', SUBST_DICT=script_dict)
+
+conf_dict = {'%VERSION%': '1.2.3', '%BASE%': 'MyProg'}
+env.Substfile('config.h.in', conf_dict, SUBST_DICT=conf_dict)
+
+# UNPREDICTABLE - one key is a prefix of another
+bad_foo = {'$foo': '$foo', '$foobar': '$foobar'}
+env.Substfile('foo.in', SUBST_DICT=bad_foo)
+
+# PREDICTABLE - keys are applied longest first
+good_foo = [('$foobar', '$foobar'), ('$foo', '$foo')]
+env.Substfile('foo.in', SUBST_DICT=good_foo)
+
+# UNPREDICTABLE - one substitution could be further expanded
+bad_bar = {'@bar@': '@soap@', '@soap@': 'lye'}
+env.Substfile('bar.in', SUBST_DICT=bad_bar)
+
+# PREDICTABLE - substitutions are expanded in order
+good_bar = (('@bar@', '@soap@'), ('@soap@', 'lye'))
+env.Substfile('bar.in', SUBST_DICT=good_bar)
+
+# the SUBST_DICT may be in common (and not an override)
+substutions = {}
+subst = Environment(tools=['textfile'], SUBST_DICT=substitutions)
+substitutions['@foo@'] = 'foo'
+subst['SUBST_DICT']['@bar@'] = 'bar'
+subst.Substfile(
+    'pgm1.c',
+    [Value('#include "@foo@.h"'), Value('#include "@bar@.h"'), "common.in", "pgm1.in"],
+)
+subst.Substfile(
+    'pgm2.c',
+    [Value('#include "@foo@.h"'), Value('#include "@bar@.h"'), "common.in", "pgm2.in"],
+)
+
+</pre></dd><dt><a name="b-Tar"></a><span class="term"><code class="function">Tar</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">Tar</code>()</span></dt><dd><p>
+Builds a tar archive of the specified files
+and/or directories.
+Unlike most builder methods,
+the
+<code class="function">Tar</code>
+builder method may be called multiple times
+for a given target;
+each additional call
+adds to the list of entries
+that will be built into the archive.
+Any source directories will
+be scanned for changes to
+any on-disk files,
+regardless of whether or not
+<span class="command"><strong>scons</strong></span>
+knows about them from other Builder or function calls.
+</p><pre class="screen">
+env.Tar('src.tar', 'src')
+
+# Create the stuff.tar file.
+env.Tar('stuff', ['subdir1', 'subdir2'])
+# Also add "another" to the stuff.tar file.
+env.Tar('stuff', 'another')
+
+# Set TARFLAGS to create a gzip-filtered archive.
+env = Environment(TARFLAGS = '-c -z')
+env.Tar('foo.tar.gz', 'foo')
+
+# Also set the suffix to .tgz.
+env = Environment(TARFLAGS = '-c -z',
+                  TARSUFFIX = '.tgz')
+env.Tar('foo')
+</pre></dd><dt><a name="b-Textfile"></a><span class="term"><code class="function">Textfile</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">Textfile</code>()</span></dt><dd><p>
+The <code class="function">Textfile</code> builder generates a single text file from
+a template consisting of a list of strings, replacing text
+using the <a class="link" href="apa.html#cv-SUBST_DICT"><code class="envar">$SUBST_DICT</code></a> <span>construction variable</span> (if set) -
+see <a class="link" href="apb.html#b-Substfile"><code class="function">Substfile</code></a> for a description of replacement.
+The strings will be separated in the target file using the
+value of the
+<a class="link" href="apa.html#cv-LINESEPARATOR"><code class="envar">$LINESEPARATOR</code></a> <span>construction variable</span>;
+the line separator is not emitted after the last string.
+Nested lists of source strings
+are flattened.
+Source strings need not literally be Python strings:
+they can be Nodes or Python objects that convert cleanly
+to <a class="link" href="apd.html#f-Value"><code class="function">Value</code></a> nodes.
+</p><p>
+The prefix and suffix specified by the <a class="link" href="apa.html#cv-TEXTFILEPREFIX"><code class="envar">$TEXTFILEPREFIX</code></a>
+and <a class="link" href="apa.html#cv-TEXTFILESUFFIX"><code class="envar">$TEXTFILESUFFIX</code></a> <span>construction variables</span>
+(by default an empty string and <code class="filename">.txt</code>, respectively)
+are automatically added to the target if they are not already present.
+</p><p>
+By default, the target file encoding is "utf-8" and can be changed by <a class="link" href="apa.html#cv-FILE_ENCODING"><code class="envar">$FILE_ENCODING</code></a>
+Examples:
+</p><pre class="screen">
+# builds/writes foo.txt
+env.Textfile(target='foo.txt', source=['Goethe', 42, 'Schiller'])
+
+# builds/writes bar.txt
+env.Textfile(target='bar', source=['lalala', 'tanteratei'], LINESEPARATOR='|*')
+
+# nested lists are flattened automatically
+env.Textfile(target='blob', source=['lalala', ['Goethe', 42, 'Schiller'], 'tanteratei'])
+
+# files may be used as input by wrapping them in File()
+env.Textfile(
+    target='concat',  # concatenate files with a marker between
+    source=[File('concat1'), File('concat2')],
+    LINESEPARATOR='====================\n',
+)
+</pre><p>Results:</p><p><code class="filename">foo.txt</code></p><pre class="screen">
+  Goethe
+  42
+  Schiller
+</pre><p><code class="filename">bar.txt</code></p><pre class="screen">
+  lalala|*tanteratei
+</pre><p><code class="filename">blob.txt</code></p><pre class="screen">
+  lalala
+  Goethe
+  42
+  Schiller
+  tanteratei
+</pre></dd><dt><a name="b-Translate"></a><span class="term"><code class="function">Translate</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">Translate</code>()</span></dt><dd><p>
+This pseudo-Builder is part of the <a class="link" href="apc.html#t-gettext"><code class="literal">gettext</code></a> toolset.
+The builder extracts internationalized messages from source files,
+updates the <code class="literal">POT</code> template (if necessary)
+and then updates <code class="literal">PO</code> translations (if necessary).
+If <a class="link" href="apa.html#cv-POAUTOINIT"><code class="envar">$POAUTOINIT</code></a> is set, missing <code class="literal">PO</code> files
+will be automatically created (i.e. without translator person intervention).
+The variables <a class="link" href="apa.html#cv-LINGUAS_FILE"><code class="envar">$LINGUAS_FILE</code></a> and <a class="link" href="apa.html#cv-POTDOMAIN"><code class="envar">$POTDOMAIN</code></a> are taken into
+account too. All other construction variables used by <a class="link" href="apb.html#b-POTUpdate"><code class="function">POTUpdate</code></a>, and
+<a class="link" href="apb.html#b-POUpdate"><code class="function">POUpdate</code></a> work here too.
+</p><p>
+<span class="emphasis"><em>Example 1</em></span>.
+The simplest way is to specify input files and output languages inline in
+a SCons script when invoking <code class="function">Translate</code>:
+</p><pre class="programlisting">
+# SConscript in 'po/' directory
+env = Environment(tools=["default", "gettext"])
+env['POAUTOINIT'] = True
+env.Translate(['en', 'pl'], ['../a.cpp', '../b.cpp'])
+</pre><p>
+<span class="emphasis"><em>Example 2</em></span>.
+If you wish, you may also stick to the conventional style known from
+<span class="productname">autotools</span>, i.e. using
+<code class="filename">POTFILES.in</code> and <code class="filename">LINGUAS</code> files
+to specify the targets and sources:
+</p><pre class="programlisting">
+# LINGUAS
+en pl
+# end
+</pre><pre class="programlisting">
+# POTFILES.in
+a.cpp
+b.cpp
+# end
+</pre><pre class="programlisting">
+# SConscript
+env = Environment(tools=["default", "gettext"])
+env['POAUTOINIT'] = True
+env['XGETTEXTPATH'] = ['../']
+env.Translate(LINGUAS_FILE=True, XGETTEXTFROM='POTFILES.in')
+</pre><p>
+The last approach is perhaps the recommended one. It allows easily split
+internationalization/localization onto separate SCons scripts, where a script
+in source tree is responsible for translations (from sources to
+<code class="literal">PO</code> files) and script(s) under variant directories are
+responsible for compilation of <code class="literal">PO</code> to <code class="literal">MO</code>
+files to and for installation of <code class="literal">MO</code> files. The "gluing
+factor" synchronizing these two scripts is then the content of
+<code class="filename">LINGUAS</code> file.  Note, that the updated
+<code class="literal">POT</code> and <code class="literal">PO</code> files are usually going to be
+committed back to the repository, so they must be updated within the source
+directory (and not in variant directories). Additionally, the file listing of
+<code class="filename">po/</code> directory contains <code class="filename">LINGUAS</code> file,
+so the source tree looks familiar to translators, and they may work with the
+project in their usual way.
+</p><p>
+<span class="emphasis"><em>Example 3</em></span>.
+Let's prepare a development tree as below
+</p><pre class="programlisting">
+ project/
+  + SConstruct
+  + build/
+  + src/
+      + po/
+          + SConscript
+          + SConscript.i18n
+          + POTFILES.in
+          + LINGUAS
+</pre><p>
+with <code class="filename">build</code> being the variant directory.
+Write the top-level
+<code class="filename">SConstruct</code> script as follows
+</p><pre class="programlisting">
+# SConstruct
+env = Environment(tools=["default", "gettext"])
+VariantDir('build', 'src', duplicate=False)
+env['POAUTOINIT'] = True
+SConscript('src/po/SConscript.i18n', exports='env')
+SConscript('build/po/SConscript', exports='env')
+</pre><p>
+the <code class="filename">src/po/SConscript.i18n</code> as
+</p><pre class="programlisting">
+# src/po/SConscript.i18n
+Import('env')
+env.Translate(LINGUAS_FILE=True, XGETTEXTFROM='POTFILES.in', XGETTEXTPATH=['../'])
+</pre><p>
+and the <code class="filename">src/po/SConscript</code>
+</p><pre class="programlisting">
+# src/po/SConscript
+Import('env')
+env.MOFiles(LINGUAS_FILE=True)
+</pre><p>
+Such a setup produces <code class="literal">POT</code> and <code class="literal">PO</code> files
+under the source tree in <code class="filename">src/po/</code> and binary
+<code class="literal">MO</code> files under the variant tree in
+<code class="filename">build/po/</code>. This way the <code class="literal">POT</code> and
+<code class="literal">PO</code> files are separated from other output files, which must
+not be committed back to source repositories (e.g. <code class="literal">MO</code>
+files).
+</p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>In the above example,
+the <code class="literal">PO</code> files are not updated,
+nor created automatically when you issue the command
+<strong class="userinput"><code>scons .</code></strong>.
+The files must be updated (created) by hand via
+<strong class="userinput"><code>scons po-update</code></strong>
+and then <code class="literal">MO</code> files can be compiled by
+running <strong class="userinput"><code>scons .</code></strong>.
+</p></div></dd><dt><a name="b-TypeLibrary"></a><span class="term"><code class="function">TypeLibrary</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">TypeLibrary</code>()</span></dt><dd><p>
+Builds a Windows type library (<code class="filename">.tlb</code>)
+file from an input IDL file (<code class="filename">.idl</code>).
+In addition, it will build the associated interface stub and
+proxy source files,
+naming them according to the base name of the <code class="filename">.idl</code> file.
+For example,
+</p><pre class="screen">
+env.TypeLibrary(source="foo.idl")
+</pre><p>
+Will create <code class="filename">foo.tlb</code>,
+<code class="filename">foo.h</code>,
+<code class="filename">foo_i.c</code>,
+<code class="filename">foo_p.c</code>
+and
+<code class="filename">foo_data.c</code>
+files.
+</p></dd><dt><a name="b-Uic"></a><span class="term"><code class="function">Uic</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">Uic</code>()</span></dt><dd><p>
+Builds a header file, an implementation file and a moc file from an ui file.
+and returns the corresponding nodes in the that order.
+This builder is only available after using the tool <a class="link" href="apc.html#t-qt3"><code class="literal">qt3</code></a>.
+Note: you can specify <code class="filename">.ui</code> files directly as source
+files to the <a class="link" href="apb.html#b-Program"><code class="function">Program</code></a>,
+<a class="link" href="apb.html#b-Library"><code class="function">Library</code></a> and <a class="link" href="apb.html#b-SharedLibrary"><code class="function">SharedLibrary</code></a> builders
+without using this builder. Using this builder lets you override the standard
+naming conventions (be careful: prefixes are always prepended to names of
+built files; if you don't want prefixes, you may set them to ``).
+See the <a class="link" href="apa.html#cv-QT3DIR"><code class="envar">$QT3DIR</code></a> variable for more information.
+Example:
+</p><pre class="screen">
+env.Uic('foo.ui')  # -&gt; ['foo.h', 'uic_foo.cc', 'moc_foo.cc']
+env.Uic(
+    target=Split('include/foo.h gen/uicfoo.cc gen/mocfoo.cc'),
+    source='foo.ui'
+)  # -&gt; ['include/foo.h', 'gen/uicfoo.cc', 'gen/mocfoo.cc']
+</pre></dd><dt><a name="b-Zip"></a><span class="term"><code class="function">Zip</code>(), </span><span class="term"><em class="replaceable"><code>env</code></em>.<code class="methodname">Zip</code>()</span></dt><dd><p>
+Builds a zip archive of the specified files
+and/or directories.
+Unlike most builder methods,
+the
+<code class="function">Zip</code>
+builder method may be called multiple times
+for a given target;
+each additional call
+adds to the list of entries
+that will be built into the archive.
+Any source directories will
+be scanned for changes to
+any on-disk files,
+regardless of whether or not
+<span class="command"><strong>scons</strong></span>
+knows about them from other Builder or function calls.
+</p><pre class="screen">
+env.Zip('src.zip', 'src')
+
+# Create the stuff.zip file.
+env.Zip('stuff', ['subdir1', 'subdir2'])
+# Also add "another" to the stuff.tar file.
+env.Zip('stuff', 'another')
+</pre></dd></dl></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="apa.html">Prev</a> </td><td width="20%" align="center"> </td><td width="40%" align="right"> <a accesskey="n" href="apc.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Appendix A. Construction Variables </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Appendix C. Tools</td></tr></table></div></body></html>

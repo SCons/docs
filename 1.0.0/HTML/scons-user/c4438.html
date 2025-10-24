@@ -1,0 +1,445 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Troubleshooting</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 1.0.0"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Handling Nested Lists:  the Flatten Function"
+HREF="x4411.html"><LINK
+REL="NEXT"
+TITLE="What's in That Construction Environment?  the Dump Method"
+HREF="x4495.html"></HEAD
+><BODY
+CLASS="chapter"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 1.0.0</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x4411.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x4495.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="chapter"
+><H1
+><A
+NAME="chap-troubleshooting"
+></A
+>Chapter 29. Troubleshooting</H1
+><P
+>&#13;
+  The experience of configuring any
+  software build tool to build a large code base
+  usually, at some point,
+  involves trying to figure out why
+  the tool is behaving a certain way,
+  and how to get it to behave the way you want.
+  <SPAN
+CLASS="application"
+>SCons</SPAN
+> is no different.
+  This appendix contains a number of
+  different ways in which you can
+  get some additional insight into <SPAN
+CLASS="application"
+>SCons</SPAN
+>' behavior.
+
+  </P
+><P
+>&#13;
+  Note that we're always interested in trying to
+  improve how you can troubleshoot configuration problems.
+  If you run into a problem that has
+  you scratching your head,
+  and which there just doesn't seem to be a good way to debug,
+  odds are pretty good that someone else will run into
+  the same problem, too.
+  If so, please let the SCons development team know
+  (preferably by filing a bug report
+  or feature request at our project pages at tigris.org)
+  so that we can use your feedback
+  to try to come up with a better way to help you,
+  and others, get the necessary insight into <SPAN
+CLASS="application"
+>SCons</SPAN
+> behavior
+  to help identify and fix configuration issues.
+
+  </P
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN4445"
+>29.1. Why is That Target Being Rebuilt?  the <TT
+CLASS="literal"
+>--debug=explain</TT
+> Option</A
+></H1
+><P
+>&#13;
+    Let's look at a simple example of
+    a misconfigured build
+    that causes a target to be rebuilt
+    every time <SPAN
+CLASS="application"
+>SCons</SPAN
+> is run:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;      # Intentionally misspell the output file name in the
+      # command used to create the file:
+      Command('file.out', 'file.in', 'cp $SOURCE file.oout')
+    </PRE
+><P
+>&#13;
+    (Note to Windows users:  The POSIX <SPAN
+CLASS="application"
+>cp</SPAN
+> command
+    copies the first file named on the command line
+    to the second file.
+    In our example, it copies the <TT
+CLASS="filename"
+>file.in</TT
+> file
+    to the <TT
+CLASS="filename"
+>file.out</TT
+> file.)
+
+    </P
+><P
+>&#13;
+    Now if we run <SPAN
+CLASS="application"
+>SCons</SPAN
+> multiple times on this example,
+    we see that it re-runs the <SPAN
+CLASS="application"
+>cp</SPAN
+>
+    command every time:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      cp file.in file.oout
+      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      cp file.in file.oout
+      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      cp file.in file.oout
+    </PRE
+><P
+>&#13;
+    In this example,
+    the underlying cause is obvious:
+    we've intentionally misspelled the output file name
+    in the <SPAN
+CLASS="application"
+>cp</SPAN
+> command,
+    so the command doesn't actually
+    build the <TT
+CLASS="filename"
+>file.out</TT
+> file that we've told <SPAN
+CLASS="application"
+>SCons</SPAN
+> to expect.
+    But if the problem weren't obvious,
+    it would be helpful
+    to specify the <TT
+CLASS="literal"
+>--debug=explain</TT
+> option
+    on the command line
+    to have <SPAN
+CLASS="application"
+>SCons</SPAN
+> tell us very specifically
+    why it's decided to rebuild the target:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q --debug=explain</KBD
+>
+      scons: building `file.out' because it doesn't exist
+      cp file.in file.oout
+    </PRE
+><P
+>&#13;
+    If this had been a more complicated example
+    involving a lot of build output,
+    having <SPAN
+CLASS="application"
+>SCons</SPAN
+> tell us that
+    it's trying to rebuild the target file
+    because it doesn't exist
+    would be an important clue
+    that something was wrong with
+    the command that we invoked to build it.
+
+    </P
+><P
+>&#13;
+    The <TT
+CLASS="literal"
+>--debug=explain</TT
+> option also comes in handy
+    to help figure out what input file changed.
+    Given a simple configuration that builds
+    a program from three source files,
+    changing one of the source files
+    and rebuilding with the <TT
+CLASS="literal"
+>--debug=explain</TT
+>
+    option shows very specifically
+    why <SPAN
+CLASS="application"
+>SCons</SPAN
+> rebuilds the files that it does:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      cc -o file1.o -c file1.c
+      cc -o file2.o -c file2.c
+      cc -o file3.o -c file3.c
+      cc -o prog file1.o file2.o file3.o
+      % <KBD
+CLASS="userinput"
+>edit file2.c</KBD
+>
+          [CHANGE THE CONTENTS OF file2.c]
+      % <KBD
+CLASS="userinput"
+>scons -Q --debug=explain</KBD
+>
+      scons: rebuilding `file2.o' because `file2.c' changed
+      cc -o file2.o -c file2.c
+      scons: rebuilding `prog' because `file2.o' changed
+      cc -o prog file1.o file2.o file3.o
+    </PRE
+><P
+>&#13;
+    This becomes even more helpful
+    in identifying when a file is rebuilt
+    due to a change in an implicit dependency,
+    such as an incuded <TT
+CLASS="filename"
+>.h</TT
+> file.
+    If the <TT
+CLASS="filename"
+>file1.c</TT
+>
+    and <TT
+CLASS="filename"
+>file3.c</TT
+> files
+    in our example
+    both included a <TT
+CLASS="filename"
+>hello.h</TT
+> file,
+    then changing that included file
+    and re-running <SPAN
+CLASS="application"
+>SCons</SPAN
+> with the <TT
+CLASS="literal"
+>--debug=explain</TT
+> option
+    will pinpoint that it's the change to the included file
+    that starts the chain of rebuilds:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      cc -o file1.o -c -I. file1.c
+      cc -o file2.o -c -I. file2.c
+      cc -o file3.o -c -I. file3.c
+      cc -o prog file1.o file2.o file3.o
+      % <KBD
+CLASS="userinput"
+>edit hello.h</KBD
+>
+          [CHANGE THE CONTENTS OF hello.h]
+      % <KBD
+CLASS="userinput"
+>scons -Q --debug=explain</KBD
+>
+      scons: rebuilding `file1.o' because `hello.h' changed
+      cc -o file1.o -c -I. file1.c
+      scons: rebuilding `file3.o' because `hello.h' changed
+      cc -o file3.o -c -I. file3.c
+      scons: rebuilding `prog' because:
+                 `file1.o' changed
+                 `file3.o' changed
+      cc -o prog file1.o file2.o file3.o
+    </PRE
+><P
+>&#13;
+    (Note that the <TT
+CLASS="literal"
+>--debug=explain</TT
+> option will only tell you
+    why <SPAN
+CLASS="application"
+>SCons</SPAN
+> decided to rebuild necessary targets.
+    It does not tell you what files it examined
+    when deciding <SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>not</I
+></SPAN
+>
+    to rebuild a target file,
+    which is often a more valuable question to answer.)
+
+    </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x4411.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x4495.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Handling Nested Lists:  the <CODE
+CLASS="function"
+>Flatten</CODE
+> Function</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>What's in That Construction Environment?  the <CODE
+CLASS="function"
+>Dump</CODE
+> Method</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

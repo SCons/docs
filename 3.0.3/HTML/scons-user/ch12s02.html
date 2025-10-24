@@ -1,0 +1,66 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>12.2. Deleting Files or Directories: The Delete Factory</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 3.0.3"><link rel="up" href="ch12.html" title="Chapter 12. Platform-Independent File System Manipulation"><link rel="prev" href="ch12.html" title="Chapter 12. Platform-Independent File System Manipulation"><link rel="next" href="ch12s03.html" title="12.3. Moving (Renaming) Files or Directories: The Move Factory"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">12.2. Deleting Files or Directories:  The <code class="function">Delete</code> Factory</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch12.html">Prev</a> </td><th width="60%" align="center">Chapter 12. Platform-Independent File System Manipulation</th><td width="20%" align="right"> <a accesskey="n" href="ch12s03.html">Next</a></td></tr></table><hr></div><div class="section" title="12.2. Deleting Files or Directories: The Delete Factory"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idm140095967443584"></a>12.2. Deleting Files or Directories:  The <code class="function">Delete</code> Factory</h2></div></div></div><p>
+
+    If you need to delete a file,
+    then the <code class="function">Delete</code> factory
+    can be used in much the same way as
+    the <code class="function">Copy</code> factory.
+    For example, if we want to make sure that
+    the temporary file
+    in our last example doesn't exist before
+    we copy to it,
+    we could add <code class="function">Delete</code> to the beginning
+    of the command list:
+
+    </p><pre class="programlisting">
+Command("file.out", "file.in",
+        [
+          Delete("tempfile"),
+          Copy("tempfile", "$SOURCE"),
+          "modify tempfile",
+          Copy("$TARGET", "tempfile"),
+        ])
+      </pre><p>
+
+    Which then executes as follows:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+Delete("tempfile")
+Copy("tempfile", "file.in")
+modify tempfile
+Copy("file.out", "tempfile")
+</pre><p>
+
+    Of course, like all of these <code class="classname">Action</code> factories,
+    the <code class="function">Delete</code> factory also expands
+    <a class="link" href="apa.html#cv-TARGET"><code class="envar">$TARGET</code></a> and <a class="link" href="apa.html#cv-SOURCE"><code class="envar">$SOURCE</code></a> variables appropriately.
+    For example:
+
+    </p><pre class="programlisting">
+Command("file.out", "file.in",
+        [
+          Delete("$TARGET"),
+          Copy("$TARGET", "$SOURCE")
+        ])
+      </pre><p>
+
+    Executes as:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+Delete("file.out")
+Copy("file.out", "file.in")
+</pre><p>
+
+    Note, however, that you typically don't need to
+    call the <code class="function">Delete</code> factory explicitly in this way;
+    by default, <span class="application">SCons</span> deletes its target(s)
+    for you before executing any action.
+
+    </p><p>
+
+    One word of caution about using the <code class="function">Delete</code> factory:
+    it has the same variable expansions available
+    as any other factory, including the <code class="envar">$SOURCE</code> variable.
+    Specifying <code class="literal">Delete("$SOURCE")</code>
+    is not something you usually want to do!
+
+    </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch12.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch12.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch12s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 12. Platform-Independent File System Manipulation </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 12.3. Moving (Renaming) Files or Directories:  The <code class="function">Move</code> Factory</td></tr></table></div></body></html>

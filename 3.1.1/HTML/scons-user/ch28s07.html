@@ -1,0 +1,101 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>28.7. How is SCons Making Its Decisions? the --taskmastertrace Option</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 3.1.1"><link rel="up" href="ch28.html" title="Chapter 28. Troubleshooting"><link rel="prev" href="ch28s06.html" title="28.6. Where is SCons Blowing Up? the --debug=stacktrace Option"><link rel="next" href="ch28s08.html" title="28.8. Watch SCons prepare targets for building: the --debug=prepare Option"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">28.7. How is <span class="application">SCons</span> Making Its Decisions?  the <code class="literal">--taskmastertrace</code> Option</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch28s06.html">Prev</a> </td><th width="60%" align="center">Chapter 28. Troubleshooting</th><td width="20%" align="right"> <a accesskey="n" href="ch28s08.html">Next</a></td></tr></table><hr></div><div class="section" title="28.7. How is SCons Making Its Decisions? the --taskmastertrace Option"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idm5064"></a>28.7. How is <span class="application">SCons</span> Making Its Decisions?  the <code class="literal">--taskmastertrace</code> Option</h2></div></div></div><p>
+
+    The internal <span class="application">SCons</span> subsystem that handles walking
+    the dependency graph
+    and controls the decision-making about what to rebuild
+    is the <code class="literal">Taskmaster</code>.
+    <span class="application">SCons</span> supports a <code class="literal">--taskmastertrace</code>
+    option that tells the Taskmaster to print
+    information about the children (dependencies)
+    of the various Nodes on its walk down the graph,
+    which specific dependent Nodes are being evaluated,
+    and in what order.
+
+    </p><p>
+
+    The <code class="literal">--taskmastertrace</code> option
+    takes as an argument the name of a file in
+    which to put the trace output,
+    with <code class="filename">-</code> (a single hyphen)
+    indicating that the trace messages
+    should be printed to the standard output:
+
+    </p><pre class="programlisting">
+env = Environment(CPPPATH = ['.'])
+env.Program('prog.c')
+      </pre><pre class="screen">% <strong class="userinput"><code>scons -Q --taskmastertrace=- prog</code></strong>
+
+Taskmaster: Looking for a node to evaluate
+Taskmaster:     Considering node &lt;no_state   0   'prog'&gt; and its children:
+Taskmaster:        &lt;no_state   0   'prog.o'&gt;
+Taskmaster:      adjusted ref count: &lt;pending    1   'prog'&gt;, child 'prog.o'
+Taskmaster:     Considering node &lt;no_state   0   'prog.o'&gt; and its children:
+Taskmaster:        &lt;no_state   0   'prog.c'&gt;
+Taskmaster:        &lt;no_state   0   'inc.h'&gt;
+Taskmaster:      adjusted ref count: &lt;pending    1   'prog.o'&gt;, child 'prog.c'
+Taskmaster:      adjusted ref count: &lt;pending    2   'prog.o'&gt;, child 'inc.h'
+Taskmaster:     Considering node &lt;no_state   0   'prog.c'&gt; and its children:
+Taskmaster: Evaluating &lt;pending    0   'prog.c'&gt;
+
+Task.make_ready_current(): node &lt;pending    0   'prog.c'&gt;
+Task.prepare():      node &lt;up_to_date 0   'prog.c'&gt;
+Task.executed_with_callbacks(): node &lt;up_to_date 0   'prog.c'&gt;
+Task.postprocess():  node &lt;up_to_date 0   'prog.c'&gt;
+Task.postprocess():  removing &lt;up_to_date 0   'prog.c'&gt;
+Task.postprocess():  adjusted parent ref count &lt;pending    1   'prog.o'&gt;
+
+Taskmaster: Looking for a node to evaluate
+Taskmaster:     Considering node &lt;no_state   0   'inc.h'&gt; and its children:
+Taskmaster: Evaluating &lt;pending    0   'inc.h'&gt;
+
+Task.make_ready_current(): node &lt;pending    0   'inc.h'&gt;
+Task.prepare():      node &lt;up_to_date 0   'inc.h'&gt;
+Task.executed_with_callbacks(): node &lt;up_to_date 0   'inc.h'&gt;
+Task.postprocess():  node &lt;up_to_date 0   'inc.h'&gt;
+Task.postprocess():  removing &lt;up_to_date 0   'inc.h'&gt;
+Task.postprocess():  adjusted parent ref count &lt;pending    0   'prog.o'&gt;
+
+Taskmaster: Looking for a node to evaluate
+Taskmaster:     Considering node &lt;pending    0   'prog.o'&gt; and its children:
+Taskmaster:        &lt;up_to_date 0   'prog.c'&gt;
+Taskmaster:        &lt;up_to_date 0   'inc.h'&gt;
+Taskmaster: Evaluating &lt;pending    0   'prog.o'&gt;
+
+Task.make_ready_current(): node &lt;pending    0   'prog.o'&gt;
+Task.prepare():      node &lt;executing  0   'prog.o'&gt;
+Task.execute():      node &lt;executing  0   'prog.o'&gt;
+cc -o prog.o -c -I. prog.c
+Task.executed_with_callbacks(): node &lt;executing  0   'prog.o'&gt;
+Task.postprocess():  node &lt;executed   0   'prog.o'&gt;
+Task.postprocess():  removing &lt;executed   0   'prog.o'&gt;
+Task.postprocess():  adjusted parent ref count &lt;pending    0   'prog'&gt;
+
+Taskmaster: Looking for a node to evaluate
+Taskmaster:     Considering node &lt;pending    0   'prog'&gt; and its children:
+Taskmaster:        &lt;executed   0   'prog.o'&gt;
+Taskmaster: Evaluating &lt;pending    0   'prog'&gt;
+
+Task.make_ready_current(): node &lt;pending    0   'prog'&gt;
+Task.prepare():      node &lt;executing  0   'prog'&gt;
+Task.execute():      node &lt;executing  0   'prog'&gt;
+cc -o prog prog.o
+Task.executed_with_callbacks(): node &lt;executing  0   'prog'&gt;
+Task.postprocess():  node &lt;executed   0   'prog'&gt;
+
+Taskmaster: Looking for a node to evaluate
+Taskmaster: No candidate anymore.
+</pre><p>
+
+    The <code class="literal">--taskmastertrace</code> option
+    doesn't provide information about the actual
+    calculations involved in deciding if a file is up-to-date,
+    but it does show all of the dependencies
+    it knows about for each Node,
+    and the order in which those dependencies are evaluated.
+    This can be useful as an alternate way to determine
+    whether or not your <span class="application">SCons</span> configuration,
+    or the implicit dependency scan,
+    has actually identified all the correct dependencies
+    you want it to.
+
+    </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch28s06.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch28.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch28s08.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">28.6. Where is <span class="application">SCons</span> Blowing Up?  the <code class="literal">--debug=stacktrace</code> Option </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 28.8. Watch <span class="application">SCons</span> prepare targets for building: the <code class="literal">--debug=prepare</code> Option</td></tr></table></div></body></html>

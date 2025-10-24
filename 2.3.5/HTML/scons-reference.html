@@ -1,0 +1,1005 @@
+<html>
+  <head>
+    <title>SCons 2.3.5</title>
+    <link rel="stylesheet" type="text/css" href="scons.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.76.1"/>
+  </head>
+  <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+    <div class="book" title="SCons 2.3.5">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h1 class="title"><a name="idp1376478964"/>SCons 2.3.5</h1>
+          </div>
+          <div>
+            <h2 class="subtitle">Reference Manual</h2>
+          </div>
+          <div>
+            <h3 class="corpauthor">Steven Knight</h3>
+          </div>
+          <div>
+            <div class="author">
+              <h3 class="author"><span class="firstname">Steven</span> <span class="surname">Knight</span></h3>
+            </div>
+          </div>
+          <div>
+            <p class="releaseinfo">version 2.3.5</p>
+          </div>
+          <div>
+            <p class="copyright">Copyright &#169; 2003 Steven Knight</p>
+          </div>
+          <div>
+            <div class="legalnotice" title="Legal Notice">
+              <a name="idp1388213540"/>
+              <div class="blockquote">
+                <blockquote class="blockquote">
+                  <p>
+
+  SCons User's Guide Copyright (c) 2003 Steven Knight
+
+ </p>
+                </blockquote>
+              </div>
+            </div>
+          </div>
+          <div>
+            <p class="pubdate">2003</p>
+          </div>
+        </div>
+        <hr/>
+      </div>
+      <div class="toc">
+        <p>
+          <b>Table of Contents</b>
+        </p>
+        <dl>
+          <dt>
+            <span class="chapter">
+              <a href="#chap-preface">1. Preface</a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="#idp1391367484">1.1. Why <span class="application">SCons</span>?</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="#idp1391370532">1.2. History</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="#idp1391371108">1.3. Conventions</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="#idp1391371684">1.4. Acknowledgements</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="#idp1391372284">1.5. Contact</a>
+                </span>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <span class="chapter">
+              <a href="#chap-builders">2. Builder Reference</a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="#sect-Alias">2.1. The Alias Builder</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#idp1391375420">2.1.1. The <code class="function">Alias</code> Method</a>
+                    </span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="section">
+                  <a href="#sect-CFile">2.2. The CFile Builder</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#idp1391378340">2.2.1. The <code class="function">CFile</code> Method</a>
+                    </span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="section">
+                  <a href="#sect-Command">2.3. The Command Builder</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#idp1391381252">2.3.1. The <code class="function">Command</code> Method</a>
+                    </span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="section">
+                  <a href="#sect-CXXFile">2.4. The CXXFile Builder</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#idp1391385436">2.4.1. The <code class="function">CXXFile</code> Method</a>
+                    </span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="section">
+                  <a href="#sect-Install">2.5. The Install Builder</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#idp1391388412">2.5.1. The <code class="function">Install</code> Method</a>
+                    </span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="section">
+                  <a href="#sect-InstallAs">2.6. The InstallAs Builder</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#idp1391391388">2.6.1. The <code class="function">InstallAs</code> Method</a>
+                    </span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="section">
+                  <a href="#sect-Library">2.7. The Library Builder</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#idp1391394300">2.7.1. Linking With a Library</a>
+                    </span>
+                  </dt>
+                  <dt>
+                    <span class="section">
+                      <a href="#idp1391396692">2.7.2. Creating a Library</a>
+                    </span>
+                  </dt>
+                  <dt>
+                    <span class="section">
+                      <a href="#idp1391398020">2.7.3. The <code class="function">Library</code> Builder</a>
+                    </span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="section">
+                  <a href="#sect-Object">2.8. The Object Builder</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#idp1391402876">2.8.1. The <code class="function">Object</code> Method</a>
+                    </span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="section">
+                  <a href="#sect-PCH">2.9. The PCH Builder</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#idp1391405620">2.9.1. The <code class="function">PCH</code> Method</a>
+                    </span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="section">
+                  <a href="#sect-PDF">2.10. The PDF Builder</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#idp1391410252">2.10.1. The <code class="function">PDF</code> Method</a>
+                    </span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="section">
+                  <a href="#sect-PostScript">2.11. The PDF Builder</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#idp1391413172">2.11.1. The <code class="function">PostScript</code> Method</a>
+                    </span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="section">
+                  <a href="#sect-Program">2.12. The Program Builder</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#idp1391416276">2.12.1. The <code class="function">Program</code> Builder</a>
+                    </span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="section">
+                  <a href="#sect-RES">2.13. The RES Builder</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#idp1391422148">2.13.1. The <code class="function">RES</code> Method</a>
+                    </span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="section">
+                  <a href="#sect-SharedLibrary">2.14. The SharedLibrary Builder</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#idp1391423876">2.14.1. The <code class="function">SharedLibrary</code> Method</a>
+                    </span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="section">
+                  <a href="#sect-SharedObject">2.15. The SharedObject Builder</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#idp1391426948">2.15.1. The <code class="function">SharedObject</code> Method</a>
+                    </span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="section">
+                  <a href="#sect-StaticLibrary">2.16. The StaticLibrary Builder</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#idp1391429868">2.16.1. The <code class="function">StaticLibrary</code> Method</a>
+                    </span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="section">
+                  <a href="#sect-StaticObject">2.17. The StaticObject Builder</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#idp1391432844">2.17.1. The <code class="function">StaticObject</code> Method</a>
+                    </span>
+                  </dt>
+                </dl>
+              </dd>
+            </dl>
+          </dd>
+          <dt>
+            <span class="chapter">
+              <a href="#chap-errors">3. Errors Generated by <span class="application">SCons</span></a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="#idp1391436012">3.1. X</a>
+                </span>
+              </dt>
+            </dl>
+          </dd>
+        </dl>
+      </div>
+      <div class="chapter" title="Chapter&#160;1.&#160;Preface">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a name="chap-preface"/>Chapter&#160;1.&#160;Preface</h2>
+            </div>
+          </div>
+        </div>
+        <p>
+
+   X
+
+ </p>
+        <div class="section" title="1.1.&#160;Why SCons?">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h2 class="title" style="clear: both"><a name="idp1391367484"/>1.1.&#160;Why <span class="application">SCons</span>?</h2>
+              </div>
+            </div>
+          </div>
+          <p>
+
+   X
+
+   </p>
+        </div>
+        <div class="section" title="1.2.&#160;History">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h2 class="title" style="clear: both"><a name="idp1391370532"/>1.2.&#160;History</h2>
+              </div>
+            </div>
+          </div>
+          <p>
+
+   X
+
+   </p>
+        </div>
+        <div class="section" title="1.3.&#160;Conventions">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h2 class="title" style="clear: both"><a name="idp1391371108"/>1.3.&#160;Conventions</h2>
+              </div>
+            </div>
+          </div>
+          <p>
+
+   X
+
+   </p>
+        </div>
+        <div class="section" title="1.4.&#160;Acknowledgements">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h2 class="title" style="clear: both"><a name="idp1391371684"/>1.4.&#160;Acknowledgements</h2>
+              </div>
+            </div>
+          </div>
+          <p>
+
+   X
+
+   </p>
+        </div>
+        <div class="section" title="1.5.&#160;Contact">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h2 class="title" style="clear: both"><a name="idp1391372284"/>1.5.&#160;Contact</h2>
+              </div>
+            </div>
+          </div>
+          <p>
+
+   X
+
+   </p>
+        </div>
+      </div>
+      <div class="chapter" title="Chapter&#160;2.&#160;Builder Reference">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a name="chap-builders"/>Chapter&#160;2.&#160;Builder Reference</h2>
+            </div>
+          </div>
+        </div>
+        <div class="section" title="2.1.&#160;The Alias Builder">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h2 class="title" style="clear: both"><a name="sect-Alias"/>2.1.&#160;The Alias Builder</h2>
+              </div>
+            </div>
+          </div>
+          <p>
+
+   X
+
+ </p>
+          <div class="section" title="2.1.1.&#160;The Alias Method">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h3 class="title"><a name="idp1391375420"/>2.1.1.&#160;The <code class="function">Alias</code> Method</h3>
+                </div>
+              </div>
+            </div>
+            <p>
+
+   X
+
+   </p>
+          </div>
+        </div>
+        <div class="section" title="2.2.&#160;The CFile Builder">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h2 class="title" style="clear: both"><a name="sect-CFile"/>2.2.&#160;The CFile Builder</h2>
+              </div>
+            </div>
+          </div>
+          <p>
+
+   X
+
+ </p>
+          <div class="section" title="2.2.1.&#160;The CFile Method">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h3 class="title"><a name="idp1391378340"/>2.2.1.&#160;The <code class="function">CFile</code> Method</h3>
+                </div>
+              </div>
+            </div>
+            <p>
+
+   X
+
+   </p>
+          </div>
+        </div>
+        <div class="section" title="2.3.&#160;The Command Builder">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h2 class="title" style="clear: both"><a name="sect-Command"/>2.3.&#160;The Command Builder</h2>
+              </div>
+            </div>
+          </div>
+          <p>
+
+   X
+
+ </p>
+          <div class="section" title="2.3.1.&#160;The Command Method">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h3 class="title"><a name="idp1391381252"/>2.3.1.&#160;The <code class="function">Command</code> Method</h3>
+                </div>
+              </div>
+            </div>
+            <p>
+
+   X
+
+   </p>
+          </div>
+        </div>
+        <div class="section" title="2.4.&#160;The CXXFile Builder">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h2 class="title" style="clear: both"><a name="sect-CXXFile"/>2.4.&#160;The CXXFile Builder</h2>
+              </div>
+            </div>
+          </div>
+          <p>
+
+   X
+
+ </p>
+          <div class="section" title="2.4.1.&#160;The CXXFile Method">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h3 class="title"><a name="idp1391385436"/>2.4.1.&#160;The <code class="function">CXXFile</code> Method</h3>
+                </div>
+              </div>
+            </div>
+            <p>
+
+   X
+
+   </p>
+          </div>
+        </div>
+        <div class="section" title="2.5.&#160;The Install Builder">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h2 class="title" style="clear: both"><a name="sect-Install"/>2.5.&#160;The Install Builder</h2>
+              </div>
+            </div>
+          </div>
+          <p>
+
+   X
+
+ </p>
+          <div class="section" title="2.5.1.&#160;The Install Method">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h3 class="title"><a name="idp1391388412"/>2.5.1.&#160;The <code class="function">Install</code> Method</h3>
+                </div>
+              </div>
+            </div>
+            <p>
+
+   X
+
+   </p>
+          </div>
+        </div>
+        <div class="section" title="2.6.&#160;The InstallAs Builder">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h2 class="title" style="clear: both"><a name="sect-InstallAs"/>2.6.&#160;The InstallAs Builder</h2>
+              </div>
+            </div>
+          </div>
+          <p>
+
+   X
+
+ </p>
+          <div class="section" title="2.6.1.&#160;The InstallAs Method">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h3 class="title"><a name="idp1391391388"/>2.6.1.&#160;The <code class="function">InstallAs</code> Method</h3>
+                </div>
+              </div>
+            </div>
+            <p>
+
+   X
+
+   </p>
+          </div>
+        </div>
+        <div class="section" title="2.7.&#160;The Library Builder">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h2 class="title" style="clear: both"><a name="sect-Library"/>2.7.&#160;The Library Builder</h2>
+              </div>
+            </div>
+          </div>
+          <div class="section" title="2.7.1.&#160;Linking With a Library">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h3 class="title"><a name="idp1391394300"/>2.7.1.&#160;Linking With a Library</h3>
+                </div>
+              </div>
+            </div>
+            <pre class="programlisting">
+env = Environment(CC = 'gcc',
+                  LIBS = 'world')
+env.Program('hello.c')
+   </pre>
+            <div class="literallayout">
+              <p><br/>
+%&#160;<strong class="userinput"><code>scons</code></strong><br/>
+gcc&#160;-c&#160;hello.c&#160;-o&#160;hello.o<br/>
+gcc&#160;-c&#160;world.c&#160;-o&#160;world.o<br/>
+gcc&#160;-o&#160;hello&#160;hello.o&#160;-lworld<br/>
+&#160;&#160;&#160;</p>
+            </div>
+          </div>
+          <div class="section" title="2.7.2.&#160;Creating a Library">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h3 class="title"><a name="idp1391396692"/>2.7.2.&#160;Creating a Library</h3>
+                </div>
+              </div>
+            </div>
+            <pre class="programlisting">
+env = Environment(CC = 'gcc',
+                  LIBS = 'world')
+env.Program('hello.c')
+env.Library('world.c')
+   </pre>
+            <div class="literallayout">
+              <p><br/>
+%&#160;<strong class="userinput"><code>scons</code></strong><br/>
+gcc&#160;-c&#160;hello.c&#160;-o&#160;hello.o<br/>
+gcc&#160;-c&#160;world.c&#160;-o&#160;world.o<br/>
+ar&#160;r&#160;libworld.a&#160;world.o<br/>
+ar:&#160;creating&#160;libworld.a<br/>
+ranlib&#160;libworld.a<br/>
+gcc&#160;-o&#160;hello&#160;hello.o&#160;libworld.a<br/>
+&#160;&#160;&#160;</p>
+            </div>
+          </div>
+          <div class="section" title="2.7.3.&#160;The Library Builder">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h3 class="title"><a name="idp1391398020"/>2.7.3.&#160;The <code class="function">Library</code> Builder</h3>
+                </div>
+              </div>
+            </div>
+            <p>
+
+   X
+
+   </p>
+          </div>
+        </div>
+        <div class="section" title="2.8.&#160;The Object Builder">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h2 class="title" style="clear: both"><a name="sect-Object"/>2.8.&#160;The Object Builder</h2>
+              </div>
+            </div>
+          </div>
+          <p>
+
+   X
+
+ </p>
+          <div class="section" title="2.8.1.&#160;The Object Method">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h3 class="title"><a name="idp1391402876"/>2.8.1.&#160;The <code class="function">Object</code> Method</h3>
+                </div>
+              </div>
+            </div>
+            <p>
+
+   X
+
+   </p>
+          </div>
+        </div>
+        <div class="section" title="2.9.&#160;The PCH Builder">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h2 class="title" style="clear: both"><a name="sect-PCH"/>2.9.&#160;The PCH Builder</h2>
+              </div>
+            </div>
+          </div>
+          <p>
+
+   X
+
+ </p>
+          <div class="section" title="2.9.1.&#160;The PCH Method">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h3 class="title"><a name="idp1391405620"/>2.9.1.&#160;The <code class="function">PCH</code> Method</h3>
+                </div>
+              </div>
+            </div>
+            <p>
+
+   X
+
+   </p>
+          </div>
+        </div>
+        <div class="section" title="2.10.&#160;The PDF Builder">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h2 class="title" style="clear: both"><a name="sect-PDF"/>2.10.&#160;The PDF Builder</h2>
+              </div>
+            </div>
+          </div>
+          <p>
+
+   X
+
+ </p>
+          <div class="section" title="2.10.1.&#160;The PDF Method">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h3 class="title"><a name="idp1391410252"/>2.10.1.&#160;The <code class="function">PDF</code> Method</h3>
+                </div>
+              </div>
+            </div>
+            <p>
+
+   X
+
+   </p>
+          </div>
+        </div>
+        <div class="section" title="2.11.&#160;The PDF Builder">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h2 class="title" style="clear: both"><a name="sect-PostScript"/>2.11.&#160;The PDF Builder</h2>
+              </div>
+            </div>
+          </div>
+          <p>
+
+   X
+
+ </p>
+          <div class="section" title="2.11.1.&#160;The PostScript Method">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h3 class="title"><a name="idp1391413172"/>2.11.1.&#160;The <code class="function">PostScript</code> Method</h3>
+                </div>
+              </div>
+            </div>
+            <p>
+
+   X
+
+   </p>
+          </div>
+        </div>
+        <div class="section" title="2.12.&#160;The Program Builder">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h2 class="title" style="clear: both"><a name="sect-Program"/>2.12.&#160;The Program Builder</h2>
+              </div>
+            </div>
+          </div>
+          <p>
+
+   X
+
+ </p>
+          <div class="section" title="2.12.1.&#160;The Program Builder">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h3 class="title"><a name="idp1391416276"/>2.12.1.&#160;The <code class="function">Program</code> Builder</h3>
+                </div>
+              </div>
+            </div>
+            <p>
+
+   X
+
+   </p>
+          </div>
+        </div>
+        <div class="section" title="2.13.&#160;The RES Builder">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h2 class="title" style="clear: both"><a name="sect-RES"/>2.13.&#160;The RES Builder</h2>
+              </div>
+            </div>
+          </div>
+          <p>
+
+   X
+
+ </p>
+          <div class="section" title="2.13.1.&#160;The RES Method">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h3 class="title"><a name="idp1391422148"/>2.13.1.&#160;The <code class="function">RES</code> Method</h3>
+                </div>
+              </div>
+            </div>
+            <p>
+
+   X
+
+   </p>
+          </div>
+        </div>
+        <div class="section" title="2.14.&#160;The SharedLibrary Builder">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h2 class="title" style="clear: both"><a name="sect-SharedLibrary"/>2.14.&#160;The SharedLibrary Builder</h2>
+              </div>
+            </div>
+          </div>
+          <p>
+
+   X
+
+ </p>
+          <div class="section" title="2.14.1.&#160;The SharedLibrary Method">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h3 class="title"><a name="idp1391423876"/>2.14.1.&#160;The <code class="function">SharedLibrary</code> Method</h3>
+                </div>
+              </div>
+            </div>
+            <p>
+
+   X
+
+   </p>
+          </div>
+        </div>
+        <div class="section" title="2.15.&#160;The SharedObject Builder">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h2 class="title" style="clear: both"><a name="sect-SharedObject"/>2.15.&#160;The SharedObject Builder</h2>
+              </div>
+            </div>
+          </div>
+          <p>
+
+   X
+
+ </p>
+          <div class="section" title="2.15.1.&#160;The SharedObject Method">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h3 class="title"><a name="idp1391426948"/>2.15.1.&#160;The <code class="function">SharedObject</code> Method</h3>
+                </div>
+              </div>
+            </div>
+            <p>
+
+   X
+
+   </p>
+          </div>
+        </div>
+        <div class="section" title="2.16.&#160;The StaticLibrary Builder">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h2 class="title" style="clear: both"><a name="sect-StaticLibrary"/>2.16.&#160;The StaticLibrary Builder</h2>
+              </div>
+            </div>
+          </div>
+          <p>
+
+   X
+
+ </p>
+          <div class="section" title="2.16.1.&#160;The StaticLibrary Method">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h3 class="title"><a name="idp1391429868"/>2.16.1.&#160;The <code class="function">StaticLibrary</code> Method</h3>
+                </div>
+              </div>
+            </div>
+            <p>
+
+   X
+
+   </p>
+          </div>
+        </div>
+        <div class="section" title="2.17.&#160;The StaticObject Builder">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h2 class="title" style="clear: both"><a name="sect-StaticObject"/>2.17.&#160;The StaticObject Builder</h2>
+              </div>
+            </div>
+          </div>
+          <p>
+
+   X
+
+ </p>
+          <div class="section" title="2.17.1.&#160;The StaticObject Method">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h3 class="title"><a name="idp1391432844"/>2.17.1.&#160;The <code class="function">StaticObject</code> Method</h3>
+                </div>
+              </div>
+            </div>
+            <p>
+
+   X
+
+   </p>
+          </div>
+        </div>
+      </div>
+      <div class="chapter" title="Chapter&#160;3.&#160;Errors Generated by SCons">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a name="chap-errors"/>Chapter&#160;3.&#160;Errors Generated by <span class="application">SCons</span></h2>
+            </div>
+          </div>
+        </div>
+        <p>
+
+   X
+
+ </p>
+        <div class="section" title="3.1.&#160;X">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h2 class="title" style="clear: both"><a name="idp1391436012"/>3.1.&#160;X</h2>
+              </div>
+            </div>
+          </div>
+          <p>
+
+   X
+
+   </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

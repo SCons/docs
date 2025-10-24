@@ -1,0 +1,1559 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>SCons.Scanner package &mdash; SCons 4.2.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="SCons.Script package" href="../SCons.Script/" />
+    <link rel="prev" title="SCons.Platform package" href="../SCons.Platform/" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../" class="icon icon-home"> SCons
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                4.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../SCons/">SCons package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons">Module contents</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../SCons/#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">SCons.Scanner package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SCons.Variables/">SCons.Variables package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SCons.compat/">SCons.compat package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Action">SCons.Action module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Builder">SCons.Builder module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.CacheDir">SCons.CacheDir module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Conftest">SCons.Conftest module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Debug">SCons.Debug module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Defaults">SCons.Defaults module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Environment">SCons.Environment module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Errors">SCons.Errors module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Executor">SCons.Executor module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Job">SCons.Job module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Memoize">SCons.Memoize module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.PathList">SCons.PathList module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.SConf">SCons.SConf module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.SConsign">SCons.SConsign module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Subst">SCons.Subst module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Taskmaster">SCons.Taskmaster module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Util">SCons.Util module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Warnings">SCons.Warnings module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.cpp">SCons.cpp module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.dblite">SCons.dblite module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.exitfuncs">SCons.exitfuncs module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.compat/">SCons.compat package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.compat/#module-SCons.compat">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.Node/">SCons.Node package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Node/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Node/#module-SCons.Node.Alias">SCons.Node.Alias module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Node/#module-SCons.Node.FS">SCons.Node.FS module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Node/#module-SCons.Node.Python">SCons.Node.Python module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Node/#module-SCons.Node">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.Platform/">SCons.Platform package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform.aix">SCons.Platform.aix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform.cygwin">SCons.Platform.cygwin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform.darwin">SCons.Platform.darwin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform.hpux">SCons.Platform.hpux module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform.irix">SCons.Platform.irix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform.mingw">SCons.Platform.mingw module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform.os2">SCons.Platform.os2 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform.posix">SCons.Platform.posix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform.sunos">SCons.Platform.sunos module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform.virtualenv">SCons.Platform.virtualenv module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform.win32">SCons.Platform.win32 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">SCons.Scanner package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-SCons.Scanner.C">SCons.Scanner.C module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-SCons.Scanner.D">SCons.Scanner.D module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-SCons.Scanner.Dir">SCons.Scanner.Dir module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-SCons.Scanner.Fortran">SCons.Scanner.Fortran module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-SCons.Scanner.IDL">SCons.Scanner.IDL module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-SCons.Scanner.LaTeX">SCons.Scanner.LaTeX module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-SCons.Scanner.Prog">SCons.Scanner.Prog module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-SCons.Scanner.RC">SCons.Scanner.RC module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-SCons.Scanner.SWIG">SCons.Scanner.SWIG module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-SCons.Scanner">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.Script/">SCons.Script package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Script/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Script/#module-SCons.Script.Interactive">SCons.Script.Interactive module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Script/#module-SCons.Script.Main">SCons.Script.Main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Script/#module-SCons.Script.SConsOptions">SCons.Script.SConsOptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Script/#module-SCons.Script.SConscript">SCons.Script.SConscript module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Script/#module-SCons.Script">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.Tool/">SCons.Tool package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Tool/#module-SCons.Tool">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.Variables/">SCons.Variables package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Variables/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Variables/#module-SCons.Variables.BoolVariable">SCons.Variables.BoolVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Variables/#module-SCons.Variables.EnumVariable">SCons.Variables.EnumVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Variables/#module-SCons.Variables.ListVariable">SCons.Variables.ListVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Variables/#module-SCons.Variables.PackageVariable">SCons.Variables.PackageVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Variables/#module-SCons.Variables.PathVariable">SCons.Variables.PathVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Variables/#module-SCons.Variables">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">SCons</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../SCons/">SCons package</a> &raquo;</li>
+        
+      <li>SCons.Scanner package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/SCons.Scanner.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="scons-scanner-package">
+<h1>SCons.Scanner package<a class="headerlink" href="#scons-scanner-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-SCons.Scanner.C">
+<span id="scons-scanner-c-module"></span><h2>SCons.Scanner.C module<a class="headerlink" href="#module-SCons.Scanner.C" title="Permalink to this headline">¶</a></h2>
+<p>Dependency scanner for C/C++ code.</p>
+<dl class="py function">
+<dt id="SCons.Scanner.C.CConditionalScanner">
+<code class="sig-prename descclassname">SCons.Scanner.C.</code><code class="sig-name descname">CConditionalScanner</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/C/#CConditionalScanner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.C.CConditionalScanner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an advanced conditional Scanner instance for scanning source files</p>
+<p>Interprets C/C++ Preprocessor conditional syntax
+(#ifdef, #if, defined, #else, #elif, etc.).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="SCons.Scanner.C.CScanner">
+<code class="sig-prename descclassname">SCons.Scanner.C.</code><code class="sig-name descname">CScanner</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/C/#CScanner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.C.CScanner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a prototype Scanner instance for scanning source files
+that use the C pre-processor</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScanner">
+<em class="property">class </em><code class="sig-prename descclassname">SCons.Scanner.C.</code><code class="sig-name descname">SConsCPPConditionalScanner</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/C/#SConsCPPConditionalScanner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScanner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../SCons/#SCons.cpp.PreProcessor" title="SCons.cpp.PreProcessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">SCons.cpp.PreProcessor</span></code></a></p>
+<p>SCons-specific subclass of the cpp.py module’s processing.</p>
+<p>We subclass this so that: 1) we can deal with files represented
+by Nodes, not strings; 2) we can keep track of the files that are
+missing.</p>
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScanner._do_if_else_condition">
+<code class="sig-name descname">_do_if_else_condition</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">condition</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScanner._do_if_else_condition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Common logic for evaluating the conditions on #if, #ifdef and
+#ifndef lines.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScanner._match_tuples">
+<code class="sig-name descname">_match_tuples</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tuples</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScanner._match_tuples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScanner._parse_tuples">
+<code class="sig-name descname">_parse_tuples</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">contents</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScanner._parse_tuples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScanner._process_tuples">
+<code class="sig-name descname">_process_tuples</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tuples</span></em>, <em class="sig-param"><span class="n">file</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScanner._process_tuples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScanner.all_include">
+<code class="sig-name descname">all_include</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScanner.all_include" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScanner.do_define">
+<code class="sig-name descname">do_define</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScanner.do_define" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default handling of a #define line.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScanner.do_elif">
+<code class="sig-name descname">do_elif</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScanner.do_elif" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default handling of a #elif line.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScanner.do_else">
+<code class="sig-name descname">do_else</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScanner.do_else" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default handling of a #else line.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScanner.do_endif">
+<code class="sig-name descname">do_endif</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScanner.do_endif" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default handling of a #endif line.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScanner.do_if">
+<code class="sig-name descname">do_if</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScanner.do_if" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default handling of a #if line.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScanner.do_ifdef">
+<code class="sig-name descname">do_ifdef</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScanner.do_ifdef" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default handling of a #ifdef line.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScanner.do_ifndef">
+<code class="sig-name descname">do_ifndef</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScanner.do_ifndef" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default handling of a #ifndef line.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScanner.do_import">
+<code class="sig-name descname">do_import</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScanner.do_import" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default handling of a #import line.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScanner.do_include">
+<code class="sig-name descname">do_include</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScanner.do_include" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default handling of a #include line.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScanner.do_include_next">
+<code class="sig-name descname">do_include_next</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScanner.do_include_next" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default handling of a #include line.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScanner.do_nothing">
+<code class="sig-name descname">do_nothing</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScanner.do_nothing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Null method for when we explicitly want the action for a
+specific preprocessor directive to do nothing.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScanner.do_undef">
+<code class="sig-name descname">do_undef</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScanner.do_undef" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default handling of a #undef line.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScanner.eval_expression">
+<code class="sig-name descname">eval_expression</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScanner.eval_expression" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates a C preprocessor expression.</p>
+<p>This is done by converting it to a Python equivalent and
+eval()ing it in the C preprocessor namespace we use to
+track #define values.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScanner.finalize_result">
+<code class="sig-name descname">finalize_result</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fname</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScanner.finalize_result" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScanner.find_include_file">
+<code class="sig-name descname">find_include_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/C/#SConsCPPConditionalScanner.find_include_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScanner.find_include_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the #include file for a given preprocessor tuple.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScanner.initialize_result">
+<code class="sig-name descname">initialize_result</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fname</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/C/#SConsCPPConditionalScanner.initialize_result"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScanner.initialize_result" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScanner.process_contents">
+<code class="sig-name descname">process_contents</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">contents</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScanner.process_contents" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pre-processes a file contents.</p>
+<p>Is used by tests</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScanner.process_file">
+<code class="sig-name descname">process_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScanner.process_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pre-processes a file.</p>
+<p>This is the main internal entry point.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScanner.read_file">
+<code class="sig-name descname">read_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/C/#SConsCPPConditionalScanner.read_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScanner.read_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScanner.resolve_include">
+<code class="sig-name descname">resolve_include</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScanner.resolve_include" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resolve a tuple-ized #include line.</p>
+<p>This handles recursive expansion of values without “” or &lt;&gt;
+surrounding the name until an initial ” or &lt; is found, to handle
+#include FILE where FILE is a #define somewhere else.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScanner.restore">
+<code class="sig-name descname">restore</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScanner.restore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pops the previous dispatch table off the stack and makes it the
+current one.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScanner.save">
+<code class="sig-name descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScanner.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pushes the current dispatch table on the stack and re-initializes
+the current dispatch table to the default.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScanner.scons_current_file">
+<code class="sig-name descname">scons_current_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScanner.scons_current_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScanner.start_handling_includes">
+<code class="sig-name descname">start_handling_includes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScanner.start_handling_includes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Causes the PreProcessor object to start processing #import,
+#include and #include_next lines.</p>
+<p>This method will be called when a #if, #ifdef, #ifndef or #elif
+evaluates True, or when we reach the #else in a #if, #ifdef,
+#ifndef or #elif block where a condition already evaluated
+False.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScanner.stop_handling_includes">
+<code class="sig-name descname">stop_handling_includes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScanner.stop_handling_includes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Causes the PreProcessor object to stop processing #import,
+#include and #include_next lines.</p>
+<p>This method will be called when a #if, #ifdef, #ifndef or #elif
+evaluates False, or when we reach the #else in a #if, #ifdef,
+#ifndef or #elif block where a condition already evaluated True.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScanner.tupleize">
+<code class="sig-name descname">tupleize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">contents</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScanner.tupleize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turns the contents of a file into a list of easily-processed
+tuples describing the CPP lines in the file.</p>
+<p>The first element of each tuple is the line’s preprocessor
+directive (#if, #include, #define, etc., minus the initial ‘#’).
+The remaining elements are specific to the type of directive, as
+pulled apart by the regular expression.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScannerWrapper">
+<em class="property">class </em><code class="sig-prename descclassname">SCons.Scanner.C.</code><code class="sig-name descname">SConsCPPConditionalScannerWrapper</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">variable</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/C/#SConsCPPConditionalScannerWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScannerWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The SCons wrapper around a cpp.py scanner.</p>
+<p>This is the actual glue between the calling conventions of generic
+SCons scanners, and the (subclass of) cpp.py class that knows how
+to look for #include lines with reasonably real C-preprocessor-like
+evaluation of #if/#ifdef/#else/#elif lines.</p>
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScannerWrapper.recurse_nodes">
+<code class="sig-name descname">recurse_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nodes</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/C/#SConsCPPConditionalScannerWrapper.recurse_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScannerWrapper.recurse_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPConditionalScannerWrapper.select">
+<code class="sig-name descname">select</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/C/#SConsCPPConditionalScannerWrapper.select"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.C.SConsCPPConditionalScannerWrapper.select" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="SCons.Scanner.C.SConsCPPScanner">
+<em class="property">class </em><code class="sig-prename descclassname">SCons.Scanner.C.</code><code class="sig-name descname">SConsCPPScanner</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/C/#SConsCPPScanner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScanner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../SCons/#SCons.cpp.PreProcessor" title="SCons.cpp.PreProcessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">SCons.cpp.PreProcessor</span></code></a></p>
+<p>SCons-specific subclass of the cpp.py module’s processing.</p>
+<p>We subclass this so that: 1) we can deal with files represented
+by Nodes, not strings; 2) we can keep track of the files that are
+missing.</p>
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPScanner._do_if_else_condition">
+<code class="sig-name descname">_do_if_else_condition</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">condition</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScanner._do_if_else_condition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Common logic for evaluating the conditions on #if, #ifdef and
+#ifndef lines.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPScanner._match_tuples">
+<code class="sig-name descname">_match_tuples</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tuples</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScanner._match_tuples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPScanner._parse_tuples">
+<code class="sig-name descname">_parse_tuples</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">contents</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScanner._parse_tuples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPScanner._process_tuples">
+<code class="sig-name descname">_process_tuples</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tuples</span></em>, <em class="sig-param"><span class="n">file</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScanner._process_tuples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPScanner.all_include">
+<code class="sig-name descname">all_include</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScanner.all_include" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPScanner.do_define">
+<code class="sig-name descname">do_define</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScanner.do_define" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default handling of a #define line.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPScanner.do_elif">
+<code class="sig-name descname">do_elif</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScanner.do_elif" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default handling of a #elif line.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPScanner.do_else">
+<code class="sig-name descname">do_else</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScanner.do_else" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default handling of a #else line.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPScanner.do_endif">
+<code class="sig-name descname">do_endif</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScanner.do_endif" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default handling of a #endif line.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPScanner.do_if">
+<code class="sig-name descname">do_if</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScanner.do_if" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default handling of a #if line.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPScanner.do_ifdef">
+<code class="sig-name descname">do_ifdef</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScanner.do_ifdef" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default handling of a #ifdef line.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPScanner.do_ifndef">
+<code class="sig-name descname">do_ifndef</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScanner.do_ifndef" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default handling of a #ifndef line.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPScanner.do_import">
+<code class="sig-name descname">do_import</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScanner.do_import" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default handling of a #import line.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPScanner.do_include">
+<code class="sig-name descname">do_include</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScanner.do_include" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default handling of a #include line.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPScanner.do_include_next">
+<code class="sig-name descname">do_include_next</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScanner.do_include_next" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default handling of a #include line.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPScanner.do_nothing">
+<code class="sig-name descname">do_nothing</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScanner.do_nothing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Null method for when we explicitly want the action for a
+specific preprocessor directive to do nothing.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPScanner.do_undef">
+<code class="sig-name descname">do_undef</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScanner.do_undef" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default handling of a #undef line.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPScanner.eval_expression">
+<code class="sig-name descname">eval_expression</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScanner.eval_expression" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates a C preprocessor expression.</p>
+<p>This is done by converting it to a Python equivalent and
+eval()ing it in the C preprocessor namespace we use to
+track #define values.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPScanner.finalize_result">
+<code class="sig-name descname">finalize_result</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fname</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/C/#SConsCPPScanner.finalize_result"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScanner.finalize_result" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPScanner.find_include_file">
+<code class="sig-name descname">find_include_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/C/#SConsCPPScanner.find_include_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScanner.find_include_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the #include file for a given preprocessor tuple.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPScanner.initialize_result">
+<code class="sig-name descname">initialize_result</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fname</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/C/#SConsCPPScanner.initialize_result"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScanner.initialize_result" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPScanner.process_contents">
+<code class="sig-name descname">process_contents</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">contents</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScanner.process_contents" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pre-processes a file contents.</p>
+<p>Is used by tests</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPScanner.process_file">
+<code class="sig-name descname">process_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScanner.process_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pre-processes a file.</p>
+<p>This is the main internal entry point.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPScanner.read_file">
+<code class="sig-name descname">read_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/C/#SConsCPPScanner.read_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScanner.read_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPScanner.resolve_include">
+<code class="sig-name descname">resolve_include</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScanner.resolve_include" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resolve a tuple-ized #include line.</p>
+<p>This handles recursive expansion of values without “” or &lt;&gt;
+surrounding the name until an initial ” or &lt; is found, to handle
+#include FILE where FILE is a #define somewhere else.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPScanner.restore">
+<code class="sig-name descname">restore</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScanner.restore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pops the previous dispatch table off the stack and makes it the
+current one.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPScanner.save">
+<code class="sig-name descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScanner.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pushes the current dispatch table on the stack and re-initializes
+the current dispatch table to the default.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPScanner.scons_current_file">
+<code class="sig-name descname">scons_current_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScanner.scons_current_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPScanner.start_handling_includes">
+<code class="sig-name descname">start_handling_includes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScanner.start_handling_includes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Causes the PreProcessor object to start processing #import,
+#include and #include_next lines.</p>
+<p>This method will be called when a #if, #ifdef, #ifndef or #elif
+evaluates True, or when we reach the #else in a #if, #ifdef,
+#ifndef or #elif block where a condition already evaluated
+False.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPScanner.stop_handling_includes">
+<code class="sig-name descname">stop_handling_includes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScanner.stop_handling_includes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Causes the PreProcessor object to stop processing #import,
+#include and #include_next lines.</p>
+<p>This method will be called when a #if, #ifdef, #ifndef or #elif
+evaluates False, or when we reach the #else in a #if, #ifdef,
+#ifndef or #elif block where a condition already evaluated True.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPScanner.tupleize">
+<code class="sig-name descname">tupleize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">contents</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScanner.tupleize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turns the contents of a file into a list of easily-processed
+tuples describing the CPP lines in the file.</p>
+<p>The first element of each tuple is the line’s preprocessor
+directive (#if, #include, #define, etc., minus the initial ‘#’).
+The remaining elements are specific to the type of directive, as
+pulled apart by the regular expression.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="SCons.Scanner.C.SConsCPPScannerWrapper">
+<em class="property">class </em><code class="sig-prename descclassname">SCons.Scanner.C.</code><code class="sig-name descname">SConsCPPScannerWrapper</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">variable</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/C/#SConsCPPScannerWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScannerWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The SCons wrapper around a cpp.py scanner.</p>
+<p>This is the actual glue between the calling conventions of generic
+SCons scanners, and the (subclass of) cpp.py class that knows how
+to look for #include lines with reasonably real C-preprocessor-like
+evaluation of #if/#ifdef/#else/#elif lines.</p>
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPScannerWrapper.recurse_nodes">
+<code class="sig-name descname">recurse_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nodes</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/C/#SConsCPPScannerWrapper.recurse_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScannerWrapper.recurse_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.C.SConsCPPScannerWrapper.select">
+<code class="sig-name descname">select</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/C/#SConsCPPScannerWrapper.select"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.C.SConsCPPScannerWrapper.select" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="SCons.Scanner.C.dictify_CPPDEFINES">
+<code class="sig-prename descclassname">SCons.Scanner.C.</code><code class="sig-name descname">dictify_CPPDEFINES</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/C/#dictify_CPPDEFINES"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.C.dictify_CPPDEFINES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-SCons.Scanner.D">
+<span id="scons-scanner-d-module"></span><h2>SCons.Scanner.D module<a class="headerlink" href="#module-SCons.Scanner.D" title="Permalink to this headline">¶</a></h2>
+<p>Scanner for the Digital Mars “D” programming language.</p>
+<p>Coded by Andy Friesen, 17 Nov 2003</p>
+<dl class="py class">
+<dt id="SCons.Scanner.D.D">
+<em class="property">class </em><code class="sig-prename descclassname">SCons.Scanner.D.</code><code class="sig-name descname">D</code><a class="reference internal" href="../_modules/SCons/Scanner/D/#D"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.D.D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#SCons.Scanner.Classic" title="SCons.Scanner.Classic"><code class="xref py py-class docutils literal notranslate"><span class="pre">SCons.Scanner.Classic</span></code></a></p>
+<dl class="py method">
+<dt id="SCons.Scanner.D.D._recurse_all_nodes">
+<code class="sig-name descname">_recurse_all_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nodes</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.D.D._recurse_all_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.D.D._recurse_no_nodes">
+<code class="sig-name descname">_recurse_no_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nodes</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.D.D._recurse_no_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.D.D.add_scanner">
+<code class="sig-name descname">add_scanner</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">skey</span></em>, <em class="sig-param"><span class="n">scanner</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.D.D.add_scanner" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.D.D.add_skey">
+<code class="sig-name descname">add_skey</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">skey</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.D.D.add_skey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a skey to the list of skeys</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.D.D.find_include">
+<code class="sig-name descname">find_include</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">include</span></em>, <em class="sig-param"><span class="n">source_dir</span></em>, <em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/D/#D.find_include"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.D.D.find_include" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.D.D.find_include_names">
+<code class="sig-name descname">find_include_names</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/D/#D.find_include_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.D.D.find_include_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.D.D.get_skeys">
+<code class="sig-name descname">get_skeys</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.D.D.get_skeys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.D.D.path">
+<code class="sig-name descname">path</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span></em>, <em class="sig-param"><span class="n">dir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">target</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">source</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.D.D.path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.D.D.scan">
+<code class="sig-name descname">scan</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">()</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.D.D.scan" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.D.D.select">
+<code class="sig-name descname">select</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.D.D.select" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.D.D.sort_key">
+<code class="sig-name descname">sort_key</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">include</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.D.D.sort_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="SCons.Scanner.D.DScanner">
+<code class="sig-prename descclassname">SCons.Scanner.D.</code><code class="sig-name descname">DScanner</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/D/#DScanner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.D.DScanner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a prototype Scanner instance for scanning D source files</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-SCons.Scanner.Dir">
+<span id="scons-scanner-dir-module"></span><h2>SCons.Scanner.Dir module<a class="headerlink" href="#module-SCons.Scanner.Dir" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="SCons.Scanner.Dir.DirEntryScanner">
+<code class="sig-prename descclassname">SCons.Scanner.Dir.</code><code class="sig-name descname">DirEntryScanner</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/Dir/#DirEntryScanner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.Dir.DirEntryScanner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a prototype Scanner instance for “scanning”
+directory Nodes for their in-memory entries</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="SCons.Scanner.Dir.DirScanner">
+<code class="sig-prename descclassname">SCons.Scanner.Dir.</code><code class="sig-name descname">DirScanner</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/Dir/#DirScanner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.Dir.DirScanner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a prototype Scanner instance for scanning
+directories for on-disk files</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="SCons.Scanner.Dir.do_not_scan">
+<code class="sig-prename descclassname">SCons.Scanner.Dir.</code><code class="sig-name descname">do_not_scan</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">k</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.Dir.do_not_scan" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="SCons.Scanner.Dir.only_dirs">
+<code class="sig-prename descclassname">SCons.Scanner.Dir.</code><code class="sig-name descname">only_dirs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nodes</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/Dir/#only_dirs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.Dir.only_dirs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="SCons.Scanner.Dir.scan_in_memory">
+<code class="sig-prename descclassname">SCons.Scanner.Dir.</code><code class="sig-name descname">scan_in_memory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">env</span></em>, <em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">()</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/Dir/#scan_in_memory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.Dir.scan_in_memory" title="Permalink to this definition">¶</a></dt>
+<dd><p>“Scans” a Node.FS.Dir for its in-memory entries.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="SCons.Scanner.Dir.scan_on_disk">
+<code class="sig-prename descclassname">SCons.Scanner.Dir.</code><code class="sig-name descname">scan_on_disk</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">env</span></em>, <em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">()</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/Dir/#scan_on_disk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.Dir.scan_on_disk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scans a directory for on-disk files and directories therein.</p>
+<p>Looking up the entries will add these to the in-memory Node tree
+representation of the file system, so all we have to do is just
+that and then call the in-memory scanning function.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-SCons.Scanner.Fortran">
+<span id="scons-scanner-fortran-module"></span><h2>SCons.Scanner.Fortran module<a class="headerlink" href="#module-SCons.Scanner.Fortran" title="Permalink to this headline">¶</a></h2>
+<p>Dependency scanner for Fortran code.</p>
+<dl class="py class">
+<dt id="SCons.Scanner.Fortran.F90Scanner">
+<em class="property">class </em><code class="sig-prename descclassname">SCons.Scanner.Fortran.</code><code class="sig-name descname">F90Scanner</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">suffixes</span></em>, <em class="sig-param"><span class="n">path_variable</span></em>, <em class="sig-param"><span class="n">use_regex</span></em>, <em class="sig-param"><span class="n">incl_regex</span></em>, <em class="sig-param"><span class="n">def_regex</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/Fortran/#F90Scanner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.Fortran.F90Scanner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#SCons.Scanner.Classic" title="SCons.Scanner.Classic"><code class="xref py py-class docutils literal notranslate"><span class="pre">SCons.Scanner.Classic</span></code></a></p>
+<p>A Classic Scanner subclass for Fortran source files which takes
+into account both USE and INCLUDE statements.  This scanner will
+work for both F77 and F90 (and beyond) compilers.</p>
+<p>Currently, this scanner assumes that the include files do not contain
+USE statements.  To enable the ability to deal with USE statements
+in include files, add logic right after the module names are found
+to loop over each include file, search for and locate each USE
+statement, and append each module name to the list of dependencies.
+Caching the search results in a common dictionary somewhere so that
+the same include file is not searched multiple times would be a
+smart thing to do.</p>
+<dl class="py method">
+<dt id="SCons.Scanner.Fortran.F90Scanner._recurse_all_nodes">
+<code class="sig-name descname">_recurse_all_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nodes</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.Fortran.F90Scanner._recurse_all_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Fortran.F90Scanner._recurse_no_nodes">
+<code class="sig-name descname">_recurse_no_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nodes</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.Fortran.F90Scanner._recurse_no_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Fortran.F90Scanner.add_scanner">
+<code class="sig-name descname">add_scanner</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">skey</span></em>, <em class="sig-param"><span class="n">scanner</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.Fortran.F90Scanner.add_scanner" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Fortran.F90Scanner.add_skey">
+<code class="sig-name descname">add_skey</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">skey</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.Fortran.F90Scanner.add_skey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a skey to the list of skeys</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Fortran.F90Scanner.find_include">
+<code class="sig-name descname">find_include</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">include</span></em>, <em class="sig-param"><span class="n">source_dir</span></em>, <em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.Fortran.F90Scanner.find_include" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Fortran.F90Scanner.find_include_names">
+<code class="sig-name descname">find_include_names</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.Fortran.F90Scanner.find_include_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Fortran.F90Scanner.get_skeys">
+<code class="sig-name descname">get_skeys</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.Fortran.F90Scanner.get_skeys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Fortran.F90Scanner.path">
+<code class="sig-name descname">path</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span></em>, <em class="sig-param"><span class="n">dir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">target</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">source</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.Fortran.F90Scanner.path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Fortran.F90Scanner.scan">
+<code class="sig-name descname">scan</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">env</span></em>, <em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">()</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/Fortran/#F90Scanner.scan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.Fortran.F90Scanner.scan" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Fortran.F90Scanner.select">
+<code class="sig-name descname">select</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.Fortran.F90Scanner.select" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Fortran.F90Scanner.sort_key">
+<code class="sig-name descname">sort_key</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">include</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.Fortran.F90Scanner.sort_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="SCons.Scanner.Fortran.FortranScan">
+<code class="sig-prename descclassname">SCons.Scanner.Fortran.</code><code class="sig-name descname">FortranScan</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path_variable</span><span class="o">=</span><span class="default_value">'FORTRANPATH'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/Fortran/#FortranScan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.Fortran.FortranScan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a prototype Scanner instance for scanning source files
+for Fortran USE &amp; INCLUDE statements</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-SCons.Scanner.IDL">
+<span id="scons-scanner-idl-module"></span><h2>SCons.Scanner.IDL module<a class="headerlink" href="#module-SCons.Scanner.IDL" title="Permalink to this headline">¶</a></h2>
+<p>Dependency scanner for IDL (Interface Definition Language) files.</p>
+<dl class="py function">
+<dt id="SCons.Scanner.IDL.IDLScan">
+<code class="sig-prename descclassname">SCons.Scanner.IDL.</code><code class="sig-name descname">IDLScan</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/IDL/#IDLScan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.IDL.IDLScan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a prototype Scanner instance for scanning IDL source files</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-SCons.Scanner.LaTeX">
+<span id="scons-scanner-latex-module"></span><h2>SCons.Scanner.LaTeX module<a class="headerlink" href="#module-SCons.Scanner.LaTeX" title="Permalink to this headline">¶</a></h2>
+<p>Dependency scanner for LaTeX code.</p>
+<dl class="py class">
+<dt id="SCons.Scanner.LaTeX.FindENVPathDirs">
+<em class="property">class </em><code class="sig-prename descclassname">SCons.Scanner.LaTeX.</code><code class="sig-name descname">FindENVPathDirs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">variable</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/LaTeX/#FindENVPathDirs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.LaTeX.FindENVPathDirs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class to bind a specific E{*}PATH variable name to a function that
+will return all of the E{*}path directories.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="SCons.Scanner.LaTeX.LaTeX">
+<em class="property">class </em><code class="sig-prename descclassname">SCons.Scanner.LaTeX.</code><code class="sig-name descname">LaTeX</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">suffixes</span></em>, <em class="sig-param"><span class="n">graphics_extensions</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/LaTeX/#LaTeX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.LaTeX.LaTeX" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#SCons.Scanner.Base" title="SCons.Scanner.Base"><code class="xref py py-class docutils literal notranslate"><span class="pre">SCons.Scanner.Base</span></code></a></p>
+<p>Class for scanning LaTeX files for included files.</p>
+<p>Unlike most scanners, which use regular expressions that just
+return the included file name, this returns a tuple consisting
+of the keyword for the inclusion (“include”, “includegraphics”,
+“input”, or “bibliography”), and then the file name itself.
+Based on a quick look at LaTeX documentation, it seems that we
+should append .tex suffix for the “include” keywords, append .tex if
+there is no extension for the “input” keyword, and need to add .bib
+for the “bibliography” keyword that does not accept extensions by itself.</p>
+<p>Finally, if there is no extension for an “includegraphics” keyword
+latex will append .ps or .eps to find the file, while pdftex may use .pdf,
+.jpg, .tif, .mps, or .png.</p>
+<p>The actual subset and search order may be altered by
+DeclareGraphicsExtensions command. This complication is ignored.
+The default order corresponds to experimentation with teTeX:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ latex --version
+pdfeTeX 3.141592-1.21a-2.2 (Web2C 7.5.4)
+kpathsea version 3.5.4
+</pre></div>
+</div>
+<dl class="simple">
+<dt>The order is:</dt><dd><p>[‘.eps’, ‘.ps’] for latex
+[‘.png’, ‘.pdf’, ‘.jpg’, ‘.tif’].</p>
+</dd>
+</dl>
+<p>Another difference is that the search path is determined by the type
+of the file being searched:
+env[‘TEXINPUTS’] for “input” and “include” keywords
+env[‘TEXINPUTS’] for “includegraphics” keyword
+env[‘TEXINPUTS’] for “lstinputlisting” keyword
+env[‘BIBINPUTS’] for “bibliography” keyword
+env[‘BSTINPUTS’] for “bibliographystyle” keyword
+env[‘INDEXSTYLE’] for “makeindex” keyword, no scanning support needed just allows user to set it if needed.</p>
+<p>FIXME: also look for the class or style in document[class|style]{}
+FIXME: also look for the argument of bibliographystyle{}</p>
+<dl class="py method">
+<dt id="SCons.Scanner.LaTeX.LaTeX._latex_names">
+<code class="sig-name descname">_latex_names</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">include_type</span></em>, <em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/LaTeX/#LaTeX._latex_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.LaTeX.LaTeX._latex_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.LaTeX.LaTeX._recurse_all_nodes">
+<code class="sig-name descname">_recurse_all_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nodes</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.LaTeX.LaTeX._recurse_all_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.LaTeX.LaTeX._recurse_no_nodes">
+<code class="sig-name descname">_recurse_no_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nodes</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.LaTeX.LaTeX._recurse_no_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.LaTeX.LaTeX.add_scanner">
+<code class="sig-name descname">add_scanner</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">skey</span></em>, <em class="sig-param"><span class="n">scanner</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.LaTeX.LaTeX.add_scanner" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.LaTeX.LaTeX.add_skey">
+<code class="sig-name descname">add_skey</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">skey</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.LaTeX.LaTeX.add_skey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a skey to the list of skeys</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.LaTeX.LaTeX.canonical_text">
+<code class="sig-name descname">canonical_text</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/LaTeX/#LaTeX.canonical_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.LaTeX.LaTeX.canonical_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Standardize an input TeX-file contents.</p>
+<dl class="simple">
+<dt>Currently:</dt><dd><ul class="simple">
+<li><p>removes comments, unwrapping comment-wrapped lines.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="SCons.Scanner.LaTeX.LaTeX.env_variables">
+<code class="sig-name descname">env_variables</code><em class="property"> = ['TEXINPUTS', 'BIBINPUTS', 'BSTINPUTS', 'INDEXSTYLE']</em><a class="headerlink" href="#SCons.Scanner.LaTeX.LaTeX.env_variables" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.LaTeX.LaTeX.find_include">
+<code class="sig-name descname">find_include</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">include</span></em>, <em class="sig-param"><span class="n">source_dir</span></em>, <em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/LaTeX/#LaTeX.find_include"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.LaTeX.LaTeX.find_include" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.LaTeX.LaTeX.get_skeys">
+<code class="sig-name descname">get_skeys</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.LaTeX.LaTeX.get_skeys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="SCons.Scanner.LaTeX.LaTeX.keyword_paths">
+<code class="sig-name descname">keyword_paths</code><em class="property"> = {'addbibresource': 'BIBINPUTS', 'addglobalbib': 'BIBINPUTS', 'addsectionbib': 'BIBINPUTS', 'bibliography': 'BIBINPUTS', 'bibliographystyle': 'BSTINPUTS', 'include': 'TEXINPUTS', 'includegraphics': 'TEXINPUTS', 'input': 'TEXINPUTS', 'lstinputlisting': 'TEXINPUTS', 'makeindex': 'INDEXSTYLE', 'usepackage': 'TEXINPUTS'}</em><a class="headerlink" href="#SCons.Scanner.LaTeX.LaTeX.keyword_paths" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.LaTeX.LaTeX.path">
+<code class="sig-name descname">path</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span></em>, <em class="sig-param"><span class="n">dir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">target</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">source</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.LaTeX.LaTeX.path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.LaTeX.LaTeX.scan">
+<code class="sig-name descname">scan</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">subdir</span><span class="o">=</span><span class="default_value">'.'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/LaTeX/#LaTeX.scan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.LaTeX.LaTeX.scan" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.LaTeX.LaTeX.scan_recurse">
+<code class="sig-name descname">scan_recurse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">()</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/LaTeX/#LaTeX.scan_recurse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.LaTeX.LaTeX.scan_recurse" title="Permalink to this definition">¶</a></dt>
+<dd><p>do a recursive scan of the top level target file
+This lets us search for included files based on the
+directory of the main file just as latex does</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.LaTeX.LaTeX.select">
+<code class="sig-name descname">select</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.LaTeX.LaTeX.select" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.LaTeX.LaTeX.sort_key">
+<code class="sig-name descname">sort_key</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">include</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/LaTeX/#LaTeX.sort_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.LaTeX.LaTeX.sort_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="SCons.Scanner.LaTeX.LaTeX.two_arg_commands">
+<code class="sig-name descname">two_arg_commands</code><em class="property"> = ['import', 'subimport', 'includefrom', 'subincludefrom', 'inputfrom', 'subinputfrom']</em><a class="headerlink" href="#SCons.Scanner.LaTeX.LaTeX.two_arg_commands" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="SCons.Scanner.LaTeX.LaTeXScanner">
+<code class="sig-prename descclassname">SCons.Scanner.LaTeX.</code><code class="sig-name descname">LaTeXScanner</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/LaTeX/#LaTeXScanner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.LaTeX.LaTeXScanner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a prototype Scanner instance for scanning LaTeX source files
+when built with latex.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="SCons.Scanner.LaTeX.PDFLaTeXScanner">
+<code class="sig-prename descclassname">SCons.Scanner.LaTeX.</code><code class="sig-name descname">PDFLaTeXScanner</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/LaTeX/#PDFLaTeXScanner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.LaTeX.PDFLaTeXScanner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a prototype Scanner instance for scanning LaTeX source files
+when built with pdflatex.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="SCons.Scanner.LaTeX._Null">
+<em class="property">class </em><code class="sig-prename descclassname">SCons.Scanner.LaTeX.</code><code class="sig-name descname">_Null</code><a class="reference internal" href="../_modules/SCons/Scanner/LaTeX/#_Null"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.LaTeX._Null" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="SCons.Scanner.LaTeX._null">
+<code class="sig-prename descclassname">SCons.Scanner.LaTeX.</code><code class="sig-name descname">_null</code><a class="headerlink" href="#SCons.Scanner.LaTeX._null" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#SCons.Scanner.LaTeX._Null" title="SCons.Scanner.LaTeX._Null"><code class="xref py py-class docutils literal notranslate"><span class="pre">SCons.Scanner.LaTeX._Null</span></code></a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="SCons.Scanner.LaTeX.modify_env_var">
+<code class="sig-prename descclassname">SCons.Scanner.LaTeX.</code><code class="sig-name descname">modify_env_var</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span></em>, <em class="sig-param"><span class="n">var</span></em>, <em class="sig-param"><span class="n">abspath</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/LaTeX/#modify_env_var"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.LaTeX.modify_env_var" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-SCons.Scanner.Prog">
+<span id="scons-scanner-prog-module"></span><h2>SCons.Scanner.Prog module<a class="headerlink" href="#module-SCons.Scanner.Prog" title="Permalink to this headline">¶</a></h2>
+<p>Dependency scanner for program files.</p>
+<dl class="py function">
+<dt id="SCons.Scanner.Prog.ProgramScanner">
+<code class="sig-prename descclassname">SCons.Scanner.Prog.</code><code class="sig-name descname">ProgramScanner</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/Prog/#ProgramScanner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.Prog.ProgramScanner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a prototype Scanner instance for scanning executable
+files for static-lib dependencies</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="SCons.Scanner.Prog._subst_libs">
+<code class="sig-prename descclassname">SCons.Scanner.Prog.</code><code class="sig-name descname">_subst_libs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span></em>, <em class="sig-param"><span class="n">libs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/Prog/#_subst_libs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.Prog._subst_libs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Substitute environment variables and split into list.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="SCons.Scanner.Prog.scan">
+<code class="sig-prename descclassname">SCons.Scanner.Prog.</code><code class="sig-name descname">scan</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">env</span></em>, <em class="sig-param"><span class="n">libpath</span><span class="o">=</span><span class="default_value">()</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/Prog/#scan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.Prog.scan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scans program files for static-library dependencies.</p>
+<p>It will search the LIBPATH environment variable
+for libraries specified in the LIBS variable, returning any
+files it finds as dependencies.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-SCons.Scanner.RC">
+<span id="scons-scanner-rc-module"></span><h2>SCons.Scanner.RC module<a class="headerlink" href="#module-SCons.Scanner.RC" title="Permalink to this headline">¶</a></h2>
+<p>Dependency scanner for RC (Interface Definition Language) files.</p>
+<dl class="py function">
+<dt id="SCons.Scanner.RC.RCScan">
+<code class="sig-prename descclassname">SCons.Scanner.RC.</code><code class="sig-name descname">RCScan</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/RC/#RCScan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.RC.RCScan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a prototype Scanner instance for scanning RC source files</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="SCons.Scanner.RC.no_tlb">
+<code class="sig-prename descclassname">SCons.Scanner.RC.</code><code class="sig-name descname">no_tlb</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nodes</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/RC/#no_tlb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.RC.no_tlb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter out .tlb files as they are binary and shouldn’t be scanned.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-SCons.Scanner.SWIG">
+<span id="scons-scanner-swig-module"></span><h2>SCons.Scanner.SWIG module<a class="headerlink" href="#module-SCons.Scanner.SWIG" title="Permalink to this headline">¶</a></h2>
+<p>Dependency scanner for SWIG code.</p>
+<dl class="py function">
+<dt id="SCons.Scanner.SWIG.SWIGScanner">
+<code class="sig-prename descclassname">SCons.Scanner.SWIG.</code><code class="sig-name descname">SWIGScanner</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/SWIG/#SWIGScanner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.SWIG.SWIGScanner" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-SCons.Scanner">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-SCons.Scanner" title="Permalink to this headline">¶</a></h2>
+<p>The Scanner package for the SCons software construction utility.</p>
+<dl class="py class">
+<dt id="SCons.Scanner.Base">
+<em class="property">class </em><code class="sig-prename descclassname">SCons.Scanner.</code><code class="sig-name descname">Base</code><span class="sig-paren">(</span><em class="sig-param">function</em>, <em class="sig-param">name='NONE'</em>, <em class="sig-param">argument=&lt;class 'SCons.Scanner._Null'&gt;</em>, <em class="sig-param">skeys=&lt;class 'SCons.Scanner._Null'&gt;</em>, <em class="sig-param">path_function=None</em>, <em class="sig-param">node_class=&lt;class 'SCons.Node.FS.Base'&gt;</em>, <em class="sig-param">node_factory=None</em>, <em class="sig-param">scan_check=None</em>, <em class="sig-param">recursive=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/#Base"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.Base" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class for dependency scanners.</p>
+<p>This implements straightforward, single-pass scanning of a single file.</p>
+<dl class="py method">
+<dt id="SCons.Scanner.Base._recurse_all_nodes">
+<code class="sig-name descname">_recurse_all_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nodes</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/#Base._recurse_all_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.Base._recurse_all_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Base._recurse_no_nodes">
+<code class="sig-name descname">_recurse_no_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nodes</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/#Base._recurse_no_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.Base._recurse_no_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Base.add_scanner">
+<code class="sig-name descname">add_scanner</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">skey</span></em>, <em class="sig-param"><span class="n">scanner</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/#Base.add_scanner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.Base.add_scanner" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Base.add_skey">
+<code class="sig-name descname">add_skey</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">skey</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/#Base.add_skey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.Base.add_skey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a skey to the list of skeys</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Base.get_skeys">
+<code class="sig-name descname">get_skeys</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/#Base.get_skeys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.Base.get_skeys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Base.path">
+<code class="sig-name descname">path</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span></em>, <em class="sig-param"><span class="n">dir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">target</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">source</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/#Base.path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.Base.path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Base.select">
+<code class="sig-name descname">select</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/#Base.select"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.Base.select" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="SCons.Scanner.Classic">
+<em class="property">class </em><code class="sig-prename descclassname">SCons.Scanner.</code><code class="sig-name descname">Classic</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">suffixes</span></em>, <em class="sig-param"><span class="n">path_variable</span></em>, <em class="sig-param"><span class="n">regex</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/#Classic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.Classic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#SCons.Scanner.Current" title="SCons.Scanner.Current"><code class="xref py py-class docutils literal notranslate"><span class="pre">SCons.Scanner.Current</span></code></a></p>
+<p>A Scanner subclass to contain the common logic for classic CPP-style
+include scanning, but which can be customized to use different
+regular expressions to find the includes.</p>
+<p>Note that in order for this to work “out of the box” (without
+overriding the find_include() and sort_key() methods), the regular
+expression passed to the constructor must return the name of the
+include file in group 0.</p>
+<dl class="py method">
+<dt id="SCons.Scanner.Classic._recurse_all_nodes">
+<code class="sig-name descname">_recurse_all_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nodes</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.Classic._recurse_all_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Classic._recurse_no_nodes">
+<code class="sig-name descname">_recurse_no_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nodes</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.Classic._recurse_no_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Classic.add_scanner">
+<code class="sig-name descname">add_scanner</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">skey</span></em>, <em class="sig-param"><span class="n">scanner</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.Classic.add_scanner" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Classic.add_skey">
+<code class="sig-name descname">add_skey</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">skey</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.Classic.add_skey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a skey to the list of skeys</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Classic.find_include">
+<code class="sig-name descname">find_include</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">include</span></em>, <em class="sig-param"><span class="n">source_dir</span></em>, <em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/#Classic.find_include"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.Classic.find_include" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Classic.find_include_names">
+<code class="sig-name descname">find_include_names</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/#Classic.find_include_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.Classic.find_include_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Classic.get_skeys">
+<code class="sig-name descname">get_skeys</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.Classic.get_skeys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Classic.path">
+<code class="sig-name descname">path</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span></em>, <em class="sig-param"><span class="n">dir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">target</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">source</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.Classic.path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Classic.scan">
+<code class="sig-name descname">scan</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">()</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/#Classic.scan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.Classic.scan" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Classic.select">
+<code class="sig-name descname">select</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.Classic.select" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Classic.sort_key">
+<code class="sig-name descname">sort_key</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">include</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/#Classic.sort_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.Classic.sort_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="SCons.Scanner.ClassicCPP">
+<em class="property">class </em><code class="sig-prename descclassname">SCons.Scanner.</code><code class="sig-name descname">ClassicCPP</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">suffixes</span></em>, <em class="sig-param"><span class="n">path_variable</span></em>, <em class="sig-param"><span class="n">regex</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/#ClassicCPP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.ClassicCPP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#SCons.Scanner.Classic" title="SCons.Scanner.Classic"><code class="xref py py-class docutils literal notranslate"><span class="pre">SCons.Scanner.Classic</span></code></a></p>
+<p>A Classic Scanner subclass which takes into account the type of
+bracketing used to include the file, and uses classic CPP rules
+for searching for the files based on the bracketing.</p>
+<p>Note that in order for this to work, the regular expression passed
+to the constructor must return the leading bracket in group 0, and
+the contained filename in group 1.</p>
+<dl class="py method">
+<dt id="SCons.Scanner.ClassicCPP._recurse_all_nodes">
+<code class="sig-name descname">_recurse_all_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nodes</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.ClassicCPP._recurse_all_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.ClassicCPP._recurse_no_nodes">
+<code class="sig-name descname">_recurse_no_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nodes</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.ClassicCPP._recurse_no_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.ClassicCPP.add_scanner">
+<code class="sig-name descname">add_scanner</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">skey</span></em>, <em class="sig-param"><span class="n">scanner</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.ClassicCPP.add_scanner" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.ClassicCPP.add_skey">
+<code class="sig-name descname">add_skey</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">skey</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.ClassicCPP.add_skey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a skey to the list of skeys</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.ClassicCPP.find_include">
+<code class="sig-name descname">find_include</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">include</span></em>, <em class="sig-param"><span class="n">source_dir</span></em>, <em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/#ClassicCPP.find_include"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.ClassicCPP.find_include" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.ClassicCPP.find_include_names">
+<code class="sig-name descname">find_include_names</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.ClassicCPP.find_include_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.ClassicCPP.get_skeys">
+<code class="sig-name descname">get_skeys</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.ClassicCPP.get_skeys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.ClassicCPP.path">
+<code class="sig-name descname">path</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span></em>, <em class="sig-param"><span class="n">dir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">target</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">source</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.ClassicCPP.path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.ClassicCPP.scan">
+<code class="sig-name descname">scan</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">()</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.ClassicCPP.scan" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.ClassicCPP.select">
+<code class="sig-name descname">select</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.ClassicCPP.select" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.ClassicCPP.sort_key">
+<code class="sig-name descname">sort_key</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">include</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/#ClassicCPP.sort_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.ClassicCPP.sort_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="SCons.Scanner.Current">
+<em class="property">class </em><code class="sig-prename descclassname">SCons.Scanner.</code><code class="sig-name descname">Current</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/#Current"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.Current" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#SCons.Scanner.Base" title="SCons.Scanner.Base"><code class="xref py py-class docutils literal notranslate"><span class="pre">SCons.Scanner.Base</span></code></a></p>
+<p>A class for scanning files that are source files (have no builder)
+or are derived files and are current (which implies that they exist,
+either locally or in a repository).</p>
+<dl class="py method">
+<dt id="SCons.Scanner.Current._recurse_all_nodes">
+<code class="sig-name descname">_recurse_all_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nodes</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.Current._recurse_all_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Current._recurse_no_nodes">
+<code class="sig-name descname">_recurse_no_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nodes</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.Current._recurse_no_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Current.add_scanner">
+<code class="sig-name descname">add_scanner</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">skey</span></em>, <em class="sig-param"><span class="n">scanner</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.Current.add_scanner" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Current.add_skey">
+<code class="sig-name descname">add_skey</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">skey</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.Current.add_skey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a skey to the list of skeys</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Current.get_skeys">
+<code class="sig-name descname">get_skeys</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.Current.get_skeys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Current.path">
+<code class="sig-name descname">path</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span></em>, <em class="sig-param"><span class="n">dir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">target</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">source</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.Current.path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Current.select">
+<code class="sig-name descname">select</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.Current.select" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="SCons.Scanner.FindPathDirs">
+<em class="property">class </em><code class="sig-prename descclassname">SCons.Scanner.</code><code class="sig-name descname">FindPathDirs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">variable</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/#FindPathDirs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.FindPathDirs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class to bind a specific E{*}PATH variable name to a function that
+will return all of the E{*}path directories.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="SCons.Scanner.Scanner">
+<code class="sig-prename descclassname">SCons.Scanner.</code><code class="sig-name descname">Scanner</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">function</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/#Scanner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.Scanner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Factory function to create a Scanner Object.</p>
+<p>Creates the appropriate Scanner based on the type of “function”.</p>
+<p>TODO:  Deprecate this some day.  We’ve moved the functionality
+inside the Base class and really don’t need this factory function
+any more.  It was, however, used by some of our Tool modules, so
+the call probably ended up in various people’s custom modules
+patterned on SCons code.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="SCons.Scanner.Selector">
+<em class="property">class </em><code class="sig-prename descclassname">SCons.Scanner.</code><code class="sig-name descname">Selector</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dict</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/#Selector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.Selector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#SCons.Scanner.Base" title="SCons.Scanner.Base"><code class="xref py py-class docutils literal notranslate"><span class="pre">SCons.Scanner.Base</span></code></a></p>
+<p>A class for selecting a more specific scanner based on the
+scanner_key() (suffix) for a specific Node.</p>
+<p>TODO:  This functionality has been moved into the inner workings of
+the Base class, and this class will be deprecated at some point.
+(It was never exposed directly as part of the public interface,
+although it is used by the Scanner() factory function that was
+used by various Tool modules and therefore was likely a template
+for custom modules that may be out there.)</p>
+<dl class="py method">
+<dt id="SCons.Scanner.Selector._recurse_all_nodes">
+<code class="sig-name descname">_recurse_all_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nodes</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.Selector._recurse_all_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Selector._recurse_no_nodes">
+<code class="sig-name descname">_recurse_no_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nodes</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.Selector._recurse_no_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Selector.add_scanner">
+<code class="sig-name descname">add_scanner</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">skey</span></em>, <em class="sig-param"><span class="n">scanner</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/#Selector.add_scanner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.Selector.add_scanner" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Selector.add_skey">
+<code class="sig-name descname">add_skey</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">skey</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.Selector.add_skey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a skey to the list of skeys</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Selector.get_skeys">
+<code class="sig-name descname">get_skeys</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.Selector.get_skeys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Selector.path">
+<code class="sig-name descname">path</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span></em>, <em class="sig-param"><span class="n">dir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">target</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">source</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SCons.Scanner.Selector.path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Scanner.Selector.select">
+<code class="sig-name descname">select</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Scanner/#Selector.select"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner.Selector.select" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="SCons.Scanner._Null">
+<em class="property">class </em><code class="sig-prename descclassname">SCons.Scanner.</code><code class="sig-name descname">_Null</code><a class="reference internal" href="../_modules/SCons/Scanner/#_Null"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Scanner._Null" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="SCons.Scanner._null">
+<code class="sig-prename descclassname">SCons.Scanner.</code><code class="sig-name descname">_null</code><a class="headerlink" href="#SCons.Scanner._null" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#SCons.Scanner._Null" title="SCons.Scanner._Null"><code class="xref py py-class docutils literal notranslate"><span class="pre">SCons.Scanner._Null</span></code></a></p>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../SCons.Script/" class="btn btn-neutral float-right" title="SCons.Script package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../SCons.Platform/" class="btn btn-neutral float-left" title="SCons.Platform package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, SCons Project.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

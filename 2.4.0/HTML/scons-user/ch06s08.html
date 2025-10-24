@@ -1,0 +1,139 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>6.8. Order-Only Dependencies: the Requires Function</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 2.4.0"><link rel="up" href="ch06.html" title="Chapter 6. Dependencies"><link rel="prev" href="ch06s07.html" title="6.7. Ignoring Dependencies: the Ignore Function"><link rel="next" href="ch06s09.html" title="6.9. The AlwaysBuild Function"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">6.8. Order-Only Dependencies:  the <code class="function">Requires</code> Function</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch06s07.html">Prev</a> </td><th width="60%" align="center">Chapter 6. Dependencies</th><td width="20%" align="right"> <a accesskey="n" href="ch06s09.html">Next</a></td></tr></table><hr></div><div class="section" title="6.8. Order-Only Dependencies: the Requires Function"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idm139970753886048"></a>6.8. Order-Only Dependencies:  the <code class="function">Requires</code> Function</h2></div></div></div><p>
+
+    Occasionally,
+    it may be useful to specify that a certain
+    file or directory must, if necessary,
+    be built or created before some other target is built,
+    but that changes to that file or directory
+    do <span class="emphasis"><em>not</em></span>
+    require that the target itself be rebuilt.
+    Such a relationship is called an
+    <span class="emphasis"><em>order-only dependency</em></span>
+    because it only affects the order in which
+    things must be built--the dependency before the target--but
+    it is not a strict dependency relationship
+    because the target should not
+    change in response to changes in the dependent file.
+
+    </p><p>
+
+    For example, suppose that you want to create a file
+    every time you run a build
+    that identifies the time the build was performed,
+    the version number, etc.,
+    and which is included in every program that you build.
+    The version file's contents will change every build.
+    If you specify a normal dependency relationship,
+    then every program that depends on
+    that file would be rebuilt every time you ran <span class="application">SCons</span>.
+    For example, we could use some Python code in
+    a <code class="filename">SConstruct</code> file to create a new <code class="filename">version.c</code> file
+    with a string containing the current date every time
+    we run <span class="application">SCons</span>,
+    and then link a program with the resulting object file
+    by listing <code class="filename">version.c</code> in the sources:
+
+    </p><pre class="programlisting">
+import time
+
+version_c_text = """
+char *date = "%s";
+""" % time.ctime(time.time())
+open('version.c', 'w').write(version_c_text)
+
+hello = Program(['hello.c', 'version.c'])
+      </pre><p>
+
+    If we list <code class="filename">version.c</code> as an actual source file,
+    though, then the <code class="filename">version.o</code> file
+    will get rebuilt every time we run <span class="application">SCons</span>
+    (because the <code class="filename">SConstruct</code> file itself changes
+    the contents of <code class="filename">version.c</code>)
+    and the <code class="filename">hello</code> executable
+    will get re-linked every time
+    (because the <code class="filename">version.o</code> file changes):
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q hello</code></strong>
+cc -o hello.o -c hello.c
+cc -o version.o -c version.c
+cc -o hello hello.o version.o
+% <strong class="userinput"><code>sleep 1</code></strong>
+% <strong class="userinput"><code>scons -Q hello</code></strong>
+cc -o version.o -c version.c
+cc -o hello hello.o version.o
+% <strong class="userinput"><code>sleep 1</code></strong>
+% <strong class="userinput"><code>scons -Q hello</code></strong>
+cc -o version.o -c version.c
+cc -o hello hello.o version.o
+</pre><p>
+
+    (Note that for the above example to work,
+    we <span class="application">sleep</span> for one second in between each run,
+    so that the <code class="filename">SConstruct</code> file will create a
+    <code class="filename">version.c</code> file with a time string
+    that's one second later than the previous run.)
+
+    </p><p>
+
+    One solution is to use the <code class="function">Requires</code> function
+    to specify that the <code class="filename">version.o</code>
+    must be rebuilt before it is used by the link step,
+    but that changes to <code class="filename">version.o</code>
+    should not actually cause the <code class="filename">hello</code>
+    executable to be re-linked:
+
+    </p><pre class="programlisting">
+import time
+
+version_c_text = """
+char *date = "%s";
+""" % time.ctime(time.time())
+open('version.c', 'w').write(version_c_text)
+
+version_obj = Object('version.c')
+
+hello = Program('hello.c',
+                LINKFLAGS = str(version_obj[0]))
+
+Requires(hello, version_obj)
+      </pre><p>
+
+    Notice that because we can no longer list <code class="filename">version.c</code>
+    as one of the sources for the <code class="filename">hello</code> program,
+    we have to find some other way to get it into the link command line.
+    For this example, we're cheating a bit and stuffing the
+    object file name (extracted from <code class="literal">version_obj</code>
+    list returned by the <code class="function">Object</code> call)
+    into the <a class="link" href="apa.html#cv-LINKFLAGS"><code class="envar">$LINKFLAGS</code></a> variable,
+    because <code class="envar">$LINKFLAGS</code> is already included
+    in the <a class="link" href="apa.html#cv-LINKCOM"><code class="envar">$LINKCOM</code></a> command line.
+
+    </p><p>
+
+    With these changes,
+    we get the desired behavior of only
+    re-linking the <code class="filename">hello</code> executable
+    when the <code class="filename">hello.c</code> has changed,
+    even though the <code class="filename">version.o</code> is rebuilt
+    (because the <code class="filename">SConstruct</code> file still changes the
+    <code class="filename">version.c</code> contents directly each run):
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q hello</code></strong>
+cc -o version.o -c version.c
+cc -o hello.o -c hello.c
+cc -o hello version.o hello.o
+% <strong class="userinput"><code>sleep 1</code></strong>
+% <strong class="userinput"><code>scons -Q hello</code></strong>
+cc -o version.o -c version.c
+scons: `hello' is up to date.
+% <strong class="userinput"><code>sleep 1</code></strong>
+%     [CHANGE THE CONTENTS OF hello.c]
+% <strong class="userinput"><code>scons -Q hello</code></strong>
+cc -o version.o -c version.c
+cc -o hello.o -c hello.c
+cc -o hello version.o hello.o
+% <strong class="userinput"><code>sleep 1</code></strong>
+% <strong class="userinput"><code>scons -Q hello</code></strong>
+cc -o version.o -c version.c
+scons: `hello' is up to date.
+</pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch06s07.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch06.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch06s09.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">6.7. Ignoring Dependencies:  the <code class="function">Ignore</code> Function </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 6.9. The <code class="function">AlwaysBuild</code> Function</td></tr></table></div></body></html>

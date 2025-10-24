@@ -1,0 +1,238 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Building RMI Stub and Skeleton Class Files:  the RMIC Builder</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 0.98.3"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Java Builds"
+HREF="c3227.html"><LINK
+REL="PREVIOUS"
+TITLE="Building C Header and Stub Files:  the JavaH Builder"
+HREF="x3314.html"><LINK
+REL="NEXT"
+TITLE="Troubleshooting"
+HREF="c3392.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 0.98.3</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x3314.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 25. Java Builds</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="c3392.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN3368"
+>25.5. Building RMI Stub and Skeleton Class Files:  the <CODE
+CLASS="function"
+>RMIC</CODE
+> Builder</A
+></H1
+><P
+>&#13;
+    You can generate Remote Method Invocation stubs
+    by using the <A
+HREF="a7140.html#b-RMIC"
+><CODE
+CLASS="function"
+>RMIC</CODE
+></A
+> Builder.
+    The source is a list of directories,
+    typically returned by a call to the <A
+HREF="a7140.html#b-Java"
+><CODE
+CLASS="function"
+>Java</CODE
+></A
+> Builder,
+    and the target is an output directory
+    where the <TT
+CLASS="filename"
+>_Stub.class</TT
+>
+    and <TT
+CLASS="filename"
+>_Skel.class</TT
+> files will
+    be placed:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;      classes = Java(target = 'classes', source = 'src/pkg/sub')
+      RMIC(target = 'outdir', source = classes)
+    </PRE
+><P
+>&#13;
+    As it did with the <A
+HREF="a7140.html#b-JavaH"
+><CODE
+CLASS="function"
+>JavaH</CODE
+></A
+> Builder,
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> remembers the class directory
+    and passes it as the <CODE
+CLASS="option"
+>-classpath</CODE
+> option
+    to <SPAN
+CLASS="application"
+>rmic</SPAN
+>:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      javac -d classes -sourcepath src/pkg/sub src/pkg/sub/Example1.java src/pkg/sub/Example2.java
+      rmic -d outdir -classpath classes pkg.sub.Example1 pkg.sub.Example2
+    </PRE
+><P
+>&#13;
+    This example would generate the files
+    <TT
+CLASS="filename"
+>outdir/pkg/sub/Example1_Skel.class</TT
+>,
+    <TT
+CLASS="filename"
+>outdir/pkg/sub/Example1_Stub.class</TT
+>,
+    <TT
+CLASS="filename"
+>outdir/pkg/sub/Example2_Skel.class</TT
+> and
+    <TT
+CLASS="filename"
+>outdir/pkg/sub/Example2_Stub.class</TT
+>.
+
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x3314.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="c3392.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Building C Header and Stub Files:  the <CODE
+CLASS="function"
+>JavaH</CODE
+> Builder</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c3227.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Troubleshooting</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

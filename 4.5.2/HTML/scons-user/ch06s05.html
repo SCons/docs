@@ -1,0 +1,93 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>6.5. Dependencies From External Files: the ParseDepends Function</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.5.2"><link rel="up" href="ch06.html" title="Chapter 6. Dependencies"><link rel="prev" href="ch06s04.html" title="6.4. Explicit Dependencies: the Depends Function"><link rel="next" href="ch06s06.html" title="6.6. Ignoring Dependencies: the Ignore Function"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">6.5. Dependencies From External Files:  the <code class="function">ParseDepends</code>
+  Function</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch06s04.html">Prev</a> </td><th width="60%" align="center">Chapter 6. Dependencies</th><td width="20%" align="right"> <a accesskey="n" href="ch06s06.html">Next</a></td></tr></table><hr></div><div class="section" title="6.5. Dependencies From External Files: the ParseDepends Function"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idp105548963887176"></a>6.5. Dependencies From External Files:  the <code class="function">ParseDepends</code>
+  Function</h2></div></div></div><p>
+
+    <span class="application">SCons</span> has built-in scanners for a number of languages. Sometimes
+    these scanners fail to extract certain implicit dependencies due
+    to limitations of the scanner implementation.
+
+    </p><p>
+
+    The following example illustrates a case where the built-in C
+    scanner is unable to extract the implicit dependency on a header
+    file.
+
+    </p><pre class="programlisting">
+#define FOO_HEADER &lt;foo.h&gt;
+#include FOO_HEADER
+
+int main() {
+    return FOO;
+}
+      </pre><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o hello.o -c -I. hello.c
+cc -o hello hello.o
+%    [CHANGE CONTENTS OF foo.h]
+% <strong class="userinput"><code>scons -Q</code></strong>
+scons: `.' is up to date.
+</pre><p>
+
+    Apparently, the scanner does not know about the header dependency.
+    Not being a full-fledged C preprocessor, the scanner does not
+    expand the macro.
+
+    </p><p>
+
+    In these cases, you may also use the compiler to extract the
+    implicit dependencies. <a class="link" href="apd.html#f-ParseDepends"><code class="function">ParseDepends</code></a> can parse the contents of
+    the compiler output in the style of <span class="application">Make</span>, and explicitly
+    establish all of the listed dependencies.
+
+    </p><p>
+
+    The following example uses <code class="function">ParseDepends</code> to process a compiler
+    generated dependency file which is generated as a side effect
+    during compilation of the object file:
+
+    </p><pre class="programlisting">
+obj = Object('hello.c', CCFLAGS='-MD -MF hello.d', CPPPATH='.')
+SideEffect('hello.d', obj)
+ParseDepends('hello.d')
+Program('hello', obj)
+      </pre><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o hello.o -c -MD -MF hello.d -I. hello.c
+cc -o hello hello.o
+%    [CHANGE CONTENTS OF foo.h]
+% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o hello.o -c -MD -MF hello.d -I. hello.c
+</pre><p>
+
+    Parsing dependencies from a compiler-generated
+    <code class="filename">.d</code> file has a chicken-and-egg problem, that
+    causes unnecessary rebuilds:
+
+    </p><pre class="screen">
+% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o hello.o -c -MD -MF hello.d -I. hello.c
+cc -o hello hello.o
+% <strong class="userinput"><code>scons -Q --debug=explain</code></strong>
+scons: rebuilding `hello.o' because `foo.h' is a new dependency
+cc -o hello.o -c -MD -MF hello.d -I. hello.c
+% <strong class="userinput"><code>scons -Q</code></strong>
+scons: `.' is up to date.
+    </pre><p>
+
+    In the first pass, the dependency file is generated while the
+    object file is compiled. At that time, <span class="application">SCons</span> does not know about
+    the dependency on <code class="filename">foo.h</code>. In the second pass,
+    the object file is regenerated because <code class="filename">foo.h</code>
+    is detected as a new dependency.
+
+    </p><p>
+
+    <code class="function">ParseDepends</code> immediately reads the specified file at invocation
+    time and just returns if the file does not exist. A dependency
+    file generated during the build process is not automatically
+    parsed again. Hence, the compiler-extracted dependencies are not
+    stored in the signature database during the same build pass. This
+    limitation of <code class="function">ParseDepends</code> leads to unnecessary recompilations.
+    Therefore, <code class="function">ParseDepends</code> should only be used if scanners are not
+    available for the employed language or not powerful enough for the
+    specific task.
+
+    </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch06s04.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch06.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch06s06.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">6.4. Explicit Dependencies:  the <code class="function">Depends</code> Function </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 6.6. Ignoring Dependencies:  the <code class="function">Ignore</code> Function</td></tr></table></div></body></html>

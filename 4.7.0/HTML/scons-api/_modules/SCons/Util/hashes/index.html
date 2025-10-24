@@ -1,0 +1,752 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SCons.Util.hashes &#8212; SCons 4.7.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/sphinx-book-theme.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/scripts/sphinx-book-theme.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/SCons/Util/hashes';</script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search/"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../../">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SCons 4.7.0 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../SCons/">SCons package</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Taskmaster/">SCons.Taskmaster package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Util/">SCons.Util package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Variables/">SCons.Variables package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.compat/">SCons.compat package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.compat/">SCons.compat package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Taskmaster/">SCons.Taskmaster package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Util/">SCons.Util package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Variables/">SCons.Variables package</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for SCons.Util.hashes</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: MIT</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright The SCons Foundation</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">SCons hash utility routines.</span>
+
+<span class="sd">Routines for working with content and signature hashes.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">.sctypes</span> <span class="kn">import</span> <span class="n">to_bytes</span>
+
+
+<span class="c1"># Default hash function and format. SCons-internal.</span>
+<span class="n">DEFAULT_HASH_FORMATS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;md5&#39;</span><span class="p">,</span> <span class="s1">&#39;sha1&#39;</span><span class="p">,</span> <span class="s1">&#39;sha256&#39;</span><span class="p">]</span>
+<span class="n">ALLOWED_HASH_FORMATS</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">_HASH_FUNCTION</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">_HASH_FORMAT</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="_attempt_init_of_python_3_9_hash_object"><a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.hashes._attempt_init_of_python_3_9_hash_object">[docs]</a><span class="k">def</span> <span class="nf">_attempt_init_of_python_3_9_hash_object</span><span class="p">(</span><span class="n">hash_function_object</span><span class="p">,</span> <span class="n">sys_used</span><span class="o">=</span><span class="n">sys</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize hash function with non-security indicator.</span>
+
+<span class="sd">    In Python 3.9 and onwards, :mod:`hashlib` constructors accept a</span>
+<span class="sd">    keyword argument *usedforsecurity*, which, if set to ``False``,</span>
+<span class="sd">    lets us continue to use algorithms that have been deprecated either</span>
+<span class="sd">    by FIPS or by Python itself, as the MD5 algorithm SCons prefers is</span>
+<span class="sd">    not being used for security purposes as much as a short, 32 char</span>
+<span class="sd">    hash that is resistant to accidental collisions.</span>
+
+<span class="sd">    In prior versions of python, :mod:`hashlib` returns a native function</span>
+<span class="sd">    wrapper, which errors out when it&#39;s queried for the optional</span>
+<span class="sd">    parameter, so this function wraps that call.</span>
+
+<span class="sd">    It can still throw a ValueError if the initialization fails due to</span>
+<span class="sd">    FIPS compliance issues, but that is assumed to be the responsibility</span>
+<span class="sd">    of the caller.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">hash_function_object</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="c1"># https://stackoverflow.com/a/11887885 details how to check versions</span>
+    <span class="c1"># with the &quot;packaging&quot; library. However, for our purposes, checking</span>
+    <span class="c1"># the version is greater than or equal to 3.9 is good enough, as the API</span>
+    <span class="c1"># is guaranteed to have support for the &#39;usedforsecurity&#39; flag in 3.9. See</span>
+    <span class="c1"># https://docs.python.org/3/library/hashlib.html#:~:text=usedforsecurity</span>
+    <span class="c1"># for the version support notes.</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">sys_used</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">major</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+        <span class="n">sys_used</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">major</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">sys_used</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">minor</span> <span class="o">&gt;=</span> <span class="mi">9</span>
+    <span class="p">):</span>
+        <span class="k">return</span> <span class="n">hash_function_object</span><span class="p">(</span><span class="n">usedforsecurity</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># Note that this can throw a ValueError in FIPS-enabled versions of</span>
+    <span class="c1"># Linux prior to 3.9. The OpenSSL hashlib will throw on first init here,</span>
+    <span class="c1"># but it is assumed to be responsibility of the caller to diagnose the</span>
+    <span class="c1"># ValueError &amp; potentially display the error to screen.</span>
+    <span class="k">return</span> <span class="n">hash_function_object</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="_set_allowed_viable_default_hashes"><a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.hashes._set_allowed_viable_default_hashes">[docs]</a><span class="k">def</span> <span class="nf">_set_allowed_viable_default_hashes</span><span class="p">(</span><span class="n">hashlib_used</span><span class="p">,</span> <span class="n">sys_used</span><span class="o">=</span><span class="n">sys</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if the default hash algorithms can be called.</span>
+
+<span class="sd">    This util class is sometimes called prior to setting the</span>
+<span class="sd">    user-selected hash algorithm, meaning that on FIPS-compliant systems</span>
+<span class="sd">    the library would default-initialize MD5 and throw an exception in</span>
+<span class="sd">    set_hash_format. A common case is using the SConf options, which can</span>
+<span class="sd">    run prior to main, and thus ignore the options.hash_format variable.</span>
+
+<span class="sd">    This function checks the DEFAULT_HASH_FORMATS and sets the</span>
+<span class="sd">    ALLOWED_HASH_FORMATS to only the ones that can be called. In Python</span>
+<span class="sd">    &gt;= 3.9 this will always default to MD5 as in Python 3.9 there is an</span>
+<span class="sd">    optional attribute &quot;usedforsecurity&quot; set for the method.</span>
+
+<span class="sd">    Throws if no allowed hash formats are detected.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">ALLOWED_HASH_FORMATS</span>
+    <span class="n">_last_error</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1"># note: if you call this method repeatedly, example using timeout,</span>
+    <span class="c1"># this is needed. Otherwise it keeps appending valid formats to the string.</span>
+    <span class="n">ALLOWED_HASH_FORMATS</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">test_algorithm</span> <span class="ow">in</span> <span class="n">DEFAULT_HASH_FORMATS</span><span class="p">:</span>
+        <span class="n">_test_hash</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">hashlib_used</span><span class="p">,</span> <span class="n">test_algorithm</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="c1"># we know hashlib claims to support it... check to see if we can call it.</span>
+        <span class="k">if</span> <span class="n">_test_hash</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># The hashing library will throw an exception on initialization</span>
+            <span class="c1"># in FIPS mode, meaning if we call the default algorithm returned</span>
+            <span class="c1"># with no parameters, it&#39;ll throw if it&#39;s a bad algorithm,</span>
+            <span class="c1"># otherwise it will append it to the known good formats.</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">_attempt_init_of_python_3_9_hash_object</span><span class="p">(</span><span class="n">_test_hash</span><span class="p">,</span> <span class="n">sys_used</span><span class="p">)</span>
+                <span class="n">ALLOWED_HASH_FORMATS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">test_algorithm</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">_last_error</span> <span class="o">=</span> <span class="n">e</span>
+                <span class="k">continue</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ALLOWED_HASH_FORMATS</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">SCons.Errors</span> <span class="kn">import</span> <span class="p">(</span>  <span class="c1"># pylint: disable=import-outside-toplevel</span>
+            <span class="n">SConsEnvironmentError</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># chain the exception thrown with the most recent error from hashlib.</span>
+        <span class="k">raise</span> <span class="n">SConsEnvironmentError</span><span class="p">(</span>
+            <span class="s1">&#39;No usable hash algorithms found.&#39;</span>
+            <span class="s1">&#39;Most recent error from hashlib attached in trace.&#39;</span>
+        <span class="p">)</span> <span class="kn">from</span> <span class="nn">_last_error</span></div>
+
+
+<span class="n">_set_allowed_viable_default_hashes</span><span class="p">(</span><span class="n">hashlib</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="get_hash_format"><a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.hashes.get_hash_format">[docs]</a><span class="k">def</span> <span class="nf">get_hash_format</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieves the hash format or ``None`` if not overridden.</span>
+
+<span class="sd">    A return value of ``None``</span>
+<span class="sd">    does not guarantee that MD5 is being used; instead, it means that the</span>
+<span class="sd">    default precedence order documented in :func:`SCons.Util.set_hash_format`</span>
+<span class="sd">    is respected.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_HASH_FORMAT</span></div>
+
+
+<div class="viewcode-block" id="_attempt_get_hash_function"><a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.hashes._attempt_get_hash_function">[docs]</a><span class="k">def</span> <span class="nf">_attempt_get_hash_function</span><span class="p">(</span><span class="n">hash_name</span><span class="p">,</span> <span class="n">hashlib_used</span><span class="o">=</span><span class="n">hashlib</span><span class="p">,</span> <span class="n">sys_used</span><span class="o">=</span><span class="n">sys</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Wrapper used to try to initialize a hash function given.</span>
+
+<span class="sd">    If successful, returns the name of the hash function back to the user.</span>
+
+<span class="sd">    Otherwise returns None.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">_fetch_hash</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">hashlib_used</span><span class="p">,</span> <span class="n">hash_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">_fetch_hash</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">_attempt_init_of_python_3_9_hash_object</span><span class="p">(</span><span class="n">_fetch_hash</span><span class="p">,</span> <span class="n">sys_used</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">hash_name</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="c1"># If attempt_init_of_python_3_9 throws, this is typically due to FIPS</span>
+        <span class="c1"># being enabled. However, if we get to this point, the viable hash</span>
+        <span class="c1"># function check has either been bypassed or otherwise failed to</span>
+        <span class="c1"># properly restrict the user to only the supported functions.</span>
+        <span class="c1"># As such throw the UserError as an internal assertion-like error.</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="set_hash_format"><a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.hashes.set_hash_format">[docs]</a><span class="k">def</span> <span class="nf">set_hash_format</span><span class="p">(</span><span class="n">hash_format</span><span class="p">,</span> <span class="n">hashlib_used</span><span class="o">=</span><span class="n">hashlib</span><span class="p">,</span> <span class="n">sys_used</span><span class="o">=</span><span class="n">sys</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sets the default hash format used by SCons.</span>
+
+<span class="sd">    If `hash_format` is ``None`` or</span>
+<span class="sd">    an empty string, the default is determined by this function.</span>
+
+<span class="sd">    Currently the default behavior is to use the first available format of</span>
+<span class="sd">    the following options: MD5, SHA1, SHA256.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">_HASH_FORMAT</span><span class="p">,</span> <span class="n">_HASH_FUNCTION</span>
+
+    <span class="n">_HASH_FORMAT</span> <span class="o">=</span> <span class="n">hash_format</span>
+    <span class="k">if</span> <span class="n">hash_format</span><span class="p">:</span>
+        <span class="n">hash_format_lower</span> <span class="o">=</span> <span class="n">hash_format</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">hash_format_lower</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ALLOWED_HASH_FORMATS</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">SCons.Errors</span> <span class="kn">import</span> <span class="p">(</span>  <span class="c1"># pylint: disable=import-outside-toplevel</span>
+                <span class="n">UserError</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="c1"># User can select something not supported by their OS but</span>
+            <span class="c1"># normally supported by SCons, example, selecting MD5 in an</span>
+            <span class="c1"># OS with FIPS-mode turned on. Therefore we first check if</span>
+            <span class="c1"># SCons supports it, and then if their local OS supports it.</span>
+            <span class="k">if</span> <span class="n">hash_format_lower</span> <span class="ow">in</span> <span class="n">DEFAULT_HASH_FORMATS</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">UserError</span><span class="p">(</span>
+                    <span class="s1">&#39;While hash format &quot;</span><span class="si">%s</span><span class="s1">&quot; is supported by SCons, the &#39;</span>
+                    <span class="s1">&#39;local system indicates only the following hash &#39;</span>
+                    <span class="s1">&#39;formats are supported by the hashlib library: </span><span class="si">%s</span><span class="s1">&#39;</span>
+                    <span class="o">%</span> <span class="p">(</span><span class="n">hash_format_lower</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ALLOWED_HASH_FORMATS</span><span class="p">))</span>
+                <span class="p">)</span>
+
+            <span class="c1"># The hash format isn&#39;t supported by SCons in any case.</span>
+            <span class="c1"># Warn the user, and if we detect that SCons supports more</span>
+            <span class="c1"># algorithms than their local system supports,</span>
+            <span class="c1"># warn the user about that too.</span>
+            <span class="k">if</span> <span class="n">ALLOWED_HASH_FORMATS</span> <span class="o">==</span> <span class="n">DEFAULT_HASH_FORMATS</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">UserError</span><span class="p">(</span>
+                    <span class="s1">&#39;Hash format &quot;</span><span class="si">%s</span><span class="s1">&quot; is not supported by SCons. Only &#39;</span>
+                    <span class="s1">&#39;the following hash formats are supported: </span><span class="si">%s</span><span class="s1">&#39;</span>
+                    <span class="o">%</span> <span class="p">(</span><span class="n">hash_format_lower</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ALLOWED_HASH_FORMATS</span><span class="p">))</span>
+                <span class="p">)</span>
+
+            <span class="k">raise</span> <span class="n">UserError</span><span class="p">(</span>
+                <span class="s1">&#39;Hash format &quot;</span><span class="si">%s</span><span class="s1">&quot; is not supported by SCons. &#39;</span>
+                <span class="s1">&#39;SCons supports more hash formats than your local system &#39;</span>
+                <span class="s1">&#39;is reporting; SCons supports: </span><span class="si">%s</span><span class="s1">. Your local system only &#39;</span>
+                <span class="s1">&#39;supports: </span><span class="si">%s</span><span class="s1">&#39;</span>
+                <span class="o">%</span> <span class="p">(</span>
+                    <span class="n">hash_format_lower</span><span class="p">,</span>
+                    <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DEFAULT_HASH_FORMATS</span><span class="p">),</span>
+                    <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ALLOWED_HASH_FORMATS</span><span class="p">),</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="c1"># This is not expected to fail. If this fails it means the</span>
+        <span class="c1"># set_allowed_viable_default_hashes function did not throw,</span>
+        <span class="c1"># or when it threw, the exception was caught and ignored, or</span>
+        <span class="c1"># the global ALLOWED_HASH_FORMATS was changed by an external user.</span>
+        <span class="n">_HASH_FUNCTION</span> <span class="o">=</span> <span class="n">_attempt_get_hash_function</span><span class="p">(</span>
+            <span class="n">hash_format_lower</span><span class="p">,</span> <span class="n">hashlib_used</span><span class="p">,</span> <span class="n">sys_used</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">_HASH_FUNCTION</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">SCons.Errors</span> <span class="kn">import</span> <span class="p">(</span>  <span class="c1"># pylint: disable=import-outside-toplevel</span>
+                <span class="n">UserError</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="k">raise</span> <span class="n">UserError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Hash format &quot;</span><span class="si">{</span><span class="n">hash_format_lower</span><span class="si">}</span><span class="s1">&quot; is not available in your &#39;</span>
+                <span class="s1">&#39;Python interpreter. Expected to be supported algorithm by &#39;</span>
+                <span class="s1">&#39;set_allowed_viable_default_hashes. Assertion error in SCons.&#39;</span>
+            <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Set the default hash format based on what is available, defaulting</span>
+        <span class="c1"># to the first supported hash algorithm (usually md5) for backwards</span>
+        <span class="c1"># compatibility. In FIPS-compliant systems this usually defaults to</span>
+        <span class="c1"># SHA1, unless that too has been disabled.</span>
+        <span class="k">for</span> <span class="n">choice</span> <span class="ow">in</span> <span class="n">ALLOWED_HASH_FORMATS</span><span class="p">:</span>
+            <span class="n">_HASH_FUNCTION</span> <span class="o">=</span> <span class="n">_attempt_get_hash_function</span><span class="p">(</span><span class="n">choice</span><span class="p">,</span> <span class="n">hashlib_used</span><span class="p">,</span> <span class="n">sys_used</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">_HASH_FUNCTION</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># This is not expected to happen in practice.</span>
+            <span class="kn">from</span> <span class="nn">SCons.Errors</span> <span class="kn">import</span> <span class="p">(</span>  <span class="c1"># pylint: disable=import-outside-toplevel</span>
+                <span class="n">UserError</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="k">raise</span> <span class="n">UserError</span><span class="p">(</span>
+                <span class="s1">&#39;Your Python interpreter does not have MD5, SHA1, or SHA256. &#39;</span>
+                <span class="s1">&#39;SCons requires at least one. Expected to support one or more &#39;</span>
+                <span class="s1">&#39;during set_allowed_viable_default_hashes.&#39;</span>
+            <span class="p">)</span></div>
+
+
+<span class="c1"># Ensure that this is initialized in case either:</span>
+<span class="c1">#    1. This code is running in a unit test.</span>
+<span class="c1">#    2. This code is running in a consumer that does hash operations while</span>
+<span class="c1">#       SConscript files are being loaded.</span>
+<span class="n">set_hash_format</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="get_current_hash_algorithm_used"><a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.hashes.get_current_hash_algorithm_used">[docs]</a><span class="k">def</span> <span class="nf">get_current_hash_algorithm_used</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the current hash algorithm name used.</span>
+
+<span class="sd">    Where the python version &gt;= 3.9, this is expected to return md5.</span>
+<span class="sd">    If python&#39;s version is &lt;= 3.8, this returns md5 on non-FIPS-mode platforms, and</span>
+<span class="sd">    sha1 or sha256 on FIPS-mode Linux platforms.</span>
+
+<span class="sd">    This function is primarily useful for testing, where one expects a value to be</span>
+<span class="sd">    one of N distinct hashes, and therefore the test needs to know which hash to select.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_HASH_FUNCTION</span></div>
+
+
+<div class="viewcode-block" id="_get_hash_object"><a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.hashes._get_hash_object">[docs]</a><span class="k">def</span> <span class="nf">_get_hash_object</span><span class="p">(</span><span class="n">hash_format</span><span class="p">,</span> <span class="n">hashlib_used</span><span class="o">=</span><span class="n">hashlib</span><span class="p">,</span> <span class="n">sys_used</span><span class="o">=</span><span class="n">sys</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Allocates a hash object using the requested hash format.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        hash_format: Hash format to use.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        hashlib object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">hash_format</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">_HASH_FUNCTION</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">SCons.Errors</span> <span class="kn">import</span> <span class="p">(</span>  <span class="c1"># pylint: disable=import-outside-toplevel</span>
+                <span class="n">UserError</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="k">raise</span> <span class="n">UserError</span><span class="p">(</span>
+                <span class="s1">&#39;There is no default hash function. Did you call &#39;</span>
+                <span class="s1">&#39;a hashing function before SCons was initialized?&#39;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">_attempt_init_of_python_3_9_hash_object</span><span class="p">(</span>
+            <span class="nb">getattr</span><span class="p">(</span><span class="n">hashlib_used</span><span class="p">,</span> <span class="n">_HASH_FUNCTION</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">sys_used</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">hashlib</span><span class="p">,</span> <span class="n">hash_format</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">SCons.Errors</span> <span class="kn">import</span> <span class="n">UserError</span>  <span class="c1"># pylint: disable=import-outside-toplevel</span>
+
+        <span class="k">raise</span> <span class="n">UserError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;Hash format &quot;</span><span class="si">{</span><span class="n">hash_format</span><span class="si">}</span><span class="s1">&quot; is not available in your Python interpreter.&#39;</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_attempt_init_of_python_3_9_hash_object</span><span class="p">(</span>
+        <span class="nb">getattr</span><span class="p">(</span><span class="n">hashlib</span><span class="p">,</span> <span class="n">hash_format</span><span class="p">),</span> <span class="n">sys_used</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="hash_signature"><a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.hashes.hash_signature">[docs]</a><span class="k">def</span> <span class="nf">hash_signature</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">hash_format</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate hash signature of a string</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        s: either string or bytes. Normally should be bytes</span>
+<span class="sd">        hash_format: Specify to override default hash format</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        String of hex digits representing the signature</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">_get_hash_object</span><span class="p">(</span><span class="n">hash_format</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">to_bytes</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+    <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">to_bytes</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">)))</span>
+
+    <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="hash_file_signature"><a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.hashes.hash_file_signature">[docs]</a><span class="k">def</span> <span class="nf">hash_file_signature</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">chunksize</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">65536</span><span class="p">,</span> <span class="n">hash_format</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate the md5 signature of a file</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        fname: file to hash</span>
+<span class="sd">        chunksize: chunk size to read</span>
+<span class="sd">        hash_format: Specify to override default hash format</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        String of Hex digits representing the signature</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">m</span> <span class="o">=</span> <span class="n">_get_hash_object</span><span class="p">(</span><span class="n">hash_format</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">blck</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">chunksize</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">blck</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">to_bytes</span><span class="p">(</span><span class="n">blck</span><span class="p">))</span>
+        <span class="c1"># TODO: can use this when base is Python 3.8+</span>
+        <span class="c1"># while (blk := f.read(chunksize)) != b&#39;&#39;:</span>
+        <span class="c1">#     m.update(to_bytes(blk))</span>
+
+    <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="hash_collect"><a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.hashes.hash_collect">[docs]</a><span class="k">def</span> <span class="nf">hash_collect</span><span class="p">(</span><span class="n">signatures</span><span class="p">,</span> <span class="n">hash_format</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Collects a list of signatures into an aggregate signature.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        signatures: a list of signatures</span>
+<span class="sd">        hash_format: Specify to override default hash format</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        the aggregate signature</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">signatures</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">signatures</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">hash_signature</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">signatures</span><span class="p">),</span> <span class="n">hash_format</span><span class="p">)</span></div>
+
+
+<span class="n">_MD5_WARNING_SHOWN</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+<div class="viewcode-block" id="_show_md5_warning"><a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.hashes._show_md5_warning">[docs]</a><span class="k">def</span> <span class="nf">_show_md5_warning</span><span class="p">(</span><span class="n">function_name</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Shows a deprecation warning for various MD5 functions.&quot;&quot;&quot;</span>
+
+    <span class="k">global</span> <span class="n">_MD5_WARNING_SHOWN</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_MD5_WARNING_SHOWN</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">SCons.Warnings</span>  <span class="c1"># pylint: disable=import-outside-toplevel</span>
+
+        <span class="n">SCons</span><span class="o">.</span><span class="n">Warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="n">SCons</span><span class="o">.</span><span class="n">Warnings</span><span class="o">.</span><span class="n">DeprecatedWarning</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;Function </span><span class="si">{</span><span class="n">function_name</span><span class="si">}</span><span class="s2"> is deprecated&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">_MD5_WARNING_SHOWN</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="MD5signature"><a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.hashes.MD5signature">[docs]</a><span class="k">def</span> <span class="nf">MD5signature</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Deprecated. Use :func:`hash_signature` instead.&quot;&quot;&quot;</span>
+
+    <span class="n">_show_md5_warning</span><span class="p">(</span><span class="s2">&quot;MD5signature&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">hash_signature</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MD5filesignature"><a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.hashes.MD5filesignature">[docs]</a><span class="k">def</span> <span class="nf">MD5filesignature</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">chunksize</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">65536</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Deprecated. Use :func:`hash_file_signature` instead.&quot;&quot;&quot;</span>
+
+    <span class="n">_show_md5_warning</span><span class="p">(</span><span class="s2">&quot;MD5filesignature&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">hash_file_signature</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">chunksize</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MD5collect"><a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.hashes.MD5collect">[docs]</a><span class="k">def</span> <span class="nf">MD5collect</span><span class="p">(</span><span class="n">signatures</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Deprecated. Use :func:`hash_collect` instead.&quot;&quot;&quot;</span>
+
+    <span class="n">_show_md5_warning</span><span class="p">(</span><span class="s2">&quot;MD5collect&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">hash_collect</span><span class="p">(</span><span class="n">signatures</span><span class="p">)</span></div>
+
+
+<span class="c1"># Local Variables:</span>
+<span class="c1"># tab-width:4</span>
+<span class="c1"># indent-tabs-mode:nil</span>
+<span class="c1"># End:</span>
+<span class="c1"># vim: set expandtab tabstop=4 shiftwidth=4:</span>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SCons Project Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022, SCons Project.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

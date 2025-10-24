@@ -1,0 +1,1296 @@
+<HTML><HEAD><TITLE>Manpage of SCONS-TIME</TITLE>
+</HEAD><BODY>
+<H1>SCONS-TIME</H1>
+Section: User Commands  (1)<BR>Updated: January 2007<BR><A HREF="#index">Index</A>
+<A HREF="http://localhost/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NAME</H2>
+
+scons-time - generate and display SCons timing information
+
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>scons-time</B>
+
+<I>subcommand</I>
+
+[
+<I>options</I>...
+
+]
+[
+<I>arguments</I>...
+
+]
+
+<A NAME="lbAD">&nbsp;</A>
+<H3>Generating Timing Information</H3>
+
+
+<B>scons-time run</B>
+
+[<B>-hnqv</B>]
+[<B>--aegis=</B><I>PROJECT</I>]
+[<B>-f </B><I>FILE</I>]
+[<B>--number=</B><I>NUMBER</I>]
+[<B>--outdir=</B><I>OUTDIR</I>]
+[<B>-p </B><I>STRING</I>]
+[<B>--python=</B><I>PYTHON</I>]
+[<B>-s </B><I>DIR</I>]
+[<B>--scons=</B><I>SCONS</I>]
+[<B>--svn=</B><I>URL</I>]
+[<I>ARGUMENTS</I>]
+
+
+<A NAME="lbAE">&nbsp;</A>
+<H3>Extracting Function Timings</H3>
+
+
+<B>scons-time func</B>
+
+[<B>-h</B>]
+[<B>--chdir=</B><I>DIR</I>]
+[<B>-f </B><I>FILE</I>]
+[<B>--fmt=</B><I>FORMAT</I>]
+[<B>--func=</B><I>NAME</I>]
+[<B>-p </B><I>STRING</I>]
+[<B>-t </B><I>NUMBER</I>]
+[<B>--title= TITLE</B>]
+[<I>ARGUMENTS</I>]
+
+
+<A NAME="lbAF">&nbsp;</A>
+<H3>Extracting Memory Statistics</H3>
+
+
+<B>scons-time mem</B>
+
+[<B>-h</B>]
+[<B>--chdir=</B><I>DIR</I>]
+[<B>-f </B><I>FILE</I>]
+[<B>--fmt=</B><I>FORMAT</I>]
+[<B>-p </B><I>STRING</I>]
+[<B>--stage=</B><I>STAGE</I>]
+[<B>-t </B><I>NUMBER</I>]
+[<B>--title=</B><I>TITLE</I>]
+[<I>ARGUMENTS</I>]
+
+
+<A NAME="lbAG">&nbsp;</A>
+<H3>Extracting Object Counts</H3>
+
+
+<B>scons-time obj</B>
+
+[<B>-h</B>]
+[<B>--chdir=</B><I>DIR</I>]
+[<B>-f </B><I>FILE</I>]
+[<B>--fmt=</B><I>FORMAT</I>]
+[<B>-p </B><I>STRING</I>]
+[<B>--stage=</B><I>STAGE</I>]
+[<B>-t </B><I>NUMBER</I>]
+[<B>--title=</B><I>TITLE</I>]
+[<I>ARGUMENTS</I>]
+
+
+<A NAME="lbAH">&nbsp;</A>
+<H3>Extracting Execution Times</H3>
+
+
+<B>scons-time time</B>
+
+[<B>-h</B>]
+[<B>--chdir=</B><I>DIR</I>]
+[<B>-f </B><I>FILE</I>]
+[<B>--fmt=</B><I>FORMAT</I>]
+[<B>-p </B><I>STRING</I>]
+[<B>-t </B><I>NUMBER</I>]
+[<B>--title=</B><I>TITLE</I>]
+[<B>--which=</B><I>WHICH</I>]
+[<I>ARGUMENTS</I>]
+
+
+<A NAME="lbAI">&nbsp;</A>
+<H3>Help Text</H3>
+
+<B>scons-time help</B>
+
+<I>SUBCOMMAND</I>
+
+[...]
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+The 
+<B>scons-time</B>
+
+command runs an SCons configuration
+through a standard set of profiled timings
+and can extract and graph information from the
+resulting profiles and log files of those timings.
+The action to be performed by the
+<B>scons-time</B>
+
+script is specified
+by a subcommand, the first argument on the command line.
+See the
+<B>SUBCOMMANDS</B>
+
+section below for information about the operation
+of specific subcommands.
+
+The basic way to use
+<B>scons-time</B>
+
+is to run the
+<B>scons-time run</B>
+
+subcommand
+(possibly multiple times)
+to generate profile and log file output,
+and then use one of the other
+subcommands to display the results
+captured in the profiles and log files
+for a particular kind of information:
+function timings
+(the
+<B>scons-time func</B>
+
+subcommand),
+total memory used
+(the
+<B>scons-time mem</B>
+
+subcommand),
+object counts
+(the
+<B>scons-time obj</B>
+
+subcommand)
+and overall execution time
+(the
+<B>scons-time time</B>
+
+subcommand).
+Options exist to place and find the
+profiles and log files in separate directories,
+to generate the output in a format suitable
+for graphing with the
+<B><A HREF="http://localhost/cgi-bin/man/man2html?1+gnuplot">gnuplot</A></B>(1)
+
+program,
+and so on.
+
+There are two basic ways the
+<B>scons-time run</B>
+
+subcommand
+is intended to be used
+to gather timing statistics
+for a configuration.
+One is to use the
+<B>--svn=</B>
+
+option to test a configuration against
+a list of revisions from the SCons Subversion repository.
+This will generate a profile and timing log file
+for every revision listed with the
+<B>--number=</B>
+
+option,
+and can be used to look at the
+impact of commited changes to the
+SCons code base on a particular
+configuration over time.
+
+The other way is to profile incremental changes to a
+local SCons code base during a development cycle--that is,
+to look at the performance impact of changes
+you're making in the local tree.
+In this mode,
+you run the
+<B>scons-time run</B>
+
+subcommand
+<I>without</I>
+
+the
+<B>--svn=</B>
+
+option,
+in which case it simply looks in the profile/log file output directory
+(the current directory by default)
+and automatically figures out the
+<I>next</I>
+
+run number for the output profile and log file.
+Used in this way,
+the development cycle goes something like:
+make a change to SCons;
+run
+<B>scons-time run</B>
+
+to profile it against a specific configuration;
+make another change to SCons;
+run
+<B>scons-time run</B>
+
+again to profile it;
+etc.
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+The
+<B>scons-time</B>
+
+command only supports a few global options:
+<DL COMPACT>
+<DT>-h, --help<DD>
+Displays the global help text and exits,
+identical to the
+<B>scons-time help</B>
+
+subcommand.
+<DT>-V, --version<DD>
+Displays the
+<B>scons-time</B>
+
+version and exits.
+
+Most functionality is controlled by options
+to the individual subcommands.
+See the next section for information
+about individual subcommand options.
+
+</DL>
+<A NAME="lbAL">&nbsp;</A>
+<H2>SUBCOMMANDS</H2>
+
+The
+<B>scons-time</B>
+
+command supports the following
+individual subcommands.
+
+<A NAME="lbAM">&nbsp;</A>
+<H3>The func Subcommand</H3>
+
+
+<B>scons-time func</B>
+
+[<B>-h</B>]
+[<B>--chdir=</B><I>DIR</I>]
+[<B>-f </B><I>FILE</I>]
+[<B>--fmt=</B><I>FORMAT</I>]
+[<B>--func=</B><I>NAME</I>]
+[<B>-p </B><I>STRING</I>]
+[<B>-t </B><I>NUMBER</I>]
+[<B>--title= TITLE</B>]
+[<I>ARGUMENTS</I>]
+
+
+The
+<B>scons-time func</B>
+
+subcommand displays timing information
+for a specific Python function within SCons.
+By default, it extracts information about the
+<B>_main</B>()
+
+function,
+which includes the Python profiler timing
+for all of SCons.
+
+The
+<B>scons-time func</B>
+
+subcommand extracts function timing information
+from all the specified file arguments,
+which should be Python profiler output files.
+(Normally, these would be
+<B>*.prof</B>
+
+files generated by the
+<B>scons-time run</B>
+
+subcommand,
+but they can actually be generated
+by any Python profiler invocation.)
+All file name arguments will be
+globbed for on-disk files.
+
+If no arguments are specified,
+then function timing information
+will be extracted from all
+<B>*.prof</B>
+
+files,
+or the subset of them
+with a prefix specified by the
+<B>-p</B>
+
+option.
+
+Options include:
+<DL COMPACT>
+<DT>-C DIRECTORY, --chdir=DIRECTORY<DD>
+Changes to the specified
+<I>DIRECTORY</I>
+
+before looking for the specified files
+(or files that match the specified patterns).
+<DT>-f FILE, --file=FILE<DD>
+Reads configuration information from the specified
+<I>FILE</I>.
+
+<DT>-fmt=FORMAT, --format=FORMAT<DD>
+Reports the output in the specified
+<I>FORMAT</I>.
+
+The formats currently supported are
+<B>ascii</B>
+
+(the default)
+and
+<B>gnuplot</B>.
+
+<DT>--func=NAME<DD>
+Extracts timings for the specified function
+<I>NAME</I>.
+
+The default is to report cumulative timings for the
+<B>_main</B>()
+
+function,
+which contains the entire SCons run.
+<DT>-h, --help<DD>
+Displays help text for the
+<B>scons-time func</B>
+
+subcommand.
+<DT>-p STRING, --prefix=STRING<DD>
+Specifies the prefix string for profiles
+from which to extract function timing information.
+This will be used to search for profiles
+if no arguments are specified on the command line.
+<DT>-t NUMBER, --tail=NUMBER<DD>
+Only extracts function timings from the last
+<I>NUMBER</I>
+
+files.
+
+</DL>
+<A NAME="lbAN">&nbsp;</A>
+<H3>The help Subcommand</H3>
+
+<B>scons-time help</B>
+
+<I>SUBCOMMAND</I>
+
+[...]
+The
+<B>help</B>
+
+subcommand prints help text for any
+other subcommands listed as later arguments on the command line.
+
+<A NAME="lbAO">&nbsp;</A>
+<H3>The mem Subcommand</H3>
+
+
+<B>scons-time mem</B>
+
+[<B>-h</B>]
+[<B>--chdir=</B><I>DIR</I>]
+[<B>-f </B><I>FILE</I>]
+[<B>--fmt=</B><I>FORMAT</I>]
+[<B>-p </B><I>STRING</I>]
+[<B>--stage=</B><I>STAGE</I>]
+[<B>-t </B><I>NUMBER</I>]
+[<B>--title=</B><I>TITLE</I>]
+[<I>ARGUMENTS</I>]
+
+
+The
+<B>scons-time mem</B>
+
+subcommand displays how much memory SCons uses.
+
+The
+<B>scons-time mem</B>
+
+subcommand extracts memory use information
+from all the specified file arguments,
+which should be files containing output from
+running SCons with the
+<B>--debug=memory</B>
+
+option.
+(Normally, these would be
+<B>*.log</B>
+
+files generated by the
+<B>scons-time run</B>
+
+subcommand.)
+All file name arguments will be
+globbed for on-disk files.
+
+If no arguments are specified,
+then memory information
+will be extracted from all
+<B>*.log</B>
+
+files,
+or the subset of them
+with a prefix specified by the
+<B>-p</B>
+
+option.
+
+<DL COMPACT>
+<DT>-C DIR, --chdir=DIR<DD>
+Changes to the specified
+<I>DIRECTORY</I>
+
+before looking for the specified files
+(or files that match the specified patterns).
+<DT>-f FILE, --file=FILE<DD>
+Reads configuration information from the specified
+<I>FILE</I>.
+
+<DT>-fmt=FORMAT, --format=FORMAT<DD>
+Reports the output in the specified
+<I>FORMAT</I>.
+
+The formats currently supported are
+<B>ascii</B>
+
+(the default)
+and
+<B>gnuplot</B>.
+
+<DT>-h, --help<DD>
+Displays help text for the
+<B>scons-time mem</B>
+
+subcommand.
+<DT>-p STRING, --prefix=STRING<DD>
+Specifies the prefix string for log files
+from which to extract memory usage information.
+This will be used to search for log files
+if no arguments are specified on the command line.
+<DT>--stage=STAGE<DD>
+Prints the memory used at the end of the specified
+<I>STAGE</I>:
+
+<B>pre-read</B>
+
+(before the SConscript files are read),
+<B>post-read ,</B>
+
+(after the SConscript files are read),
+<B>pre-build</B>
+
+(before any targets are built)
+or
+<B>post-build</B>
+
+(after any targets are built).
+If no
+<B>--stage</B>
+
+option is specified,
+the default behavior is
+<B>post-build</B>,
+
+which reports the final amount of memory
+used by SCons during each run.
+<DT>-t NUMBER, --tail=NUMBER<DD>
+Only reports memory statistics from the last
+<I>NUMBER</I>
+
+files.
+
+</DL>
+<A NAME="lbAP">&nbsp;</A>
+<H3>The obj Subcommand</H3>
+
+
+<B>scons-time obj</B>
+
+[<B>-h</B>]
+[<B>--chdir=</B><I>DIR</I>]
+[<B>-f </B><I>FILE</I>]
+[<B>--fmt=</B><I>FORMAT</I>]
+[<B>-p </B><I>STRING</I>]
+[<B>--stage=</B><I>STAGE</I>]
+[<B>-t </B><I>NUMBER</I>]
+[<B>--title=</B><I>TITLE</I>]
+[<I>ARGUMENTS</I>]
+
+
+The
+<B>scons-time obj</B>
+
+subcommand displays how many objects of a specific named type
+are created by SCons.
+
+The
+<B>scons-time obj</B>
+
+subcommand extracts object counts
+from all the specified file arguments,
+which should be files containing output from
+running SCons with the
+<B>--debug=count</B>
+
+option.
+(Normally, these would be
+<B>*.log</B>
+
+files generated by the
+<B>scons-time run</B>
+
+subcommand.)
+All file name arguments will be
+globbed for on-disk files.
+
+If no arguments are specified,
+then object counts
+will be extracted from all
+<B>*.log</B>
+
+files,
+or the subset of them
+with a prefix specified by the
+<B>-p</B>
+
+option.
+<DL COMPACT>
+<DT>-C DIR, --chdir=DIR<DD>
+Changes to the specified
+<I>DIRECTORY</I>
+
+before looking for the specified files
+(or files that match the specified patterns).
+<DT>-f FILE, --file=FILE<DD>
+Reads configuration information from the specified
+<I>FILE</I>.
+
+<DT>-fmt=FORMAT, --format=FORMAT<DD>
+Reports the output in the specified
+<I>FORMAT</I>.
+
+The formats currently supported are
+<B>ascii</B>
+
+(the default)
+and
+<B>gnuplot</B>.
+
+<DT>-h, --help<DD>
+Displays help text for the
+<B>scons-time obj</B>
+
+subcommand.
+<DT>-p STRING, --prefix=STRING<DD>
+Specifies the prefix string for log files
+from which to extract object counts.
+This will be used to search for log files
+if no arguments are specified on the command line.
+<DT>--stage=STAGE<DD>
+Prints the object count at the end of the specified
+<I>STAGE</I>:
+
+<B>pre-read</B>
+
+(before the SConscript files are read),
+<B>post-read ,</B>
+
+(after the SConscript files are read),
+<B>pre-build</B>
+
+(before any targets are built)
+or
+<B>post-build</B>
+
+(after any targets are built).
+If no
+<B>--stage</B>
+
+option is specified,
+the default behavior is
+<B>post-build</B>,
+
+which reports the final object count during each run.
+<DT>-t NUMBER, --tail=NUMBER<DD>
+Only reports object counts from the last
+<I>NUMBER</I>
+
+files.
+
+</DL>
+<A NAME="lbAQ">&nbsp;</A>
+<H3>The run Subcommand</H3>
+
+
+<B>scons-time run</B>
+
+[<B>-hnqv</B>]
+[<B>--aegis=</B><I>PROJECT</I>]
+[<B>-f </B><I>FILE</I>]
+[<B>--number=</B><I>NUMBER</I>]
+[<B>--outdir=</B><I>OUTDIR</I>]
+[<B>-p </B><I>STRING</I>]
+[<B>--python=</B><I>PYTHON</I>]
+[<B>-s </B><I>DIR</I>]
+[<B>--scons=</B><I>SCONS</I>]
+[<B>--svn=</B><I>URL</I>]
+[<I>ARGUMENTS</I>]
+
+The
+<B>scons-time run</B>
+
+subcommand is the basic subcommand
+for profiling a specific configuration
+against a version of SCons.
+
+The configuration to be tested
+is specified as a list of files
+or directories that will be unpacked or copied
+into a temporary directory
+in which SCons will be invoked.
+The
+<B>scons-time run</B>
+
+subcommand understands file suffixes like
+<B>.tar</B>,
+
+<B>.tar.gz</B>,
+
+<B>.tgz</B>
+
+and
+<B>.zip</B>
+
+and will unpack their contents into a temporary directory.
+If more than one argument is specified,
+each one will be unpacked or copied
+into the temporary directory &quot;on top of&quot;
+the previous archives or directories,
+so the expectation is that multiple
+specified archives share the same directory layout.
+
+Once the file or directory arguments are unpacked or
+copied to the temporary directory,
+the
+<B>scons-time run</B>
+
+subcommand runs the
+requested version of SCons
+against the configuration
+three times:
+<DL COMPACT>
+<DT>Startup<DD>
+SCons is run with the
+<B>--help</B>
+
+option so that just the SConscript files are read,
+and then the default help text is printed.
+This profiles just the perceived &quot;overhead&quot; of starting up SCons
+and processing the SConscript files.
+<DT>Full build<DD>
+SCons is run to build everything specified in the configuration.
+Specific targets to be passed in on the command l ine
+may be specified by the
+<B>targets</B>
+
+keyword in a configuration file; see below for details.
+<DT>Rebuild<DD>
+SCons is run again on the same just-built directory.
+If the dependencies in the SCons configuration are correct,
+this should be an up-to-date, &quot;do nothing&quot; rebuild.
+
+Each invocation captures the output log file and a profile.
+
+The
+<B>scons-time run</B>
+
+subcommand supports the following options:
+<DT>--aegis=PROJECT<DD>
+Specifies the Aegis
+<I>PROJECT</I>
+
+from which the
+version(s) of
+<B>scons</B>
+
+being timed will be extracted.
+When
+<B>--aegis</B>
+
+is specified, the
+<B>--number=</B><I>NUMBER</I>
+
+option specifies delta numbers
+that will be tested.
+Output from each invocation run will be placed in file
+names that match the Aegis delta numbers.
+If the
+<B>--number=</B>
+
+option is not specified,
+then the default behavior is to time the
+tip of the specified
+<I>PROJECT</I>.
+
+<DT>-f FILE, --file=FILE<DD>
+Reads configuration information from the specified
+<I>FILE</I>.
+
+This often provides a more convenient way to specify and
+collect parameters associated with a specific timing configuration
+than specifying them on the command line.
+See the
+<B>CONFIGURATION FILE</B>
+
+section below
+for information about the configuration file parameters.
+<DT>-h, --help<DD>
+Displays help text for the
+<B>scons-time run</B>
+
+subcommand.
+<DT>-n, --no-exec<DD>
+Do not execute commands,
+just printing the command-line equivalents of what would be executed.
+Note that the
+<B>scons-time</B>
+
+script actually executes its actions in Python,
+where possible,
+for portability.
+The commands displayed are UNIX
+<I>equivalents</I>
+
+of what it's doing.
+<DT>--number=NUMBER<DD>
+Specifies the run number to be used in the names of
+the log files and profile outputs generated by this run.
+<DT><DD>
+When used in conjuction with the
+<B>--aegis=</B><I>PROJECT</I>
+
+option,
+<I>NUMBER</I>
+
+specifies one or more comma-separated Aegis delta numbers
+that will be retrieved automatically from the specified Aegis
+<I>PROJECT</I>.
+
+<DT><DD>
+When used in conjuction with the
+<B>--svn=</B><I>URL</I>
+
+option,
+<I>NUMBER</I>
+
+specifies one or more comma-separated Subversion revision numbers
+that will be retrieved automatically from the Subversion
+repository at the specified
+<I>URL</I>.
+
+Ranges of delta or revision numbers
+may be specified be separating two numbers
+with a hyphen
+(<B>-</B>).
+
+
+Example:
+
+<DL COMPACT><DT><DD>
+<PRE>
+% scons-time run --svn=<A HREF="http://scons.tigris.org/svn/trunk">http://scons.tigris.org/svn/trunk</A> --num=1247,1249-1252 .
+
+</DL>
+</PRE>
+
+
+<DT>-p STRING, --prefix=STRING<DD>
+Specifies the prefix string to be used for all of the log files
+and profiles generated by this run.
+The default is derived from the first
+specified argument:
+if the first argument is a directory,
+the default prefix is the name of the directory;
+if the first argument is an archive
+(tar or zip file),
+the default prefix is the the base name of the archive,
+that is, what remains after stripping the archive suffix
+(<B>.tgz</B>, <B>.tar.gz</B> or <B>.zip</B>).
+
+<DT>--python=PYTHON<DD>
+Specifies a path to the Python executable to be used
+for the timing runs.
+The default is to use the same Python executable that
+is running the
+<B>scons-time</B>
+
+command itself.
+<DT>-q, --quiet<DD>
+Suppresses display of the command lines being executed.
+<DT>-s DIR, --subdir=DIR<DD>
+Specifies the name of directory or subdirectory
+from which the commands should be executed.
+The default is XXX
+<DT>--scons=SCONS<DD>
+Specifies a path to the SCons script to be used
+for the timing runs.
+The default is XXX
+<DT>--svn=URL, --subversion=URL<DD>
+Specifies the
+<I>URL</I>
+
+of the Subversion repository from which the
+version(s) of
+<B>scons</B>
+
+being timed will be extracted.
+When
+<B>--svn</B>
+
+is specified, the
+<B>--number=</B><I>NUMBER</I>
+
+option specifies revision numbers
+that will be tested.
+Output from each invocation run will be placed in file
+names that match the Subversion revision numbers.
+If the
+<B>--number=</B>
+
+option is not specified,
+then the default behavior is to time the
+<B>HEAD</B>
+
+of the specified
+<I>URL</I>.
+
+<DT>-v, --verbose<DD>
+Displays the output from individual commands to the screen
+(in addition to capturing the output in log files).
+
+</DL>
+<A NAME="lbAR">&nbsp;</A>
+<H3>The time Subcommand</H3>
+
+
+<B>scons-time time</B>
+
+[<B>-h</B>]
+[<B>--chdir=</B><I>DIR</I>]
+[<B>-f </B><I>FILE</I>]
+[<B>--fmt=</B><I>FORMAT</I>]
+[<B>-p </B><I>STRING</I>]
+[<B>-t </B><I>NUMBER</I>]
+[<B>--title=</B><I>TITLE</I>]
+[<B>--which=</B><I>WHICH</I>]
+[<I>ARGUMENTS</I>]
+
+
+The
+<B>scons-time time</B>
+
+subcommand displays SCons execution times
+as reported by the
+<B>scons --debug=time</B>
+
+option.
+
+The
+<B>scons-time time</B>
+
+subcommand extracts SCons timing
+from all the specified file arguments,
+which should be files containing output from
+running SCons with the
+<B>--debug=time</B>
+
+option.
+(Normally, these would be
+<B>*.log</B>
+
+files generated by the
+<B>scons-time run</B>
+
+subcommand.)
+All file name arguments will be
+globbed for on-disk files.
+
+If no arguments are specified,
+then execution timings
+will be extracted from all
+<B>*.log</B>
+
+files,
+or the subset of them
+with a prefix specified by the
+<B>-p</B>
+
+option.
+<DL COMPACT>
+<DT>-C DIR, --chdir=DIR<DD>
+Changes to the specified
+<I>DIRECTORY</I>
+
+before looking for the specified files
+(or files that match the specified patterns).
+<DT>-f FILE, --file=FILE<DD>
+Reads configuration information from the specified
+<I>FILE</I>.
+
+<DT>-fmt=FORMAT, --format=FORMAT<DD>
+Reports the output in the specified
+<I>FORMAT</I>.
+
+The formats currently supported are
+<B>ascii</B>
+
+(the default)
+and
+<B>gnuplot</B>.
+
+<DT>-h, --help<DD>
+Displays help text for the
+<B>scons-time time</B>
+
+subcommand.
+<DT>-p STRING, --prefix=STRING<DD>
+Specifies the prefix string for log files
+from which to extract execution timings.
+This will be used to search for log files
+if no arguments are specified on the command line.
+<DT>-t NUMBER, --tail=NUMBER<DD>
+Only reports object counts from the last
+<I>NUMBER</I>
+
+files.
+<DT>--which=WHICH<DD>
+Prints the execution time for the specified
+<I>WHICH</I>
+
+value:
+<B>total</B>
+
+(the total execution time),
+<B>SConscripts</B>
+
+(total execution time for the SConscript files themselves),
+<B>SCons</B>
+
+(exectuion time in SCons code itself)
+or
+<B>commands</B>
+
+(execution time of the commands and other actions
+used to build targets).
+If no
+<B>--which</B>
+
+option is specified,
+the default behavior is
+<B>total</B>,
+
+which reports the total execution time for each run.
+
+</DL>
+<A NAME="lbAS">&nbsp;</A>
+<H2>CONFIGURATION FILE</H2>
+
+Various
+<B>scons-time</B>
+
+subcommands can read information from a specified
+configuration file when passed the
+<B>-f</B>
+
+or
+<B>--file</B>
+
+options.
+The configuration file is actually executed as a Python script.
+Setting Python variables in the configuration file
+controls the behavior of the
+<B>scons-time</B>
+
+script more conveniently than having to specify
+command-line options or arguments for every run,
+and provides a handy way to &quot;shrink-wrap&quot;
+the necessary information for producing (and reporting)
+consistent timing runs for a given configuration.
+<DL COMPACT>
+<DT><B>aegis</B>
+
+<DD>
+The Aegis executable for extracting deltas.
+The default is simply
+<B>aegis</B>.
+
+<DT><B>aegis_project</B>
+
+<DD>
+The Aegis project from which deltas should be extracted.
+The default is whatever is specified
+with the
+<B>--aegis=</B>
+
+command-line option.
+<DT><B>initial_commands</B>
+
+<DD>
+A list of commands that will be executed
+before the actual timed
+<B>scons</B>
+
+runs.
+This can be used for commands that are necessary
+to prepare the source tree-for example,
+creating a configuration file
+that should not be part of the timed run.
+<DT><B>key_location</B>
+
+<DD>
+The location of the key on Gnuplot graphing information
+generated with the
+<B>--format=gnuplot</B>
+
+option.
+The default is
+<B>bottom left</B>.
+
+<DT><B>prefix</B>
+
+<DD>
+The file name prefix to be used when
+running or extracting timing for this configuration.
+<DT><B>python</B>
+
+<DD>
+The path name of the Python executable
+to be used when running or extracting information
+for this configuration.
+The default is the same version of Python
+used to run the SCons
+<DT><B>scons</B>
+
+<DD>
+The path name of the SCons script to be used
+when running or extracting information
+for this configuration.
+The default is simply
+<B>scons</B>.
+
+<DT><B>scons_flags</B>
+
+<DD>
+The
+<B>scons</B>
+
+flags used when running SCons to collect timing information.
+The default value is
+<B>--debug=count --debug=memory --debug=time --debug=memoizer</B>.
+
+<DT><B>scons_lib_dir</B>
+
+<DD>
+<DT><B>scons_wrapper</B>
+
+<DD>
+<DT><B>startup_targets</B>
+
+<DD>
+<DT><B>subdir</B>
+
+<DD>
+The subdirectory of the project into which the
+<B>scons-time</B>
+
+script should change
+before executing the SCons commands to time.
+<DT><B>subversion_url</B>
+
+<DD>
+The Subversion URL from
+<DT><B>svn</B>
+
+<DD>
+The subversion executable used to
+check out revisions of SCons to be timed.
+The default is simple
+<B>svn</B>.
+
+<DT><B>svn_co_flag</B>
+
+<DD>
+<DT><B>tar</B>
+
+<DD>
+<DT><B>targets</B>
+
+<DD>
+A string containing the targets that should be added to
+the command line of every timed
+<B>scons</B>
+
+run.
+This can be used to restrict what's being timed to a
+subset of the full build for the configuration.
+<DT><B>targets0</B>
+
+<DD>
+<DT><B>targets1</B>
+
+<DD>
+<DT><B>targets2</B>
+
+<DD>
+<DT><B>title</B>
+
+<DD>
+<DT><B>unzip</B>
+
+<DD>
+<DT><B>verbose</B>
+
+<DD>
+<DT><B>vertical_bars</B>
+
+<DD>
+
+</DL>
+<A NAME="lbAT">&nbsp;</A>
+<H3>Example</H3>
+
+Here is an example
+<B>scons-time</B>
+
+configuration file
+for a hypothetical sample project:
+
+
+<DL COMPACT><DT><DD>
+<PRE>
+# The project doesn't use SCons natively (yet), so we're
+# timing a separate set of SConscript files that we lay
+# on top of the vanilla unpacked project tarball.
+arguments = ['project-1.2.tgz', 'project-SConscripts.tar']
+
+# The subdirectory name contains the project version number,
+# so tell scons-time to chdir there before building.
+subdir = 'project-1.2'
+
+# Set the prefix so output log files and profiles are named:
+#     project-000-[012].{log,prof}
+#     project-001-[012].{log,prof}
+# etc.
+prefix = 'project'
+
+# The SConscript files being tested don't do any SConf
+# configuration, so run their normal ./configure script
+# before we invoke SCons.
+initial_commands = [
+    './configure',
+]
+
+# Only time building the bin/project executable.
+targets = 'bin/project'
+
+# Time against SCons revisions of the branches/core branch
+subversion_url = '<A HREF="http://scons.tigris.org/svn/scons/branches/core'">http://scons.tigris.org/svn/scons/branches/core'</A>
+
+</DL>
+</PRE>
+
+
+
+<A NAME="lbAU">&nbsp;</A>
+<H2>ENVIRONMENT</H2>
+
+The
+<B>scons-time</B>
+
+script uses the following environment variables:
+<DL COMPACT>
+<DT><B>PRESERVE</B>
+
+<DD>
+If this value is set,
+the
+<B>scons-time</B>
+
+script will
+<I>not</I>
+
+remove the temporary directory or directories
+in which it builds the specified configuration
+or downloads a specific version of SCons.
+
+</DL>
+<A NAME="lbAV">&nbsp;</A>
+<H2>SEE ALSO</H2>
+
+<B><A HREF="http://localhost/cgi-bin/man/man2html?1+gnuplot">gnuplot</A></B>(1),
+
+<B><A HREF="http://localhost/cgi-bin/man/man2html?1+scons">scons</A></B>(1)
+
+<P>
+<A NAME="lbAW">&nbsp;</A>
+<H2>AUTHORS</H2>
+
+Steven Knight &lt;knight at baldmt dot com&gt;
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NAME</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DL>
+<DT><A HREF="#lbAD">Generating Timing Information</A><DD>
+<DT><A HREF="#lbAE">Extracting Function Timings</A><DD>
+<DT><A HREF="#lbAF">Extracting Memory Statistics</A><DD>
+<DT><A HREF="#lbAG">Extracting Object Counts</A><DD>
+<DT><A HREF="#lbAH">Extracting Execution Times</A><DD>
+<DT><A HREF="#lbAI">Help Text</A><DD>
+</DL>
+<DT><A HREF="#lbAJ">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAK">OPTIONS</A><DD>
+<DT><A HREF="#lbAL">SUBCOMMANDS</A><DD>
+<DL>
+<DT><A HREF="#lbAM">The func Subcommand</A><DD>
+<DT><A HREF="#lbAN">The help Subcommand</A><DD>
+<DT><A HREF="#lbAO">The mem Subcommand</A><DD>
+<DT><A HREF="#lbAP">The obj Subcommand</A><DD>
+<DT><A HREF="#lbAQ">The run Subcommand</A><DD>
+<DT><A HREF="#lbAR">The time Subcommand</A><DD>
+</DL>
+<DT><A HREF="#lbAS">CONFIGURATION FILE</A><DD>
+<DL>
+<DT><A HREF="#lbAT">Example</A><DD>
+</DL>
+<DT><A HREF="#lbAU">ENVIRONMENT</A><DD>
+<DT><A HREF="#lbAV">SEE ALSO</A><DD>
+<DT><A HREF="#lbAW">AUTHORS</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="http://localhost/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 03:02:07 GMT, January 08, 2007
+</BODY>
+</HTML>

@@ -1,0 +1,324 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Separating Source and Build Directories</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 0.98.2"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Sharing Environments (and Other Variables) Between SConscript Files"
+HREF="x2268.html"><LINK
+REL="NEXT"
+TITLE="Why SCons Duplicates Source Files in a Variant Directory Tree"
+HREF="x2395.html"></HEAD
+><BODY
+CLASS="chapter"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 0.98.2</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x2268.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x2395.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="chapter"
+><H1
+><A
+NAME="chap-separate"
+></A
+>Chapter 15. Separating Source and Build Directories</H1
+><P
+>&#13;
+  It's often useful to keep any built files completely
+  separate from the source files.
+  In <SPAN
+CLASS="application"
+>SCons</SPAN
+>, this is usually done by creating one or more separate
+  <SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>variant directory trees</I
+></SPAN
+>
+  that are used to hold the built objects files, libraries,
+  and executable programs, etc.
+  for a specific flavor, or variant, of build.
+  <SPAN
+CLASS="application"
+>SCons</SPAN
+> provides two ways to do this,
+  one through the <TT
+CLASS="filename"
+>SConscript</TT
+> function that we've already seen,
+  and the second through a more flexible <CODE
+CLASS="function"
+>VariantDir</CODE
+> function.
+
+  </P
+><P
+>&#13;
+  One historical note:  the <CODE
+CLASS="function"
+>VariantDir</CODE
+> function
+  used to be called <CODE
+CLASS="function"
+>BuildDir</CODE
+>.
+  That name is still supported
+  but has been deprecated
+  because the <SPAN
+CLASS="application"
+>SCons</SPAN
+> functionality
+  differs from the model of a "build directory"
+  implemented by other build systems like the GNU Autotools.
+
+  </P
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN2365"
+>15.1. Specifying a Variant Directory Tree as Part of an <TT
+CLASS="filename"
+>SConscript</TT
+> Call</A
+></H1
+><P
+>&#13;
+    The most straightforward way to establish a variant directory tree
+    uses the fact that the usual way to
+    set up a build hierarchy is to have an
+    <TT
+CLASS="filename"
+>SConscript</TT
+> file in the source subdirectory.
+    If you then pass a <CODE
+CLASS="varname"
+>variant_dir</CODE
+> argument to the
+    <TT
+CLASS="filename"
+>SConscript</TT
+> function call:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;      SConscript('src/SConscript', variant_dir='build')
+    </PRE
+><P
+>&#13;
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> will then build all of the files in
+    the <TT
+CLASS="filename"
+>build</TT
+> subdirectory:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>ls src</KBD
+>
+      SConscript  hello.c
+      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      cc -o build/hello.o -c build/hello.c
+      cc -o build/hello build/hello.o
+      % <KBD
+CLASS="userinput"
+>ls build</KBD
+>
+      SConscript  hello  hello.c  hello.o
+    </PRE
+><P
+>&#13;
+    But wait a minute--what's going on here?
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> created the object file
+    <TT
+CLASS="filename"
+>build/hello.o</TT
+>
+    in the <TT
+CLASS="filename"
+>build</TT
+> subdirectory,
+    as expected.
+    But even though our <TT
+CLASS="filename"
+>hello.c</TT
+> file lives in the <TT
+CLASS="filename"
+>src</TT
+> subdirectory,
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> has actually compiled a
+    <TT
+CLASS="filename"
+>build/hello.c</TT
+> file
+    to create the object file.
+
+    </P
+><P
+>&#13;
+    What's happened is that <SPAN
+CLASS="application"
+>SCons</SPAN
+> has <SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>duplicated</I
+></SPAN
+>
+    the <TT
+CLASS="filename"
+>hello.c</TT
+> file from the <TT
+CLASS="filename"
+>src</TT
+> subdirectory
+    to the <TT
+CLASS="filename"
+>build</TT
+> subdirectory,
+    and built the program from there.
+    The next section explains why <SPAN
+CLASS="application"
+>SCons</SPAN
+> does this.
+
+    </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x2268.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x2395.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Sharing Environments (and Other Variables) Between <TT
+CLASS="filename"
+>SConscript</TT
+> Files</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Why <SPAN
+CLASS="application"
+>SCons</SPAN
+> Duplicates Source Files in a Variant Directory Tree</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

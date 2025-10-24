@@ -1,0 +1,284 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Building Java Archive (.jar) Files:  the Jar Builder</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 0.98.3"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Java Builds"
+HREF="c3227.html"><LINK
+REL="PREVIOUS"
+TITLE="How SCons Handles Java Dependencies"
+HREF="x3256.html"><LINK
+REL="NEXT"
+TITLE="Building C Header and Stub Files:  the JavaH Builder"
+HREF="x3314.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 0.98.3</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x3256.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 25. Java Builds</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x3314.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN3283"
+>25.3. Building Java Archive (<TT
+CLASS="filename"
+>.jar</TT
+>) Files:  the <CODE
+CLASS="function"
+>Jar</CODE
+> Builder</A
+></H1
+><P
+>&#13;
+    After building the class files,
+    it's common to collect them into
+    a Java archive (<TT
+CLASS="filename"
+>.jar</TT
+>) file,
+    which you do by calling the <A
+HREF="a7140.html#b-Jar"
+><CODE
+CLASS="function"
+>Jar</CODE
+></A
+> Builder method.
+    If you want to just collect all of the
+    class files within a subdirectory,
+    you can just specify that subdirectory
+    as the <CODE
+CLASS="function"
+>Jar</CODE
+> source:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;      Java(target = 'classes', source = 'src')
+      Jar(target = 'test.jar', source = 'classes')
+    </PRE
+><P
+>&#13;
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> will then pass that directory
+    to the <SPAN
+CLASS="application"
+>jar</SPAN
+> command,
+    which will collect all of the underlying
+    <TT
+CLASS="filename"
+>.class</TT
+> files:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      javac -d classes -sourcepath src src/Example1.java src/Example2.java src/Example3.java
+      jar cf test.jar classes
+    </PRE
+><P
+>&#13;
+    If you want to keep all of the
+    <TT
+CLASS="filename"
+>.class</TT
+> files
+    for multiple programs in one location,
+    and only archive some of them in
+    each <TT
+CLASS="filename"
+>.jar</TT
+> file,
+    you can pass the <CODE
+CLASS="function"
+>Jar</CODE
+> builder a
+    list of files as its source.
+    It's extremely simple to create multiple
+    <TT
+CLASS="filename"
+>.jar</TT
+> files this way,
+    using the lists of target class files created
+    by calls to the <A
+HREF="a7140.html#b-Java"
+><CODE
+CLASS="function"
+>Java</CODE
+></A
+> builder
+    as sources to the various <CODE
+CLASS="function"
+>Jar</CODE
+> calls:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;      prog1_class_files = Java(target = 'classes', source = 'prog1')
+      prog2_class_files = Java(target = 'classes', source = 'prog2')
+      Jar(target = 'prog1.jar', source = prog1_class_files)
+      Jar(target = 'prog2.jar', source = prog2_class_files)
+    </PRE
+><P
+>&#13;
+    This will then create
+    <TT
+CLASS="filename"
+>prog1.jar</TT
+>
+    and <TT
+CLASS="filename"
+>prog2.jar</TT
+>
+    next to the subdirectories
+    that contain their <TT
+CLASS="filename"
+>.java</TT
+> files:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      javac -d classes -sourcepath prog1 prog1/Example1.java prog1/Example2.java
+      javac -d classes -sourcepath prog2 prog2/Example3.java prog2/Example4.java
+      jar cf prog1.jar -C classes Example1.class -C classes Example2.class
+      jar cf prog2.jar -C classes Example3.class -C classes Example4.class
+    </PRE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x3256.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x3314.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>How <SPAN
+CLASS="application"
+>SCons</SPAN
+> Handles Java Dependencies</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c3227.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Building C Header and Stub Files:  the <CODE
+CLASS="function"
+>JavaH</CODE
+> Builder</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

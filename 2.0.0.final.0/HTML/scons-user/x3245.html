@@ -1,0 +1,193 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Absolute Path Names</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 2.0.0.final.0"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Hierarchical Builds"
+HREF="c3165.html"><LINK
+REL="PREVIOUS"
+TITLE="Top-Level Path Names in Subsidiary SConscript Files"
+HREF="x3224.html"><LINK
+REL="NEXT"
+TITLE="Sharing Environments (and Other Variables) Between SConscript Files"
+HREF="x3255.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 2.0.0.final.0</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x3224.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 16. Hierarchical Builds</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x3255.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN3245"
+>16.4. Absolute Path Names</A
+></H1
+><P
+>&#13;
+    Of course, you can always specify
+    an absolute path name for a file--for example:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;       env = Environment()
+       env.Program('prog', ['main.c', '/usr/joe/lib/foo1.c', 'foo2.c'])
+    </PRE
+><P
+>&#13;
+    Which, when executed, would yield:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;       % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+       cc -o src/prog/foo2.o -c src/prog/foo2.c
+       cc -o src/prog/main.o -c src/prog/main.c
+       cc -o /usr/joe/lib/foo1.o -c /usr/joe/lib/foo1.c
+       cc -o src/prog/prog src/prog/main.o /usr/joe/lib/foo1.o src/prog/foo2.o
+    </PRE
+><P
+>&#13;
+    (As was the case with top-relative path names,
+    notice that the <TT
+CLASS="literal"
+>/usr/joe/lib/foo1.o</TT
+> object file
+    is built in the same directory as its source file.
+    See <A
+HREF="c3340.html"
+>Chapter 17</A
+>, below,
+    for information about
+    how to build the object file in a different subdirectory.)
+
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x3224.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x3255.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Top-Level Path Names in Subsidiary <TT
+CLASS="filename"
+>SConscript</TT
+> Files</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c3165.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Sharing Environments (and Other Variables) Between <TT
+CLASS="filename"
+>SConscript</TT
+> Files</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

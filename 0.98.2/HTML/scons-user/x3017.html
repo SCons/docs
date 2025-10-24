@@ -1,0 +1,199 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Checking for the Existence of Header Files</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 0.98.2"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Multi-Platform Configuration (Autoconf Functionality)"
+HREF="c2991.html"><LINK
+REL="PREVIOUS"
+TITLE="Multi-Platform Configuration (Autoconf Functionality)"
+HREF="c2991.html"><LINK
+REL="NEXT"
+TITLE="Checking for the Availability of a Function"
+HREF="x3026.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 0.98.2</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="c2991.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 22. Multi-Platform Configuration (<SPAN
+CLASS="application"
+>Autoconf</SPAN
+> Functionality)</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x3026.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN3017"
+>22.2. Checking for the Existence of Header Files</A
+></H1
+><P
+>&#13;
+    Testing the existence of a header file
+    requires knowing what language the header file is.
+    A configure context has a <CODE
+CLASS="function"
+>CheckCHeader</CODE
+> method
+    that checks for the existence of a C header file:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;    env = Environment()
+    conf = Configure(env)
+    if not conf.CheckCHeader('math.h'):
+        print 'Math.h must be installed!'
+        Exit(1)
+    if conf.CheckCHeader('foo.h'):
+        conf.env.Append('-DHAS_FOO_H')
+    env = conf.Finish()
+    </PRE
+><P
+>&#13;
+    Note that you can choose to terminate
+    the build if a given header file doesn't exist,
+    or you can modify the construction environment
+    based on the existence of a header file.
+
+    </P
+><P
+>&#13;
+    If you need to check for the existence
+    a C++ header file,
+    use the <CODE
+CLASS="function"
+>CheckCXXHeader</CODE
+> method:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;    env = Environment()
+    conf = Configure(env)
+    if not conf.CheckCXXHeader('vector.h'):
+        print 'vector.h must be installed!'
+        Exit(1)
+    env = conf.Finish()
+    </PRE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="c2991.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x3026.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Multi-Platform Configuration (<SPAN
+CLASS="application"
+>Autoconf</SPAN
+> Functionality)</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c2991.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Checking for the Availability of a Function</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

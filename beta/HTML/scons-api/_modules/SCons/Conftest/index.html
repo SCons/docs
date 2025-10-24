@@ -1,0 +1,1111 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>SCons.Conftest &mdash; SCons 4.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex/" />
+    <link rel="search" title="Search" href="../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../" class="icon icon-home"> SCons
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                4.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons/">SCons package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Variables/">SCons.Variables package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.compat/">SCons.compat package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Action">SCons.Action module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Builder">SCons.Builder module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.CacheDir">SCons.CacheDir module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Conftest">SCons.Conftest module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Debug">SCons.Debug module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Defaults">SCons.Defaults module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Environment">SCons.Environment module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Errors">SCons.Errors module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Executor">SCons.Executor module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Job">SCons.Job module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Memoize">SCons.Memoize module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.PathList">SCons.PathList module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.SConf">SCons.SConf module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.SConsign">SCons.SConsign module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Subst">SCons.Subst module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Taskmaster">SCons.Taskmaster module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons/#generic-taskmaster-module-for-the-scons-build-engine">Generic Taskmaster module for the SCons build engine.</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Util">SCons.Util module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Warnings">SCons.Warnings module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.cpp">SCons.cpp module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.dblite">SCons.dblite module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.exitfuncs">SCons.exitfuncs module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.compat/">SCons.compat package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.compat/#module-SCons.compat">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Node/">SCons.Node package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#module-SCons.Node.Alias">SCons.Node.Alias module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#module-SCons.Node.FS">SCons.Node.FS module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#module-SCons.Node.Python">SCons.Node.Python module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#module-SCons.Node">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Platform/">SCons.Platform package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.aix">SCons.Platform.aix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.cygwin">SCons.Platform.cygwin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.darwin">SCons.Platform.darwin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.hpux">SCons.Platform.hpux module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.irix">SCons.Platform.irix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.mingw">SCons.Platform.mingw module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.os2">SCons.Platform.os2 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.posix">SCons.Platform.posix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.sunos">SCons.Platform.sunos module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.virtualenv">SCons.Platform.virtualenv module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.win32">SCons.Platform.win32 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Scanner/">SCons.Scanner package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.C">SCons.Scanner.C module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.D">SCons.Scanner.D module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.Dir">SCons.Scanner.Dir module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.Fortran">SCons.Scanner.Fortran module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.IDL">SCons.Scanner.IDL module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.LaTeX">SCons.Scanner.LaTeX module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.Prog">SCons.Scanner.Prog module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.RC">SCons.Scanner.RC module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.SWIG">SCons.Scanner.SWIG module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Script/">SCons.Script package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script.Interactive">SCons.Script.Interactive module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script.Main">SCons.Script.Main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script.SConsOptions">SCons.Script.SConsOptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script.SConscript">SCons.Script.SConscript module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Tool/">SCons.Tool package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Tool/#module-SCons.Tool">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Variables/">SCons.Variables package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.BoolVariable">SCons.Variables.BoolVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.EnumVariable">SCons.Variables.EnumVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.ListVariable">SCons.Variables.ListVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.PackageVariable">SCons.Variables.PackageVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.PathVariable">SCons.Variables.PathVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../">SCons</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../">Docs</a> &raquo;</li>
+        
+          <li><a href="../../">Module code</a> &raquo;</li>
+        
+      <li>SCons.Conftest</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for SCons.Conftest</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;SCons.Conftest</span>
+
+<span class="sd">Autoconf-like configuration support; low level implementation of tests.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1">#</span>
+<span class="c1"># Copyright (c) 2003 Stichting NLnet Labs</span>
+<span class="c1"># Copyright (c) 2001, 2002, 2003 Steven Knight</span>
+<span class="c1">#</span>
+<span class="c1"># Permission is hereby granted, free of charge, to any person obtaining</span>
+<span class="c1"># a copy of this software and associated documentation files (the</span>
+<span class="c1"># &quot;Software&quot;), to deal in the Software without restriction, including</span>
+<span class="c1"># without limitation the rights to use, copy, modify, merge, publish,</span>
+<span class="c1"># distribute, sublicense, and/or sell copies of the Software, and to</span>
+<span class="c1"># permit persons to whom the Software is furnished to do so, subject to</span>
+<span class="c1"># the following conditions:</span>
+<span class="c1">#</span>
+<span class="c1"># The above copyright notice and this permission notice shall be included</span>
+<span class="c1"># in all copies or substantial portions of the Software.</span>
+<span class="c1">#</span>
+<span class="c1"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY</span>
+<span class="c1"># KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND</span>
+<span class="c1"># NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE</span>
+<span class="c1"># LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION</span>
+<span class="c1"># OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</span>
+<span class="c1"># WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</span>
+<span class="c1">#</span>
+
+<span class="c1">#</span>
+<span class="c1"># The purpose of this module is to define how a check is to be performed.</span>
+<span class="c1"># Use one of the Check...() functions below.</span>
+<span class="c1">#</span>
+
+<span class="c1">#</span>
+<span class="c1"># A context class is used that defines functions for carrying out the tests,</span>
+<span class="c1"># logging and messages.  The following methods and members must be present:</span>
+<span class="c1">#</span>
+<span class="c1"># context.Display(msg)  Function called to print messages that are normally</span>
+<span class="c1">#                       displayed for the user.  Newlines are explicitly used.</span>
+<span class="c1">#                       The text should also be written to the logfile!</span>
+<span class="c1">#</span>
+<span class="c1"># context.Log(msg)      Function called to write to a log file.</span>
+<span class="c1">#</span>
+<span class="c1"># context.BuildProg(text, ext)</span>
+<span class="c1">#                       Function called to build a program, using &quot;ext&quot; for the</span>
+<span class="c1">#                       file extention.  Must return an empty string for</span>
+<span class="c1">#                       success, an error message for failure.</span>
+<span class="c1">#                       For reliable test results building should be done just</span>
+<span class="c1">#                       like an actual program would be build, using the same</span>
+<span class="c1">#                       command and arguments (including configure results so</span>
+<span class="c1">#                       far).</span>
+<span class="c1">#</span>
+<span class="c1"># context.CompileProg(text, ext)</span>
+<span class="c1">#                       Function called to compile a program, using &quot;ext&quot; for</span>
+<span class="c1">#                       the file extention.  Must return an empty string for</span>
+<span class="c1">#                       success, an error message for failure.</span>
+<span class="c1">#                       For reliable test results compiling should be done just</span>
+<span class="c1">#                       like an actual source file would be compiled, using the</span>
+<span class="c1">#                       same command and arguments (including configure results</span>
+<span class="c1">#                       so far).</span>
+<span class="c1">#</span>
+<span class="c1"># context.AppendLIBS(lib_name_list)</span>
+<span class="c1">#                       Append &quot;lib_name_list&quot; to the value of LIBS.</span>
+<span class="c1">#                       &quot;lib_namelist&quot; is a list of strings.</span>
+<span class="c1">#                       Return the value of LIBS before changing it (any type</span>
+<span class="c1">#                       can be used, it is passed to SetLIBS() later.)</span>
+<span class="c1">#</span>
+<span class="c1"># context.PrependLIBS(lib_name_list)</span>
+<span class="c1">#                       Prepend &quot;lib_name_list&quot; to the value of LIBS.</span>
+<span class="c1">#                       &quot;lib_namelist&quot; is a list of strings.</span>
+<span class="c1">#                       Return the value of LIBS before changing it (any type</span>
+<span class="c1">#                       can be used, it is passed to SetLIBS() later.)</span>
+<span class="c1">#</span>
+<span class="c1"># context.SetLIBS(value)</span>
+<span class="c1">#                       Set LIBS to &quot;value&quot;.  The type of &quot;value&quot; is what</span>
+<span class="c1">#                       AppendLIBS() returned.</span>
+<span class="c1">#                       Return the value of LIBS before changing it (any type</span>
+<span class="c1">#                       can be used, it is passed to SetLIBS() later.)</span>
+<span class="c1">#</span>
+<span class="c1"># context.headerfilename</span>
+<span class="c1">#                       Name of file to append configure results to, usually</span>
+<span class="c1">#                       &quot;confdefs.h&quot;.</span>
+<span class="c1">#                       The file must not exist or be empty when starting.</span>
+<span class="c1">#                       Empty or None to skip this (some tests will not work!).</span>
+<span class="c1">#</span>
+<span class="c1"># context.config_h      (may be missing). If present, must be a string, which</span>
+<span class="c1">#                       will be filled with the contents of a config_h file.</span>
+<span class="c1">#</span>
+<span class="c1"># context.vardict       Dictionary holding variables used for the tests and</span>
+<span class="c1">#                       stores results from the tests, used for the build</span>
+<span class="c1">#                       commands.</span>
+<span class="c1">#                       Normally contains &quot;CC&quot;, &quot;LIBS&quot;, &quot;CPPFLAGS&quot;, etc.</span>
+<span class="c1">#</span>
+<span class="c1"># context.havedict      Dictionary holding results from the tests that are to</span>
+<span class="c1">#                       be used inside a program.</span>
+<span class="c1">#                       Names often start with &quot;HAVE_&quot;.  These are zero</span>
+<span class="c1">#                       (feature not present) or one (feature present).  Other</span>
+<span class="c1">#                       variables may have any value, e.g., &quot;PERLVERSION&quot; can</span>
+<span class="c1">#                       be a number and &quot;SYSTEMNAME&quot; a string.</span>
+<span class="c1">#</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="c1">#</span>
+<span class="c1"># PUBLIC VARIABLES</span>
+<span class="c1">#</span>
+
+<span class="n">LogInputFiles</span> <span class="o">=</span> <span class="mi">1</span>    <span class="c1"># Set that to log the input files in case of a failed test</span>
+<span class="n">LogErrorMessages</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># Set that to log Conftest-generated error messages</span>
+
+<span class="c1">#</span>
+<span class="c1"># PUBLIC FUNCTIONS</span>
+<span class="c1">#</span>
+
+<span class="c1"># Generic remarks:</span>
+<span class="c1"># - When a language is specified which is not supported the test fails.  The</span>
+<span class="c1">#   message is a bit different, because not all the arguments for the normal</span>
+<span class="c1">#   message are available yet (chicken-egg problem).</span>
+
+
+<div class="viewcode-block" id="CheckBuilder"><a class="viewcode-back" href="../../../SCons/#SCons.Conftest.CheckBuilder">[docs]</a><span class="k">def</span> <span class="nf">CheckBuilder</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">text</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">language</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Configure check to see if the compiler works.</span>
+<span class="sd">    Note that this uses the current value of compiler and linker flags, make</span>
+<span class="sd">    sure $CFLAGS, $CPPFLAGS and $LIBS are set correctly.</span>
+<span class="sd">    &quot;language&quot; should be &quot;C&quot; or &quot;C++&quot; and is used to select the compiler.</span>
+<span class="sd">    Default is &quot;C&quot;.</span>
+<span class="sd">    &quot;text&quot; may be used to specify the code to be build.</span>
+<span class="sd">    Returns an empty string for success, an error message for failure.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">lang</span><span class="p">,</span> <span class="n">suffix</span><span class="p">,</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">_lang2suffix</span><span class="p">(</span><span class="n">language</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">msg</span><span class="p">:</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">Display</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">msg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">msg</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">text</span><span class="p">:</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">int main(void) {</span>
+<span class="s2">    return 0;</span>
+<span class="s2">}</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="n">context</span><span class="o">.</span><span class="n">Display</span><span class="p">(</span><span class="s2">&quot;Checking if building a </span><span class="si">%s</span><span class="s2"> file works... &quot;</span> <span class="o">%</span> <span class="n">lang</span><span class="p">)</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">BuildProg</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">suffix</span><span class="p">)</span>
+    <span class="n">_YesNoResult</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">ret</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ret</span></div>
+
+<div class="viewcode-block" id="CheckCC"><a class="viewcode-back" href="../../../SCons/#SCons.Conftest.CheckCC">[docs]</a><span class="k">def</span> <span class="nf">CheckCC</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Configure check for a working C compiler.</span>
+
+<span class="sd">    This checks whether the C compiler, as defined in the $CC construction</span>
+<span class="sd">    variable, can compile a C source file. It uses the current $CCCOM value</span>
+<span class="sd">    too, so that it can test against non working flags.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">Display</span><span class="p">(</span><span class="s2">&quot;Checking whether the C compiler works... &quot;</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">int main(void)</span>
+<span class="s2">{</span>
+<span class="s2">    return 0;</span>
+<span class="s2">}</span>
+<span class="s2">&quot;&quot;&quot;</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">_check_empty_program</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="s1">&#39;CC&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">)</span>
+    <span class="n">_YesNoResult</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">ret</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ret</span></div>
+
+<div class="viewcode-block" id="CheckSHCC"><a class="viewcode-back" href="../../../SCons/#SCons.Conftest.CheckSHCC">[docs]</a><span class="k">def</span> <span class="nf">CheckSHCC</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Configure check for a working shared C compiler.</span>
+
+<span class="sd">    This checks whether the C compiler, as defined in the $SHCC construction</span>
+<span class="sd">    variable, can compile a C source file. It uses the current $SHCCCOM value</span>
+<span class="sd">    too, so that it can test against non working flags.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">Display</span><span class="p">(</span><span class="s2">&quot;Checking whether the (shared) C compiler works... &quot;</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">int foo(void)</span>
+<span class="s2">{</span>
+<span class="s2">    return 0;</span>
+<span class="s2">}</span>
+<span class="s2">&quot;&quot;&quot;</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">_check_empty_program</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="s1">&#39;SHCC&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="n">use_shared</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">_YesNoResult</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">ret</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ret</span></div>
+
+<div class="viewcode-block" id="CheckCXX"><a class="viewcode-back" href="../../../SCons/#SCons.Conftest.CheckCXX">[docs]</a><span class="k">def</span> <span class="nf">CheckCXX</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Configure check for a working CXX compiler.</span>
+
+<span class="sd">    This checks whether the CXX compiler, as defined in the $CXX construction</span>
+<span class="sd">    variable, can compile a CXX source file. It uses the current $CXXCOM value</span>
+<span class="sd">    too, so that it can test against non working flags.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">Display</span><span class="p">(</span><span class="s2">&quot;Checking whether the C++ compiler works... &quot;</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">int main(void)</span>
+<span class="s2">{</span>
+<span class="s2">    return 0;</span>
+<span class="s2">}</span>
+<span class="s2">&quot;&quot;&quot;</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">_check_empty_program</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="s1">&#39;CXX&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="s1">&#39;C++&#39;</span><span class="p">)</span>
+    <span class="n">_YesNoResult</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">ret</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ret</span></div>
+
+<div class="viewcode-block" id="CheckSHCXX"><a class="viewcode-back" href="../../../SCons/#SCons.Conftest.CheckSHCXX">[docs]</a><span class="k">def</span> <span class="nf">CheckSHCXX</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Configure check for a working shared CXX compiler.</span>
+
+<span class="sd">    This checks whether the CXX compiler, as defined in the $SHCXX construction</span>
+<span class="sd">    variable, can compile a CXX source file. It uses the current $SHCXXCOM value</span>
+<span class="sd">    too, so that it can test against non working flags.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">Display</span><span class="p">(</span><span class="s2">&quot;Checking whether the (shared) C++ compiler works... &quot;</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">int main(void)</span>
+<span class="s2">{</span>
+<span class="s2">    return 0;</span>
+<span class="s2">}</span>
+<span class="s2">&quot;&quot;&quot;</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">_check_empty_program</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="s1">&#39;SHCXX&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="s1">&#39;C++&#39;</span><span class="p">,</span> <span class="n">use_shared</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">_YesNoResult</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">ret</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ret</span></div>
+
+<div class="viewcode-block" id="_check_empty_program"><a class="viewcode-back" href="../../../SCons/#SCons.Conftest._check_empty_program">[docs]</a><span class="k">def</span> <span class="nf">_check_empty_program</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">comp</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">language</span><span class="p">,</span> <span class="n">use_shared</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return 0 on success, 1 otherwise.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">comp</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">context</span><span class="o">.</span><span class="n">env</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">context</span><span class="o">.</span><span class="n">env</span><span class="p">[</span><span class="n">comp</span><span class="p">]:</span>
+        <span class="c1"># The compiler construction variable is not set or empty</span>
+        <span class="k">return</span> <span class="mi">1</span>
+
+    <span class="n">lang</span><span class="p">,</span> <span class="n">suffix</span><span class="p">,</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">_lang2suffix</span><span class="p">(</span><span class="n">language</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">msg</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">use_shared</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">context</span><span class="o">.</span><span class="n">CompileSharedObject</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">suffix</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">context</span><span class="o">.</span><span class="n">CompileProg</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">suffix</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="CheckFunc"><a class="viewcode-back" href="../../../SCons/#SCons.Conftest.CheckFunc">[docs]</a><span class="k">def</span> <span class="nf">CheckFunc</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">function_name</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">language</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Configure check for a function &quot;function_name&quot;.</span>
+<span class="sd">    &quot;language&quot; should be &quot;C&quot; or &quot;C++&quot; and is used to select the compiler.</span>
+<span class="sd">    Default is &quot;C&quot;.</span>
+<span class="sd">    Optional &quot;header&quot; can be defined to define a function prototype, include a</span>
+<span class="sd">    header file or anything else that comes before main().</span>
+<span class="sd">    Sets HAVE_function_name in context.havedict according to the result.</span>
+<span class="sd">    Note that this uses the current value of compiler and linker flags, make</span>
+<span class="sd">    sure $CFLAGS, $CPPFLAGS and $LIBS are set correctly.</span>
+<span class="sd">    Returns an empty string for success, an error message for failure.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Remarks from autoconf:</span>
+    <span class="c1"># - Don&#39;t include &lt;ctype.h&gt; because on OSF/1 3.0 it includes &lt;sys/types.h&gt;</span>
+    <span class="c1">#   which includes &lt;sys/select.h&gt; which contains a prototype for select.</span>
+    <span class="c1">#   Similarly for bzero.</span>
+    <span class="c1"># - assert.h is included to define __stub macros and hopefully few</span>
+    <span class="c1">#   prototypes, which can conflict with char $1(); below.</span>
+    <span class="c1"># - Override any gcc2 internal prototype to avoid an error.</span>
+    <span class="c1"># - We use char for the function declaration because int might match the</span>
+    <span class="c1">#   return type of a gcc2 builtin and then its argument prototype would</span>
+    <span class="c1">#   still apply.</span>
+    <span class="c1"># - The GNU C library defines this for functions which it implements to</span>
+    <span class="c1">#   always fail with ENOSYS.  Some functions are actually named something</span>
+    <span class="c1">#   starting with __ and the normal name is an alias.</span>
+
+    <span class="k">if</span> <span class="n">context</span><span class="o">.</span><span class="n">headerfilename</span><span class="p">:</span>
+        <span class="n">includetext</span> <span class="o">=</span> <span class="s1">&#39;#include &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">context</span><span class="o">.</span><span class="n">headerfilename</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">includetext</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">header</span><span class="p">:</span>
+        <span class="n">header</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">#ifdef __cplusplus</span>
+<span class="s2">extern &quot;C&quot;</span>
+<span class="s2">#endif</span>
+<span class="s2">char </span><span class="si">%s</span><span class="s2">();&quot;&quot;&quot;</span> <span class="o">%</span> <span class="n">function_name</span>
+
+    <span class="n">lang</span><span class="p">,</span> <span class="n">suffix</span><span class="p">,</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">_lang2suffix</span><span class="p">(</span><span class="n">language</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">msg</span><span class="p">:</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">Display</span><span class="p">(</span><span class="s2">&quot;Cannot check for </span><span class="si">%s</span><span class="s2">(): </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">function_name</span><span class="p">,</span> <span class="n">msg</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">msg</span>
+
+    <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="si">%(include)s</span><span class="s2"></span>
+<span class="s2">#include &lt;assert.h&gt;</span>
+<span class="si">%(hdr)s</span><span class="s2"></span>
+
+<span class="s2">#if _MSC_VER &amp;&amp; !__INTEL_COMPILER</span>
+<span class="s2">    #pragma function(</span><span class="si">%(name)s</span><span class="s2">)</span>
+<span class="s2">#endif</span>
+
+<span class="s2">int main(void) {</span>
+<span class="s2">#if defined (__stub_</span><span class="si">%(name)s</span><span class="s2">) || defined (__stub___</span><span class="si">%(name)s</span><span class="s2">)</span>
+<span class="s2">  fail fail fail</span>
+<span class="s2">#else</span>
+<span class="s2">  </span><span class="si">%(name)s</span><span class="s2">();</span>
+<span class="s2">#endif</span>
+
+<span class="s2">  return 0;</span>
+<span class="s2">}</span>
+<span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">{</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">function_name</span><span class="p">,</span>
+        <span class="s1">&#39;include&#39;</span><span class="p">:</span> <span class="n">includetext</span><span class="p">,</span>
+        <span class="s1">&#39;hdr&#39;</span><span class="p">:</span> <span class="n">header</span> <span class="p">}</span>
+
+    <span class="n">context</span><span class="o">.</span><span class="n">Display</span><span class="p">(</span><span class="s2">&quot;Checking for </span><span class="si">%s</span><span class="s2"> function </span><span class="si">%s</span><span class="s2">()... &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="n">function_name</span><span class="p">))</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">BuildProg</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">suffix</span><span class="p">)</span>
+    <span class="n">_YesNoResult</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">ret</span><span class="p">,</span> <span class="s2">&quot;HAVE_&quot;</span> <span class="o">+</span> <span class="n">function_name</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span>
+                 <span class="s2">&quot;Define to 1 if the system has the function `</span><span class="si">%s</span><span class="s2">&#39;.&quot;</span> <span class="o">%</span>\
+                 <span class="n">function_name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ret</span></div>
+
+
+<div class="viewcode-block" id="CheckHeader"><a class="viewcode-back" href="../../../SCons/#SCons.Conftest.CheckHeader">[docs]</a><span class="k">def</span> <span class="nf">CheckHeader</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">header_name</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">include_quotes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Configure check for a C or C++ header file &quot;header_name&quot;.</span>
+<span class="sd">    Optional &quot;header&quot; can be defined to do something before including the</span>
+<span class="sd">    header file (unusual, supported for consistency).</span>
+<span class="sd">    &quot;language&quot; should be &quot;C&quot; or &quot;C++&quot; and is used to select the compiler.</span>
+<span class="sd">    Default is &quot;C&quot;.</span>
+<span class="sd">    Sets HAVE_header_name in context.havedict according to the result.</span>
+<span class="sd">    Note that this uses the current value of compiler and linker flags, make</span>
+<span class="sd">    sure $CFLAGS and $CPPFLAGS are set correctly.</span>
+<span class="sd">    Returns an empty string for success, an error message for failure.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Why compile the program instead of just running the preprocessor?</span>
+    <span class="c1"># It is possible that the header file exists, but actually using it may</span>
+    <span class="c1"># fail (e.g., because it depends on other header files).  Thus this test is</span>
+    <span class="c1"># more strict.  It may require using the &quot;header&quot; argument.</span>
+    <span class="c1">#</span>
+    <span class="c1"># Use &lt;&gt; by default, because the check is normally used for system header</span>
+    <span class="c1"># files.  SCons passes &#39;&quot;&quot;&#39; to overrule this.</span>
+
+    <span class="c1"># Include &quot;confdefs.h&quot; first, so that the header can use HAVE_HEADER_H.</span>
+    <span class="k">if</span> <span class="n">context</span><span class="o">.</span><span class="n">headerfilename</span><span class="p">:</span>
+        <span class="n">includetext</span> <span class="o">=</span> <span class="s1">&#39;#include &quot;</span><span class="si">%s</span><span class="s1">&quot;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">context</span><span class="o">.</span><span class="n">headerfilename</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">includetext</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">header</span><span class="p">:</span>
+        <span class="n">header</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="n">lang</span><span class="p">,</span> <span class="n">suffix</span><span class="p">,</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">_lang2suffix</span><span class="p">(</span><span class="n">language</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">msg</span><span class="p">:</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">Display</span><span class="p">(</span><span class="s2">&quot;Cannot check for header file </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span>
+                                                          <span class="o">%</span> <span class="p">(</span><span class="n">header_name</span><span class="p">,</span> <span class="n">msg</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">msg</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">include_quotes</span><span class="p">:</span>
+        <span class="n">include_quotes</span> <span class="o">=</span> <span class="s2">&quot;&lt;&gt;&quot;</span>
+
+    <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s%s</span><span class="se">\n</span><span class="s2">#include </span><span class="si">%s%s%s</span><span class="se">\n\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">includetext</span><span class="p">,</span> <span class="n">header</span><span class="p">,</span>
+                             <span class="n">include_quotes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">header_name</span><span class="p">,</span> <span class="n">include_quotes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="n">context</span><span class="o">.</span><span class="n">Display</span><span class="p">(</span><span class="s2">&quot;Checking for </span><span class="si">%s</span><span class="s2"> header file </span><span class="si">%s</span><span class="s2">... &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="n">header_name</span><span class="p">))</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">CompileProg</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">suffix</span><span class="p">)</span>
+    <span class="n">_YesNoResult</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">ret</span><span class="p">,</span> <span class="s2">&quot;HAVE_&quot;</span> <span class="o">+</span> <span class="n">header_name</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span>
+                 <span class="s2">&quot;Define to 1 if you have the &lt;</span><span class="si">%s</span><span class="s2">&gt; header file.&quot;</span> <span class="o">%</span> <span class="n">header_name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ret</span></div>
+
+
+<div class="viewcode-block" id="CheckType"><a class="viewcode-back" href="../../../SCons/#SCons.Conftest.CheckType">[docs]</a><span class="k">def</span> <span class="nf">CheckType</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">type_name</span><span class="p">,</span> <span class="n">fallback</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                                               <span class="n">header</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">language</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Configure check for a C or C++ type &quot;type_name&quot;.</span>
+<span class="sd">    Optional &quot;header&quot; can be defined to include a header file.</span>
+<span class="sd">    &quot;language&quot; should be &quot;C&quot; or &quot;C++&quot; and is used to select the compiler.</span>
+<span class="sd">    Default is &quot;C&quot;.</span>
+<span class="sd">    Sets HAVE_type_name in context.havedict according to the result.</span>
+<span class="sd">    Note that this uses the current value of compiler and linker flags, make</span>
+<span class="sd">    sure $CFLAGS, $CPPFLAGS and $LIBS are set correctly.</span>
+<span class="sd">    Returns an empty string for success, an error message for failure.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Include &quot;confdefs.h&quot; first, so that the header can use HAVE_HEADER_H.</span>
+    <span class="k">if</span> <span class="n">context</span><span class="o">.</span><span class="n">headerfilename</span><span class="p">:</span>
+        <span class="n">includetext</span> <span class="o">=</span> <span class="s1">&#39;#include &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">context</span><span class="o">.</span><span class="n">headerfilename</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">includetext</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">header</span><span class="p">:</span>
+        <span class="n">header</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="n">lang</span><span class="p">,</span> <span class="n">suffix</span><span class="p">,</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">_lang2suffix</span><span class="p">(</span><span class="n">language</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">msg</span><span class="p">:</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">Display</span><span class="p">(</span><span class="s2">&quot;Cannot check for </span><span class="si">%s</span><span class="s2"> type: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">type_name</span><span class="p">,</span> <span class="n">msg</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">msg</span>
+
+    <span class="c1"># Remarks from autoconf about this test:</span>
+    <span class="c1"># - Grepping for the type in include files is not reliable (grep isn&#39;t</span>
+    <span class="c1">#   portable anyway).</span>
+    <span class="c1"># - Using &quot;TYPE my_var;&quot; doesn&#39;t work for const qualified types in C++.</span>
+    <span class="c1">#   Adding an initializer is not valid for some C++ classes.</span>
+    <span class="c1"># - Using the type as parameter to a function either fails for K&amp;$ C or for</span>
+    <span class="c1">#   C++.</span>
+    <span class="c1"># - Using &quot;TYPE *my_var;&quot; is valid in C for some types that are not</span>
+    <span class="c1">#   declared (struct something).</span>
+    <span class="c1"># - Using &quot;sizeof(TYPE)&quot; is valid when TYPE is actually a variable.</span>
+    <span class="c1"># - Using the previous two together works reliably.</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="si">%(include)s</span><span class="s2"></span>
+<span class="si">%(header)s</span><span class="s2"></span>
+
+<span class="s2">int main(void) {</span>
+<span class="s2">  if ((</span><span class="si">%(name)s</span><span class="s2"> *) 0)</span>
+<span class="s2">    return 0;</span>
+<span class="s2">  if (sizeof (</span><span class="si">%(name)s</span><span class="s2">))</span>
+<span class="s2">    return 0;</span>
+<span class="s2">}</span>
+<span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">{</span> <span class="s1">&#39;include&#39;</span><span class="p">:</span> <span class="n">includetext</span><span class="p">,</span>
+        <span class="s1">&#39;header&#39;</span><span class="p">:</span> <span class="n">header</span><span class="p">,</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">type_name</span> <span class="p">}</span>
+
+    <span class="n">context</span><span class="o">.</span><span class="n">Display</span><span class="p">(</span><span class="s2">&quot;Checking for </span><span class="si">%s</span><span class="s2"> type </span><span class="si">%s</span><span class="s2">... &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="n">type_name</span><span class="p">))</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">BuildProg</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">suffix</span><span class="p">)</span>
+    <span class="n">_YesNoResult</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">ret</span><span class="p">,</span> <span class="s2">&quot;HAVE_&quot;</span> <span class="o">+</span> <span class="n">type_name</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span>
+                 <span class="s2">&quot;Define to 1 if the system has the type `</span><span class="si">%s</span><span class="s2">&#39;.&quot;</span> <span class="o">%</span> <span class="n">type_name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ret</span> <span class="ow">and</span> <span class="n">fallback</span> <span class="ow">and</span> <span class="n">context</span><span class="o">.</span><span class="n">headerfilename</span><span class="p">:</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">headerfilename</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;typedef </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">fallback</span><span class="p">,</span> <span class="n">type_name</span><span class="p">))</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">ret</span></div>
+
+<div class="viewcode-block" id="CheckTypeSize"><a class="viewcode-back" href="../../../SCons/#SCons.Conftest.CheckTypeSize">[docs]</a><span class="k">def</span> <span class="nf">CheckTypeSize</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">type_name</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">language</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">expect</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This check can be used to get the size of a given type, or to check whether</span>
+<span class="sd">    the type is of expected size.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        - type : str</span>
+<span class="sd">            the type to check</span>
+<span class="sd">        - includes : sequence</span>
+<span class="sd">            list of headers to include in the test code before testing the type</span>
+<span class="sd">        - language : str</span>
+<span class="sd">            &#39;C&#39; or &#39;C++&#39;</span>
+<span class="sd">        - expect : int</span>
+<span class="sd">            if given, will test wether the type has the given number of bytes.</span>
+<span class="sd">            If not given, will automatically find the size.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            status : int</span>
+<span class="sd">                0 if the check failed, or the found size of the type if the check succeeded.&quot;&quot;&quot;</span>
+
+    <span class="c1"># Include &quot;confdefs.h&quot; first, so that the header can use HAVE_HEADER_H.</span>
+    <span class="k">if</span> <span class="n">context</span><span class="o">.</span><span class="n">headerfilename</span><span class="p">:</span>
+        <span class="n">includetext</span> <span class="o">=</span> <span class="s1">&#39;#include &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">context</span><span class="o">.</span><span class="n">headerfilename</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">includetext</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">header</span><span class="p">:</span>
+        <span class="n">header</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="n">lang</span><span class="p">,</span> <span class="n">suffix</span><span class="p">,</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">_lang2suffix</span><span class="p">(</span><span class="n">language</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">msg</span><span class="p">:</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">Display</span><span class="p">(</span><span class="s2">&quot;Cannot check for </span><span class="si">%s</span><span class="s2"> type: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">type_name</span><span class="p">,</span> <span class="n">msg</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">msg</span>
+
+    <span class="n">src</span> <span class="o">=</span> <span class="n">includetext</span> <span class="o">+</span> <span class="n">header</span>
+    <span class="k">if</span> <span class="n">expect</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Only check if the given size is the right one</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">Display</span><span class="p">(</span><span class="s1">&#39;Checking </span><span class="si">%s</span><span class="s1"> is </span><span class="si">%d</span><span class="s1"> bytes... &#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">type_name</span><span class="p">,</span> <span class="n">expect</span><span class="p">))</span>
+
+        <span class="c1"># test code taken from autoconf: this is a pretty clever hack to find that</span>
+        <span class="c1"># a type is of a given size using only compilation. This speeds things up</span>
+        <span class="c1"># quite a bit compared to straightforward code using TryRun</span>
+        <span class="n">src</span> <span class="o">=</span> <span class="n">src</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">typedef </span><span class="si">%s</span><span class="s2"> scons_check_type;</span>
+
+<span class="s2">int main(void)</span>
+<span class="s2">{</span>
+<span class="s2">    static int test_array[1 - 2 * !(((long int) (sizeof(scons_check_type))) == </span><span class="si">%d</span><span class="s2">)];</span>
+<span class="s2">    test_array[0] = 0;</span>
+
+<span class="s2">    return 0;</span>
+<span class="s2">}</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+        <span class="n">st</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">CompileProg</span><span class="p">(</span><span class="n">src</span> <span class="o">%</span> <span class="p">(</span><span class="n">type_name</span><span class="p">,</span> <span class="n">expect</span><span class="p">),</span> <span class="n">suffix</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">st</span><span class="p">:</span>
+            <span class="n">context</span><span class="o">.</span><span class="n">Display</span><span class="p">(</span><span class="s2">&quot;yes</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">_Have</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="s2">&quot;SIZEOF_</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">type_name</span><span class="p">,</span> <span class="n">expect</span><span class="p">,</span>
+                  <span class="s2">&quot;The size of `</span><span class="si">%s</span><span class="s2">&#39;, as computed by sizeof.&quot;</span> <span class="o">%</span> <span class="n">type_name</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">expect</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">context</span><span class="o">.</span><span class="n">Display</span><span class="p">(</span><span class="s2">&quot;no</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">_LogFailed</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">st</span><span class="p">)</span>
+            <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Only check if the given size is the right one</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">Message</span><span class="p">(</span><span class="s1">&#39;Checking size of </span><span class="si">%s</span><span class="s1"> ... &#39;</span> <span class="o">%</span> <span class="n">type_name</span><span class="p">)</span>
+
+        <span class="c1"># We have to be careful with the program we wish to test here since</span>
+        <span class="c1"># compilation will be attempted using the current environment&#39;s flags.</span>
+        <span class="c1"># So make sure that the program will compile without any warning. For</span>
+        <span class="c1"># example using: &#39;int main(int argc, char** argv)&#39; will fail with the</span>
+        <span class="c1"># &#39;-Wall -Werror&#39; flags since the variables argc and argv would not be</span>
+        <span class="c1"># used in the program...</span>
+        <span class="c1">#</span>
+        <span class="n">src</span> <span class="o">=</span> <span class="n">src</span> <span class="o">+</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">#include &lt;stdlib.h&gt;</span>
+<span class="s2">#include &lt;stdio.h&gt;</span>
+<span class="s2">int main(void) {</span>
+<span class="s2">    printf(&quot;</span><span class="si">%d</span><span class="s2">&quot;, (int)sizeof(&quot;&quot;&quot;</span> <span class="o">+</span> <span class="n">type_name</span> <span class="o">+</span> <span class="s2">&quot;&quot;&quot;));</span>
+<span class="s2">    return 0;</span>
+<span class="s2">}</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+        <span class="n">st</span><span class="p">,</span> <span class="n">out</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">RunProg</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">suffix</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="c1"># If cannot convert output of test prog to an integer (the size),</span>
+            <span class="c1"># something went wront, so just fail</span>
+            <span class="n">st</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">st</span><span class="p">:</span>
+            <span class="n">context</span><span class="o">.</span><span class="n">Display</span><span class="p">(</span><span class="s2">&quot;yes</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">_Have</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="s2">&quot;SIZEOF_</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">type_name</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span>
+                  <span class="s2">&quot;The size of `</span><span class="si">%s</span><span class="s2">&#39;, as computed by sizeof.&quot;</span> <span class="o">%</span> <span class="n">type_name</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">size</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">context</span><span class="o">.</span><span class="n">Display</span><span class="p">(</span><span class="s2">&quot;no</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">_LogFailed</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">st</span><span class="p">)</span>
+            <span class="k">return</span> <span class="mi">0</span>
+
+    <span class="k">return</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="CheckDeclaration"><a class="viewcode-back" href="../../../SCons/#SCons.Conftest.CheckDeclaration">[docs]</a><span class="k">def</span> <span class="nf">CheckDeclaration</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">includes</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">language</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Checks whether symbol is declared.</span>
+
+<span class="sd">    Use the same test as autoconf, that is test whether the symbol is defined</span>
+<span class="sd">    as a macro or can be used as an r-value.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        symbol : str</span>
+<span class="sd">            the symbol to check</span>
+<span class="sd">        includes : str</span>
+<span class="sd">            Optional &quot;header&quot; can be defined to include a header file.</span>
+<span class="sd">        language : str</span>
+<span class="sd">            only C and C++ supported.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        status : bool</span>
+<span class="sd">            True if the check failed, False if succeeded.&quot;&quot;&quot;</span>
+
+    <span class="c1"># Include &quot;confdefs.h&quot; first, so that the header can use HAVE_HEADER_H.</span>
+    <span class="k">if</span> <span class="n">context</span><span class="o">.</span><span class="n">headerfilename</span><span class="p">:</span>
+        <span class="n">includetext</span> <span class="o">=</span> <span class="s1">&#39;#include &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">context</span><span class="o">.</span><span class="n">headerfilename</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">includetext</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">includes</span><span class="p">:</span>
+        <span class="n">includes</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="n">lang</span><span class="p">,</span> <span class="n">suffix</span><span class="p">,</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">_lang2suffix</span><span class="p">(</span><span class="n">language</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">msg</span><span class="p">:</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">Display</span><span class="p">(</span><span class="s2">&quot;Cannot check for declaration </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="n">msg</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">msg</span>
+
+    <span class="n">src</span> <span class="o">=</span> <span class="n">includetext</span> <span class="o">+</span> <span class="n">includes</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">Display</span><span class="p">(</span><span class="s1">&#39;Checking whether </span><span class="si">%s</span><span class="s1"> is declared... &#39;</span> <span class="o">%</span> <span class="n">symbol</span><span class="p">)</span>
+
+    <span class="n">src</span> <span class="o">=</span> <span class="n">src</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">int main(void)</span>
+<span class="s2">{</span>
+<span class="s2">#ifndef </span><span class="si">%s</span><span class="s2"></span>
+<span class="s2">    (void) </span><span class="si">%s</span><span class="s2">;</span>
+<span class="s2">#endif</span>
+<span class="s2">    ;</span>
+<span class="s2">    return 0;</span>
+<span class="s2">}</span>
+<span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="n">symbol</span><span class="p">)</span>
+
+    <span class="n">st</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">CompileProg</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">suffix</span><span class="p">)</span>
+    <span class="n">_YesNoResult</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">st</span><span class="p">,</span> <span class="s2">&quot;HAVE_DECL_&quot;</span> <span class="o">+</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span>
+                 <span class="s2">&quot;Set to 1 if </span><span class="si">%s</span><span class="s2"> is defined.&quot;</span> <span class="o">%</span> <span class="n">symbol</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">st</span></div>
+
+<div class="viewcode-block" id="CheckLib"><a class="viewcode-back" href="../../../SCons/#SCons.Conftest.CheckLib">[docs]</a><span class="k">def</span> <span class="nf">CheckLib</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">libs</span><span class="p">,</span> <span class="n">func_name</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+             <span class="n">extra_libs</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">call</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">language</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">autoadd</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+             <span class="n">append</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Configure check for a C or C++ libraries &quot;libs&quot;.  Searches through</span>
+<span class="sd">    the list of libraries, until one is found where the test succeeds.</span>
+<span class="sd">    Tests if &quot;func_name&quot; or &quot;call&quot; exists in the library.  Note: if it exists</span>
+<span class="sd">    in another library the test succeeds anyway!</span>
+<span class="sd">    Optional &quot;header&quot; can be defined to include a header file.  If not given a</span>
+<span class="sd">    default prototype for &quot;func_name&quot; is added.</span>
+<span class="sd">    Optional &quot;extra_libs&quot; is a list of library names to be added after</span>
+<span class="sd">    &quot;lib_name&quot; in the build command.  To be used for libraries that &quot;lib_name&quot;</span>
+<span class="sd">    depends on.</span>
+<span class="sd">    Optional &quot;call&quot; replaces the call to &quot;func_name&quot; in the test code.  It must</span>
+<span class="sd">    consist of complete C statements, including a trailing &quot;;&quot;.</span>
+<span class="sd">    Both &quot;func_name&quot; and &quot;call&quot; arguments are optional, and in that case, just</span>
+<span class="sd">    linking against the libs is tested.</span>
+<span class="sd">    &quot;language&quot; should be &quot;C&quot; or &quot;C++&quot; and is used to select the compiler.</span>
+<span class="sd">    Default is &quot;C&quot;.</span>
+<span class="sd">    Note that this uses the current value of compiler and linker flags, make</span>
+<span class="sd">    sure $CFLAGS, $CPPFLAGS and $LIBS are set correctly.</span>
+<span class="sd">    Returns an empty string for success, an error message for failure.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Include &quot;confdefs.h&quot; first, so that the header can use HAVE_HEADER_H.</span>
+    <span class="k">if</span> <span class="n">context</span><span class="o">.</span><span class="n">headerfilename</span><span class="p">:</span>
+        <span class="n">includetext</span> <span class="o">=</span> <span class="s1">&#39;#include &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">context</span><span class="o">.</span><span class="n">headerfilename</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">includetext</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">header</span><span class="p">:</span>
+        <span class="n">header</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="si">%s</span><span class="s2"></span>
+<span class="si">%s</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">includetext</span><span class="p">,</span> <span class="n">header</span><span class="p">)</span>
+
+    <span class="c1"># Add a function declaration if needed.</span>
+    <span class="k">if</span> <span class="n">func_name</span> <span class="ow">and</span> <span class="n">func_name</span> <span class="o">!=</span> <span class="s2">&quot;main&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">header</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">text</span> <span class="o">+</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">#ifdef __cplusplus</span>
+<span class="s2">extern &quot;C&quot;</span>
+<span class="s2">#endif</span>
+<span class="s2">char </span><span class="si">%s</span><span class="s2">();</span>
+<span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="n">func_name</span>
+
+        <span class="c1"># The actual test code.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">call</span><span class="p">:</span>
+            <span class="n">call</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">();&quot;</span> <span class="o">%</span> <span class="n">func_name</span>
+
+    <span class="c1"># if no function to test, leave main() blank</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span> <span class="o">+</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">int</span>
+<span class="s2">main() {</span>
+<span class="s2">  </span><span class="si">%s</span><span class="s2"></span>
+<span class="s2">return 0;</span>
+<span class="s2">}</span>
+<span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">call</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">call</span><span class="p">:</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">call</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">calltext</span> <span class="o">=</span> <span class="n">call</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;..&quot;</span>
+        <span class="k">elif</span> <span class="n">call</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;;&#39;</span><span class="p">:</span>
+            <span class="n">calltext</span> <span class="o">=</span> <span class="n">call</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">calltext</span> <span class="o">=</span> <span class="n">call</span>
+
+    <span class="k">for</span> <span class="n">lib_name</span> <span class="ow">in</span> <span class="n">libs</span><span class="p">:</span>
+
+        <span class="n">lang</span><span class="p">,</span> <span class="n">suffix</span><span class="p">,</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">_lang2suffix</span><span class="p">(</span><span class="n">language</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">msg</span><span class="p">:</span>
+            <span class="n">context</span><span class="o">.</span><span class="n">Display</span><span class="p">(</span><span class="s2">&quot;Cannot check for library </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">lib_name</span><span class="p">,</span> <span class="n">msg</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">msg</span>
+
+        <span class="c1"># if a function was specified to run in main(), say it</span>
+        <span class="k">if</span> <span class="n">call</span><span class="p">:</span>
+                <span class="n">context</span><span class="o">.</span><span class="n">Display</span><span class="p">(</span><span class="s2">&quot;Checking for </span><span class="si">%s</span><span class="s2"> in </span><span class="si">%s</span><span class="s2"> library </span><span class="si">%s</span><span class="s2">... &quot;</span>
+                                <span class="o">%</span> <span class="p">(</span><span class="n">calltext</span><span class="p">,</span> <span class="n">lang</span><span class="p">,</span> <span class="n">lib_name</span><span class="p">))</span>
+        <span class="c1"># otherwise, just say the name of library and language</span>
+        <span class="k">else</span><span class="p">:</span>
+                <span class="n">context</span><span class="o">.</span><span class="n">Display</span><span class="p">(</span><span class="s2">&quot;Checking for </span><span class="si">%s</span><span class="s2"> library </span><span class="si">%s</span><span class="s2">... &quot;</span>
+                                <span class="o">%</span> <span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="n">lib_name</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">lib_name</span><span class="p">:</span>
+            <span class="n">l</span> <span class="o">=</span> <span class="p">[</span> <span class="n">lib_name</span> <span class="p">]</span>
+            <span class="k">if</span> <span class="n">extra_libs</span><span class="p">:</span>
+                <span class="n">l</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">extra_libs</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">append</span><span class="p">:</span>
+                <span class="n">oldLIBS</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">AppendLIBS</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">oldLIBS</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">PrependLIBS</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+            <span class="n">sym</span> <span class="o">=</span> <span class="s2">&quot;HAVE_LIB&quot;</span> <span class="o">+</span> <span class="n">lib_name</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">oldLIBS</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="n">sym</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">BuildProg</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">suffix</span><span class="p">)</span>
+
+        <span class="n">_YesNoResult</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">ret</span><span class="p">,</span> <span class="n">sym</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span>
+                     <span class="s2">&quot;Define to 1 if you have the `</span><span class="si">%s</span><span class="s2">&#39; library.&quot;</span> <span class="o">%</span> <span class="n">lib_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">oldLIBS</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="p">(</span><span class="n">ret</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">autoadd</span><span class="p">):</span>
+            <span class="n">context</span><span class="o">.</span><span class="n">SetLIBS</span><span class="p">(</span><span class="n">oldLIBS</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ret</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="k">return</span> <span class="n">ret</span></div>
+
+<div class="viewcode-block" id="CheckProg"><a class="viewcode-back" href="../../../SCons/#SCons.Conftest.CheckProg">[docs]</a><span class="k">def</span> <span class="nf">CheckProg</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">prog_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Configure check for a specific program.</span>
+
+<span class="sd">    Check whether program prog_name exists in path.  If it is found,</span>
+<span class="sd">    returns the path for it, otherwise returns None.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">Display</span><span class="p">(</span><span class="s2">&quot;Checking whether </span><span class="si">%s</span><span class="s2"> program exists...&quot;</span> <span class="o">%</span> <span class="n">prog_name</span><span class="p">)</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">WhereIs</span><span class="p">(</span><span class="n">prog_name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">path</span><span class="p">:</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">Display</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">Display</span><span class="p">(</span><span class="s2">&quot;no</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">path</span></div>
+
+
+<span class="c1">#</span>
+<span class="c1"># END OF PUBLIC FUNCTIONS</span>
+<span class="c1">#</span>
+
+<div class="viewcode-block" id="_YesNoResult"><a class="viewcode-back" href="../../../SCons/#SCons.Conftest._YesNoResult">[docs]</a><span class="k">def</span> <span class="nf">_YesNoResult</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">ret</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">comment</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Handle the result of a test with a &quot;yes&quot; or &quot;no&quot; result.</span>
+
+<span class="sd">    :Parameters:</span>
+<span class="sd">      - `ret` is the return value: empty if OK, error message when not.</span>
+<span class="sd">      - `key` is the name of the symbol to be defined (HAVE_foo).</span>
+<span class="sd">      - `text` is the source code of the program used for testing.</span>
+<span class="sd">      - `comment` is the C comment to add above the line defining the symbol (the comment is automatically put inside a /\* \*/). If None, no comment is added.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">key</span><span class="p">:</span>
+        <span class="n">_Have</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="ow">not</span> <span class="n">ret</span><span class="p">,</span> <span class="n">comment</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ret</span><span class="p">:</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">Display</span><span class="p">(</span><span class="s2">&quot;no</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">_LogFailed</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">ret</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">Display</span><span class="p">(</span><span class="s2">&quot;yes</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="_Have"><a class="viewcode-back" href="../../../SCons/#SCons.Conftest._Have">[docs]</a><span class="k">def</span> <span class="nf">_Have</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">have</span><span class="p">,</span> <span class="n">comment</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Store result of a test in context.havedict and context.headerfilename.</span>
+
+<span class="sd">    :Parameters:</span>
+<span class="sd">      - `key` - is a &quot;HAVE_abc&quot; name.  It is turned into all CAPITALS and non-alphanumerics are replaced by an underscore.</span>
+<span class="sd">      - `have`   - value as it should appear in the header file, include quotes when desired and escape special characters!</span>
+<span class="sd">      - `comment` is the C comment to add above the line defining the symbol (the comment is automatically put inside a /\* \*/). If None, no comment is added.</span>
+
+
+<span class="sd">    The value of &quot;have&quot; can be:</span>
+<span class="sd">      - 1      - Feature is defined, add &quot;#define key&quot;.</span>
+<span class="sd">      - 0      - Feature is not defined, add &quot;/\* #undef key \*/&quot;. Adding &quot;undef&quot; is what autoconf does.  Not useful for the compiler, but it shows that the test was done.</span>
+<span class="sd">      - number - Feature is defined to this number &quot;#define key have&quot;. Doesn&#39;t work for 0 or 1, use a string then.</span>
+<span class="sd">      - string - Feature is defined to this string &quot;#define key have&quot;.</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">key_up</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+    <span class="n">key_up</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;[^A-Z0-9_]&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="n">key_up</span><span class="p">)</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">havedict</span><span class="p">[</span><span class="n">key_up</span><span class="p">]</span> <span class="o">=</span> <span class="n">have</span>
+    <span class="k">if</span> <span class="n">have</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="s2">&quot;#define </span><span class="si">%s</span><span class="s2"> 1</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">key_up</span>
+    <span class="k">elif</span> <span class="n">have</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="s2">&quot;/* #undef </span><span class="si">%s</span><span class="s2"> */</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">key_up</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">have</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="s2">&quot;#define </span><span class="si">%s</span><span class="s2"> </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key_up</span><span class="p">,</span> <span class="n">have</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="s2">&quot;#define </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key_up</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">have</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">comment</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">/* </span><span class="si">%s</span><span class="s2"> */</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">comment</span> <span class="o">+</span> <span class="n">line</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">line</span>
+
+    <span class="k">if</span> <span class="n">context</span><span class="o">.</span><span class="n">headerfilename</span><span class="p">:</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">headerfilename</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">context</span><span class="p">,</span><span class="s1">&#39;config_h&#39;</span><span class="p">):</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">config_h</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">config_h</span> <span class="o">+</span> <span class="n">lines</span></div>
+
+
+<div class="viewcode-block" id="_LogFailed"><a class="viewcode-back" href="../../../SCons/#SCons.Conftest._LogFailed">[docs]</a><span class="k">def</span> <span class="nf">_LogFailed</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Write to the log about a failed program.</span>
+<span class="sd">    Add line numbers, so that error messages can be understood.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">LogInputFiles</span><span class="p">:</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">Log</span><span class="p">(</span><span class="s2">&quot;Failed program was:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="ow">and</span> <span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>              <span class="c1"># remove trailing empty line</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+            <span class="n">context</span><span class="o">.</span><span class="n">Log</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">line</span><span class="p">))</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">LogErrorMessages</span><span class="p">:</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">Log</span><span class="p">(</span><span class="s2">&quot;Error message: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">msg</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="_lang2suffix"><a class="viewcode-back" href="../../../SCons/#SCons.Conftest._lang2suffix">[docs]</a><span class="k">def</span> <span class="nf">_lang2suffix</span><span class="p">(</span><span class="n">lang</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a language name to a suffix.</span>
+<span class="sd">    When &quot;lang&quot; is empty or None C is assumed.</span>
+<span class="sd">    Returns a tuple (lang, suffix, None) when it works.</span>
+<span class="sd">    For an unrecognized language returns (None, None, msg).</span>
+
+<span class="sd">    Where:</span>
+<span class="sd">      - lang   = the unified language name</span>
+<span class="sd">      - suffix = the suffix, including the leading dot</span>
+<span class="sd">      - msg    = an error message</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">lang</span> <span class="ow">or</span> <span class="n">lang</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;.c&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">lang</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;c++&quot;</span><span class="p">,</span> <span class="s2">&quot;C++&quot;</span><span class="p">,</span> <span class="s2">&quot;cpp&quot;</span><span class="p">,</span> <span class="s2">&quot;CXX&quot;</span><span class="p">,</span> <span class="s2">&quot;cxx&quot;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;C++&quot;</span><span class="p">,</span> <span class="s2">&quot;.cpp&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Unsupported language: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">lang</span></div>
+
+
+<span class="c1"># vim: set sw=4 et sts=4 tw=79 fo+=l:</span>
+
+<span class="c1"># Local Variables:</span>
+<span class="c1"># tab-width:4</span>
+<span class="c1"># indent-tabs-mode:nil</span>
+<span class="c1"># End:</span>
+<span class="c1"># vim: set expandtab tabstop=4 shiftwidth=4:</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, SCons Project
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

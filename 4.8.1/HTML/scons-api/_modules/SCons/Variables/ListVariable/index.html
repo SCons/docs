@@ -1,0 +1,590 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SCons.Variables.ListVariable &#8212; SCons 4.8.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../../_static/documentation_options.js?v=f14cce9e"></script>
+    <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/SCons/Variables/ListVariable';</script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search/"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../../">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SCons 4.8.1 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../SCons/">SCons package</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Taskmaster/">SCons.Taskmaster package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Util/">SCons.Util package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Variables/">SCons.Variables package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.compat/">SCons.compat package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.compat/">SCons.compat package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Taskmaster/">SCons.Taskmaster package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Util/">SCons.Util package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Variables/">SCons.Variables package</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for SCons.Variables.ListVariable</h1><div class="highlight"><pre>
+<span></span><span class="c1"># MIT License</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright The SCons Foundation</span>
+<span class="c1">#</span>
+<span class="c1"># Permission is hereby granted, free of charge, to any person obtaining</span>
+<span class="c1"># a copy of this software and associated documentation files (the</span>
+<span class="c1"># &quot;Software&quot;), to deal in the Software without restriction, including</span>
+<span class="c1"># without limitation the rights to use, copy, modify, merge, publish,</span>
+<span class="c1"># distribute, sublicense, and/or sell copies of the Software, and to</span>
+<span class="c1"># permit persons to whom the Software is furnished to do so, subject to</span>
+<span class="c1"># the following conditions:</span>
+<span class="c1">#</span>
+<span class="c1"># The above copyright notice and this permission notice shall be included</span>
+<span class="c1"># in all copies or substantial portions of the Software.</span>
+<span class="c1">#</span>
+<span class="c1"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY</span>
+<span class="c1"># KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND</span>
+<span class="c1"># NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE</span>
+<span class="c1"># LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION</span>
+<span class="c1"># OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</span>
+<span class="c1"># WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</span>
+
+<span class="sd">&quot;&quot;&quot;Variable type for List Variables.</span>
+
+<span class="sd">A list variable allows selecting one or more from a supplied set of</span>
+<span class="sd">allowable values, as well as from an optional mapping of alternate names</span>
+<span class="sd">(such as aliases and abbreviations) and the special names ``&#39;all&#39;`` and</span>
+<span class="sd">``&#39;none&#39;``.  Specified values are converted during processing into values</span>
+<span class="sd">only from the allowable values set.</span>
+
+<span class="sd">Usage example::</span>
+
+<span class="sd">    list_of_libs = Split(&#39;x11 gl qt ical&#39;)</span>
+
+<span class="sd">    opts = Variables()</span>
+<span class="sd">    opts.Add(</span>
+<span class="sd">        ListVariable(</span>
+<span class="sd">            &#39;shared&#39;,</span>
+<span class="sd">            help=&#39;libraries to build as shared libraries&#39;,</span>
+<span class="sd">            default=&#39;all&#39;,</span>
+<span class="sd">            elems=list_of_libs,</span>
+<span class="sd">        )</span>
+<span class="sd">    )</span>
+<span class="sd">    env = Environment(variables=opts)</span>
+<span class="sd">    for lib in list_of_libs:</span>
+<span class="sd">        if lib in env[&#39;shared&#39;]:</span>
+<span class="sd">            env.SharedObject(...)</span>
+<span class="sd">        else:</span>
+<span class="sd">            env.Object(...)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Known Bug: This should behave like a Set-Type, but does not really,</span>
+<span class="c1"># since elements can occur twice.</span>
+
+<span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">SCons.Util</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ListVariable&#39;</span><span class="p">,]</span>
+
+
+<div class="viewcode-block" id="_ListVariable">
+<a class="viewcode-back" href="../../../../SCons.Variables/#SCons.Variables._ListVariable">[docs]</a>
+<span class="k">class</span> <span class="nc">_ListVariable</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">UserList</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Internal class holding the data for a List Variable.</span>
+
+<span class="sd">    This is normally not directly instantiated, rather the ListVariable</span>
+<span class="sd">    converter callback &quot;converts&quot; string input (or the default value</span>
+<span class="sd">    if none) into an instance and stores it.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">       initlist: the list of actual values given.</span>
+<span class="sd">       allowedElems: the list of allowable values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">initlist</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">allowedElems</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">initlist</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">initlist</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">allowedElems</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">allowedElems</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">([</span><span class="n">_f</span> <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="n">initlist</span> <span class="k">if</span> <span class="n">_f</span><span class="p">])</span>
+        <span class="c1"># TODO: why sorted? don&#39;t we want to display in the order user gave?</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allowedElems</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">allowedElems</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__cmp__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+    <span class="k">def</span> <span class="fm">__ge__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+    <span class="k">def</span> <span class="fm">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+    <span class="k">def</span> <span class="fm">__le__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+    <span class="k">def</span> <span class="fm">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;none&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">allowedElems</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;all&#39;</span>
+        <span class="k">return</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="_ListVariable.prepare_to_store">
+<a class="viewcode-back" href="../../../../SCons.Variables/#SCons.Variables._ListVariable.prepare_to_store">[docs]</a>
+    <span class="k">def</span> <span class="nf">prepare_to_store</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+</div>
+
+
+<div class="viewcode-block" id="_converter">
+<a class="viewcode-back" href="../../../../SCons.Variables/#SCons.Variables._converter">[docs]</a>
+<span class="k">def</span> <span class="nf">_converter</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">allowedElems</span><span class="p">,</span> <span class="n">mapdict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_ListVariable</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Callback to convert list variables into a suitable form.</span>
+
+<span class="sd">    The arguments *allowedElems* and *mapdict* are non-standard</span>
+<span class="sd">    for a :class:`Variables` converter: the lambda in the</span>
+<span class="sd">    :func:`ListVariable` function arranges for us to be called correctly.</span>
+
+<span class="sd">    Incoming values ``all`` and ``none`` are recognized and converted</span>
+<span class="sd">    into their expanded form.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="s1">&#39;none&#39;</span><span class="p">:</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">elif</span> <span class="n">val</span> <span class="o">==</span> <span class="s1">&#39;all&#39;</span><span class="p">:</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">allowedElems</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="p">[</span><span class="n">_f</span> <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="n">val</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">_f</span><span class="p">]</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="p">[</span><span class="n">mapdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">val</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">_ListVariable</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">allowedElems</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="_validator">
+<a class="viewcode-back" href="../../../../SCons.Variables/#SCons.Variables._validator">[docs]</a>
+<span class="k">def</span> <span class="nf">_validator</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Callback to validate supplied value(s) for a ListVariable.</span>
+
+<span class="sd">    Validation means &quot;is *val* in the allowed list&quot;? *val* has</span>
+<span class="sd">    been subject to substitution before the validator is called. The</span>
+<span class="sd">    converter created a :class:`_ListVariable` container which is stored</span>
+<span class="sd">    in *env* after it runs; this includes the allowable elements list.</span>
+<span class="sd">    Substitution makes a string made out of the values (only),</span>
+<span class="sd">    so we need to fish the allowed elements list out of the environment</span>
+<span class="sd">    to complete the validation.</span>
+
+<span class="sd">    Note that since 18b45e456, whether ``subst`` has been</span>
+<span class="sd">    called is conditional on the value of the *subst* argument to</span>
+<span class="sd">    :meth:`~SCons.Variables.Variables.Add`, so we have to account for</span>
+<span class="sd">    possible different types of *val*.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">       UserError: if validation failed.</span>
+
+<span class="sd">    .. versionadded:: 4.8.0</span>
+<span class="sd">       ``_validator`` split off from :func:`_converter` with an additional</span>
+<span class="sd">       check  for whether *val* has been substituted before the call.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">allowedElems</span> <span class="o">=</span> <span class="n">env</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">allowedElems</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">_ListVariable</span><span class="p">):</span>  <span class="c1"># not substituted, use .data</span>
+        <span class="n">notAllowed</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">val</span><span class="o">.</span><span class="n">data</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allowedElems</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># presumably a string</span>
+        <span class="n">notAllowed</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">val</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allowedElems</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">notAllowed</span><span class="p">:</span>
+        <span class="c1"># Converter only synthesized &#39;all&#39; and &#39;none&#39;, they are never</span>
+        <span class="c1"># in the allowed list, so we need to add those to the error message</span>
+        <span class="c1"># (as is done for the help msg).</span>
+        <span class="n">valid</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">allowedElems</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="s1">&#39;none&#39;</span><span class="p">])</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Invalid value(s) for variable </span><span class="si">{</span><span class="n">key</span><span class="si">!r}</span><span class="s2">: </span><span class="si">{</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">notAllowed</span><span class="p">)</span><span class="si">!r}</span><span class="s2">. &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Valid values are: </span><span class="si">{</span><span class="n">valid</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">UserError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span> <span class="kc">None</span></div>
+
+
+
+<span class="c1"># lint: W0622: Redefining built-in &#39;help&#39; (redefined-builtin)</span>
+<span class="c1"># lint: W0622: Redefining built-in &#39;map&#39; (redefined-builtin)</span>
+<div class="viewcode-block" id="ListVariable">
+<a class="viewcode-back" href="../../../../SCons.Variables/#SCons.Variables.ListVariable">[docs]</a>
+<span class="k">def</span> <span class="nf">ListVariable</span><span class="p">(</span>
+    <span class="n">key</span><span class="p">,</span>
+    <span class="n">help</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">default</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
+    <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="nb">map</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">validator</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a tuple describing a list variable.</span>
+
+<span class="sd">    The input parameters describe a list variable, where the values</span>
+<span class="sd">    can be one or more from *names* plus the special values ``all``</span>
+<span class="sd">    and ``none``.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">       key: the name of the list variable.</span>
+<span class="sd">       help: the basic help message.  Will have text appended indicating</span>
+<span class="sd">          the allowable values (not including any extra names from *map*).</span>
+<span class="sd">       default: the default value(s) for the list variable. Can be</span>
+<span class="sd">          given as string (possibly comma-separated), or as a list of strings.</span>
+<span class="sd">          ``all`` or ``none`` are allowed as *default*. You can also simulate</span>
+<span class="sd">          a must-specify ListVariable by giving a *default* that is not part</span>
+<span class="sd">          of *names*, it will fail validation if not supplied.</span>
+<span class="sd">       names: the allowable values. Must be a list of strings.</span>
+<span class="sd">       map: optional dictionary to map alternative names to the ones in</span>
+<span class="sd">          *names*, providing a form of alias. The converter will make</span>
+<span class="sd">          the replacement, names from *map* are not stored and will</span>
+<span class="sd">          not appear in the help message.</span>
+<span class="sd">       validator: optional callback to validate supplied values.</span>
+<span class="sd">          The default validator is used if not specified.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">       A tuple including the correct converter and validator.  The</span>
+<span class="sd">       result is usable as input to :meth:`~SCons.Variables.Variables.Add`.</span>
+
+<span class="sd">    .. versionchanged:: 4.8.0</span>
+<span class="sd">       The validation step was split from the converter to allow for</span>
+<span class="sd">       custom validators.  The *validator* keyword argument was added.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">map</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">map</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">validator</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">validator</span> <span class="o">=</span> <span class="n">_validator</span>
+    <span class="n">names_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;allowed names: </span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">names</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_List</span><span class="p">(</span><span class="n">default</span><span class="p">):</span>
+        <span class="n">default</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">default</span><span class="p">)</span>
+    <span class="n">help</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">    &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">help</span><span class="p">,</span> <span class="s1">&#39;(all|none|comma-separated list of names)&#39;</span><span class="p">,</span> <span class="n">names_str</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">key</span><span class="p">,</span> <span class="n">help</span><span class="p">,</span> <span class="n">default</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="n">_converter</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="nb">map</span><span class="p">)</span></div>
+
+
+<span class="c1"># Local Variables:</span>
+<span class="c1"># tab-width:4</span>
+<span class="c1"># indent-tabs-mode:nil</span>
+<span class="c1"># End:</span>
+<span class="c1"># vim: set expandtab tabstop=4 shiftwidth=4:</span>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SCons Project Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022, SCons Project.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

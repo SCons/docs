@@ -1,0 +1,276 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Finding source files in repositories</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 1.3.1"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Building From Code Repositories"
+HREF="c3847.html"><LINK
+REL="PREVIOUS"
+TITLE="Building From Code Repositories"
+HREF="c3847.html"><LINK
+REL="NEXT"
+TITLE="Finding #include files in repositories"
+HREF="x3894.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 1.3.1</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="c3847.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 23. Building From Code Repositories</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x3894.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN3862"
+>23.2. Finding source files in repositories</A
+></H1
+><P
+>&#13;
+    The above example
+    specifies that <SPAN
+CLASS="application"
+>SCons</SPAN
+>
+    will first search for files under
+    the <TT
+CLASS="filename"
+>/usr/repository1</TT
+> tree
+    and next under the <TT
+CLASS="filename"
+>/usr/repository2</TT
+> tree.
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> expects that any files it searches
+    for will be found in the same position
+    relative to the top-level directory.
+    In the above example, if the <TT
+CLASS="filename"
+>hello.c</TT
+> file is not
+    found in the local build tree,
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> will search first for
+    a <TT
+CLASS="filename"
+>/usr/repository1/hello.c</TT
+> file
+    and then for a <TT
+CLASS="filename"
+>/usr/repository2/hello.c</TT
+> file
+    to use in its place.
+
+    </P
+><P
+>&#13;
+    So given the <TT
+CLASS="filename"
+>SConstruct</TT
+> file above,
+    if the <TT
+CLASS="filename"
+>hello.c</TT
+> file exists in the local
+    build directory,
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> will rebuild the <TT
+CLASS="filename"
+>hello</TT
+> program
+    as normal:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      cc -o hello.o -c hello.c
+      cc -o hello hello.o
+    </PRE
+><P
+>&#13;
+    If, however, there is no local <TT
+CLASS="filename"
+>hello.c</TT
+> file,
+    but one exists in <TT
+CLASS="filename"
+>/usr/repository1</TT
+>,
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> will recompile the <TT
+CLASS="filename"
+>hello</TT
+> program
+    from the source file it finds in the repository:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      cc -o hello.o -c /usr/repository1/hello.c
+      cc -o hello hello.o
+    </PRE
+><P
+>&#13;
+    And similarly, if there is no local <TT
+CLASS="filename"
+>hello.c</TT
+> file
+    and no <TT
+CLASS="filename"
+>/usr/repository1/hello.c</TT
+>,
+    but one exists in <TT
+CLASS="filename"
+>/usr/repository2</TT
+>:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      cc -o hello.o -c /usr/repository2/hello.c
+      cc -o hello hello.o
+    </PRE
+><P
+>&#13;
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="c3847.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x3894.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Building From Code Repositories</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c3847.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Finding <TT
+CLASS="literal"
+>#include</TT
+> files in repositories</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

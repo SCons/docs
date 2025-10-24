@@ -1,0 +1,68 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Chapter 14. Hierarchical Builds</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.6.0"><link rel="up" href="index.html" title="SCons 4.6.0"><link rel="prev" href="ch13s03.html" title="13.3. Removing additional files during clean: the Clean Function"><link rel="next" href="ch14s02.html" title="14.2. Path Names Are Relative to the SConscript Directory"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 14. Hierarchical Builds</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch13s03.html">Prev</a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="ch14s02.html">Next</a></td></tr></table><hr></div><div class="chapter" title="Chapter 14. Hierarchical Builds"><div class="titlepage"><div><div><h2 class="title"><a name="chap-hierarchical"></a>Chapter 14. Hierarchical Builds</h2></div></div></div><p>
+
+  The source code for large software projects
+  rarely stays in a single directory,
+  but is nearly always divided into a
+  hierarchy of directories.
+  Organizing a large software build using <span class="application">SCons</span>
+  involves creating a hierarchy of build scripts
+  which are connected together using the <a class="link" href="apd.html#f-SConscript"><code class="function">SConscript</code></a> function.
+
+  </p><div class="section" title="14.1. SConscript Files"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="sect-sconscript-files"></a>14.1. <code class="filename">SConscript</code> Files</h2></div></div></div><p>
+
+    As we've already seen,
+    the build script at the top of the tree is called <code class="filename">SConstruct</code>.
+    The top-level <code class="filename">SConstruct</code> file can
+    use the <code class="filename">SConscript</code> function to
+    include other subsidiary scripts in the build.
+    These subsidiary scripts can, in turn,
+    use the <code class="filename">SConscript</code> function
+    to include still other scripts in the build.
+    By convention, these subsidiary scripts are usually
+    named <code class="filename">SConscript</code>.
+    For example, a top-level <code class="filename">SConstruct</code> file might
+    arrange for four subsidiary scripts to be included
+    in the build as follows:
+
+    </p><pre class="programlisting">
+SConscript(
+    [
+        'drivers/display/SConscript',
+        'drivers/mouse/SConscript',
+        'parser/SConscript',
+        'utilities/SConscript',
+    ]
+)
+    </pre><p>
+
+    In this case, the <code class="filename">SConstruct</code> file
+    lists all of the <code class="filename">SConscript</code> files in the build explicitly.
+    (Note, however, that not every directory in the tree
+    necessarily has an <code class="filename">SConscript</code> file.)
+    Alternatively, the <code class="literal">drivers</code>
+    subdirectory might contain an intermediate
+    <code class="filename">SConscript</code> file,
+    in which case the <code class="filename">SConscript</code> call in
+    the top-level <code class="filename">SConstruct</code> file
+    would look like:
+
+    </p><pre class="programlisting">
+SConscript(['drivers/SConscript', 'parser/SConscript', 'utilities/SConscript'])
+    </pre><p>
+
+    And the subsidiary <code class="filename">SConscript</code> file in the
+    <code class="literal">drivers</code> subdirectory
+    would look like:
+
+    </p><pre class="programlisting">
+SConscript(['display/SConscript', 'mouse/SConscript'])
+    </pre><p>
+
+    Whether you list all of the <code class="filename">SConscript</code> files in the
+    top-level <code class="filename">SConstruct</code> file,
+    or place a subsidiary <code class="filename">SConscript</code> file in
+    intervening directories,
+    or use some mix of the two schemes,
+    is up to you and the needs of your software.
+
+    </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch13s03.html">Prev</a> </td><td width="20%" align="center"> </td><td width="40%" align="right"> <a accesskey="n" href="ch14s02.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">13.3. Removing additional files during clean: the <code class="function">Clean</code> Function </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 14.2. Path Names Are Relative to the <code class="filename">SConscript</code> Directory</td></tr></table></div></body></html>

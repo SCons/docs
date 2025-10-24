@@ -1,0 +1,606 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>SCons.Platform &mdash; SCons 4.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex/" />
+    <link rel="search" title="Search" href="../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../" class="icon icon-home"> SCons
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                4.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons/">SCons package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Variables/">SCons.Variables package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.compat/">SCons.compat package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Action">SCons.Action module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Builder">SCons.Builder module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.CacheDir">SCons.CacheDir module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Conftest">SCons.Conftest module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Debug">SCons.Debug module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Defaults">SCons.Defaults module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Environment">SCons.Environment module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Errors">SCons.Errors module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Executor">SCons.Executor module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Job">SCons.Job module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Memoize">SCons.Memoize module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.PathList">SCons.PathList module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.SConf">SCons.SConf module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.SConsign">SCons.SConsign module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Subst">SCons.Subst module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Taskmaster">SCons.Taskmaster module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Util">SCons.Util module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Warnings">SCons.Warnings module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.cpp">SCons.cpp module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.dblite">SCons.dblite module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.exitfuncs">SCons.exitfuncs module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.compat/">SCons.compat package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.compat/#module-SCons.compat">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Node/">SCons.Node package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#module-SCons.Node.Alias">SCons.Node.Alias module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#module-SCons.Node.FS">SCons.Node.FS module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#module-SCons.Node.Python">SCons.Node.Python module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#module-SCons.Node">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Platform/">SCons.Platform package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.aix">SCons.Platform.aix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.cygwin">SCons.Platform.cygwin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.darwin">SCons.Platform.darwin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.hpux">SCons.Platform.hpux module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.irix">SCons.Platform.irix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.mingw">SCons.Platform.mingw module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.os2">SCons.Platform.os2 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.posix">SCons.Platform.posix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.sunos">SCons.Platform.sunos module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.virtualenv">SCons.Platform.virtualenv module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.win32">SCons.Platform.win32 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Scanner/">SCons.Scanner package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.C">SCons.Scanner.C module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.D">SCons.Scanner.D module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.Dir">SCons.Scanner.Dir module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.Fortran">SCons.Scanner.Fortran module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.IDL">SCons.Scanner.IDL module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.LaTeX">SCons.Scanner.LaTeX module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.Prog">SCons.Scanner.Prog module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.RC">SCons.Scanner.RC module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.SWIG">SCons.Scanner.SWIG module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Script/">SCons.Script package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script.Interactive">SCons.Script.Interactive module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script.Main">SCons.Script.Main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script.SConsOptions">SCons.Script.SConsOptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script.SConscript">SCons.Script.SConscript module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Tool/">SCons.Tool package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Tool/#module-SCons.Tool">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Variables/">SCons.Variables package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.BoolVariable">SCons.Variables.BoolVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.EnumVariable">SCons.Variables.EnumVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.ListVariable">SCons.Variables.ListVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.PackageVariable">SCons.Variables.PackageVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.PathVariable">SCons.Variables.PathVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../">SCons</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../">Docs</a> &raquo;</li>
+        
+          <li><a href="../../">Module code</a> &raquo;</li>
+        
+      <li>SCons.Platform</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for SCons.Platform</h1><div class="highlight"><pre>
+<span></span><span class="c1"># MIT License</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright The SCons Foundation</span>
+<span class="c1">#</span>
+<span class="c1"># Permission is hereby granted, free of charge, to any person obtaining</span>
+<span class="c1"># a copy of this software and associated documentation files (the</span>
+<span class="c1"># &quot;Software&quot;), to deal in the Software without restriction, including</span>
+<span class="c1"># without limitation the rights to use, copy, modify, merge, publish,</span>
+<span class="c1"># distribute, sublicense, and/or sell copies of the Software, and to</span>
+<span class="c1"># permit persons to whom the Software is furnished to do so, subject to</span>
+<span class="c1"># the following conditions:</span>
+<span class="c1">#</span>
+<span class="c1"># The above copyright notice and this permission notice shall be included</span>
+<span class="c1"># in all copies or substantial portions of the Software.</span>
+<span class="c1">#</span>
+<span class="c1"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY</span>
+<span class="c1"># KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND</span>
+<span class="c1"># NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE</span>
+<span class="c1"># LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION</span>
+<span class="c1"># OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</span>
+<span class="c1"># WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</span>
+
+<span class="sd">&quot;&quot;&quot;SCons platform selection.</span>
+
+<span class="sd">Looks for modules that define a callable object that can modify a</span>
+<span class="sd">construction environment as appropriate for a given platform.</span>
+
+<span class="sd">Note that we take a more simplistic view of &quot;platform&quot; than Python does.</span>
+<span class="sd">We&#39;re looking for a single string that determines a set of</span>
+<span class="sd">tool-independent variables with which to initialize a construction</span>
+<span class="sd">environment.  Consequently, we&#39;ll examine both sys.platform and os.name</span>
+<span class="sd">(and anything else that might come in to play) in order to return some</span>
+<span class="sd">specification which is unique enough for our purposes.</span>
+
+<span class="sd">Note that because this subsystem just *selects* a callable that can</span>
+<span class="sd">modify a construction environment, it&#39;s possible for people to define</span>
+<span class="sd">their own &quot;platform specification&quot; in an arbitrary callable function.</span>
+<span class="sd">No one needs to use or tie in to this subsystem in order to roll</span>
+<span class="sd">their own platform definition.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">SCons.compat</span>
+
+<span class="kn">import</span> <span class="nn">importlib</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+
+<span class="kn">import</span> <span class="nn">SCons.Errors</span>
+<span class="kn">import</span> <span class="nn">SCons.Subst</span>
+<span class="kn">import</span> <span class="nn">SCons.Tool</span>
+
+
+<div class="viewcode-block" id="platform_default"><a class="viewcode-back" href="../../../SCons.Platform/#SCons.Platform.platform_default">[docs]</a><span class="k">def</span> <span class="nf">platform_default</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Return the platform string for our execution environment.</span>
+
+<span class="sd">    The returned value should map to one of the SCons/Platform/\*.py</span>
+<span class="sd">    files.  Since scons is architecture independent, though, we don&#39;t</span>
+<span class="sd">    care about the machine architecture.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">osname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span>
+    <span class="k">if</span> <span class="n">osname</span> <span class="o">==</span> <span class="s1">&#39;java&#39;</span><span class="p">:</span>
+        <span class="n">osname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">_osType</span>
+    <span class="k">if</span> <span class="n">osname</span> <span class="o">==</span> <span class="s1">&#39;posix&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s1">&#39;cygwin&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;cygwin&#39;</span>
+        <span class="k">elif</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;irix&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;irix&#39;</span>
+        <span class="k">elif</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;sunos&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;sunos&#39;</span>
+        <span class="k">elif</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;hp-ux&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;hpux&#39;</span>
+        <span class="k">elif</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;aix&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;aix&#39;</span>
+        <span class="k">elif</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;darwin&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;darwin&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;posix&#39;</span>
+    <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;os2&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;os2&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span></div>
+
+
+<div class="viewcode-block" id="platform_module"><a class="viewcode-back" href="../../../SCons.Platform/#SCons.Platform.platform_module">[docs]</a><span class="k">def</span> <span class="nf">platform_module</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="n">platform_default</span><span class="p">()):</span>
+    <span class="sd">&quot;&quot;&quot;Return the imported module for the platform.</span>
+
+<span class="sd">    This looks for a module name that matches the specified argument.</span>
+<span class="sd">    If the name is unspecified, we fetch the appropriate default for</span>
+<span class="sd">    our execution environment.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">full_name</span> <span class="o">=</span> <span class="s1">&#39;SCons.Platform.&#39;</span> <span class="o">+</span> <span class="n">name</span>
+    <span class="k">if</span> <span class="n">full_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;java&#39;</span><span class="p">:</span>
+            <span class="nb">eval</span><span class="p">(</span><span class="n">full_name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># the specific platform module is a relative import</span>
+                <span class="n">mod</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">name</span><span class="p">,</span> <span class="vm">__name__</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="kn">import</span> <span class="nn">zipimport</span>
+                    <span class="n">importer</span> <span class="o">=</span> <span class="n">zipimport</span><span class="o">.</span><span class="n">zipimporter</span><span class="p">(</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="s1">&#39;SCons.Platform&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">__path__</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+                    <span class="n">mod</span> <span class="o">=</span> <span class="n">importer</span><span class="o">.</span><span class="n">load_module</span><span class="p">(</span><span class="n">full_name</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">UserError</span><span class="p">(</span><span class="s2">&quot;No platform named &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Platform</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">mod</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">full_name</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="DefaultToolList"><a class="viewcode-back" href="../../../SCons.Platform/#SCons.Platform.DefaultToolList">[docs]</a><span class="k">def</span> <span class="nf">DefaultToolList</span><span class="p">(</span><span class="n">platform</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Select a default tool list for the specified platform.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Tool</span><span class="o">.</span><span class="n">tool_list</span><span class="p">(</span><span class="n">platform</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PlatformSpec"><a class="viewcode-back" href="../../../SCons.Platform/#SCons.Platform.PlatformSpec">[docs]</a><span class="k">class</span> <span class="nc">PlatformSpec</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">generate</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generate</span> <span class="o">=</span> <span class="n">generate</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span></div>
+
+
+<div class="viewcode-block" id="TempFileMunge"><a class="viewcode-back" href="../../../SCons.Platform/#SCons.Platform.TempFileMunge">[docs]</a><span class="k">class</span> <span class="nc">TempFileMunge</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Convert long command lines to use a temporary file.</span>
+
+<span class="sd">    You can set an Environment variable (usually `TEMPFILE`) to this,</span>
+<span class="sd">    then call it with a string argument, and it will perform temporary</span>
+<span class="sd">    file substitution on it.  This is used to circumvent limitations on</span>
+<span class="sd">    the length of command lines. Example::</span>
+
+<span class="sd">        env[&quot;TEMPFILE&quot;] = TempFileMunge</span>
+<span class="sd">        env[&quot;LINKCOM&quot;] = &quot;${TEMPFILE(&#39;$LINK $TARGET $SOURCES&#39;,&#39;$LINKCOMSTR&#39;)}&quot;</span>
+
+<span class="sd">    By default, the name of the temporary file used begins with a</span>
+<span class="sd">    prefix of &#39;@&#39;.  This may be configured for other tool chains by</span>
+<span class="sd">    setting the TEMPFILEPREFIX variable. Example::</span>
+
+<span class="sd">        env[&quot;TEMPFILEPREFIX&quot;] = &#39;-@&#39;        # diab compiler</span>
+<span class="sd">        env[&quot;TEMPFILEPREFIX&quot;] = &#39;-via&#39;      # arm tool chain</span>
+<span class="sd">        env[&quot;TEMPFILEPREFIX&quot;] = &#39;&#39;          # (the empty string) PC Lint</span>
+
+<span class="sd">    You can configure the extension of the temporary file through the</span>
+<span class="sd">    TEMPFILESUFFIX variable, which defaults to &#39;.lnk&#39; (see comments</span>
+<span class="sd">    in the code below). Example::</span>
+
+<span class="sd">        env[&quot;TEMPFILESUFFIX&quot;] = &#39;.lnt&#39;   # PC Lint</span>
+
+<span class="sd">    Entries in the temporary file are separated by the value of the</span>
+<span class="sd">    TEMPFILEARGJOIN variable, which defaults to an OS-appropriate value.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">cmdstr</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmd</span> <span class="o">=</span> <span class="n">cmd</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmdstr</span> <span class="o">=</span> <span class="n">cmdstr</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">for_signature</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">for_signature</span><span class="p">:</span>
+            <span class="c1"># If we&#39;re being called for signature calculation, it&#39;s</span>
+            <span class="c1"># because we&#39;re being called by the string expansion in</span>
+            <span class="c1"># Subst.py, which has the logic to strip any $( $) that</span>
+            <span class="c1"># may be in the command line we squirreled away.  So we</span>
+            <span class="c1"># just return the raw command line and let the upper</span>
+            <span class="c1"># string substitution layers do their thing.</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd</span>
+
+        <span class="c1"># Now we&#39;re actually being called because someone is actually</span>
+        <span class="c1"># going to try to execute the command, so we have to do our</span>
+        <span class="c1"># own expansion.</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">subst_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cmd</span><span class="p">,</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Subst</span><span class="o">.</span><span class="n">SUBST_CMD</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">maxline</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">subst</span><span class="p">(</span><span class="s1">&#39;$MAXLINELENGTH&#39;</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">maxline</span> <span class="o">=</span> <span class="mi">2048</span>
+
+        <span class="n">length</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cmd</span><span class="p">:</span>
+            <span class="n">length</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="n">length</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">length</span> <span class="o">&lt;=</span> <span class="n">maxline</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd</span>
+
+        <span class="c1"># Check if we already created the temporary file for this target</span>
+        <span class="c1"># It should have been previously done by Action.strfunction() call</span>
+        <span class="k">if</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_List</span><span class="p">(</span><span class="n">target</span><span class="p">):</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">target</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">target</span>
+
+        <span class="n">cmdlist</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_List</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cmd</span><span class="p">):</span>
+            <span class="n">cmdlist_key</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cmdlist_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd</span>
+
+        <span class="k">if</span> <span class="n">node</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">attributes</span><span class="p">,</span> <span class="s1">&#39;tempfile_cmdlist&#39;</span><span class="p">):</span>
+            <span class="n">cmdlist</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">tempfile_cmdlist</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cmdlist_key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cmdlist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">cmdlist</span>
+
+        <span class="c1"># Default to the .lnk suffix for the benefit of the Phar Lap</span>
+        <span class="c1"># linkloc linker, which likes to append an .lnk suffix if</span>
+        <span class="c1"># none is given.</span>
+        <span class="k">if</span> <span class="s1">&#39;TEMPFILESUFFIX&#39;</span> <span class="ow">in</span> <span class="n">env</span><span class="p">:</span>
+            <span class="n">suffix</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">subst</span><span class="p">(</span><span class="s1">&#39;$TEMPFILESUFFIX&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">suffix</span> <span class="o">=</span> <span class="s1">&#39;.lnk&#39;</span>
+
+        <span class="k">if</span> <span class="s1">&#39;TEMPFILEDIR&#39;</span> <span class="ow">in</span> <span class="n">env</span><span class="p">:</span>
+            <span class="n">tempfile_dir</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">subst</span><span class="p">(</span><span class="s1">&#39;$TEMPFILEDIR&#39;</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">tempfile_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tempfile_dir</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">fd</span><span class="p">,</span> <span class="n">tmp</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkstemp</span><span class="p">(</span><span class="n">suffix</span><span class="p">,</span> <span class="nb">dir</span><span class="o">=</span><span class="n">tempfile_dir</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">native_tmp</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">get_native_path</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;SHELL&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;sh&#39;</span><span class="p">:</span>
+            <span class="c1"># The sh shell will try to escape the backslashes in the</span>
+            <span class="c1"># path, so unescape them.</span>
+            <span class="n">native_tmp</span> <span class="o">=</span> <span class="n">native_tmp</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;</span><span class="se">\\\\</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="c1"># In Cygwin, we want to use rm to delete the temporary</span>
+            <span class="c1"># file, because del does not exist in the sh shell.</span>
+            <span class="n">rm</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">Detect</span><span class="p">(</span><span class="s1">&#39;rm&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="s1">&#39;del&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Don&#39;t use &#39;rm&#39; if the shell is not sh, because rm won&#39;t</span>
+            <span class="c1"># work with the Windows shells (cmd.exe or command.com) or</span>
+            <span class="c1"># Windows path names.</span>
+            <span class="n">rm</span> <span class="o">=</span> <span class="s1">&#39;del&#39;</span>
+
+        <span class="n">prefix</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">subst</span><span class="p">(</span><span class="s1">&#39;$TEMPFILEPREFIX&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">prefix</span><span class="p">:</span>
+            <span class="n">prefix</span> <span class="o">=</span> <span class="s1">&#39;@&#39;</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Subst</span><span class="o">.</span><span class="n">quote_spaces</span><span class="p">,</span> <span class="n">cmd</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
+        <span class="n">join_char</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;TEMPFILEARGJOIN&#39;</span><span class="p">,</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">join_char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span>
+
+        <span class="c1"># XXX Using the SCons.Action.print_actions value directly</span>
+        <span class="c1"># like this is bogus, but expedient.  This class should</span>
+        <span class="c1"># really be rewritten as an Action that defines the</span>
+        <span class="c1"># __call__() and strfunction() methods and lets the</span>
+        <span class="c1"># normal action-execution logic handle whether or not to</span>
+        <span class="c1"># print/execute the action.  The problem, though, is all</span>
+        <span class="c1"># of that is decided before we execute this method as</span>
+        <span class="c1"># part of expanding the $TEMPFILE construction variable.</span>
+        <span class="c1"># Consequently, refactoring this will have to wait until</span>
+        <span class="c1"># we get more flexible with allowing Actions to exist</span>
+        <span class="c1"># independently and get strung together arbitrarily like</span>
+        <span class="c1"># Ant tasks.  In the meantime, it&#39;s going to be more</span>
+        <span class="c1"># user-friendly to not let obsession with architectural</span>
+        <span class="c1"># purity get in the way of just being helpful, so we&#39;ll</span>
+        <span class="c1"># reach into SCons.Action directly.</span>
+        <span class="k">if</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Action</span><span class="o">.</span><span class="n">print_actions</span><span class="p">:</span>
+            <span class="n">cmdstr</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">subst</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cmdstr</span><span class="p">,</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Subst</span><span class="o">.</span><span class="n">SUBST_RAW</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span>
+                               <span class="n">source</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmdstr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+            <span class="c1"># Print our message only if XXXCOMSTR returns an empty string</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cmdstr</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">:</span>
+                <span class="n">cmdstr</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Using tempfile &quot;</span><span class="o">+</span><span class="n">native_tmp</span><span class="o">+</span><span class="s2">&quot; for command line:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">+</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="n">cmd</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_print_cmd_str</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">cmdstr</span><span class="p">)</span>
+
+        <span class="n">cmdlist</span> <span class="o">=</span> <span class="p">[</span> <span class="n">cmd</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">native_tmp</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">rm</span><span class="p">,</span> <span class="n">native_tmp</span> <span class="p">]</span>
+
+        <span class="c1"># Store the temporary file command list into the target Node.attributes</span>
+        <span class="c1"># to avoid creating two temporary files one for print and one for execute.</span>
+        <span class="k">if</span> <span class="n">node</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># Storing in tempfile_cmdlist by self.cmd provided when intializing</span>
+                <span class="c1"># $TEMPFILE{} fixes issue raised in PR #3140 and #3553</span>
+                <span class="n">node</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">tempfile_cmdlist</span><span class="p">[</span><span class="n">cmdlist_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">cmdlist</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="n">node</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">tempfile_cmdlist</span> <span class="o">=</span> <span class="p">{</span><span class="n">cmdlist_key</span><span class="p">:</span><span class="n">cmdlist</span><span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">cmdlist</span>
+
+<div class="viewcode-block" id="TempFileMunge._print_cmd_str"><a class="viewcode-back" href="../../../SCons.Platform/#SCons.Platform.TempFileMunge._print_cmd_str">[docs]</a>    <span class="k">def</span> <span class="nf">_print_cmd_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">cmdstr</span><span class="p">):</span>
+        <span class="c1"># check if the user has specified a cmd line print function</span>
+        <span class="n">print_func</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">get</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">print_func</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="s1">&#39;PRINT_CMD_LINE_FUNC&#39;</span><span class="p">)</span>
+
+        <span class="c1"># use the default action cmd line print if user did not supply one</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">print_func</span><span class="p">:</span>
+            <span class="n">action</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Action</span><span class="o">.</span><span class="n">_ActionAction</span><span class="p">()</span>
+            <span class="n">action</span><span class="o">.</span><span class="n">print_cmd_line</span><span class="p">(</span><span class="n">cmdstr</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">print_func</span><span class="p">(</span><span class="n">cmdstr</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="Platform"><a class="viewcode-back" href="../../../SCons.Platform/#SCons.Platform.Platform">[docs]</a><span class="k">def</span> <span class="nf">Platform</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="n">platform_default</span><span class="p">()):</span>
+    <span class="sd">&quot;&quot;&quot;Select a canned Platform specification.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">module</span> <span class="o">=</span> <span class="n">platform_module</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">spec</span> <span class="o">=</span> <span class="n">PlatformSpec</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">module</span><span class="o">.</span><span class="n">generate</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">spec</span></div>
+
+<span class="c1"># Local Variables:</span>
+<span class="c1"># tab-width:4</span>
+<span class="c1"># indent-tabs-mode:nil</span>
+<span class="c1"># End:</span>
+<span class="c1"># vim: set expandtab tabstop=4 shiftwidth=4:</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, SCons Project
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

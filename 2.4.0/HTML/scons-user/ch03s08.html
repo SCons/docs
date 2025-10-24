@@ -1,0 +1,59 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>3.8. Sharing Source Files Between Multiple Programs</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 2.4.0"><link rel="up" href="ch03.html" title="Chapter 3. Less Simple Things to Do With Builds"><link rel="prev" href="ch03s07.html" title="3.7. Compiling Multiple Programs"><link rel="next" href="ch04.html" title="Chapter 4. Building and Linking with Libraries"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">3.8. Sharing Source Files Between Multiple Programs</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch03s07.html">Prev</a> </td><th width="60%" align="center">Chapter 3. Less Simple Things to Do With Builds</th><td width="20%" align="right"> <a accesskey="n" href="ch04.html">Next</a></td></tr></table><hr></div><div class="section" title="3.8. Sharing Source Files Between Multiple Programs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idm139970768490032"></a>3.8. Sharing Source Files Between Multiple Programs</h2></div></div></div><p>
+
+    It's common to re-use code by sharing source files
+    between multiple programs.
+    One way to do this is to create a library
+    from the common source files,
+    which can then be linked into resulting programs.
+    (Creating libraries is discussed in
+    <a class="xref" href="ch04.html" title="Chapter 4. Building and Linking with Libraries">Chapter 4, <i>Building and Linking with Libraries</i></a>, below.)
+
+    </p><p>
+
+    A more straightforward, but perhaps less convenient,
+    way to share source files between multiple programs
+    is simply to include the common files
+    in the lists of source files for each program:
+
+    </p><pre class="programlisting">
+Program(Split('foo.c common1.c common2.c'))
+Program('bar', Split('bar1.c bar2.c common1.c common2.c'))
+       </pre><p>
+
+    <span class="application">SCons</span> recognizes that the object files for
+    the <code class="filename">common1.c</code> and <code class="filename">common2.c</code> source files
+    each need to be built only once,
+    even though the resulting object files are
+    each linked in to both of the resulting executable programs:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o bar1.o -c bar1.c
+cc -o bar2.o -c bar2.c
+cc -o common1.o -c common1.c
+cc -o common2.o -c common2.c
+cc -o bar bar1.o bar2.o common1.o common2.o
+cc -o foo.o -c foo.c
+cc -o foo foo.o common1.o common2.o
+</pre><p>
+
+    If two or more programs
+    share a lot of common source files,
+    repeating the common files in the list for each program
+    can be a maintenance problem when you need to change the
+    list of common files.
+    You can simplify this by creating a separate Python list
+    to hold the common file names,
+    and concatenating it with other lists
+    using the Python <code class="literal">+</code> operator:
+
+    </p><pre class="programlisting">
+common = ['common1.c', 'common2.c']
+foo_files = ['foo.c'] + common
+bar_files = ['bar1.c', 'bar2.c'] + common
+Program('foo', foo_files)
+Program('bar', bar_files)
+    </pre><p>
+
+    This is functionally equivalent to the previous example.
+
+    </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch03s07.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch03.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch04.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">3.7. Compiling Multiple Programs </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 4. Building and Linking with Libraries</td></tr></table></div></body></html>

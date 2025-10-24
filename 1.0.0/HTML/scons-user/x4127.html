@@ -1,0 +1,303 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Minimizing Cache Contention:  the --random Option</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 1.0.0"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Caching Built Files"
+HREF="c4047.html"><LINK
+REL="PREVIOUS"
+TITLE="Populating a Shared Cache With Already-Built Files"
+HREF="x4110.html"><LINK
+REL="NEXT"
+TITLE="Alias Targets"
+HREF="c4156.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 1.0.0</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x4110.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 25. Caching Built Files</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="c4156.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN4127"
+>25.6. Minimizing Cache Contention:  the <TT
+CLASS="literal"
+>--random</TT
+> Option</A
+></H1
+><P
+>&#13;
+    If you allow multiple builds to update the
+    shared cache directory simultaneously,
+    two builds that occur at the same time
+    can sometimes start "racing"
+    with one another to build the same files
+    in the same order.
+    If, for example,
+    you are linking multiple files into an executable program:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;       Program('prog',
+               ['f1.c', 'f2.c', 'f3.c', 'f4.c', 'f5.c'])
+    </PRE
+><P
+>&#13;
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> will normally build the input object files
+    on which the program depends in their normal, sorted order:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      cc -o f1.o -c f1.c
+      cc -o f2.o -c f2.c
+      cc -o f3.o -c f3.c
+      cc -o f4.o -c f4.c
+      cc -o f5.o -c f5.c
+      cc -o prog f1.o f2.o f3.o f4.o f5.o
+    </PRE
+><P
+>&#13;
+    But if two such builds take place simultaneously,
+    they may each look in the cache at nearly the same
+    time and both decide that <TT
+CLASS="filename"
+>f1.o</TT
+>
+    must be rebuilt and pushed into the shared cache directory,
+    then both decide that <TT
+CLASS="filename"
+>f2.o</TT
+>
+    must be rebuilt (and pushed into the shared cache directory),
+    then both decide that <TT
+CLASS="filename"
+>f3.o</TT
+>
+    must be rebuilt...
+    This won't cause any actual build problems--both
+    builds will succeed,
+    generate correct output files,
+    and populate the cache--but
+    it does represent wasted effort.
+
+    </P
+><P
+>&#13;
+    To alleviate such contention for the cache,
+    you can use the <TT
+CLASS="literal"
+>--random</TT
+> command-line option
+    to tell <SPAN
+CLASS="application"
+>SCons</SPAN
+> to build dependencies
+    in a random order:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q --random</KBD
+>
+      cc -o f3.o -c f3.c
+      cc -o f1.o -c f1.c
+      cc -o f5.o -c f5.c
+      cc -o f2.o -c f2.c
+      cc -o f4.o -c f4.c
+      cc -o prog f1.o f2.o f3.o f4.o f5.o
+    </PRE
+><P
+>&#13;
+    Multiple builds using the <TT
+CLASS="literal"
+>--random</TT
+> option
+    will usually build their dependencies in different,
+    random orders,
+    which minimizes the chances for a lot of
+    contention for same-named files
+    in the shared cache directory.
+    Multiple simultaneous builds might still race to try to build
+    the same target file on occasion,
+    but long sequences of inefficient contention
+    should be rare.
+
+    </P
+><P
+>&#13;
+    Note, of course,
+    the <TT
+CLASS="literal"
+>--random</TT
+> option
+    will cause the output that <SPAN
+CLASS="application"
+>SCons</SPAN
+> prints
+    to be inconsistent from invocation to invocation,
+    which may be an issue when
+    trying to compare output from different build runs.
+
+    </P
+><P
+>&#13;
+    If you want to make sure dependencies will be built
+    in a random order without having to specify
+    the <TT
+CLASS="literal"
+>--random</TT
+> on very command line,
+    you can use the <CODE
+CLASS="function"
+>SetOption</CODE
+> function to
+    set the <TT
+CLASS="literal"
+>random</TT
+> option
+    within any <TT
+CLASS="filename"
+>SConscript</TT
+> file:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;       Program('prog',
+               ['f1.c', 'f2.c', 'f3.c', 'f4.c', 'f5.c'])
+
+       SetOption('random', 1)
+       Program('prog',
+               ['f1.c', 'f2.c', 'f3.c', 'f4.c', 'f5.c'])
+    </PRE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x4110.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="c4156.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Populating a Shared Cache With Already-Built Files</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c4047.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Alias Targets</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,116 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>SCONSIGN</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" title="SCONSIGN"><a name="sconsign1"></a><div class="titlepage"></div><div class="refnamediv"><a name="name"></a><h2>Name</h2><p>sconsign &#8212; print SCons signature file information</p></div><div class="refsynopsisdiv" title="Synopsis"><a name="synopsis"></a><h2>Synopsis</h2><div class="cmdsynopsis"><p><code class="command">sconsign</code>  [<em class="replaceable"><code>options</code></em>...] [<em class="replaceable"><code>file</code></em>...]</p></div></div><div class="refsect1" title="DESCRIPTION"><a name="description"></a><h2>DESCRIPTION</h2><p>The
+<span class="command"><strong>sconsign</strong></span>
+command
+displays the contents of one or more signature
+("<span class="markup">sconsign</span>")
+files specified by the user.</p><p>By default,
+<span class="command"><strong>sconsign</strong></span>
+dumps the entire contents of the
+specified file(s).
+Without the verbose option,
+each entry is printed in the following format:</p><pre class="literallayout">
+file: signature timestamp length
+        implicit_dependency_1: signature timestamp length
+        implicit_dependency_2: signature timestamp length
+        ...
+        action_signature [action string]
+</pre><p><span class="bold"><strong>None</strong></span>
+is printed
+in place of any missing timestamp, build signature ("bsig"),
+or content signature ("csig")
+values for
+any entry
+or any of its dependencies.
+If the entry has no implicit dependencies,
+or no build action,
+the lines are simply omitted.
+The verbose option expands the display into a more human
+readable format.
+</p><p>By default,
+<span class="command"><strong>sconsign</strong></span>
+assumes that any
+<span class="emphasis"><em>file</em></span>
+arguments that end with a
+<span class="markup">.dbm</span>
+suffix contains
+signature entries for
+more than one directory
+(that is,
+was specified by the
+<span class="bold"><strong>SConsignFile</strong></span>
+function).
+Any
+<span class="emphasis"><em>file</em></span>
+argument that ends in
+<span class="markup">.dblite</span>
+is assumed to be a traditional
+<span class="markup">.sconsign</span>
+file containing the signature entries
+for a single directory.
+If neither of those is true,
+<span class="command"><strong>sconsign</strong></span>
+attempts to guess the format.
+If that does not work,
+an explicit format
+may be specified using the
+<code class="option">-f</code>
+or
+<code class="option">--format=</code>
+options.
+</p><p>
+If there are no
+<span class="emphasis"><em>file</em></span>
+arguments, the name
+<code class="filename">.sconsign.dblite</code>
+is assumed.
+</p></div><div class="refsect1" title="OPTIONS"><a name="options"></a><h2>OPTIONS</h2><p>Various options control what information is printed
+and the format:</p><div class="variablelist"><dl><dt><span class="term">-a, --act, --action</span></dt><dd><p>Prints the build action information
+for all entries or the specified entries.</p></dd><dt><span class="term">-c, --csig</span></dt><dd><p>Prints the content signature (csig) information
+for all entries or the specified entries.</p></dd><dt><span class="term">-d DIRECTORY, --dir=DIRECTORY</span></dt><dd><p>When the signatures are being
+read from a
+<span class="markup">.dbm</span>
+file, or the
+<code class="option">-f dbm</code>
+or
+<code class="option">--format=dbm</code>
+options are used,
+prints information about
+only the signatures
+for entries in the specified
+<span class="emphasis"><em>DIRECTORY</em></span>.</p></dd><dt><span class="term">-e ENTRY, --entry=ENTRY</span></dt><dd><p>Prints information about only the specified
+<span class="emphasis"><em>ENTRY</em></span>.
+Multiple -e options may be used,
+in which case information about each
+<span class="emphasis"><em>ENTRY</em></span>
+is printed in the order in which the
+options are specified on the command line.</p></dd><dt><span class="term">-f FORMAT, --format=FORMAT</span></dt><dd><p>The file(s) to be printed
+are in the specified
+<span class="emphasis"><em>FORMAT</em></span>.
+Legal values are
+<span class="bold"><strong>dbm</strong></span>
+(the DBM format used
+when the
+<span class="bold"><strong>SConsignFile</strong></span>
+function is used)
+or
+<span class="command"><strong>sconsign</strong></span>
+(the default format
+used for an individual
+<span class="markup">.sconsign</span>
+file in each directory).</p></dd><dt><span class="term">-h, --help</span></dt><dd><p>Prints a help message and exits.</p></dd><dt><span class="term">-i, --implicit</span></dt><dd><p>Prints the list of cached implicit dependencies
+for all entries or for the specified entries.</p></dd><dt><span class="term">--raw</span></dt><dd><p>Prints a pretty-printed representation
+of the raw Python dictionary that holds
+build information about individual entries
+(both the entry itself and its implicit dependencies).
+An entry's build action is still printed in its usual format.</p></dd><dt><span class="term">-r, --readable</span></dt><dd><p>Prints timestamps in a human-readable string,
+enclosed in single quotes.</p></dd><dt><span class="term">-t, --timestamp</span></dt><dd><p>Prints the timestamp information
+for all entries or the specified entries.</p></dd><dt><span class="term">-v, --verbose</span></dt><dd><p>Prints labels identifying each field being printed.</p></dd></dl></div></div><div class="refsect1" title="ENVIRONMENT"><a name="environment"></a><h2>ENVIRONMENT</h2><div class="variablelist"><dl><dt><span class="term">SCONS_LIB_DIR</span></dt><dd><p>Specifies the directory that contains the SCons Python module directory
+(e.g.
+<code class="filename">/home/aroach/scons-src-0.01/src/engine</code>).
+on the command line.</p></dd></dl></div></div><div class="refsect1" title="SEE ALSO"><a name="see_also"></a><h2>SEE ALSO</h2><p><span class="bold"><strong>scons</strong></span>,
+<span class="bold"><strong>scons</strong></span>
+User Manual,
+<span class="bold"><strong>scons</strong></span>
+Design Document,
+<span class="bold"><strong>scons</strong></span>
+source code.</p></div><div class="refsect1" title="AUTHORS"><a name="authors"></a><h2>AUTHORS</h2><p>Steven Knight &lt;knight at baldmt dot com&gt;</p></div></div></body></html>

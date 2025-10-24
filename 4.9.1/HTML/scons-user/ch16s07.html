@@ -1,0 +1,23 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>16.7. Using Repository to separate source and build.</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.9.1"><link rel="up" href="ch16.html" title="Chapter 16. Building From Code Repositories"><link rel="prev" href="ch16s06.html" title="16.6. Guaranteeing local copies of files"><link rel="next" href="ch17.html" title="Chapter 17. Extending SCons: Writing Your Own Builders"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">16.7. Using Repository to separate source and build.</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch16s06.html">Prev</a> </td><th width="60%" align="center">Chapter 16. Building From Code Repositories</th><td width="20%" align="right"> <a accesskey="n" href="ch17.html">Next</a></td></tr></table><hr></div><div class="section" title="16.7. Using Repository to separate source and build."><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="sect-repository-out-of-source"></a>16.7. Using Repository to separate source and build.</h2></div></div></div><p>
+
+    If you want to just do a build where the build artifacts don't
+    pollute the source directory, the repository mechanism can help with that.
+    Here's an example: checkout or unpack your project in the
+    directory <code class="filename">src</code>,
+    and then build it in <code class="filename">build</code>:
+
+    </p><pre class="screen">
+$ <strong class="userinput"><code>mkdir build</code></strong>
+$ <strong class="userinput"><code>cd build</code></strong>
+$ <strong class="userinput"><code>scons -Q -Y ../src</code></strong>
+gcc -o foo.o -I. -I/path/to/src -c /path/to/src/foo.c
+gcc -o foo foo.o
+$ <strong class="userinput"><code>ls</code></strong>
+foo  foo.o
+    </pre><p>
+
+    It can become awkward to keep having to type
+    <code class="literal">-Y path-to-repo</code> repeatedly.
+    If so, the option can be placed in <code class="envar">SCONSFLAGS</code>.
+
+    </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch16s06.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch16.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch17.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">16.6. Guaranteeing local copies of files </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 17. Extending <span class="application">SCons</span>: Writing Your Own Builders</td></tr></table></div></body></html>

@@ -1,0 +1,39 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>3.9. Overriding construction variables when calling a Builder</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.0.1"><link rel="up" href="ch03.html" title="Chapter 3. Less Simple Things to Do With Builds"><link rel="prev" href="ch03s08.html" title="3.8. Sharing Source Files Between Multiple Programs"><link rel="next" href="ch04.html" title="Chapter 4. Building and Linking with Libraries"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">3.9. Overriding construction variables when calling a Builder</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch03s08.html">Prev</a> </td><th width="60%" align="center">Chapter 3. Less Simple Things to Do With Builds</th><td width="20%" align="right"> <a accesskey="n" href="ch04.html">Next</a></td></tr></table><hr></div><div class="section" title="3.9. Overriding construction variables when calling a Builder"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idp140667227318584"></a>3.9. Overriding construction variables when calling a Builder</h2></div></div></div><p>
+
+    It is possible to override or add construction variables
+    when calling a builder method by passing additional keyword arguments.
+    These overridden or added variables will only be in effect when
+    building the target, so they will not affect other parts of the build.
+    For example, if you want to add additional libraries for just one program:
+
+    </p><pre class="programlisting">
+env.Program('hello', 'hello.c', LIBS=['gl', 'glut'])
+    </pre><p>
+
+    or generate a shared library with a non-standard suffix:
+
+    </p><pre class="programlisting">
+env.SharedLibrary('word', 'word.cpp',
+                  SHLIBSUFFIX='.ocx',
+                  LIBSUFFIXES=['.ocx'])
+    </pre><p>
+
+    It is also possible to use the <code class="literal">parse_flags</code>
+    keyword argument in an override to merge command-line
+    style arguments into the appropriate construction
+    variables (see <a class="link" href="apd.html#f-MergeFlags"><code class="function">env.MergeFlags</code></a>).
+
+    </p><p>
+
+    This example adds 'include' to <a class="link" href="apa.html#cv-CPPPATH"><code class="envar">$CPPPATH</code></a>,
+    'EBUG' to <a class="link" href="apa.html#cv-CPPDEFINES"><code class="envar">$CPPDEFINES</code></a>, and 'm' to <a class="link" href="apa.html#cv-LIBS"><code class="envar">$LIBS</code></a>.
+
+    </p><pre class="programlisting">
+env = Program('hello', 'hello.c', parse_flags='-Iinclude -DEBUG -lm')
+    </pre><p>
+
+    Within the call to the builder action the environment is not cloned,
+    instead an OverrideEnvironment() is created which is more
+    light weight than a whole Environment()
+
+    </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch03s08.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch03.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch04.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">3.8. Sharing Source Files Between Multiple Programs </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 4. Building and Linking with Libraries</td></tr></table></div></body></html>

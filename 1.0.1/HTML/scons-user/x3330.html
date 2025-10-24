@@ -1,0 +1,220 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Telling SCons to Not Duplicate Source Files in the Variant Directory Tree</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 1.0.1"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Separating Source and Build Directories"
+HREF="c3271.html"><LINK
+REL="PREVIOUS"
+TITLE="Why SCons Duplicates Source Files in a Variant Directory Tree"
+HREF="x3313.html"><LINK
+REL="NEXT"
+TITLE="The VariantDir Function"
+HREF="x3346.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 1.0.1</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x3313.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 17. Separating Source and Build Directories</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x3346.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN3330"
+>17.3. Telling <SPAN
+CLASS="application"
+>SCons</SPAN
+> to Not Duplicate Source Files in the Variant Directory Tree</A
+></H1
+><P
+>&#13;
+    In most cases and with most tool sets,
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> can place its target files in a build subdirectory
+    <SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>without</I
+></SPAN
+>
+    duplicating the source files
+    and everything will work just fine.
+    You can disable the default <SPAN
+CLASS="application"
+>SCons</SPAN
+> behavior
+    by specifying <TT
+CLASS="literal"
+>duplicate=0</TT
+>
+    when you call the <TT
+CLASS="filename"
+>SConscript</TT
+> function:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;      SConscript('src/SConscript', variant_dir='build', duplicate=0)
+    </PRE
+><P
+>&#13;
+    When this flag is specified,
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> uses the variant directory
+    like most people expect--that is,
+    the output files are placed in the variant directory
+    while the source files stay in the source directory:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>ls src</KBD
+>
+      SConscript
+      hello.c
+      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      cc -c src/hello.c -o build/hello.o
+      cc -o build/hello build/hello.o
+      % <KBD
+CLASS="userinput"
+>ls build</KBD
+>
+      hello
+      hello.o
+    </PRE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x3313.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x3346.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Why <SPAN
+CLASS="application"
+>SCons</SPAN
+> Duplicates Source Files in a Variant Directory Tree</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c3271.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>The <CODE
+CLASS="function"
+>VariantDir</CODE
+> Function</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

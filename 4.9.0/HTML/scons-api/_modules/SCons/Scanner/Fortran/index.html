@@ -1,0 +1,672 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SCons.Scanner.Fortran &#8212; SCons 4.9.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../../_static/documentation_options.js?v=3cc36abc"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/SCons/Scanner/Fortran';</script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search/"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../../">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SCons 4.9.0 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../SCons/">SCons package</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Taskmaster/">SCons.Taskmaster package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Util/">SCons.Util package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Variables/">SCons.Variables package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.compat/">SCons.compat package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.compat/">SCons.compat package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Taskmaster/">SCons.Taskmaster package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Util/">SCons.Util package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Variables/">SCons.Variables package</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for SCons.Scanner.Fortran</h1><div class="highlight"><pre>
+<span></span><span class="c1"># MIT License</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright The SCons Foundation</span>
+<span class="c1">#</span>
+<span class="c1"># Permission is hereby granted, free of charge, to any person obtaining</span>
+<span class="c1"># a copy of this software and associated documentation files (the</span>
+<span class="c1"># &quot;Software&quot;), to deal in the Software without restriction, including</span>
+<span class="c1"># without limitation the rights to use, copy, modify, merge, publish,</span>
+<span class="c1"># distribute, sublicense, and/or sell copies of the Software, and to</span>
+<span class="c1"># permit persons to whom the Software is furnished to do so, subject to</span>
+<span class="c1"># the following conditions:</span>
+<span class="c1">#</span>
+<span class="c1"># The above copyright notice and this permission notice shall be included</span>
+<span class="c1"># in all copies or substantial portions of the Software.</span>
+<span class="c1">#</span>
+<span class="c1"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY</span>
+<span class="c1"># KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND</span>
+<span class="c1"># NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE</span>
+<span class="c1"># LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION</span>
+<span class="c1"># OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</span>
+<span class="c1"># WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</span>
+
+<span class="sd">&quot;&quot;&quot;Dependency scanner for Fortran code.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">import</span> <span class="nn">SCons.Node</span>
+<span class="kn">import</span> <span class="nn">SCons.Node.FS</span>
+<span class="kn">import</span> <span class="nn">SCons.Util</span>
+<span class="kn">import</span> <span class="nn">SCons.Warnings</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">Classic</span><span class="p">,</span> <span class="n">Current</span><span class="p">,</span> <span class="n">FindPathDirs</span>
+
+<div class="viewcode-block" id="F90Scanner">
+<a class="viewcode-back" href="../../../../SCons.Scanner/#SCons.Scanner.Fortran.F90Scanner">[docs]</a>
+<span class="k">class</span> <span class="nc">F90Scanner</span><span class="p">(</span><span class="n">Classic</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A Classic Scanner subclass for Fortran source files which takes</span>
+<span class="sd">    into account both USE and INCLUDE statements.  This scanner will</span>
+<span class="sd">    work for both F77 and F90 (and beyond) compilers.</span>
+
+<span class="sd">    Currently, this scanner assumes that the include files do not contain</span>
+<span class="sd">    USE statements.  To enable the ability to deal with USE statements</span>
+<span class="sd">    in include files, add logic right after the module names are found</span>
+<span class="sd">    to loop over each include file, search for and locate each USE</span>
+<span class="sd">    statement, and append each module name to the list of dependencies.</span>
+<span class="sd">    Caching the search results in a common dictionary somewhere so that</span>
+<span class="sd">    the same include file is not searched multiple times would be a</span>
+<span class="sd">    smart thing to do.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">suffixes</span><span class="p">,</span> <span class="n">path_variable</span><span class="p">,</span>
+                 <span class="n">use_regex</span><span class="p">,</span> <span class="n">incl_regex</span><span class="p">,</span> <span class="n">def_regex</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cre_use</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">use_regex</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cre_incl</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">incl_regex</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cre_def</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">def_regex</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">_scan</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">=</span><span class="bp">self</span><span class="p">):</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">rfile</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">node</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="k">return</span> <span class="p">[]</span>
+
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;function&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_scan</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;path_function&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">FindPathDirs</span><span class="p">(</span><span class="n">path_variable</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;recursive&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;skeys&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">suffixes</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+
+        <span class="c1"># bypasses the parent Classic initializer</span>
+        <span class="n">Current</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="F90Scanner.scan">
+<a class="viewcode-back" href="../../../../SCons.Scanner/#SCons.Scanner.Fortran.F90Scanner.scan">[docs]</a>
+    <span class="k">def</span> <span class="nf">scan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="p">()):</span>
+
+        <span class="c1"># cache the includes list in node so we only scan it once:</span>
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">includes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">mods_and_includes</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">includes</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># retrieve all included filenames</span>
+            <span class="n">includes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cre_incl</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">get_text_contents</span><span class="p">())</span>
+            <span class="c1"># retrieve all USE&#39;d module names</span>
+            <span class="n">modules</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cre_use</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">get_text_contents</span><span class="p">())</span>
+            <span class="c1"># retrieve all defined module names</span>
+            <span class="n">defmodules</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cre_def</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">get_text_contents</span><span class="p">())</span>
+
+            <span class="c1"># Remove all USE&#39;d module names that are defined in the same file</span>
+            <span class="c1"># (case-insensitively)</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">defmodules</span><span class="p">:</span>
+                <span class="n">d</span><span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">modules</span> <span class="o">=</span> <span class="p">[</span><span class="n">m</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">modules</span> <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">d</span><span class="p">]</span>
+
+            <span class="c1"># Convert module name to a .mod filename</span>
+            <span class="n">suffix</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">subst</span><span class="p">(</span><span class="s1">&#39;$FORTRANMODSUFFIX&#39;</span><span class="p">)</span>
+            <span class="n">modules</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">+</span> <span class="n">suffix</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">modules</span><span class="p">]</span>
+            <span class="c1"># Remove unique items from the list</span>
+            <span class="n">mods_and_includes</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">includes</span><span class="o">+</span><span class="n">modules</span><span class="p">)</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">includes</span> <span class="o">=</span> <span class="n">mods_and_includes</span>
+
+        <span class="c1"># This is a hand-coded DSU (decorate-sort-undecorate, or</span>
+        <span class="c1"># Schwartzian transform) pattern.  The sort key is the raw name</span>
+        <span class="c1"># of the file as specifed on the USE or INCLUDE line, which lets</span>
+        <span class="c1"># us keep the sort order constant regardless of whether the file</span>
+        <span class="c1"># is actually found in a Repository or locally.</span>
+        <span class="n">nodes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">source_dir</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">get_dir</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">dep</span> <span class="ow">in</span> <span class="n">mods_and_includes</span><span class="p">:</span>
+            <span class="n">n</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_include</span><span class="p">(</span><span class="n">dep</span><span class="p">,</span> <span class="n">source_dir</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">SCons</span><span class="o">.</span><span class="n">Warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Warnings</span><span class="o">.</span><span class="n">DependencyWarning</span><span class="p">,</span>
+                                    <span class="s2">&quot;No dependency generated for file: </span><span class="si">%s</span><span class="s2"> (referenced by: </span><span class="si">%s</span><span class="s2">) -- file not found&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">node</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">sortkey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sort_key</span><span class="p">(</span><span class="n">dep</span><span class="p">)</span>
+                <span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">sortkey</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">nodes</span><span class="p">)]</span></div>
+</div>
+
+
+<div class="viewcode-block" id="FortranScan">
+<a class="viewcode-back" href="../../../../SCons.Scanner/#SCons.Scanner.Fortran.FortranScan">[docs]</a>
+<span class="k">def</span> <span class="nf">FortranScan</span><span class="p">(</span><span class="n">path_variable</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;FORTRANPATH&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a prototype Scanner instance for scanning source files</span>
+<span class="sd">    for Fortran USE &amp; INCLUDE statements&quot;&quot;&quot;</span>
+
+<span class="c1">#   The USE statement regex matches the following:</span>
+<span class="c1">#</span>
+<span class="c1">#   USE module_name</span>
+<span class="c1">#   USE :: module_name</span>
+<span class="c1">#   USE, INTRINSIC :: module_name</span>
+<span class="c1">#   USE, NON_INTRINSIC :: module_name</span>
+<span class="c1">#</span>
+<span class="c1">#   Limitations</span>
+<span class="c1">#</span>
+<span class="c1">#   --  While the regex can handle multiple USE statements on one line,</span>
+<span class="c1">#       it cannot properly handle them if they are commented out.</span>
+<span class="c1">#       In either of the following cases:</span>
+<span class="c1">#</span>
+<span class="c1">#            !  USE mod_a ; USE mod_b         [entire line is commented out]</span>
+<span class="c1">#               USE mod_a ! ; USE mod_b       [in-line comment of second USE statement]</span>
+<span class="c1">#</span>
+<span class="c1">#       the second module name (mod_b) will be picked up as a dependency</span>
+<span class="c1">#       even though it should be ignored.  The only way I can see</span>
+<span class="c1">#       to rectify this would be to modify the scanner to eliminate</span>
+<span class="c1">#       the call to re.findall, read in the contents of the file,</span>
+<span class="c1">#       treating the comment character as an end-of-line character</span>
+<span class="c1">#       in addition to the normal linefeed, loop over each line,</span>
+<span class="c1">#       weeding out the comments, and looking for the USE statements.</span>
+<span class="c1">#       One advantage to this is that the regex passed to the scanner</span>
+<span class="c1">#       would no longer need to match a semicolon.</span>
+<span class="c1">#</span>
+<span class="c1">#   --  I question whether or not we need to detect dependencies to</span>
+<span class="c1">#       INTRINSIC modules because these are built-in to the compiler.</span>
+<span class="c1">#       If we consider them a dependency, will SCons look for them, not</span>
+<span class="c1">#       find them, and kill the build?  Or will we there be standard</span>
+<span class="c1">#       compiler-specific directories we will need to point to so the</span>
+<span class="c1">#       compiler and SCons can locate the proper object and mod files?</span>
+
+<span class="c1">#   Here is a breakdown of the regex:</span>
+<span class="c1">#</span>
+<span class="c1">#   (?i)               : regex is case insensitive</span>
+<span class="c1">#   ^                  : start of line</span>
+<span class="c1">#   (?:                : group a collection of regex symbols without saving the match as a &quot;group&quot;</span>
+<span class="c1">#      ^|;             : matches either the start of the line or a semicolon - semicolon</span>
+<span class="c1">#   )                  : end the unsaved grouping</span>
+<span class="c1">#   \s*                : any amount of white space</span>
+<span class="c1">#   USE                : match the string USE, case insensitive</span>
+<span class="c1">#   (?:                : group a collection of regex symbols without saving the match as a &quot;group&quot;</span>
+<span class="c1">#      \s+|            : match one or more whitespace OR ....  (the next entire grouped set of regex symbols)</span>
+<span class="c1">#      (?:             : group a collection of regex symbols without saving the match as a &quot;group&quot;</span>
+<span class="c1">#         (?:          : establish another unsaved grouping of regex symbols</span>
+<span class="c1">#            \s*          : any amount of white space</span>
+<span class="c1">#            ,         : match a comma</span>
+<span class="c1">#            \s*       : any amount of white space</span>
+<span class="c1">#            (?:NON_)? : optionally match the prefix NON_, case insensitive</span>
+<span class="c1">#            INTRINSIC : match the string INTRINSIC, case insensitive</span>
+<span class="c1">#         )?           : optionally match the &quot;, INTRINSIC/NON_INTRINSIC&quot; grouped expression</span>
+<span class="c1">#         \s*          : any amount of white space</span>
+<span class="c1">#         ::           : match a double colon that must appear after the INTRINSIC/NON_INTRINSIC attribute</span>
+<span class="c1">#      )               : end the unsaved grouping</span>
+<span class="c1">#   )                  : end the unsaved grouping</span>
+<span class="c1">#   \s*                : match any amount of white space</span>
+<span class="c1">#   (\w+)              : match the module name that is being USE&#39;d</span>
+<span class="c1">#</span>
+<span class="c1">#</span>
+    <span class="n">use_regex</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;(?i)(?:^|;)\s*USE(?:\s+|(?:(?:\s*,\s*(?:NON_)?INTRINSIC)?\s*::))\s*(\w+)&quot;</span>
+
+
+<span class="c1">#   The INCLUDE statement regex matches the following:</span>
+<span class="c1">#</span>
+<span class="c1">#   INCLUDE &#39;some_Text&#39;</span>
+<span class="c1">#   INCLUDE &quot;some_Text&quot;</span>
+<span class="c1">#   INCLUDE &quot;some_Text&quot; ; INCLUDE &quot;some_Text&quot;</span>
+<span class="c1">#   INCLUDE kind_&quot;some_Text&quot;</span>
+<span class="c1">#   INCLUDE kind_&#39;some_Text&quot;</span>
+<span class="c1">#</span>
+<span class="c1">#   where some_Text can include any alphanumeric and/or special character</span>
+<span class="c1">#   as defined by the Fortran 2003 standard.</span>
+<span class="c1">#</span>
+<span class="c1">#   Limitations:</span>
+<span class="c1">#</span>
+<span class="c1">#   --  The Fortran standard dictates that a &quot; or &#39; in the INCLUDE&#39;d</span>
+<span class="c1">#       string must be represented as a &quot;&quot; or &#39;&#39;, if the quotes that wrap</span>
+<span class="c1">#       the entire string are either a &#39; or &quot;, respectively.   While the</span>
+<span class="c1">#       regular expression below can detect the &#39; or &quot; characters just fine,</span>
+<span class="c1">#       the scanning logic, presently is unable to detect them and reduce</span>
+<span class="c1">#       them to a single instance.  This probably isn&#39;t an issue since,</span>
+<span class="c1">#       in practice, &#39; or &quot; are not generally used in filenames.</span>
+<span class="c1">#</span>
+<span class="c1">#   --  This regex will not properly deal with multiple INCLUDE statements</span>
+<span class="c1">#       when the entire line has been commented out, ala</span>
+<span class="c1">#</span>
+<span class="c1">#           ! INCLUDE &#39;some_file&#39; ; INCLUDE &#39;some_file&#39;</span>
+<span class="c1">#</span>
+<span class="c1">#       In such cases, it will properly ignore the first INCLUDE file,</span>
+<span class="c1">#       but will actually still pick up the second.  Interestingly enough,</span>
+<span class="c1">#       the regex will properly deal with these cases:</span>
+<span class="c1">#</span>
+<span class="c1">#             INCLUDE &#39;some_file&#39;</span>
+<span class="c1">#             INCLUDE &#39;some_file&#39; !; INCLUDE &#39;some_file&#39;</span>
+<span class="c1">#</span>
+<span class="c1">#       To get around the above limitation, the FORTRAN programmer could</span>
+<span class="c1">#       simply comment each INCLUDE statement separately, like this</span>
+<span class="c1">#</span>
+<span class="c1">#           ! INCLUDE &#39;some_file&#39; !; INCLUDE &#39;some_file&#39;</span>
+<span class="c1">#</span>
+<span class="c1">#       The way I see it, the only way to get around this limitation would</span>
+<span class="c1">#       be to modify the scanning logic to replace the calls to re.findall</span>
+<span class="c1">#       with a custom loop that processes each line separately, throwing</span>
+<span class="c1">#       away fully commented out lines before attempting to match against</span>
+<span class="c1">#       the INCLUDE syntax.</span>
+<span class="c1">#</span>
+<span class="c1">#   Here is a breakdown of the regex:</span>
+<span class="c1">#</span>
+<span class="c1">#   (?i)               : regex is case insensitive</span>
+<span class="c1">#   (?:                : begin a non-saving group that matches the following:</span>
+<span class="c1">#      ^               :    either the start of the line</span>
+<span class="c1">#      |               :                or</span>
+<span class="c1">#      [&#39;&quot;&gt;]\s*;       :    a semicolon that follows a single quote,</span>
+<span class="c1">#                           double quote or greater than symbol (with any</span>
+<span class="c1">#                           amount of whitespace in between).  This will</span>
+<span class="c1">#                           allow the regex to match multiple INCLUDE</span>
+<span class="c1">#                           statements per line (although it also requires</span>
+<span class="c1">#                           the positive lookahead assertion that is</span>
+<span class="c1">#                           used below).  It will even properly deal with</span>
+<span class="c1">#                           (i.e. ignore) cases in which the additional</span>
+<span class="c1">#                           INCLUDES are part of an in-line comment, ala</span>
+<span class="c1">#                                           &quot;  INCLUDE &#39;someFile&#39; ! ; INCLUDE &#39;someFile2&#39; &quot;</span>
+<span class="c1">#   )                  : end of non-saving group</span>
+<span class="c1">#   \s*                : any amount of white space</span>
+<span class="c1">#   INCLUDE            : match the string INCLUDE, case insensitive</span>
+<span class="c1">#   \s+                : match one or more white space characters</span>
+<span class="c1">#   (?\w+_)?           : match the optional &quot;kind-param _&quot; prefix allowed by the standard</span>
+<span class="c1">#   [&lt;&quot;&#39;]              : match the include delimiter - an apostrophe, double quote, or less than symbol</span>
+<span class="c1">#   (.+?)              : match one or more characters that make up</span>
+<span class="c1">#                        the included path and file name and save it</span>
+<span class="c1">#                        in a group.  The Fortran standard allows for</span>
+<span class="c1">#                        any non-control character to be used.  The dot</span>
+<span class="c1">#                        operator will pick up any character, including</span>
+<span class="c1">#                        control codes, but I can&#39;t conceive of anyone</span>
+<span class="c1">#                        putting control codes in their file names.</span>
+<span class="c1">#                        The question mark indicates it is non-greedy so</span>
+<span class="c1">#                        that regex will match only up to the next quote,</span>
+<span class="c1">#                        double quote, or greater than symbol</span>
+<span class="c1">#   (?=[&quot;&#39;&gt;])          : positive lookahead assertion to match the include</span>
+<span class="c1">#                        delimiter - an apostrophe, double quote, or</span>
+<span class="c1">#                        greater than symbol.  This level of complexity</span>
+<span class="c1">#                        is required so that the include delimiter is</span>
+<span class="c1">#                        not consumed by the match, thus allowing the</span>
+<span class="c1">#                        sub-regex discussed above to uniquely match a</span>
+<span class="c1">#                        set of semicolon-separated INCLUDE statements</span>
+<span class="c1">#                        (as allowed by the F2003 standard)</span>
+
+    <span class="n">include_regex</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;&quot;&quot;(?i)(?:^|[&#39;&quot;&gt;]\s*;)\s*INCLUDE\s+(?:\w+_)?[&lt;&quot;&#39;](.+?)(?=[&quot;&#39;&gt;])&quot;&quot;&quot;</span>
+
+<span class="c1">#   The MODULE statement regex finds module definitions by matching</span>
+<span class="c1">#   the following:</span>
+<span class="c1">#</span>
+<span class="c1">#   MODULE module_name</span>
+<span class="c1">#</span>
+<span class="c1">#   but *not* the following:</span>
+<span class="c1">#</span>
+<span class="c1">#   MODULE PROCEDURE procedure_name</span>
+<span class="c1">#   MODULE SUBROUTINE subroutine_name</span>
+<span class="c1">#   MODULE FUNCTION function_name</span>
+<span class="c1">#   MODULE PURE SUBROUTINE|FUNCTION subroutine_name|function_name</span>
+<span class="c1">#   MODULE ELEMENTAL SUBROUTINE|FUNCTION subroutine_name|function_name</span>
+<span class="c1">#</span>
+<span class="c1">#   Here is a breakdown of the regex:</span>
+<span class="c1">#</span>
+<span class="c1">#   (?i)                               : regex is case insensitive</span>
+<span class="c1">#   ^\s*                               : any amount of white space</span>
+<span class="c1">#   MODULE                             : match the string MODULE, case</span>
+<span class="c1">#                                        insensitive</span>
+<span class="c1">#   \s+                                : match one or more white space</span>
+<span class="c1">#                                        characters</span>
+<span class="c1">#   (?!PROCEDURE|SUBROUTINE|FUNCTION|PURE|ELEMENTAL)</span>
+<span class="c1">#                                      : but *don&#39;t* match if the next word</span>
+<span class="c1">#                                        matches PROCEDURE, SUBROUTINE,</span>
+<span class="c1">#                                        FUNCTION, PURE or ELEMENTAL (negative</span>
+<span class="c1">#                                        lookahead assertion), case insensitive</span>
+<span class="c1">#   (\w+)                              : match one or more alphanumeric</span>
+<span class="c1">#                                        characters that make up the defined</span>
+<span class="c1">#                                        module name and save it in a group</span>
+
+    <span class="n">def_regex</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;&quot;&quot;(?i)^\s*MODULE\s+(?!PROCEDURE|SUBROUTINE|FUNCTION|PURE|ELEMENTAL)(\w+)&quot;&quot;&quot;</span>
+
+    <span class="n">scanner</span> <span class="o">=</span> <span class="n">F90Scanner</span><span class="p">(</span><span class="s2">&quot;FortranScan&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;$FORTRANSUFFIXES&quot;</span><span class="p">,</span>
+                         <span class="n">path_variable</span><span class="p">,</span>
+                         <span class="n">use_regex</span><span class="p">,</span>
+                         <span class="n">include_regex</span><span class="p">,</span>
+                         <span class="n">def_regex</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">scanner</span></div>
+
+
+<span class="c1"># Local Variables:</span>
+<span class="c1"># tab-width:4</span>
+<span class="c1"># indent-tabs-mode:nil</span>
+<span class="c1"># End:</span>
+<span class="c1"># vim: set expandtab tabstop=4 shiftwidth=4:</span>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SCons Project Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022, SCons Project.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

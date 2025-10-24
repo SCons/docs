@@ -1,0 +1,404 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Environments</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 1.3.1"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="The AlwaysBuild Function"
+HREF="x1340.html"><LINK
+REL="NEXT"
+TITLE="Construction Environments"
+HREF="x1420.html"></HEAD
+><BODY
+CLASS="chapter"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 1.3.1</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x1340.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x1420.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="chapter"
+><H1
+><A
+NAME="chap-environments"
+></A
+>Chapter 7. Environments</H1
+><P
+>&#13;
+  An <TT
+CLASS="literal"
+>environment</TT
+>
+  is a collection of values that
+  can affect how a program executes.
+  <SPAN
+CLASS="application"
+>SCons</SPAN
+> distinguishes between three
+  different types of environments
+  that can affect the behavior of <SPAN
+CLASS="application"
+>SCons</SPAN
+> itself
+  (subject to the configuration in the <TT
+CLASS="filename"
+>SConscript</TT
+> files),
+  as well as the compilers and other tools it executes:
+
+  </P
+><P
+></P
+><DIV
+CLASS="variablelist"
+><DL
+><DT
+>External Environment</DT
+><DD
+><P
+>&#13;
+    The <TT
+CLASS="literal"
+>external environment</TT
+>
+    is the set of variables in the user's environment
+    at the time the user runs <SPAN
+CLASS="application"
+>SCons</SPAN
+>.
+    These variables are available within the <TT
+CLASS="filename"
+>SConscript</TT
+> files
+    through the Python <TT
+CLASS="literal"
+>os.environ</TT
+> dictionary.
+    See <A
+HREF="c1361.html#sect-external-environments"
+>Section 7.1</A
+>, below.
+
+    </P
+></DD
+><DT
+><TT
+CLASS="literal"
+>Construction Environment</TT
+></DT
+><DD
+><P
+>&#13;
+    A <TT
+CLASS="literal"
+>construction environment</TT
+>
+    is a distinct object creating within
+    a <TT
+CLASS="filename"
+>SConscript</TT
+> file and
+    and which contains values that
+    affect how <SPAN
+CLASS="application"
+>SCons</SPAN
+> decides
+    what action to use to build a target,
+    and even to define which targets
+    should be built from which sources.
+    One of the most powerful features of <SPAN
+CLASS="application"
+>SCons</SPAN
+>
+    is the ability to create multiple <TT
+CLASS="literal"
+>construction environments</TT
+>,
+    including the ability to clone a new, customized
+    <TT
+CLASS="literal"
+>construction environment</TT
+> from an existing <TT
+CLASS="literal"
+>construction environment</TT
+>.
+    See <A
+HREF="x1420.html"
+>Section 7.2</A
+>, below.
+
+    </P
+></DD
+><DT
+>Execution Environment</DT
+><DD
+><P
+>&#13;
+    An <TT
+CLASS="literal"
+>execution environment</TT
+>
+    is the values that <SPAN
+CLASS="application"
+>SCons</SPAN
+> sets
+    when executing an external
+    command (such as a compiler or linker)
+    to build one or more targets.
+    Note that this is not the same as
+    the <TT
+CLASS="literal"
+>external environment</TT
+>
+    (see above).
+    See <A
+HREF="x1701.html"
+>Section 7.3</A
+>, below.
+
+    </P
+></DD
+></DL
+></DIV
+><P
+>&#13;
+  Unlike <SPAN
+CLASS="application"
+>Make</SPAN
+>,  <SPAN
+CLASS="application"
+>SCons</SPAN
+> does not automatically
+  copy or import values between different environments
+  (with the exception of explicit clones of <TT
+CLASS="literal"
+>construction environments</TT
+>,
+  which inherit values from their parent).
+  This is a deliberate design choice
+  to make sure that builds are,
+  by default, repeatable regardless of
+  the values in the user's external environment.
+  This avoids a whole class of problems with builds
+  where a developer's local build works
+  because a custom variable setting
+  causes a different compiler or build option to be used,
+  but the checked-in change breaks the official build
+  because it uses different environment variable settings.
+
+  </P
+><P
+>&#13;
+  Note that the <TT
+CLASS="filename"
+>SConscript</TT
+> writer can
+  easily arrange for variables to be
+  copied or imported between environments,
+  and this is often very useful
+  (or even downright necessary)
+  to make it easy for developers
+  to customize the build in appropriate ways.
+  The point is <SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>not</I
+></SPAN
+>
+  that copying variables between different environments
+  is evil and must always be avoided.
+  Instead, it should be up to the
+  implementer of the build system
+  to make conscious choices
+  about how and when to import
+  a variable from one environment to another,
+  making informed decisions about
+  striking the right balance
+  between making the build
+  repeatable on the one hand
+  and convenient to use on the other.
+
+  </P
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="sect-external-environments"
+>7.1. Using Values From the External Environment</A
+></H1
+><P
+>&#13;
+  The <TT
+CLASS="literal"
+>external environment</TT
+>
+  variable settings that
+  the user has in force
+  when executing <SPAN
+CLASS="application"
+>SCons</SPAN
+>
+  are available through the normal Python
+  <CODE
+CLASS="envar"
+>os.environ</CODE
+>
+  dictionary.
+  This means that you must add an
+  <TT
+CLASS="literal"
+>import os</TT
+> statement
+  to any <TT
+CLASS="filename"
+>SConscript</TT
+> file
+  in which you want to use
+  values from the user's external environment.
+
+  </P
+><PRE
+CLASS="programlisting"
+>&#13;     import os
+   </PRE
+><P
+>&#13;
+  More usefully, you can use the
+  <CODE
+CLASS="envar"
+>os.environ</CODE
+>
+  dictionary in your <TT
+CLASS="filename"
+>SConscript</TT
+>
+  files to initialize <TT
+CLASS="literal"
+>construction environments</TT
+>
+  with values from the user's external environment.
+  See the next section,
+  <A
+HREF="x1420.html"
+>Section 7.2</A
+>,
+  for information on how to do this.
+
+  </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x1340.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x1420.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>The <CODE
+CLASS="function"
+>AlwaysBuild</CODE
+> Function</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Construction Environments</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

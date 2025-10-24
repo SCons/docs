@@ -1,0 +1,3628 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Appendix D. Functions and Environment Methods</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 2.3.3"><link rel="up" href="index.html" title="SCons 2.3.3"><link rel="prev" href="apc.html" title="Appendix C. Tools"><link rel="next" href="ape.html" title="Appendix E. Handling Common Tasks"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Appendix D. Functions and Environment Methods</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="apc.html">Prev</a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="ape.html">Next</a></td></tr></table><hr></div><div class="appendix" title="Appendix D. Functions and Environment Methods"><div class="titlepage"><div><div><h2 class="title"><a name="app-functions"></a>Appendix D. Functions and Environment Methods</h2></div></div></div><p>
+
+This appendix contains descriptions of all of the
+function and construction environment methods
+in this version of <span class="application">SCons</span>
+
+</p><div class="variablelist"><dl><dt><a name="f-Action"></a><span class="term">
+      <code class="literal">Action(action, [cmd/str/fun, [var, ...]] [option=value, ...])</code>
+    , </span><span class="term">
+      <code class="literal">env.Action(action, [cmd/str/fun, [var, ...]] [option=value, ...])</code>
+    </span></dt><dd><p>
+Creates an Action object for
+the specified
+<code class="varname">action</code>.
+See the section "Action Objects,"
+below, for a complete explanation of the arguments and behavior.
+</p><p>
+Note that the
+<code class="function">env.Action</code>()
+form of the invocation will expand
+construction variables in any argument strings,
+including the
+<code class="varname">action</code>
+argument, at the time it is called
+using the construction variables in the
+<code class="varname">env</code>
+construction environment through which
+<code class="function">env.Action</code>()
+was called.
+The
+<code class="function">Action</code>()
+form delays all variable expansion
+until the Action object is actually used.
+</p></dd><dt><a name="f-AddMethod"></a><span class="term">
+      <code class="literal">AddMethod(object, function, [name])</code>
+    , </span><span class="term">
+      <code class="literal">env.AddMethod(function, [name])</code>
+    </span></dt><dd><p>
+When called with the
+<code class="function">AddMethod</code>()
+form,
+adds the specified
+<code class="varname">function</code>
+to the specified
+<code class="varname">object</code>
+as the specified method
+<code class="varname">name</code>.
+When called with the
+<code class="function">env.AddMethod</code>()
+form,
+adds the specified
+<code class="varname">function</code>
+to the construction environment
+<code class="varname">env</code>
+as the specified method
+<code class="varname">name</code>.
+In both cases, if
+<code class="varname">name</code>
+is omitted or
+<code class="literal">None</code>,
+the name of the
+specified
+<code class="varname">function</code>
+itself is used for the method name.
+</p><p>
+Examples:
+</p><pre class="screen">
+# Note that the first argument to the function to
+# be attached as a method must be the object through
+# which the method will be called; the Python
+# convention is to call it 'self'.
+def my_method(self, arg):
+    print "my_method() got", arg
+
+# Use the global AddMethod() function to add a method
+# to the Environment class.  This
+AddMethod(Environment, my_method)
+env = Environment()
+env.my_method('arg')
+
+# Add the function as a method, using the function
+# name for the method call.
+env = Environment()
+env.AddMethod(my_method, 'other_method_name')
+env.other_method_name('another arg')
+</pre></dd><dt><a name="f-AddOption"></a><span class="term">
+      <code class="literal">AddOption(arguments)</code>
+    </span></dt><dd><p>
+This function adds a new command-line option to be recognized.
+The specified
+<code class="varname">arguments</code>
+are the same as supported by the standard Python
+<code class="function">optparse.add_option</code>()
+method (with a few additional capabilities noted below);
+see the documentation for
+<code class="literal">optparse</code>
+for a thorough discussion of its option-processing capabities.
+</p><p>
+In addition to the arguments and values supported by the
+<code class="function">optparse.add_option</code>()
+method,
+the SCons
+<code class="function">AddOption</code>
+function allows you to set the
+<code class="literal">nargs</code>
+keyword value to
+<code class="literal">'?'</code>
+(a string with just the question mark)
+to indicate that the specified long option(s) take(s) an
+<span class="emphasis"><em>optional</em></span>
+argument.
+When
+<code class="literal">nargs = '?'</code>
+is passed to the
+<code class="function">AddOption</code>
+function, the
+<code class="literal">const</code>
+keyword argument
+may be used to supply the "default"
+value that should be used when the
+option is specified on the command line
+without an explicit argument.
+</p><p>
+If no
+<code class="literal">default=</code>
+keyword argument is supplied when calling
+<code class="function">AddOption</code>,
+the option will have a default value of
+<code class="literal">None</code>.
+</p><p>
+Once a new command-line option has been added with
+<code class="function">AddOption</code>,
+the option value may be accessed using
+<code class="function">GetOption</code>
+or
+<code class="function">env.GetOption</code>().
+The value may also be set, using
+<code class="function">SetOption</code>
+or
+<code class="function">env.SetOption</code>(),
+if conditions in a
+<code class="filename">SConscript</code>
+require overriding any default value.
+Note, however, that a
+value specified on the command line will
+<span class="emphasis"><em>always</em></span>
+override a value set by any SConscript file.
+</p><p>
+Any specified
+<code class="literal">help=</code>
+strings for the new option(s)
+will be displayed by the
+<code class="option">-H</code>
+or
+<code class="option">-h</code>
+options
+(the latter only if no other help text is
+specified in the SConscript files).
+The help text for the local options specified by
+<code class="function">AddOption</code>
+will appear below the SCons options themselves,
+under a separate
+<code class="literal">Local Options</code>
+heading.
+The options will appear in the help text
+in the order in which the
+<code class="function">AddOption</code>
+calls occur.
+</p><p>
+Example:
+</p><pre class="screen">
+AddOption('--prefix',
+          dest='prefix',
+          nargs=1, type='string',
+          action='store',
+          metavar='DIR',
+          help='installation prefix')
+env = Environment(PREFIX = GetOption('prefix'))
+</pre></dd><dt><a name="f-AddPostAction"></a><span class="term">
+      <code class="literal">AddPostAction(target, action)</code>
+    , </span><span class="term">
+      <code class="literal">env.AddPostAction(target, action)</code>
+    </span></dt><dd><p>
+Arranges for the specified
+<code class="varname">action</code>
+to be performed
+after the specified
+<code class="varname">target</code>
+has been built.
+The specified action(s) may be
+an Action object, or anything that
+can be converted into an Action object
+(see below).
+</p><p>
+When multiple targets are supplied,
+the action may be called multiple times,
+once after each action that generates
+one or more targets in the list.
+</p></dd><dt><a name="f-AddPreAction"></a><span class="term">
+      <code class="literal">AddPreAction(target, action)</code>
+    , </span><span class="term">
+      <code class="literal">env.AddPreAction(target, action)</code>
+    </span></dt><dd><p>
+Arranges for the specified
+<code class="varname">action</code>
+to be performed
+before the specified
+<code class="varname">target</code>
+is built.
+The specified action(s) may be
+an Action object, or anything that
+can be converted into an Action object
+(see below).
+</p><p>
+When multiple targets are specified,
+the action(s) may be called multiple times,
+once before each action that generates
+one or more targets in the list.
+</p><p>
+Note that if any of the targets are built in multiple steps,
+the action will be invoked just
+before the "final" action that specifically
+generates the specified target(s).
+For example, when building an executable program
+from a specified source
+<code class="filename">.c</code>
+file via an intermediate object file:
+</p><pre class="screen">
+foo = Program('foo.c')
+AddPreAction(foo, 'pre_action')
+</pre><p>
+The specified
+<code class="literal">pre_action</code>
+would be executed before
+<code class="filename">scons</code>
+calls the link command that actually
+generates the executable program binary
+<code class="filename">foo</code>,
+not before compiling the
+<code class="filename">foo.c</code>
+file into an object file.
+</p></dd><dt><a name="f-Alias"></a><span class="term">
+      <code class="literal">Alias(alias, [targets, [action]])</code>
+    , </span><span class="term">
+      <code class="literal">env.Alias(alias, [targets, [action]])</code>
+    </span></dt><dd><p>
+Creates one or more phony targets that
+expand to one or more other targets.
+An optional
+<code class="varname">action</code>
+(command)
+or list of actions
+can be specified that will be executed
+whenever the any of the alias targets are out-of-date.
+Returns the Node object representing the alias,
+which exists outside of any file system.
+This Node object, or the alias name,
+may be used as a dependency of any other target,
+including another alias.
+<code class="function">Alias</code>
+can be called multiple times for the same
+alias to add additional targets to the alias,
+or additional actions to the list for this alias.
+</p><p>
+Examples:
+</p><pre class="screen">
+Alias('install')
+Alias('install', '/usr/bin')
+Alias(['install', 'install-lib'], '/usr/local/lib')
+
+env.Alias('install', ['/usr/local/bin', '/usr/local/lib'])
+env.Alias('install', ['/usr/local/man'])
+
+env.Alias('update', ['file1', 'file2'], "update_database $SOURCES")
+</pre></dd><dt><a name="f-AllowSubstExceptions"></a><span class="term">
+      <code class="literal">AllowSubstExceptions([exception, ...])</code>
+    </span></dt><dd><p>
+Specifies the exceptions that will be allowed
+when expanding construction variables.
+By default,
+any construction variable expansions that generate a
+<code class="literal">NameError</code>
+or
+<code class="literal">IndexError</code>
+exception will expand to a
+<code class="literal">''</code>
+(a null string) and not cause scons to fail.
+All exceptions not in the specified list
+will generate an error message
+and terminate processing.
+</p><p>
+If
+<code class="function">AllowSubstExceptions</code>
+is called multiple times,
+each call completely overwrites the previous list
+of allowed exceptions.
+</p><p>
+Example:
+</p><pre class="screen">
+# Requires that all construction variable names exist.
+# (You may wish to do this if you want to enforce strictly
+# that all construction variables must be defined before use.)
+AllowSubstExceptions()
+
+# Also allow a string containing a zero-division expansion
+# like '${1 / 0}' to evalute to ''.
+AllowSubstExceptions(IndexError, NameError, ZeroDivisionError)
+</pre></dd><dt><a name="f-AlwaysBuild"></a><span class="term">
+      <code class="literal">AlwaysBuild(target, ...)</code>
+    , </span><span class="term">
+      <code class="literal">env.AlwaysBuild(target, ...)</code>
+    </span></dt><dd><p>
+Marks each given
+<code class="varname">target</code>
+so that it is always assumed to be out of date,
+and will always be rebuilt if needed.
+Note, however, that
+<code class="function">AlwaysBuild</code>
+does not add its target(s) to the default target list,
+so the targets will only be built
+if they are specified on the command line,
+or are a dependent of a target specified on the command line--but
+they will
+<span class="emphasis"><em>always</em></span>
+be built if so specified.
+Multiple targets can be passed in to a single call to
+<code class="function">AlwaysBuild</code>.
+</p></dd><dt><a name="f-Append"></a><span class="term">
+      <code class="literal">env.Append(key=val, [...])</code>
+    </span></dt><dd><p>
+Appends the specified keyword arguments
+to the end of construction variables in the environment.
+If the Environment does not have
+the specified construction variable,
+it is simply added to the environment.
+If the values of the construction variable
+and the keyword argument are the same type,
+then the two values will be simply added together.
+Otherwise, the construction variable
+and the value of the keyword argument
+are both coerced to lists,
+and the lists are added together.
+(See also the Prepend method, below.)
+</p><p>
+Example:
+</p><pre class="screen">
+env.Append(CCFLAGS = ' -g', FOO = ['foo.yyy'])
+</pre></dd><dt><a name="f-AppendENVPath"></a><span class="term">
+      <code class="literal">env.AppendENVPath(name, newpath, [envname, sep, delete_existing])</code>
+    </span></dt><dd><p>
+This appends new path elements to the given path in the
+specified external environment
+(<code class="literal">ENV</code>
+by default).
+This will only add
+any particular path once (leaving the last one it encounters and
+ignoring the rest, to preserve path order),
+and to help assure this,
+will normalize all paths (using
+<code class="function">os.path.normpath</code>
+and
+<code class="function">os.path.normcase</code>).
+This can also handle the
+case where the given old path variable is a list instead of a
+string, in which case a list will be returned instead of a string.
+</p><p>
+If 
+<code class="varname">delete_existing</code>
+is 0, then adding a path that already exists
+will not move it to the end; it will stay where it is in the list.
+</p><p>
+Example:
+</p><pre class="screen">
+print 'before:',env['ENV']['INCLUDE']
+include_path = '/foo/bar:/foo'
+env.AppendENVPath('INCLUDE', include_path)
+print 'after:',env['ENV']['INCLUDE']
+
+yields:
+before: /foo:/biz
+after: /biz:/foo/bar:/foo
+</pre></dd><dt><a name="f-AppendUnique"></a><span class="term">
+      <code class="literal">env.AppendUnique(key=val, [...], delete_existing=0)</code>
+    </span></dt><dd><p>
+Appends the specified keyword arguments
+to the end of construction variables in the environment.
+If the Environment does not have
+the specified construction variable,
+it is simply added to the environment.
+If the construction variable being appended to is a list,
+then any value(s) that already exist in the
+construction variable will
+<span class="emphasis"><em>not</em></span>
+be added again to the list.
+However, if delete_existing is 1, 
+existing matching values are removed first, so
+existing values in the arg list move to the end of the list.
+</p><p>
+Example:
+</p><pre class="screen">
+env.AppendUnique(CCFLAGS = '-g', FOO = ['foo.yyy'])
+</pre></dd><dt><a name="f-BitKeeper"></a><span class="term">
+      <code class="literal">env.BitKeeper()</code>
+    </span></dt><dd><p>
+A factory function that
+returns a Builder object
+to be used to fetch source files
+using BitKeeper.
+The returned Builder
+is intended to be passed to the
+<code class="function">SourceCode</code>
+function.
+</p><p>
+This function is deprecated.  For details, see the entry for the
+<code class="function">SourceCode</code>
+function.
+</p><p>
+Example:
+</p><pre class="screen">
+env.SourceCode('.', env.BitKeeper())
+</pre></dd><dt><a name="f-BuildDir"></a><span class="term">
+      <code class="literal">BuildDir(build_dir, src_dir, [duplicate])</code>
+    , </span><span class="term">
+      <code class="literal">env.BuildDir(build_dir, src_dir, [duplicate])</code>
+    </span></dt><dd><p>
+Deprecated synonyms for
+<code class="function">VariantDir</code>
+and
+<code class="function">env.VariantDir</code>().
+The
+<code class="varname">build_dir</code>
+argument becomes the
+<code class="varname">variant_dir</code>
+argument of
+<code class="function">VariantDir</code>
+or
+<code class="function">env.VariantDir</code>().
+</p></dd><dt><a name="f-Builder"></a><span class="term">
+      <code class="literal">Builder(action, [arguments])</code>
+    , </span><span class="term">
+      <code class="literal">env.Builder(action, [arguments])</code>
+    </span></dt><dd><p>
+Creates a Builder object for
+the specified
+<code class="varname">action</code>.
+See the section "Builder Objects,"
+below, for a complete explanation of the arguments and behavior.
+</p><p>
+Note that the
+<code class="function">env.Builder</code>()
+form of the invocation will expand
+construction variables in any arguments strings,
+including the
+<code class="varname">action</code>
+argument,
+at the time it is called
+using the construction variables in the
+<code class="varname">env</code>
+construction environment through which
+<code class="function">env.Builder</code>()
+was called.
+The
+<code class="function">Builder</code>
+form delays all variable expansion
+until after the Builder object is actually called.
+</p></dd><dt><a name="f-CacheDir"></a><span class="term">
+      <code class="literal">CacheDir(cache_dir)</code>
+    , </span><span class="term">
+      <code class="literal">env.CacheDir(cache_dir)</code>
+    </span></dt><dd><p>
+Specifies that
+<code class="filename">scons</code>
+will maintain a cache of derived files in
+<code class="varname">cache_dir</code>.
+The derived files in the cache will be shared
+among all the builds using the same
+<code class="function">CacheDir</code>
+call.
+Specifying a
+<code class="varname">cache_dir</code>
+of
+<code class="literal">None</code>
+disables derived file caching.
+</p><p>
+Calling
+<code class="function">env.CacheDir</code>()
+will only affect targets built
+through the specified construction environment.
+Calling
+<code class="function">CacheDir</code>
+sets a global default
+that will be used by all targets built
+through construction environments
+that do
+<span class="emphasis"><em>not</em></span>
+have an
+<code class="function">env.CacheDir</code>()
+specified.
+</p><p>
+When a
+<code class="function">CacheDir</code>()
+is being used and
+<code class="filename">scons</code>
+finds a derived file that needs to be rebuilt,
+it will first look in the cache to see if a
+derived file has already been built
+from identical input files and an identical build action
+(as incorporated into the MD5 build signature).
+If so,
+<code class="filename">scons</code>
+will retrieve the file from the cache.
+If the derived file is not present in the cache,
+<code class="filename">scons</code>
+will rebuild it and
+then place a copy of the built file in the cache
+(identified by its MD5 build signature),
+so that it may be retrieved by other
+builds that need to build the same derived file
+from identical inputs.
+</p><p>
+Use of a specified
+<code class="function">CacheDir</code>
+may be disabled for any invocation
+by using the
+<code class="option">--cache-disable</code>
+option.
+</p><p>
+If the
+<code class="option">--cache-force</code>
+option is used,
+<code class="filename">scons</code>
+will place a copy of
+<span class="emphasis"><em>all</em></span>
+derived files in the cache,
+even if they already existed
+and were not built by this invocation.
+This is useful to populate a cache
+the first time
+<code class="function">CacheDir</code>
+is added to a build,
+or after using the
+<code class="option">--cache-disable</code>
+option.
+</p><p>
+When using
+<code class="function">CacheDir</code>,
+<code class="filename">scons</code>
+will report,
+"Retrieved `file' from cache,"
+unless the
+<code class="option">--cache-show</code>
+option is being used.
+When the
+<code class="option">--cache-show</code>
+option is used,
+<code class="filename">scons</code>
+will print the action that
+<span class="emphasis"><em>would</em></span>
+have been used to build the file,
+without any indication that
+the file was actually retrieved from the cache.
+This is useful to generate build logs
+that are equivalent regardless of whether
+a given derived file has been built in-place
+or retrieved from the cache.
+</p><p>
+The
+<a class="link" href="apd.html#f-NoCache"><code class="function">NoCache</code></a>
+method can be used to disable caching of specific files.  This can be
+useful if inputs and/or outputs of some tool are impossible to
+predict or prohibitively large.
+</p></dd><dt><a name="f-Clean"></a><span class="term">
+      <code class="literal">Clean(targets, files_or_dirs)</code>
+    , </span><span class="term">
+      <code class="literal">env.Clean(targets, files_or_dirs)</code>
+    </span></dt><dd><p>
+This specifies a list of files or directories which should be removed
+whenever the targets are specified with the
+<code class="option">-c</code>
+command line option.
+The specified targets may be a list
+or an individual target.
+Multiple calls to
+<code class="function">Clean</code>
+are legal,
+and create new targets or add files and directories to the
+clean list for the specified targets.
+</p><p>
+Multiple files or directories should be specified
+either as separate arguments to the
+<code class="function">Clean</code>
+method, or as a list.
+<code class="function">Clean</code>
+will also accept the return value of any of the construction environment
+Builder methods.
+Examples:
+</p><p>
+The related
+<a class="link" href="apd.html#f-NoClean"><code class="function">NoClean</code></a>
+function overrides calling
+<code class="function">Clean</code>
+for the same target,
+and any targets passed to both functions will
+<span class="emphasis"><em>not</em></span>
+be removed by the
+<code class="option">-c</code>
+option.
+</p><p>
+Examples:
+</p><pre class="screen">
+Clean('foo', ['bar', 'baz'])
+Clean('dist', env.Program('hello', 'hello.c'))
+Clean(['foo', 'bar'], 'something_else_to_clean')
+</pre><p>
+In this example,
+installing the project creates a subdirectory for the documentation.
+This statement causes the subdirectory to be removed
+if the project is deinstalled.
+</p><pre class="screen">
+Clean(docdir, os.path.join(docdir, projectname))
+</pre></dd><dt><a name="f-Clone"></a><span class="term">
+      <code class="literal">env.Clone([key=val, ...])</code>
+    </span></dt><dd><p>
+Returns a separate copy of a construction environment.
+If there are any keyword arguments specified,
+they are added to the returned copy,
+overwriting any existing values
+for the keywords.
+</p><p>
+Example:
+</p><pre class="screen">
+env2 = env.Clone()
+env3 = env.Clone(CCFLAGS = '-g')
+</pre><p>
+Additionally, a list of tools and a toolpath may be specified, as in
+the Environment constructor:
+</p><pre class="screen">
+def MyTool(env): env['FOO'] = 'bar'
+env4 = env.Clone(tools = ['msvc', MyTool])
+</pre><p>
+The
+<code class="varname">parse_flags</code>
+keyword argument is also recognized:
+</p><pre class="screen">
+# create an environment for compiling programs that use wxWidgets
+wx_env = env.Clone(parse_flags = '!wx-config --cflags --cxxflags')
+</pre></dd><dt><a name="f-Command"></a><span class="term">
+      <code class="literal">Command(target, source, action, [key=val, ...])</code>
+    , </span><span class="term">
+      <code class="literal">env.Command(target, source, action, [key=val, ...])</code>
+    </span></dt><dd><p>
+Executes a specific action
+(or list of actions)
+to build a target file or files.
+This is more convenient
+than defining a separate Builder object
+for a single special-case build.
+</p><p>
+As a special case, the
+<code class="varname">source_scanner</code>
+keyword argument can
+be used to specify
+a Scanner object
+that will be used to scan the sources.
+(The global
+<code class="literal">DirScanner</code>
+object can be used
+if any of the sources will be directories
+that must be scanned on-disk for
+changes to files that aren't
+already specified in other Builder of function calls.)
+</p><p>
+Any other keyword arguments specified override any
+same-named existing construction variables.
+</p><p>
+An action can be an external command,
+specified as a string,
+or a callable Python object;
+see "Action Objects," below,
+for more complete information.
+Also note that a string specifying an external command
+may be preceded by an
+<code class="literal">@</code>
+(at-sign)
+to suppress printing the command in question,
+or by a
+<code class="literal">-</code>
+(hyphen)
+to ignore the exit status of the external command.
+</p><p>
+Examples:
+</p><pre class="screen">
+env.Command('foo.out', 'foo.in',
+            "$FOO_BUILD &lt; $SOURCES &gt; $TARGET")
+
+env.Command('bar.out', 'bar.in',
+            ["rm -f $TARGET",
+             "$BAR_BUILD &lt; $SOURCES &gt; $TARGET"],
+            ENV = {'PATH' : '/usr/local/bin/'})
+
+def rename(env, target, source):
+    import os
+    os.rename('.tmp', str(target[0]))
+
+env.Command('baz.out', 'baz.in',
+            ["$BAZ_BUILD &lt; $SOURCES &gt; .tmp",
+	     rename ])
+</pre><p>
+Note that the
+<code class="function">Command</code>
+function will usually assume, by default,
+that the specified targets and/or sources are Files,
+if no other part of the configuration
+identifies what type of entry it is.
+If necessary, you can explicitly specify
+that targets or source nodes should
+be treated as directoriese
+by using the
+<a class="link" href="apd.html#f-Dir"><code class="function">Dir</code></a>
+or
+<code class="function">env.Dir</code>()
+functions.
+</p><p>
+Examples:
+</p><pre class="screen">
+env.Command('ddd.list', Dir('ddd'), 'ls -l $SOURCE &gt; $TARGET')
+
+env['DISTDIR'] = 'destination/directory'
+env.Command(env.Dir('$DISTDIR')), None, make_distdir)
+</pre><p>
+(Also note that SCons will usually
+automatically create any directory necessary to hold a target file,
+so you normally don't need to create directories by hand.)
+</p></dd><dt><a name="f-Configure"></a><span class="term">
+      <code class="literal">Configure(env, [custom_tests, conf_dir, log_file, config_h])</code>
+    , </span><span class="term">
+      <code class="literal">env.Configure([custom_tests, conf_dir, log_file, config_h])</code>
+    </span></dt><dd><p>
+Creates a Configure object for integrated
+functionality similar to GNU autoconf.
+See the section "Configure Contexts,"
+below, for a complete explanation of the arguments and behavior.
+</p></dd><dt><a name="f-Copy"></a><span class="term">
+      <code class="literal">env.Copy([key=val, ...])</code>
+    </span></dt><dd><p>
+A now-deprecated synonym for
+<code class="function">env.Clone</code>().
+</p></dd><dt><a name="f-CVS"></a><span class="term">
+      <code class="literal">env.CVS(repository, module)</code>
+    </span></dt><dd><p>
+A factory function that
+returns a Builder object
+to be used to fetch source files
+from the specified
+CVS
+<code class="varname">repository</code>.
+The returned Builder
+is intended to be passed to the
+<a class="link" href="apd.html#f-SourceCode"><code class="function">SourceCode</code></a>
+function.
+</p><p>
+This function is deprecated.  For details, see the entry for the
+<code class="function">SourceCode</code>
+function.
+</p><p>
+The optional specified
+<code class="varname">module</code>
+will be added to the beginning
+of all repository path names;
+this can be used, in essence,
+to strip initial directory names
+from the repository path names,
+so that you only have to
+replicate part of the repository
+directory hierarchy in your
+local build directory.
+</p><p>
+Examples:
+</p><pre class="screen">
+# Will fetch foo/bar/src.c
+# from /usr/local/CVSROOT/foo/bar/src.c.
+env.SourceCode('.', env.CVS('/usr/local/CVSROOT'))
+
+# Will fetch bar/src.c
+# from /usr/local/CVSROOT/foo/bar/src.c.
+env.SourceCode('.', env.CVS('/usr/local/CVSROOT', 'foo'))
+
+# Will fetch src.c
+# from /usr/local/CVSROOT/foo/bar/src.c.
+env.SourceCode('.', env.CVS('/usr/local/CVSROOT', 'foo/bar'))
+</pre></dd><dt><a name="f-Decider"></a><span class="term">
+      <code class="literal">Decider(function)</code>
+    , </span><span class="term">
+      <code class="literal">env.Decider(function)</code>
+    </span></dt><dd><p>
+Specifies that all up-to-date decisions for
+targets built through this construction environment
+will be handled by the specified
+<code class="varname">function</code>.
+The
+<code class="varname">function</code>
+can be one of the following strings
+that specify the type of decision function
+to be performed:
+</p><p>
+</p><div class="variablelist"><dl><dt><span class="term"><code class="literal">timestamp-newer</code></span></dt><dd><p>
+Specifies that a target shall be considered out of date and rebuilt
+if the dependency's timestamp is newer than the target file's timestamp.
+This is the behavior of the classic Make utility,
+and
+<code class="literal">make</code>
+can be used a synonym for
+<code class="literal">timestamp-newer</code>.
+</p></dd><dt><span class="term"><code class="literal">timestamp-match</code></span></dt><dd><p>
+Specifies that a target shall be considered out of date and rebuilt
+if the dependency's timestamp is different than the
+timestamp recorded the last time the target was built.
+This provides behavior very similar to the classic Make utility
+(in particular, files are not opened up so that their
+contents can be checksummed)
+except that the target will also be rebuilt if a
+dependency file has been restored to a version with an
+<span class="emphasis"><em>earlier</em></span>
+timestamp, such as can happen when restoring files from backup archives.
+</p></dd><dt><span class="term"><code class="literal">MD5</code></span></dt><dd><p>
+Specifies that a target shall be considered out of date and rebuilt
+if the dependency's content has changed sine the last time
+the target was built,
+as determined be performing an MD5 checksum
+on the dependency's contents
+and comparing it to the checksum recorded the
+last time the target was built.
+<code class="literal">content</code>
+can be used as a synonym for
+<code class="literal">MD5</code>.
+</p></dd><dt><span class="term"><code class="literal">MD5-timestamp</code></span></dt><dd><p>
+Specifies that a target shall be considered out of date and rebuilt
+if the dependency's content has changed sine the last time
+the target was built,
+except that dependencies with a timestamp that matches
+the last time the target was rebuilt will be
+assumed to be up-to-date and
+<span class="emphasis"><em>not</em></span>
+rebuilt.
+This provides behavior very similar
+to the
+<code class="literal">MD5</code>
+behavior of always checksumming file contents,
+with an optimization of not checking
+the contents of files whose timestamps haven't changed.
+The drawback is that SCons will
+<span class="emphasis"><em>not</em></span>
+detect if a file's content has changed
+but its timestamp is the same,
+as might happen in an automated script
+that runs a build,
+updates a file,
+and runs the build again,
+all within a single second.
+</p></dd></dl></div><p>
+</p><p>
+Examples:
+</p><pre class="screen">
+# Use exact timestamp matches by default.
+Decider('timestamp-match')
+
+# Use MD5 content signatures for any targets built
+# with the attached construction environment.
+env.Decider('content')
+</pre><p>
+In addition to the above already-available functions,
+the
+<code class="varname">function</code>
+argument may be an actual Python function
+that takes the following three arguments:
+</p><p>
+</p><div class="variablelist"><dl><dt><span class="term"><em class="parameter"><code>dependency</code></em></span></dt><dd><p>
+The Node (file) which
+should cause the
+<code class="varname">target</code>
+to be rebuilt
+if it has "changed" since the last tme
+<code class="varname">target</code>
+was built.
+</p></dd><dt><span class="term"><em class="parameter"><code>target</code></em></span></dt><dd><p>
+The Node (file) being built.
+In the normal case,
+this is what should get rebuilt
+if the
+<code class="varname">dependency</code>
+has "changed."
+</p></dd><dt><span class="term"><em class="parameter"><code>prev_ni</code></em></span></dt><dd><p>
+Stored information about the state of the
+<code class="varname">dependency</code>
+the last time the
+<code class="varname">target</code>
+was built.
+This can be consulted to match various
+file characteristics
+such as the timestamp,
+size, or content signature.
+</p></dd></dl></div><p>
+</p><p>
+The
+<code class="varname">function</code>
+should return a
+<code class="literal">True</code>
+(non-zero)
+value if the
+<code class="varname">dependency</code>
+has "changed" since the last time
+the
+<code class="varname">target</code>
+was built
+(indicating that the target
+<span class="emphasis"><em>should</em></span>
+be rebuilt),
+and
+<code class="literal">False</code>
+(zero)
+otherwise
+(indicating that the target should
+<span class="emphasis"><em>not</em></span>
+be rebuilt).
+Note that the decision can be made
+using whatever criteria are appopriate.
+Ignoring some or all of the function arguments
+is perfectly normal.
+</p><p>
+Example:
+</p><pre class="screen">
+def my_decider(dependency, target, prev_ni):
+    return not os.path.exists(str(target))
+
+env.Decider(my_decider)
+</pre></dd><dt><a name="f-Default"></a><span class="term">
+      <code class="literal">Default(targets)</code>
+    , </span><span class="term">
+      <code class="literal">env.Default(targets)</code>
+    </span></dt><dd><p>
+This specifies a list of default targets,
+which will be built by
+<code class="filename">scons</code>
+if no explicit targets are given on the command line.
+Multiple calls to
+<code class="function">Default</code>
+are legal,
+and add to the list of default targets.
+</p><p>
+Multiple targets should be specified as
+separate arguments to the
+<code class="function">Default</code>
+method, or as a list.
+<code class="function">Default</code>
+will also accept the Node returned by any
+of a construction environment's
+builder methods.
+</p><p>
+Examples:
+</p><pre class="screen">
+Default('foo', 'bar', 'baz')
+env.Default(['a', 'b', 'c'])
+hello = env.Program('hello', 'hello.c')
+env.Default(hello)
+</pre><p>
+An argument to
+<code class="function">Default</code>
+of
+<code class="literal">None</code>
+will clear all default targets.
+Later calls to
+<code class="function">Default</code>
+will add to the (now empty) default-target list
+like normal.
+</p><p>
+The current list of targets added using the
+<code class="function">Default</code>
+function or method is available in the
+<code class="literal">DEFAULT_TARGETS</code>
+list;
+see below.
+</p></dd><dt><a name="f-DefaultEnvironment"></a><span class="term">
+      <code class="literal">DefaultEnvironment([args])</code>
+    </span></dt><dd><p>
+Creates and returns a default construction environment object.
+This construction environment is used internally by SCons
+in order to execute many of the global functions in this list,
+and to fetch source files transparently
+from source code management systems.
+</p></dd><dt><a name="f-Depends"></a><span class="term">
+      <code class="literal">Depends(target, dependency)</code>
+    , </span><span class="term">
+      <code class="literal">env.Depends(target, dependency)</code>
+    </span></dt><dd><p>
+Specifies an explicit dependency;
+the
+<code class="varname">target</code>
+will be rebuilt
+whenever the
+<code class="varname">dependency</code>
+has changed.
+Both the specified
+<code class="varname">target</code>
+and
+<code class="varname">dependency</code>
+can be a string
+(usually the path name of a file or directory)
+or Node objects,
+or a list of strings or Node objects
+(such as returned by a Builder call).
+This should only be necessary
+for cases where the dependency
+is not caught by a Scanner
+for the file.
+</p><p>
+Example:
+</p><pre class="screen">
+env.Depends('foo', 'other-input-file-for-foo')
+
+mylib = env.Library('mylib.c')
+installed_lib = env.Install('lib', mylib)
+bar = env.Program('bar.c')
+
+# Arrange for the library to be copied into the installation
+# directory before trying to build the "bar" program.
+# (Note that this is for example only.  A "real" library
+# dependency would normally be configured through the $LIBS
+# and $LIBPATH variables, not using an env.Depends() call.)
+
+env.Depends(bar, installed_lib)
+</pre></dd><dt><a name="f-Dictionary"></a><span class="term">
+      <code class="literal">env.Dictionary([vars])</code>
+    </span></dt><dd><p>
+Returns a dictionary object
+containing copies of all of the
+construction variables in the environment.
+If there are any variable names specified,
+only the specified construction
+variables are returned in the dictionary.
+</p><p>
+Example:
+</p><pre class="screen">
+dict = env.Dictionary()
+cc_dict = env.Dictionary('CC', 'CCFLAGS', 'CCCOM')
+</pre></dd><dt><a name="f-Dir"></a><span class="term">
+      <code class="literal">Dir(name, [directory])</code>
+    , </span><span class="term">
+      <code class="literal">env.Dir(name, [directory])</code>
+    </span></dt><dd><p>
+This returns a Directory Node,
+an object that represents the specified directory
+<code class="varname">name</code>.
+<code class="varname">name</code>
+can be a relative or absolute path.
+<code class="varname">directory</code>
+is an optional directory that will be used as the parent directory.
+If no
+<code class="varname">directory</code>
+is specified, the current script's directory is used as the parent.
+</p><p>
+If
+<code class="varname">name</code>
+is a list, SCons returns a list of Dir nodes.
+Construction variables are expanded in
+<code class="varname">name</code>.
+</p><p>
+Directory Nodes can be used anywhere you
+would supply a string as a directory name
+to a Builder method or function.
+Directory Nodes have attributes and methods
+that are useful in many situations;
+see "File and Directory Nodes," below.
+</p></dd><dt><a name="f-Dump"></a><span class="term">
+      <code class="literal">env.Dump([key])</code>
+    </span></dt><dd><p>
+Returns a pretty printable representation of the environment.
+<code class="varname">key</code>,
+if not
+<code class="literal">None</code>,
+should be a string containing the name of the variable of interest.
+</p><p>
+This SConstruct:
+</p><pre class="screen">
+env=Environment()
+print env.Dump('CCCOM')
+</pre><p>
+will print:
+</p><pre class="screen">
+'$CC -c -o $TARGET $CCFLAGS $CPPFLAGS $_CPPDEFFLAGS $_CPPINCFLAGS $SOURCES'
+</pre><p>
+While this SConstruct:
+</p><pre class="screen">
+env=Environment()
+print env.Dump()
+</pre><p>
+will print:
+</p><pre class="screen">
+{ 'AR': 'ar',
+  'ARCOM': '$AR $ARFLAGS $TARGET $SOURCES\n$RANLIB $RANLIBFLAGS $TARGET',
+  'ARFLAGS': ['r'],
+  'AS': 'as',
+  'ASCOM': '$AS $ASFLAGS -o $TARGET $SOURCES',
+  'ASFLAGS': [],
+  ...
+</pre></dd><dt><a name="f-EnsurePythonVersion"></a><span class="term">
+      <code class="literal">EnsurePythonVersion(major, minor)</code>
+    , </span><span class="term">
+      <code class="literal">env.EnsurePythonVersion(major, minor)</code>
+    </span></dt><dd><p>
+Ensure that the Python version is at least
+<code class="varname">major</code>.<code class="varname">minor</code>.
+This function will
+print out an error message and exit SCons with a non-zero exit code if the
+actual Python version is not late enough.
+</p><p>
+Example:
+</p><pre class="screen">
+EnsurePythonVersion(2,2)
+</pre></dd><dt><a name="f-EnsureSConsVersion"></a><span class="term">
+      <code class="literal">EnsureSConsVersion(major, minor, [revision])</code>
+    , </span><span class="term">
+      <code class="literal">env.EnsureSConsVersion(major, minor, [revision])</code>
+    </span></dt><dd><p>
+Ensure that the SCons version is at least
+<code class="varname">major.minor</code>,
+or
+<code class="varname">major.minor.revision</code>.
+if
+<code class="varname">revision</code>
+is specified.
+This function will
+print out an error message and exit SCons with a non-zero exit code if the
+actual SCons version is not late enough.
+</p><p>
+Examples:
+</p><pre class="screen">
+EnsureSConsVersion(0,14)
+
+EnsureSConsVersion(0,96,90)
+</pre></dd><dt><a name="f-Environment"></a><span class="term">
+      <code class="literal">Environment([key=value, ...])</code>
+    , </span><span class="term">
+      <code class="literal">env.Environment([key=value, ...])</code>
+    </span></dt><dd><p>
+Return a new construction environment
+initialized with the specified
+<code class="varname">key</code><code class="literal">=</code><code class="varname">value</code>
+pairs.
+</p></dd><dt><a name="f-Execute"></a><span class="term">
+      <code class="literal">Execute(action, [strfunction, varlist])</code>
+    , </span><span class="term">
+      <code class="literal">env.Execute(action, [strfunction, varlist])</code>
+    </span></dt><dd><p>
+Executes an Action object.
+The specified
+<code class="varname">action</code>
+may be an Action object
+(see the section "Action Objects,"
+below, for a complete explanation of the arguments and behavior),
+or it may be a command-line string,
+list of commands,
+or executable Python function,
+each of which will be converted
+into an Action object
+and then executed.
+The exit value of the command
+or return value of the Python function
+will be returned.
+</p><p>
+Note that
+<code class="filename">scons</code>
+will print an error message if the executed
+<code class="varname">action</code>
+fails--that is,
+exits with or returns a non-zero value.
+<code class="filename">scons</code>
+will
+<span class="emphasis"><em>not</em></span>,
+however,
+automatically terminate the build
+if the specified
+<code class="varname">action</code>
+fails.
+If you want the build to stop in response to a failed
+<code class="function">Execute</code>
+call,
+you must explicitly check for a non-zero return value:
+</p><pre class="screen">
+Execute(Copy('file.out', 'file.in'))
+
+if Execute("mkdir sub/dir/ectory"):
+    # The mkdir failed, don't try to build.
+    Exit(1)
+</pre></dd><dt><a name="f-Exit"></a><span class="term">
+      <code class="literal">Exit([value])</code>
+    , </span><span class="term">
+      <code class="literal">env.Exit([value])</code>
+    </span></dt><dd><p>
+This tells
+<code class="filename">scons</code>
+to exit immediately
+with the specified
+<code class="varname">value</code>.
+A default exit value of
+<code class="literal">0</code>
+(zero)
+is used if no value is specified.
+</p></dd><dt><a name="f-Export"></a><span class="term">
+      <code class="literal">Export(vars)</code>
+    , </span><span class="term">
+      <code class="literal">env.Export(vars)</code>
+    </span></dt><dd><p>
+This tells
+<code class="filename">scons</code>
+to export a list of variables from the current
+SConscript file to all other SConscript files.
+The exported variables are kept in a global collection,
+so subsequent calls to
+<code class="function">Export</code>
+will over-write previous exports that have the same name.
+Multiple variable names can be passed to
+<code class="function">Export</code>
+as separate arguments or as a list.
+Keyword arguments can be used to provide names and their values.
+A dictionary can be used to map variables to a different name when exported.
+Both local variables and global variables can be exported.
+</p><p>
+Examples:
+</p><pre class="screen">
+env = Environment()
+# Make env available for all SConscript files to Import().
+Export("env")
+
+package = 'my_name'
+# Make env and package available for all SConscript files:.
+Export("env", "package")
+
+# Make env and package available for all SConscript files:
+Export(["env", "package"])
+
+# Make env available using the name debug:
+Export(debug = env)
+
+# Make env available using the name debug:
+Export({"debug":env})
+</pre><p>
+Note that the
+<code class="function">SConscript</code>
+function supports an
+<code class="varname">exports</code>
+argument that makes it easier to to export a variable or
+set of variables to a single SConscript file.
+See the description of the
+<code class="function">SConscript</code>
+function, below.
+</p></dd><dt><a name="f-File"></a><span class="term">
+      <code class="literal">File(name, [directory])</code>
+    , </span><span class="term">
+      <code class="literal">env.File(name, [directory])</code>
+    </span></dt><dd><p>
+This returns a
+File Node,
+an object that represents the specified file
+<code class="varname">name</code>.
+<code class="varname">name</code>
+can be a relative or absolute path.
+<code class="varname">directory</code>
+is an optional directory that will be used as the parent directory.
+</p><p>
+If
+<code class="varname">name</code>
+is a list, SCons returns a list of File nodes.
+Construction variables are expanded in
+<code class="varname">name</code>.
+</p><p>
+File Nodes can be used anywhere you
+would supply a string as a file name
+to a Builder method or function.
+File Nodes have attributes and methods
+that are useful in many situations;
+see "File and Directory Nodes," below.
+</p></dd><dt><a name="f-FindFile"></a><span class="term">
+      <code class="literal">FindFile(file, dirs)</code>
+    , </span><span class="term">
+      <code class="literal">env.FindFile(file, dirs)</code>
+    </span></dt><dd><p>
+Search for
+<code class="varname">file</code>
+in the path specified by
+<code class="varname">dirs</code>.
+<code class="varname">dirs</code>
+may be a list of directory names or a single directory name.
+In addition to searching for files that exist in the filesystem,
+this function also searches for derived files
+that have not yet been built.
+</p><p>
+Example:
+</p><pre class="screen">
+foo = env.FindFile('foo', ['dir1', 'dir2'])
+</pre></dd><dt><a name="f-FindInstalledFiles"></a><span class="term">
+      <code class="literal">FindInstalledFiles()</code>
+    , </span><span class="term">
+      <code class="literal">env.FindInstalledFiles()</code>
+    </span></dt><dd><p>
+Returns the list of targets set up by the
+<a class="link" href="apb.html#b-Install"><code class="function">Install</code></a>
+or
+<a class="link" href="apb.html#b-InstallAs"><code class="function">InstallAs</code></a>
+builders.
+</p><p>
+This function serves as a convenient method to select the contents of
+a binary package.
+</p><p>
+Example:
+</p><pre class="screen">
+Install( '/bin', [ 'executable_a', 'executable_b' ] )
+
+# will return the file node list
+# [ '/bin/executable_a', '/bin/executable_b' ]
+FindInstalledFiles()
+
+Install( '/lib', [ 'some_library' ] )
+
+# will return the file node list
+# [ '/bin/executable_a', '/bin/executable_b', '/lib/some_library' ]
+FindInstalledFiles()
+</pre></dd><dt><a name="f-FindPathDirs"></a><span class="term">
+      <code class="literal">FindPathDirs(variable)</code>
+    </span></dt><dd><p>
+Returns a function
+(actually a callable Python object)
+intended to be used as the
+<code class="varname">path_function</code>
+of a Scanner object.
+The returned object will look up the specified
+<code class="varname">variable</code>
+in a construction environment
+and treat the construction variable's value as a list of
+directory paths that should be searched
+(like
+<a class="link" href="apa.html#cv-CPPPATH"><code class="envar">$CPPPATH</code></a>,
+<a class="link" href="apa.html#cv-LIBPATH"><code class="envar">$LIBPATH</code></a>,
+etc.).
+</p><p>
+Note that use of
+<code class="function">FindPathDirs</code>
+is generally preferable to
+writing your own
+<code class="varname">path_function</code>
+for the following reasons:
+1) The returned list will contain all appropriate directories
+found in source trees
+(when
+<a class="link" href="apd.html#f-VariantDir"><code class="function">VariantDir</code></a>
+is used)
+or in code repositories
+(when
+<code class="function">Repository</code>
+or the
+<code class="option">-Y</code>
+option are used).
+2) scons will identify expansions of
+<code class="varname">variable</code>
+that evaluate to the same list of directories as,
+in fact, the same list,
+and avoid re-scanning the directories for files,
+when possible.
+</p><p>
+Example:
+</p><pre class="screen">
+def my_scan(node, env, path, arg):
+    # Code to scan file contents goes here...
+    return include_files
+
+scanner = Scanner(name = 'myscanner',
+                  function = my_scan,
+                  path_function = FindPathDirs('MYPATH'))
+</pre></dd><dt><a name="f-FindSourceFiles"></a><span class="term">
+      <code class="literal">FindSourceFiles(node='"."')</code>
+    , </span><span class="term">
+      <code class="literal">env.FindSourceFiles(node='"."')</code>
+    </span></dt><dd><p>
+Returns the list of nodes which serve as the source of the built files.
+It does so by inspecting the dependency tree starting at the optional
+argument
+<code class="varname">node</code>
+which defaults to the '"."'-node. It will then return all leaves of
+<code class="varname">node</code>.
+These are all children which have no further children.
+</p><p>
+This function is a convenient method to select the contents of a Source
+Package.
+</p><p>
+Example:
+</p><pre class="screen">
+Program( 'src/main_a.c' )
+Program( 'src/main_b.c' )
+Program( 'main_c.c' )
+
+# returns ['main_c.c', 'src/main_a.c', 'SConstruct', 'src/main_b.c']
+FindSourceFiles()
+
+# returns ['src/main_b.c', 'src/main_a.c' ]
+FindSourceFiles( 'src' )
+</pre><p>
+As you can see build support files (SConstruct in the above example)
+will also be returned by this function.
+</p></dd><dt><a name="f-Flatten"></a><span class="term">
+      <code class="literal">Flatten(sequence)</code>
+    , </span><span class="term">
+      <code class="literal">env.Flatten(sequence)</code>
+    </span></dt><dd><p>
+Takes a sequence (that is, a Python list or tuple)
+that may contain nested sequences
+and returns a flattened list containing
+all of the individual elements in any sequence.
+This can be helpful for collecting
+the lists returned by calls to Builders;
+other Builders will automatically
+flatten lists specified as input,
+but direct Python manipulation of
+these lists does not.
+</p><p>
+Examples:
+</p><pre class="screen">
+foo = Object('foo.c')
+bar = Object('bar.c')
+
+# Because `foo' and `bar' are lists returned by the Object() Builder,
+# `objects' will be a list containing nested lists:
+objects = ['f1.o', foo, 'f2.o', bar, 'f3.o']
+
+# Passing such a list to another Builder is all right because
+# the Builder will flatten the list automatically:
+Program(source = objects)
+
+# If you need to manipulate the list directly using Python, you need to
+# call Flatten() yourself, or otherwise handle nested lists:
+for object in Flatten(objects):
+    print str(object)
+</pre></dd><dt><a name="f-GetBuildFailures"></a><span class="term">
+      <code class="literal">GetBuildFailures()</code>
+    </span></dt><dd><p>
+Returns a list of exceptions for the
+actions that failed while
+attempting to build targets.
+Each element in the returned list is a
+<code class="classname">BuildError</code>
+object
+with the following attributes
+that record various aspects
+of the build failure:
+</p><p>
+<code class="literal">.node</code>
+The node that was being built
+when the build failure occurred.
+</p><p>
+<code class="literal">.status</code>
+The numeric exit status
+returned by the command or Python function
+that failed when trying to build the
+specified Node.
+</p><p>
+<code class="literal">.errstr</code>
+The SCons error string
+describing the build failure.
+(This is often a generic
+message like "Error 2"
+to indicate that an executed
+command exited with a status of 2.)
+</p><p>
+<code class="literal">.filename</code>
+The name of the file or
+directory that actually caused the failure.
+This may be different from the
+<code class="literal">.node</code>
+attribute.
+For example,
+if an attempt to build a target named
+<code class="filename">sub/dir/target</code>
+fails because the
+<code class="filename">sub/dir</code>
+directory could not be created,
+then the
+<code class="literal">.node</code>
+attribute will be
+<code class="filename">sub/dir/target</code>
+but the
+<code class="literal">.filename</code>
+attribute will be
+<code class="filename">sub/dir</code>.
+</p><p>
+<code class="literal">.executor</code>
+The SCons Executor object
+for the target Node
+being built.
+This can be used to retrieve
+the construction environment used
+for the failed action.
+</p><p>
+<code class="literal">.action</code>
+The actual SCons Action object that failed.
+This will be one specific action
+out of the possible list of
+actions that would have been
+executed to build the target.
+</p><p>
+<code class="literal">.command</code>
+The actual expanded command that was executed and failed,
+after expansion of
+<a class="link" href="apa.html#cv-TARGET"><code class="envar">$TARGET</code></a>,
+<a class="link" href="apa.html#cv-SOURCE"><code class="envar">$SOURCE</code></a>,
+and other construction variables.
+</p><p>
+Note that the
+<code class="function">GetBuildFailures</code>
+function
+will always return an empty list
+until any build failure has occurred,
+which means that
+<code class="function">GetBuildFailures</code>
+will always return an empty list
+while the
+<code class="filename">SConscript</code>
+files are being read.
+Its primary intended use is
+for functions that will be
+executed before SCons exits
+by passing them to the
+standard Python
+<code class="function">atexit.register</code>()
+function.
+Example:
+</p><pre class="screen">
+import atexit
+
+def print_build_failures():
+    from SCons.Script import GetBuildFailures
+    for bf in GetBuildFailures():
+        print "%s failed: %s" % (bf.node, bf.errstr)
+
+atexit.register(print_build_failures)
+</pre></dd><dt><a name="f-GetBuildPath"></a><span class="term">
+      <code class="literal">GetBuildPath(file, [...])</code>
+    , </span><span class="term">
+      <code class="literal">env.GetBuildPath(file, [...])</code>
+    </span></dt><dd><p>
+Returns the
+<code class="filename">scons</code>
+path name (or names) for the specified
+<code class="varname">file</code>
+(or files).
+The specified
+<code class="varname">file</code>
+or files
+may be
+<code class="filename">scons</code>
+Nodes or strings representing path names.
+</p></dd><dt><a name="f-GetLaunchDir"></a><span class="term">
+      <code class="literal">GetLaunchDir()</code>
+    , </span><span class="term">
+      <code class="literal">env.GetLaunchDir()</code>
+    </span></dt><dd><p>
+Returns the absolute path name of the directory from which
+<code class="filename">scons</code>
+was initially invoked.
+This can be useful when using the
+<code class="option">-u</code>,
+<code class="option">-U</code>
+or
+<code class="option">-D</code>
+options, which internally
+change to the directory in which the
+<code class="filename">SConstruct</code>
+file is found.
+</p></dd><dt><a name="f-GetOption"></a><span class="term">
+      <code class="literal">GetOption(name)</code>
+    , </span><span class="term">
+      <code class="literal">env.GetOption(name)</code>
+    </span></dt><dd><p>
+This function provides a way to query the value of
+SCons options set on scons command line
+(or set using the
+<a class="link" href="apd.html#f-SetOption"><code class="function">SetOption</code></a>
+function).
+The options supported are:
+</p><p>
+</p><div class="variablelist"><dl><dt><span class="term"><code class="literal">cache_debug</code></span></dt><dd><p>
+which corresponds to --cache-debug;
+</p></dd><dt><span class="term"><code class="literal">cache_disable</code></span></dt><dd><p>
+which corresponds to --cache-disable;
+</p></dd><dt><span class="term"><code class="literal">cache_force</code></span></dt><dd><p>
+which corresponds to --cache-force;
+</p></dd><dt><span class="term"><code class="literal">cache_show</code></span></dt><dd><p>
+which corresponds to --cache-show;
+</p></dd><dt><span class="term"><code class="literal">clean</code></span></dt><dd><p>
+which corresponds to -c, --clean and --remove;
+</p></dd><dt><span class="term"><code class="literal">config</code></span></dt><dd><p>
+which corresponds to --config;
+</p></dd><dt><span class="term"><code class="literal">directory</code></span></dt><dd><p>
+which corresponds to -C and --directory;
+</p></dd><dt><span class="term"><code class="literal">diskcheck</code></span></dt><dd><p>
+which corresponds to --diskcheck
+</p></dd><dt><span class="term"><code class="literal">duplicate</code></span></dt><dd><p>
+which corresponds to --duplicate;
+</p></dd><dt><span class="term"><code class="literal">file</code></span></dt><dd><p>
+which corresponds to -f, --file, --makefile and --sconstruct;
+</p></dd><dt><span class="term"><code class="literal">help</code></span></dt><dd><p>
+which corresponds to -h and --help;
+</p></dd><dt><span class="term"><code class="literal">ignore_errors</code></span></dt><dd><p>
+which corresponds to --ignore-errors;
+</p></dd><dt><span class="term"><code class="literal">implicit_cache</code></span></dt><dd><p>
+which corresponds to --implicit-cache;
+</p></dd><dt><span class="term"><code class="literal">implicit_deps_changed</code></span></dt><dd><p>
+which corresponds to --implicit-deps-changed;
+</p></dd><dt><span class="term"><code class="literal">implicit_deps_unchanged</code></span></dt><dd><p>
+which corresponds to --implicit-deps-unchanged;
+</p></dd><dt><span class="term"><code class="literal">interactive</code></span></dt><dd><p>
+which corresponds to --interact and --interactive;
+</p></dd><dt><span class="term"><code class="literal">keep_going</code></span></dt><dd><p>
+which corresponds to -k and --keep-going;
+</p></dd><dt><span class="term"><code class="literal">max_drift</code></span></dt><dd><p>
+which corresponds to --max-drift;
+</p></dd><dt><span class="term"><code class="literal">no_exec</code></span></dt><dd><p>
+which corresponds to -n, --no-exec, --just-print, --dry-run and --recon;
+</p></dd><dt><span class="term"><code class="literal">no_site_dir</code></span></dt><dd><p>
+which corresponds to --no-site-dir;
+</p></dd><dt><span class="term"><code class="literal">num_jobs</code></span></dt><dd><p>
+which corresponds to -j and --jobs;
+</p></dd><dt><span class="term"><code class="literal">profile_file</code></span></dt><dd><p>
+which corresponds to --profile;
+</p></dd><dt><span class="term"><code class="literal">question</code></span></dt><dd><p>
+which corresponds to -q and --question;
+</p></dd><dt><span class="term"><code class="literal">random</code></span></dt><dd><p>
+which corresponds to --random;
+</p></dd><dt><span class="term"><code class="literal">repository</code></span></dt><dd><p>
+which corresponds to -Y, --repository and --srcdir;
+</p></dd><dt><span class="term"><code class="literal">silent</code></span></dt><dd><p>
+which corresponds to -s, --silent and --quiet;
+</p></dd><dt><span class="term"><code class="literal">site_dir</code></span></dt><dd><p>
+which corresponds to --site-dir;
+</p></dd><dt><span class="term"><code class="literal">stack_size</code></span></dt><dd><p>
+which corresponds to --stack-size;
+</p></dd><dt><span class="term"><code class="literal">taskmastertrace_file</code></span></dt><dd><p>
+which corresponds to --taskmastertrace; and
+</p></dd><dt><span class="term"><code class="literal">warn</code></span></dt><dd><p>
+which corresponds to --warn and --warning.
+</p></dd></dl></div><p>
+</p><p>
+See the documentation for the
+corresponding command line object for information about each specific
+option.
+</p></dd><dt><a name="f-Glob"></a><span class="term">
+      <code class="literal">Glob(pattern, [ondisk, source, strings])</code>
+    , </span><span class="term">
+      <code class="literal">env.Glob(pattern, [ondisk, source, strings])</code>
+    </span></dt><dd><p>
+Returns Nodes (or strings) that match the specified
+<code class="varname">pattern</code>,
+relative to the directory of the current
+<code class="filename">SConscript</code>
+file.
+The
+<code class="function">env.Glob</code>()
+form performs string substition on
+<code class="varname">pattern</code>
+and returns whatever matches
+the resulting expanded pattern.
+</p><p>
+The specified
+<code class="varname">pattern</code>
+uses Unix shell style metacharacters for matching:
+</p><pre class="screen">
+  *       matches everything
+  ?       matches any single character
+  [seq]   matches any character in seq
+  [!seq]  matches any char not in seq
+</pre><p>
+If the first character of a filename is a dot,
+it must be matched explicitly.
+Character matches do
+<span class="emphasis"><em>not</em></span>
+span directory separators.
+</p><p>
+The
+<code class="function">Glob</code>
+knows about
+repositories
+(see the
+<a class="link" href="apd.html#f-Repository"><code class="function">Repository</code></a>
+function)
+and source directories
+(see the
+<a class="link" href="apd.html#f-VariantDir"><code class="function">VariantDir</code></a>
+function)
+and
+returns a Node (or string, if so configured)
+in the local (SConscript) directory
+if matching Node is found
+anywhere in a corresponding
+repository or source directory.
+</p><p>
+The
+<code class="varname">ondisk</code>
+argument may be set to
+<code class="literal">False</code>
+(or any other non-true value)
+to disable the search for matches on disk,
+thereby only returning matches among
+already-configured File or Dir Nodes.
+The default behavior is to
+return corresponding Nodes
+for any on-disk matches found.
+</p><p>
+The
+<code class="varname">source</code>
+argument may be set to
+<code class="literal">True</code>
+(or any equivalent value)
+to specify that,
+when the local directory is a
+<code class="function">VariantDir</code>,
+the returned Nodes should be from the
+corresponding source directory,
+not the local directory.
+</p><p>
+The
+<code class="varname">strings</code>
+argument may be set to
+<code class="literal">True</code>
+(or any equivalent value)
+to have the
+<code class="function">Glob</code>
+function return strings, not Nodes,
+that represent the matched files or directories.
+The returned strings will be relative to
+the local (SConscript) directory.
+(Note that This may make it easier to perform
+arbitrary manipulation of file names,
+but if the returned strings are
+passed to a different
+<code class="filename">SConscript</code>
+file,
+any Node translation will be relative
+to the other
+<code class="filename">SConscript</code>
+directory,
+not the original
+<code class="filename">SConscript</code>
+directory.)
+</p><p>
+Examples:
+</p><pre class="screen">
+Program('foo', Glob('*.c'))
+Zip('/tmp/everything', Glob('.??*') + Glob('*'))
+</pre></dd><dt><a name="f-Help"></a><span class="term">
+      <code class="literal">Help(text)</code>
+    , </span><span class="term">
+      <code class="literal">env.Help(text)</code>
+    </span></dt><dd><p>
+This specifies help text to be printed if the
+<code class="option">-h</code>
+argument is given to
+<code class="filename">scons</code>.
+If
+<code class="function">Help</code>
+is called multiple times, the text is appended together in the order
+that
+<code class="function">Help</code>
+is called.
+</p></dd><dt><a name="f-Ignore"></a><span class="term">
+      <code class="literal">Ignore(target, dependency)</code>
+    , </span><span class="term">
+      <code class="literal">env.Ignore(target, dependency)</code>
+    </span></dt><dd><p>
+The specified dependency file(s)
+will be ignored when deciding if
+the target file(s) need to be rebuilt.
+</p><p>
+You can also use
+<code class="function">Ignore</code>
+to remove a target from the default build.
+In order to do this you must specify the directory the target will
+be built in as the target, and the file you want to skip building
+as the dependency.
+</p><p>
+Note that this will only remove the dependencies listed from 
+the files built by default.  It will still be built if that 
+dependency is needed by another object being built. 
+See the third and forth examples below.
+</p><p>
+Examples:
+</p><pre class="screen">
+env.Ignore('foo', 'foo.c')
+env.Ignore('bar', ['bar1.h', 'bar2.h'])
+env.Ignore('.','foobar.obj')
+env.Ignore('bar','bar/foobar.obj')
+</pre></dd><dt><a name="f-Import"></a><span class="term">
+      <code class="literal">Import(vars)</code>
+    , </span><span class="term">
+      <code class="literal">env.Import(vars)</code>
+    </span></dt><dd><p>
+This tells
+<code class="filename">scons</code>
+to import a list of variables into the current SConscript file. This
+will import variables that were exported with
+<code class="function">Export</code>
+or in the
+<code class="varname">exports</code>
+argument to
+<a class="link" href="apd.html#f-SConscript"><code class="function">SConscript</code></a>.
+Variables exported by
+<code class="function">SConscript</code>
+have precedence.
+Multiple variable names can be passed to
+<code class="function">Import</code>
+as separate arguments or as a list. The variable "*" can be used
+to import all variables.
+</p><p>
+Examples:
+</p><pre class="screen">
+Import("env")
+Import("env", "variable")
+Import(["env", "variable"])
+Import("*")
+</pre></dd><dt><a name="f-Literal"></a><span class="term">
+      <code class="literal">Literal(string)</code>
+    , </span><span class="term">
+      <code class="literal">env.Literal(string)</code>
+    </span></dt><dd><p>
+The specified
+<code class="varname">string</code>
+will be preserved as-is
+and not have construction variables expanded.
+</p></dd><dt><a name="f-Local"></a><span class="term">
+      <code class="literal">Local(targets)</code>
+    , </span><span class="term">
+      <code class="literal">env.Local(targets)</code>
+    </span></dt><dd><p>
+The specified
+<code class="varname">targets</code>
+will have copies made in the local tree,
+even if an already up-to-date copy
+exists in a repository.
+Returns a list of the target Node or Nodes.
+</p></dd><dt><a name="f-MergeFlags"></a><span class="term">
+      <code class="literal">env.MergeFlags(arg, [unique])</code>
+    </span></dt><dd><p>
+Merges the specified
+<code class="varname">arg</code>
+values to the construction environment's construction variables.
+If the
+<code class="varname">arg</code>
+argument is not a dictionary,
+it is converted to one by calling
+<a class="link" href="apd.html#f-ParseFlags"><code class="function">env.ParseFlags</code></a>
+on the argument
+before the values are merged.
+Note that
+<code class="varname">arg</code>
+must be a single value,
+so multiple strings must
+be passed in as a list,
+not as separate arguments to
+<code class="function">env.MergeFlags</code>.
+</p><p>
+By default,
+duplicate values are eliminated;
+you can, however, specify
+<code class="literal">unique=0</code>
+to allow duplicate
+values to be added.
+When eliminating duplicate values,
+any construction variables that end with
+the string
+<code class="literal">PATH</code>
+keep the left-most unique value.
+All other construction variables keep
+the right-most unique value.
+</p><p>
+Examples:
+</p><pre class="screen">
+# Add an optimization flag to $CCFLAGS.
+env.MergeFlags('-O3')
+
+# Combine the flags returned from running pkg-config with an optimization
+# flag and merge the result into the construction variables.
+env.MergeFlags(['!pkg-config gtk+-2.0 --cflags', '-O3'])
+
+# Combine an optimization flag with the flags returned from running pkg-config
+# twice and merge the result into the construction variables.
+env.MergeFlags(['-O3',
+               '!pkg-config gtk+-2.0 --cflags --libs',
+               '!pkg-config libpng12 --cflags --libs'])
+</pre></dd><dt><a name="f-NoCache"></a><span class="term">
+      <code class="literal">NoCache(target, ...)</code>
+    , </span><span class="term">
+      <code class="literal">env.NoCache(target, ...)</code>
+    </span></dt><dd><p>
+Specifies a list of files which should
+<span class="emphasis"><em>not</em></span>
+be cached whenever the
+<a class="link" href="apd.html#f-CacheDir"><code class="function">CacheDir</code></a>
+method has been activated.
+The specified targets may be a list
+or an individual target.
+</p><p>
+Multiple files should be specified
+either as separate arguments to the
+<code class="function">NoCache</code>
+method, or as a list.
+<code class="function">NoCache</code>
+will also accept the return value of any of the construction environment
+Builder methods.
+</p><p>
+Calling
+<code class="function">NoCache</code>
+on directories and other non-File Node types has no effect because
+only File Nodes are cached.
+</p><p>
+Examples:
+</p><pre class="screen">
+NoCache('foo.elf')
+NoCache(env.Program('hello', 'hello.c'))
+</pre></dd><dt><a name="f-NoClean"></a><span class="term">
+      <code class="literal">NoClean(target, ...)</code>
+    , </span><span class="term">
+      <code class="literal">env.NoClean(target, ...)</code>
+    </span></dt><dd><p>
+Specifies a list of files or directories which should
+<span class="emphasis"><em>not</em></span>
+be removed whenever the targets (or their dependencies)
+are specified with the
+<code class="option">-c</code>
+command line option.
+The specified targets may be a list
+or an individual target.
+Multiple calls to
+<code class="function">NoClean</code>
+are legal,
+and prevent each specified target
+from being removed by calls to the
+<code class="option">-c</code>
+option.
+</p><p>
+Multiple files or directories should be specified
+either as separate arguments to the
+<code class="function">NoClean</code>
+method, or as a list.
+<code class="function">NoClean</code>
+will also accept the return value of any of the construction environment
+Builder methods.
+</p><p>
+Calling
+<code class="function">NoClean</code>
+for a target overrides calling
+<a class="link" href="apd.html#f-Clean"><code class="function">Clean</code></a>
+for the same target,
+and any targets passed to both functions will
+<span class="emphasis"><em>not</em></span>
+be removed by the
+<code class="option">-c</code>
+option.
+</p><p>
+Examples:
+</p><pre class="screen">
+NoClean('foo.elf')
+NoClean(env.Program('hello', 'hello.c'))
+</pre></dd><dt><a name="f-ParseConfig"></a><span class="term">
+      <code class="literal">env.ParseConfig(command, [function, unique])</code>
+    </span></dt><dd><p>
+Calls the specified
+<code class="varname">function</code>
+to modify the environment as specified by the output of
+<code class="varname">command</code>.
+The default
+<code class="varname">function</code>
+is
+<a class="link" href="apd.html#f-MergeFlags"><code class="function">env.MergeFlags</code></a>,
+which expects the output of a typical
+<span class="application">*-config</span>
+command
+(for example,
+<span class="application">gtk-config</span>)
+and adds the options
+to the appropriate construction variables.
+By default,
+duplicate values are not
+added to any construction variables;
+you can specify
+<code class="literal">unique=0</code>
+to allow duplicate
+values to be added.
+</p><p>
+Interpreted options
+and the construction variables they affect
+are as specified for the
+<a class="link" href="apd.html#f-ParseFlags"><code class="function">env.ParseFlags</code></a>
+method (which this method calls).
+See that method's description, below,
+for a table of options and construction variables.
+</p></dd><dt><a name="f-ParseDepends"></a><span class="term">
+      <code class="literal">ParseDepends(filename, [must_exist, only_one])</code>
+    , </span><span class="term">
+      <code class="literal">env.ParseDepends(filename, [must_exist, only_one])</code>
+    </span></dt><dd><p>
+Parses the contents of the specified
+<code class="varname">filename</code>
+as a list of dependencies in the style of
+<span class="application">Make</span>
+or
+<span class="application">mkdep</span>,
+and explicitly establishes all of the listed dependencies.
+</p><p>
+By default,
+it is not an error
+if the specified
+<code class="varname">filename</code>
+does not exist.
+The optional
+<code class="varname">must_exist</code>
+argument may be set to a non-zero
+value to have
+scons
+throw an exception and
+generate an error if the file does not exist,
+or is otherwise inaccessible.
+</p><p>
+The optional
+<code class="varname">only_one</code>
+argument may be set to a non-zero
+value to have
+scons
+thrown an exception and
+generate an error
+if the file contains dependency
+information for more than one target.
+This can provide a small sanity check
+for files intended to be generated
+by, for example, the
+<code class="literal">gcc -M</code>
+flag,
+which should typically only
+write dependency information for
+one output file into a corresponding
+<code class="filename">.d</code>
+file.
+</p><p>
+The
+<code class="varname">filename</code>
+and all of the files listed therein
+will be interpreted relative to
+the directory of the
+<code class="filename">SConscript</code>
+file which calls the
+<code class="function">ParseDepends</code>
+function.
+</p></dd><dt><a name="f-ParseFlags"></a><span class="term">
+      <code class="literal">env.ParseFlags(flags, ...)</code>
+    </span></dt><dd><p>
+Parses one or more strings containing
+typical command-line flags for GCC tool chains
+and returns a dictionary with the flag values
+separated into the appropriate SCons construction variables.
+This is intended as a companion to the
+<a class="link" href="apd.html#f-MergeFlags"><code class="function">env.MergeFlags</code></a>
+method, but allows for the values in the returned dictionary
+to be modified, if necessary,
+before merging them into the construction environment.
+(Note that
+<code class="function">env.MergeFlags</code>
+will call this method if its argument is not a dictionary,
+so it is usually not necessary to call
+<a class="link" href="apd.html#f-ParseFlags"><code class="function">env.ParseFlags</code></a>
+directly unless you want to manipulate the values.)
+</p><p>
+If the first character in any string is
+an exclamation mark (!),
+the rest of the string is executed as a command,
+and the output from the command is
+parsed as GCC tool chain command-line flags
+and added to the resulting dictionary.
+</p><p>
+Flag values are translated accordig to the prefix found,
+and added to the following construction variables:
+</p><pre class="screen">
+-arch               CCFLAGS, LINKFLAGS
+-D                  CPPDEFINES
+-framework          FRAMEWORKS
+-frameworkdir=      FRAMEWORKPATH
+-include            CCFLAGS
+-isysroot           CCFLAGS, LINKFLAGS
+-I                  CPPPATH
+-l                  LIBS
+-L                  LIBPATH
+-mno-cygwin         CCFLAGS, LINKFLAGS
+-mwindows           LINKFLAGS
+-pthread            CCFLAGS, LINKFLAGS
+-std=               CFLAGS
+-Wa,                ASFLAGS, CCFLAGS
+-Wl,-rpath=         RPATH
+-Wl,-R,             RPATH
+-Wl,-R              RPATH
+-Wl,                LINKFLAGS
+-Wp,                CPPFLAGS
+-                   CCFLAGS
++                   CCFLAGS, LINKFLAGS
+</pre><p>
+Any other strings not associated with options
+are assumed to be the names of libraries
+and added to the
+<code class="envar">$LIBS</code>
+construction variable.
+</p><p>
+Examples (all of which produce the same result):
+</p><pre class="screen">
+dict = env.ParseFlags('-O2 -Dfoo -Dbar=1')
+dict = env.ParseFlags('-O2', '-Dfoo', '-Dbar=1')
+dict = env.ParseFlags(['-O2', '-Dfoo -Dbar=1'])
+dict = env.ParseFlags('-O2', '!echo -Dfoo -Dbar=1')
+</pre></dd><dt><a name="f-Perforce"></a><span class="term">
+      <code class="literal">env.Perforce()</code>
+    </span></dt><dd><p>
+A factory function that
+returns a Builder object
+to be used to fetch source files
+from the Perforce source code management system.
+The returned Builder
+is intended to be passed to the
+<code class="function">SourceCode</code>
+function.
+</p><p>
+This function is deprecated.  For details, see the entry for the
+<code class="function">SourceCode</code>
+function.
+</p><p>
+Example:
+</p><pre class="screen">
+env.SourceCode('.', env.Perforce())
+</pre><p>
+Perforce uses a number of external
+environment variables for its operation.
+Consequently, this function adds the
+following variables from the user's external environment
+to the construction environment's
+ENV dictionary:
+P4CHARSET,
+P4CLIENT,
+P4LANGUAGE,
+P4PASSWD,
+P4PORT,
+P4USER,
+SystemRoot,
+USER,
+and
+USERNAME.
+</p></dd><dt><a name="f-Platform"></a><span class="term">
+      <code class="literal">Platform(string)</code>
+    </span></dt><dd><p>
+The
+<code class="function">Platform</code>
+form returns a callable object
+that can be used to initialize
+a construction environment using the
+platform keyword of the
+<code class="function">Environment</code>
+function.
+</p><p>
+Example:
+</p><pre class="screen">
+env = Environment(platform = Platform('win32'))
+</pre><p>
+The
+<code class="function">env.Platform</code>
+form applies the callable object for the specified platform
+<code class="varname">string</code>
+to the environment through which the method was called.
+</p><pre class="screen">
+env.Platform('posix')
+</pre><p>
+Note that the
+<code class="literal">win32</code>
+platform adds the
+<code class="literal">SystemDrive</code>
+and
+<code class="literal">SystemRoot</code>
+variables from the user's external environment
+to the construction environment's
+<a class="link" href="apa.html#cv-ENV"><code class="envar">$ENV</code></a>
+dictionary.
+This is so that any executed commands
+that use sockets to connect with other systems
+(such as fetching source files from
+external CVS repository specifications like
+<code class="literal">:pserver:anonymous@cvs.sourceforge.net:/cvsroot/scons</code>)
+will work on Windows systems.
+</p></dd><dt><a name="f-Precious"></a><span class="term">
+      <code class="literal">Precious(target, ...)</code>
+    , </span><span class="term">
+      <code class="literal">env.Precious(target, ...)</code>
+    </span></dt><dd><p>
+Marks each given
+<code class="varname">target</code>
+as precious so it is not deleted before it is rebuilt. Normally
+<code class="filename">scons</code>
+deletes a target before building it.
+Multiple targets can be passed in to a single call to
+<code class="function">Precious</code>.
+</p></dd><dt><a name="f-Prepend"></a><span class="term">
+      <code class="literal">env.Prepend(key=val, [...])</code>
+    </span></dt><dd><p>
+Appends the specified keyword arguments
+to the beginning of construction variables in the environment.
+If the Environment does not have
+the specified construction variable,
+it is simply added to the environment.
+If the values of the construction variable
+and the keyword argument are the same type,
+then the two values will be simply added together.
+Otherwise, the construction variable
+and the value of the keyword argument
+are both coerced to lists,
+and the lists are added together.
+(See also the Append method, above.)
+</p><p>
+Example:
+</p><pre class="screen">
+env.Prepend(CCFLAGS = '-g ', FOO = ['foo.yyy'])
+</pre></dd><dt><a name="f-PrependENVPath"></a><span class="term">
+      <code class="literal">env.PrependENVPath(name, newpath, [envname, sep, delete_existing])</code>
+    </span></dt><dd><p>
+This appends new path elements to the given path in the
+specified external environment
+(<code class="envar">$ENV</code>
+by default).
+This will only add
+any particular path once (leaving the first one it encounters and
+ignoring the rest, to preserve path order),
+and to help assure this,
+will normalize all paths (using
+<code class="literal">os.path.normpath</code>
+and
+<code class="literal">os.path.normcase</code>).
+This can also handle the
+case where the given old path variable is a list instead of a
+string, in which case a list will be returned instead of a string.
+</p><p>
+If
+<code class="varname">delete_existing</code>
+is 0, then adding a path that already exists
+will not move it to the beginning;
+it will stay where it is in the list.
+</p><p>
+Example:
+</p><pre class="screen">
+print 'before:',env['ENV']['INCLUDE']
+include_path = '/foo/bar:/foo'
+env.PrependENVPath('INCLUDE', include_path)
+print 'after:',env['ENV']['INCLUDE']
+</pre><p>
+The above example will print:
+</p><pre class="screen">
+before: /biz:/foo
+after: /foo/bar:/foo:/biz
+</pre></dd><dt><a name="f-PrependUnique"></a><span class="term">
+      <code class="literal">env.PrependUnique(key=val, delete_existing=0, [...])</code>
+    </span></dt><dd><p>
+Appends the specified keyword arguments
+to the beginning of construction variables in the environment.
+If the Environment does not have
+the specified construction variable,
+it is simply added to the environment.
+If the construction variable being appended to is a list,
+then any value(s) that already exist in the
+construction variable will
+<span class="emphasis"><em>not</em></span>
+be added again to the list.
+However, if delete_existing is 1, 
+existing matching values are removed first, so
+existing values in the arg list move to the front of the list.
+</p><p>
+Example:
+</p><pre class="screen">
+env.PrependUnique(CCFLAGS = '-g', FOO = ['foo.yyy'])
+</pre></dd><dt><a name="f-Progress"></a><span class="term">
+      <code class="literal">Progress(callable, [interval])</code>
+    , </span><span class="term">
+      <code class="literal">Progress(string, [interval, file, overwrite])</code>
+    , </span><span class="term">
+      <code class="literal">Progress(list_of_strings, [interval, file, overwrite])</code>
+    </span></dt><dd><p>
+Allows SCons to show progress made during the build
+by displaying a string or calling a function while
+evaluating Nodes (e.g. files).
+</p><p>
+If the first specified argument is a Python callable
+(a function or an object that has a
+<code class="function">__call__</code>()
+method),
+the function will be called
+once every
+<code class="varname">interval</code>
+times a Node is evaluated.
+The callable will be passed the evaluated Node
+as its only argument.
+(For future compatibility,
+it's a good idea to also add
+<code class="literal">*args</code>
+and
+<code class="literal">**kw</code>
+as arguments to your function or method.
+This will prevent the code from breaking
+if SCons ever changes the interface
+to call the function with additional arguments in the future.)
+</p><p>
+An example of a simple custom progress function
+that prints a string containing the Node name
+every 10 Nodes:
+</p><pre class="screen">
+def my_progress_function(node, *args, **kw):
+    print 'Evaluating node %s!' % node
+Progress(my_progress_function, interval=10)
+</pre><p>
+A more complicated example of a custom progress display object
+that prints a string containing a count
+every 100 evaluated Nodes.
+Note the use of
+<code class="literal">\r</code>
+(a carriage return)
+at the end so that the string
+will overwrite itself on a display:
+</p><pre class="screen">
+import sys
+class ProgressCounter(object):
+    count = 0
+    def __call__(self, node, *args, **kw):
+        self.count += 100
+        sys.stderr.write('Evaluated %s nodes\r' % self.count)
+Progress(ProgressCounter(), interval=100)
+</pre><p>
+If the first argument
+<a class="link" href="apd.html#f-Progress"><code class="function">Progress</code></a>
+is a string,
+the string will be displayed
+every
+<code class="varname">interval</code>
+evaluated Nodes.
+The default is to print the string on standard output;
+an alternate output stream
+may be specified with the
+<code class="literal">file=</code>
+argument.
+The following will print a series of dots
+on the error output,
+one dot for every 100 evaluated Nodes:
+</p><pre class="screen">
+import sys
+Progress('.', interval=100, file=sys.stderr)
+</pre><p>
+If the string contains the verbatim substring
+<code class="envar">$TARGET</code>,
+it will be replaced with the Node.
+Note that, for performance reasons, this is
+<span class="emphasis"><em>not</em></span>
+a regular SCons variable substition,
+so you can not use other variables
+or use curly braces.
+The following example will print the name of
+every evaluated Node,
+using a
+<code class="literal">\r</code>
+(carriage return) to cause each line to overwritten by the next line,
+and the
+<code class="literal">overwrite=</code>
+keyword argument to make sure the previously-printed
+file name is overwritten with blank spaces:
+</p><pre class="screen">
+import sys
+Progress('$TARGET\r', overwrite=True)
+</pre><p>
+If the first argument to
+<code class="function">Progress</code>
+is a list of strings,
+then each string in the list will be displayed
+in rotating fashion every
+<code class="varname">interval</code>
+evaluated Nodes.
+This can be used to implement a "spinner"
+on the user's screen as follows:
+</p><pre class="screen">
+Progress(['-\r', '\\\r', '|\r', '/\r'], interval=5)
+</pre></dd><dt><a name="f-Pseudo"></a><span class="term">
+      <code class="literal">Pseudo(target, ...)</code>
+    , </span><span class="term">
+      <code class="literal">env.Pseudo(target, ...)</code>
+    </span></dt><dd><p>
+This indicates that each given
+<code class="varname">target</code>
+should not be created by the build rule, and if the target is created,
+an error will be generated. This is similar to the gnu make .PHONY
+target. However, in the vast majority of cases, an
+<code class="function">Alias</code>
+is more appropriate.
+
+Multiple targets can be passed in to a single call to
+<code class="function">Pseudo</code>.
+</p></dd><dt><a name="f-RCS"></a><span class="term">
+      <code class="literal">env.RCS()</code>
+    </span></dt><dd><p>
+A factory function that
+returns a Builder object
+to be used to fetch source files
+from RCS.
+The returned Builder
+is intended to be passed to the
+<code class="function">SourceCode</code>
+function:
+</p><p>
+This function is deprecated.  For details, see the entry for the
+<code class="function">SourceCode</code>
+function.
+</p><p>
+Examples:
+</p><pre class="screen">
+env.SourceCode('.', env.RCS())
+</pre><p>
+Note that
+<code class="filename">scons</code>
+will fetch source files
+from RCS subdirectories automatically,
+so configuring RCS
+as demonstrated in the above example
+should only be necessary if
+you are fetching from
+RCS,v
+files in the same
+directory as the source files,
+or if you need to explicitly specify RCS
+for a specific subdirectory.
+</p></dd><dt><a name="f-Replace"></a><span class="term">
+      <code class="literal">env.Replace(key=val, [...])</code>
+    </span></dt><dd><p>
+Replaces construction variables in the Environment
+with the specified keyword arguments.
+</p><p>
+Example:
+</p><pre class="screen">
+env.Replace(CCFLAGS = '-g', FOO = 'foo.xxx')
+</pre></dd><dt><a name="f-Repository"></a><span class="term">
+      <code class="literal">Repository(directory)</code>
+    , </span><span class="term">
+      <code class="literal">env.Repository(directory)</code>
+    </span></dt><dd><p>
+Specifies that
+<code class="varname">directory</code>
+is a repository to be searched for files.
+Multiple calls to
+<code class="function">Repository</code>
+are legal,
+and each one adds to the list of
+repositories that will be searched.
+</p><p>
+To
+<code class="filename">scons</code>,
+a repository is a copy of the source tree,
+from the top-level directory on down,
+which may contain
+both source files and derived files
+that can be used to build targets in
+the local source tree.
+The canonical example would be an
+official source tree maintained by an integrator.
+If the repository contains derived files,
+then the derived files should have been built using
+<code class="filename">scons</code>,
+so that the repository contains the necessary
+signature information to allow
+<code class="filename">scons</code>
+to figure out when it is appropriate to
+use the repository copy of a derived file,
+instead of building one locally.
+</p><p>
+Note that if an up-to-date derived file
+already exists in a repository,
+<code class="filename">scons</code>
+will
+<span class="emphasis"><em>not</em></span>
+make a copy in the local directory tree.
+In order to guarantee that a local copy
+will be made,
+use the
+<a class="link" href="apd.html#f-Local"><code class="function">Local</code></a>
+method.
+</p></dd><dt><a name="f-Requires"></a><span class="term">
+      <code class="literal">Requires(target, prerequisite)</code>
+    , </span><span class="term">
+      <code class="literal">env.Requires(target, prerequisite)</code>
+    </span></dt><dd><p>
+Specifies an order-only relationship
+between the specified target file(s)
+and the specified prerequisite file(s).
+The prerequisite file(s)
+will be (re)built, if necessary,
+<span class="emphasis"><em>before</em></span>
+the target file(s),
+but the target file(s) do not actually
+depend on the prerequisites
+and will not be rebuilt simply because
+the prerequisite file(s) change.
+</p><p>
+Example:
+</p><pre class="screen">
+env.Requires('foo', 'file-that-must-be-built-before-foo')
+</pre></dd><dt><a name="f-Return"></a><span class="term">
+      <code class="literal">Return([vars..., stop=])</code>
+    </span></dt><dd><p>
+By default,
+this stops processing the current SConscript
+file and returns to the calling SConscript file
+the values of the variables named in the
+<code class="varname">vars</code>
+string arguments.
+Multiple strings contaning variable names may be passed to
+<code class="function">Return</code>.
+Any strings that contain white space
+</p><p>
+The optional
+<code class="literal">stop=</code>
+keyword argument may be set to a false value
+to continue processing the rest of the SConscript
+file after the
+<code class="function">Return</code>
+call.
+This was the default behavior prior to SCons 0.98.
+However, the values returned
+are still the values of the variables in the named
+<code class="varname">vars</code>
+at the point
+<code class="function">Return</code>
+is called.
+</p><p>
+Examples:
+</p><pre class="screen">
+# Returns without returning a value.
+Return()
+
+# Returns the value of the 'foo' Python variable.
+Return("foo")
+
+# Returns the values of the Python variables 'foo' and 'bar'.
+Return("foo", "bar")
+
+# Returns the values of Python variables 'val1' and 'val2'.
+Return('val1 val2')
+</pre></dd><dt><a name="f-Scanner"></a><span class="term">
+      <code class="literal">Scanner(function, [argument, keys, path_function, node_class, node_factory, scan_check, recursive])</code>
+    , </span><span class="term">
+      <code class="literal">env.Scanner(function, [argument, keys, path_function, node_class, node_factory, scan_check, recursive])</code>
+    </span></dt><dd><p>
+Creates a Scanner object for
+the specified
+<code class="varname">function</code>.
+See the section "Scanner Objects,"
+below, for a complete explanation of the arguments and behavior.
+</p></dd><dt><a name="f-SCCS"></a><span class="term">
+      <code class="literal">env.SCCS()</code>
+    </span></dt><dd><p>
+A factory function that
+returns a Builder object
+to be used to fetch source files
+from SCCS.
+The returned Builder
+is intended to be passed to the
+<a class="link" href="apd.html#f-SourceCode"><code class="function">SourceCode</code></a>
+function.
+</p><p>
+Example:
+</p><pre class="screen">
+env.SourceCode('.', env.SCCS())
+</pre><p>
+Note that
+<code class="filename">scons</code>
+will fetch source files
+from SCCS subdirectories automatically,
+so configuring SCCS
+as demonstrated in the above example
+should only be necessary if
+you are fetching from
+<code class="filename">s.SCCS</code>
+files in the same
+directory as the source files,
+or if you need to explicitly specify SCCS
+for a specific subdirectory.
+</p></dd><dt><a name="f-SConscript"></a><span class="term">
+      <code class="literal">SConscript(scripts, [exports, variant_dir, duplicate])</code>
+    , </span><span class="term">
+      <code class="literal">env.SConscript(scripts, [exports, variant_dir, duplicate])</code>
+    , </span><span class="term">
+      <code class="literal">SConscript(dirs=subdirs, [name=script, exports, variant_dir, duplicate])</code>
+    , </span><span class="term">
+      <code class="literal">env.SConscript(dirs=subdirs, [name=script, exports, variant_dir, duplicate])</code>
+    </span></dt><dd><p>
+This tells
+<code class="filename">scons</code>
+to execute
+one or more subsidiary SConscript (configuration) files.
+Any variables returned by a called script using
+<a class="link" href="apd.html#f-Return"><code class="function">Return</code></a>
+will be returned by the call to
+<code class="function">SConscript</code>.
+There are two ways to call the
+<code class="function">SConscript</code>
+function.
+</p><p>
+The first way you can call
+<code class="function">SConscript</code>
+is to explicitly specify one or more
+<code class="varname">scripts</code>
+as the first argument.
+A single script may be specified as a string;
+multiple scripts must be specified as a list
+(either explicitly or as created by
+a function like
+<code class="function">Split</code>).
+Examples:
+</p><pre class="screen">
+SConscript('SConscript')      # run SConscript in the current directory
+SConscript('src/SConscript')  # run SConscript in the src directory
+SConscript(['src/SConscript', 'doc/SConscript'])
+config = SConscript('MyConfig.py')
+</pre><p>
+The second way you can call
+<code class="function">SConscript</code>
+is to specify a list of (sub)directory names
+as a
+<code class="literal">dirs=</code><code class="varname">subdirs</code>
+keyword argument.
+In this case,
+<code class="filename">scons</code>
+will, by default,
+execute a subsidiary configuration file named
+<code class="filename">SConscript</code>
+in each of the specified directories.
+You may specify a name other than
+<code class="filename">SConscript</code>
+by supplying an optional
+<code class="literal">name=</code><code class="varname">script</code>
+keyword argument.
+The first three examples below have the same effect
+as the first three examples above:
+</p><pre class="screen">
+SConscript(dirs='.')      # run SConscript in the current directory
+SConscript(dirs='src')    # run SConscript in the src directory
+SConscript(dirs=['src', 'doc'])
+SConscript(dirs=['sub1', 'sub2'], name='MySConscript')
+</pre><p>
+The optional
+<code class="varname">exports</code>
+argument provides a list of variable names or a dictionary of
+named values to export to the
+<code class="varname">script(s)</code>.
+These variables are locally exported only to the specified
+<code class="varname">script(s)</code>,
+and do not affect the global pool of variables used by the
+<code class="function">Export</code>
+function.
+
+The subsidiary
+<code class="varname">script(s)</code>
+must use the
+<a class="link" href="apd.html#f-Import"><code class="function">Import</code></a>
+function to import the variables.
+Examples:
+</p><pre class="screen">
+foo = SConscript('sub/SConscript', exports='env')
+SConscript('dir/SConscript', exports=['env', 'variable'])
+SConscript(dirs='subdir', exports='env variable')
+SConscript(dirs=['one', 'two', 'three'], exports='shared_info')
+</pre><p>
+If the optional
+<code class="varname">variant_dir</code>
+argument is present, it causes an effect equivalent to the
+<a class="link" href="apd.html#f-VariantDir"><code class="function">VariantDir</code></a>
+method described below.
+(If
+<code class="varname">variant_dir</code>
+is not present, the
+
+<code class="varname">duplicate</code>
+
+argument is ignored.)
+The
+<code class="varname">variant_dir</code>
+
+argument is interpreted relative to the directory of the calling
+<code class="filename">SConscript</code>
+file.
+See the description of the
+<code class="function">VariantDir</code>
+function below for additional details and restrictions.
+</p><p>
+If
+<code class="varname">variant_dir</code>
+is present,
+
+the source directory is the directory in which the
+<code class="filename">SConscript</code>
+file resides and the
+<code class="filename">SConscript</code>
+file is evaluated as if it were in the
+<code class="varname">variant_dir</code>
+directory:
+</p><pre class="screen">
+SConscript('src/SConscript', variant_dir = 'build')
+</pre><p>
+is equivalent to
+</p><pre class="screen">
+VariantDir('build', 'src')
+SConscript('build/SConscript')
+</pre><p>
+This later paradigm is often used when the sources are
+in the same directory as the
+<code class="filename">SConstruct</code>:
+</p><pre class="screen">
+SConscript('SConscript', variant_dir = 'build')
+</pre><p>
+is equivalent to
+</p><pre class="screen">
+VariantDir('build', '.')
+SConscript('build/SConscript')
+</pre><p>
+
+</p><p>
+Here are some composite examples:
+</p><pre class="screen">
+# collect the configuration information and use it to build src and doc
+shared_info = SConscript('MyConfig.py')
+SConscript('src/SConscript', exports='shared_info')
+SConscript('doc/SConscript', exports='shared_info')
+</pre><pre class="screen">
+# build debugging and production versions.  SConscript
+# can use Dir('.').path to determine variant.
+SConscript('SConscript', variant_dir='debug', duplicate=0)
+SConscript('SConscript', variant_dir='prod', duplicate=0)
+</pre><pre class="screen">
+# build debugging and production versions.  SConscript
+# is passed flags to use.
+opts = { 'CPPDEFINES' : ['DEBUG'], 'CCFLAGS' : '-pgdb' }
+SConscript('SConscript', variant_dir='debug', duplicate=0, exports=opts)
+opts = { 'CPPDEFINES' : ['NODEBUG'], 'CCFLAGS' : '-O' }
+SConscript('SConscript', variant_dir='prod', duplicate=0, exports=opts)
+</pre><pre class="screen">
+# build common documentation and compile for different architectures
+SConscript('doc/SConscript', variant_dir='build/doc', duplicate=0)
+SConscript('src/SConscript', variant_dir='build/x86', duplicate=0)
+SConscript('src/SConscript', variant_dir='build/ppc', duplicate=0)
+</pre></dd><dt><a name="f-SConscriptChdir"></a><span class="term">
+      <code class="literal">SConscriptChdir(value)</code>
+    , </span><span class="term">
+      <code class="literal">env.SConscriptChdir(value)</code>
+    </span></dt><dd><p>
+By default,
+<code class="filename">scons</code>
+changes its working directory
+to the directory in which each
+subsidiary SConscript file lives.
+This behavior may be disabled
+by specifying either:
+</p><pre class="screen">
+SConscriptChdir(0)
+env.SConscriptChdir(0)
+</pre><p>
+in which case
+<code class="filename">scons</code>
+will stay in the top-level directory
+while reading all SConscript files.
+(This may be necessary when building from repositories,
+when all the directories in which SConscript files may be found
+don't necessarily exist locally.)
+You may enable and disable
+this ability by calling
+SConscriptChdir()
+multiple times.
+</p><p>
+Example:
+</p><pre class="screen">
+env = Environment()
+SConscriptChdir(0)
+SConscript('foo/SConscript')	# will not chdir to foo
+env.SConscriptChdir(1)
+SConscript('bar/SConscript')	# will chdir to bar
+</pre></dd><dt><a name="f-SConsignFile"></a><span class="term">
+      <code class="literal">SConsignFile([file, dbm_module])</code>
+    , </span><span class="term">
+      <code class="literal">env.SConsignFile([file, dbm_module])</code>
+    </span></dt><dd><p>
+This tells
+<code class="filename">scons</code>
+to store all file signatures
+in the specified database
+<code class="varname">file</code>.
+If the
+<code class="varname">file</code>
+name is omitted,
+<code class="filename">.sconsign</code>
+is used by default.
+(The actual file name(s) stored on disk
+may have an appropriated suffix appended
+by the
+<code class="varname"> dbm_module</code>.)
+If
+<code class="varname">file</code>
+is not an absolute path name,
+the file is placed in the same directory as the top-level
+<code class="filename">SConstruct</code>
+file.
+</p><p>
+If
+<code class="varname">file</code>
+is
+<code class="literal">None</code>,
+then
+<code class="filename">scons</code>
+will store file signatures
+in a separate
+<code class="filename">.sconsign</code>
+file in each directory,
+not in one global database file.
+(This was the default behavior
+prior to SCons 0.96.91 and 0.97.)
+</p><p>
+The optional
+<code class="varname">dbm_module</code>
+argument can be used to specify
+which Python database module
+The default is to use a custom
+<code class="filename">SCons.dblite</code>
+module that uses pickled
+Python data structures,
+and which works on all Python versions.
+</p><p>
+Examples:
+</p><pre class="screen">
+# Explicitly stores signatures in ".sconsign.dblite"
+# in the top-level SConstruct directory (the
+# default behavior).
+SConsignFile()
+
+# Stores signatures in the file "etc/scons-signatures"
+# relative to the top-level SConstruct directory.
+SConsignFile("etc/scons-signatures")
+
+# Stores signatures in the specified absolute file name.
+SConsignFile("/home/me/SCons/signatures")
+
+# Stores signatures in a separate .sconsign file
+# in each directory.
+SConsignFile(None)
+</pre></dd><dt><a name="f-SetDefault"></a><span class="term">
+      <code class="literal">env.SetDefault(key=val, [...])</code>
+    </span></dt><dd><p>
+Sets construction variables to default values specified with the keyword
+arguments if (and only if) the variables are not already set.
+The following statements are equivalent:
+</p><pre class="screen">
+env.SetDefault(FOO = 'foo')
+
+if 'FOO' not in env: env['FOO'] = 'foo'
+</pre></dd><dt><a name="f-SetOption"></a><span class="term">
+      <code class="literal">SetOption(name, value)</code>
+    , </span><span class="term">
+      <code class="literal">env.SetOption(name, value)</code>
+    </span></dt><dd><p>
+This function provides a way to set a select subset of the scons command
+line options from a SConscript file. The options supported are:
+</p><p>
+</p><div class="variablelist"><dl><dt><span class="term"><code class="literal">clean</code></span></dt><dd><p>
+which corresponds to -c, --clean and --remove;
+</p></dd><dt><span class="term"><code class="literal">duplicate</code></span></dt><dd><p>
+which corresponds to --duplicate;
+</p></dd><dt><span class="term"><code class="literal">help</code></span></dt><dd><p>
+which corresponds to -h and --help;
+</p></dd><dt><span class="term"><code class="literal">implicit_cache</code></span></dt><dd><p>
+which corresponds to --implicit-cache;
+</p></dd><dt><span class="term"><code class="literal">max_drift</code></span></dt><dd><p>
+which corresponds to --max-drift;
+</p></dd><dt><span class="term"><code class="literal">no_exec</code></span></dt><dd><p>
+which corresponds to -n, --no-exec, --just-print, --dry-run and --recon;
+</p></dd><dt><span class="term"><code class="literal">num_jobs</code></span></dt><dd><p>
+which corresponds to -j and --jobs;
+</p></dd><dt><span class="term"><code class="literal">random</code></span></dt><dd><p>
+which corresponds to --random; and
+</p></dd><dt><span class="term"><code class="literal">stack_size</code></span></dt><dd><p>
+which corresponds to --stack-size.
+</p></dd></dl></div><p>
+</p><p>
+See the documentation for the
+corresponding command line object for information about each specific
+option.
+</p><p>
+Example:
+</p><pre class="screen">
+SetOption('max_drift', 1)
+</pre></dd><dt><a name="f-SideEffect"></a><span class="term">
+      <code class="literal">SideEffect(side_effect, target)</code>
+    , </span><span class="term">
+      <code class="literal">env.SideEffect(side_effect, target)</code>
+    </span></dt><dd><p>
+Declares
+<code class="varname">side_effect</code>
+as a side effect of building
+<code class="varname">target</code>.
+Both
+<code class="varname">side_effect</code>
+and
+<code class="varname">target</code>
+can be a list, a file name, or a node.
+A side effect is a target file that is created or updated
+as a side effect of building other targets.
+For example, a Windows PDB
+file is created as a side effect of building the .obj
+files for a static library,
+and various log files are created updated
+as side effects of various TeX commands.
+If a target is a side effect of multiple build commands,
+<code class="filename">scons</code>
+will ensure that only one set of commands
+is executed at a time.
+Consequently, you only need to use this method
+for side-effect targets that are built as a result of
+multiple build commands.
+</p><p>
+Because multiple build commands may update
+the same side effect file,
+by default the
+<code class="varname">side_effect</code>
+target is
+<span class="emphasis"><em>not</em></span>
+automatically removed
+when the
+<code class="varname">target</code>
+is removed by the
+<code class="option">-c</code>
+option.
+(Note, however, that the
+<code class="varname">side_effect</code>
+might be removed as part of
+cleaning the directory in which it lives.)
+If you want to make sure the
+<code class="varname">side_effect</code>
+is cleaned whenever a specific
+<code class="varname">target</code>
+is cleaned,
+you must specify this explicitly
+with the
+<a class="link" href="apd.html#f-Clean"><code class="function">Clean</code></a>
+or
+<code class="function">env.Clean</code>
+function.
+</p></dd><dt><a name="f-SourceCode"></a><span class="term">
+      <code class="literal">SourceCode(entries, builder)</code>
+    , </span><span class="term">
+      <code class="literal">env.SourceCode(entries, builder)</code>
+    </span></dt><dd><p>
+This function and its associate factory functions are deprecated.
+There is no replacement.
+The intended use was to keep a local tree in sync with an archive,
+but in actuality the function only causes the archive
+to be fetched on the first run.
+Synchronizing with the archive is best done external to <span class="application">SCons</span>.
+</p><p>
+Arrange for non-existent source files to
+be fetched from a source code management system
+using the specified
+<code class="varname">builder</code>.
+The specified
+<code class="varname">entries</code>
+may be a Node, string or list of both,
+and may represent either individual
+source files or directories in which
+source files can be found.
+</p><p>
+For any non-existent source files,
+<code class="filename">scons</code>
+will search up the directory tree
+and use the first
+<code class="function">SourceCode</code>
+builder it finds.
+The specified
+<code class="varname">builder</code>
+may be
+<code class="literal">None</code>,
+in which case
+<code class="filename">scons</code>
+will not use a builder to fetch
+source files for the specified
+<code class="varname">entries</code>,
+even if a
+<code class="function">SourceCode</code>
+builder has been specified
+for a directory higher up the tree.
+</p><p>
+<code class="filename">scons</code>
+will, by default,
+fetch files from SCCS or RCS subdirectories
+without explicit configuration.
+This takes some extra processing time
+to search for the necessary
+source code management files on disk.
+You can avoid these extra searches
+and speed up your build a little
+by disabling these searches as follows:
+</p><pre class="screen">
+env.SourceCode('.', None)
+</pre><p>
+Note that if the specified
+<code class="varname">builder</code>
+is one you create by hand,
+it must have an associated
+construction environment to use
+when fetching a source file.
+</p><p>
+<code class="filename">scons</code>
+provides a set of canned factory
+functions that return appropriate
+Builders for various popular
+source code management systems.
+Canonical examples of invocation include:
+</p><pre class="screen">
+env.SourceCode('.', env.BitKeeper('/usr/local/BKsources'))
+env.SourceCode('src', env.CVS('/usr/local/CVSROOT'))
+env.SourceCode('/', env.RCS())
+env.SourceCode(['f1.c', 'f2.c'], env.SCCS())
+env.SourceCode('no_source.c', None)
+</pre><p>
+
+</p></dd><dt><a name="f-SourceSignatures"></a><span class="term">
+      <code class="literal">SourceSignatures(type)</code>
+    , </span><span class="term">
+      <code class="literal">env.SourceSignatures(type)</code>
+    </span></dt><dd><p>
+Note:  Although it is not yet officially deprecated,
+use of this function is discouraged.
+See the
+<a class="link" href="apd.html#f-Decider"><code class="function">Decider</code></a>
+function for a more flexible and straightforward way
+to configure SCons' decision-making.
+</p><p>
+The
+<code class="function">SourceSignatures</code>
+function tells
+<code class="filename">scons</code>
+how to decide if a source file
+(a file that is not built from any other files)
+has changed since the last time it
+was used to build a particular target file.
+Legal values are
+<code class="literal">MD5</code>
+or
+<code class="literal">timestamp</code>.
+</p><p>
+If the environment method is used,
+the specified type of source signature
+is only used when deciding whether targets
+built with that environment are up-to-date or must be rebuilt.
+If the global function is used,
+the specified type of source signature becomes the default
+used for all decisions
+about whether targets are up-to-date.
+</p><p>
+<code class="literal">MD5</code>
+means
+<code class="filename">scons</code>
+decides that a source file has changed
+if the MD5 checksum of its contents has changed since
+the last time it was used to rebuild a particular target file.
+</p><p>
+<code class="literal">timestamp</code>
+means
+<code class="filename">scons</code>
+decides that a source file has changed
+if its timestamp (modification time) has changed since
+the last time it was used to rebuild a particular target file.
+(Note that although this is similar to the behavior of Make,
+by default it will also rebuild if the dependency is
+<span class="emphasis"><em>older</em></span>
+than the last time it was used to rebuild the target file.)
+</p><p>
+There is no different between the two behaviors
+for Python
+<code class="function">Value</code>
+node objects.
+</p><p>
+<code class="literal">MD5</code>
+signatures take longer to compute,
+but are more accurate than
+<code class="literal">timestamp</code>
+signatures.
+The default value is
+<code class="literal">MD5</code>.
+</p><p>
+Note that the default
+<a class="link" href="apd.html#f-TargetSignatures"><code class="function">TargetSignatures</code></a>
+setting (see below)
+is to use this
+<code class="function">SourceSignatures</code>
+setting for any target files that are used
+to build other target files.
+Consequently, changing the value of
+<code class="function">SourceSignatures</code>
+will, by default,
+affect the up-to-date decision for all files in the build
+(or all files built with a specific construction environment
+when
+<code class="function">env.SourceSignatures</code>
+is used).
+</p></dd><dt><a name="f-Split"></a><span class="term">
+      <code class="literal">Split(arg)</code>
+    , </span><span class="term">
+      <code class="literal">env.Split(arg)</code>
+    </span></dt><dd><p>
+Returns a list of file names or other objects.
+If arg is a string,
+it will be split on strings of white-space characters
+within the string,
+making it easier to write long lists of file names.
+If arg is already a list,
+the list will be returned untouched.
+If arg is any other type of object,
+it will be returned as a list
+containing just the object.
+</p><p>
+Example:
+</p><pre class="screen">
+files = Split("f1.c f2.c f3.c")
+files = env.Split("f4.c f5.c f6.c")
+files = Split("""
+	f7.c
+	f8.c
+	f9.c
+""")
+</pre></dd><dt><a name="f-subst"></a><span class="term">
+      <code class="literal">env.subst(input, [raw, target, source, conv])</code>
+    </span></dt><dd><p>
+Performs construction variable interpolation
+on the specified string or sequence argument
+<code class="varname">input</code>.
+</p><p>
+By default,
+leading or trailing white space will
+be removed from the result.
+and all sequences of white space
+will be compressed to a single space character.
+Additionally, any
+<code class="literal">$(</code>
+and
+<code class="literal">$)</code>
+character sequences will be stripped from the returned string,
+The optional
+<code class="varname">raw</code>
+argument may be set to
+<code class="literal">1</code>
+if you want to preserve white space and
+<code class="literal">$(</code>-<code class="literal">$)</code>
+sequences.
+The
+<code class="varname">raw</code>
+argument may be set to
+<code class="literal">2</code>
+if you want to strip
+all characters between
+any
+<code class="literal">$(</code>
+and
+<code class="literal">$)</code>
+pairs
+(as is done for signature calculation).
+</p><p>
+If the input is a sequence
+(list or tuple),
+the individual elements of
+the sequence will be expanded,
+and the results will be returned as a list.
+</p><p>
+The optional
+<code class="varname">target</code>
+and
+<code class="varname">source</code>
+keyword arguments
+must be set to lists of
+target and source nodes, respectively,
+if you want the
+<code class="envar">$TARGET</code>,
+<code class="envar">$TARGETS</code>,
+<code class="envar">$SOURCE</code>
+and
+<code class="envar">$SOURCES</code>
+to be available for expansion.
+This is usually necessary if you are
+calling
+<code class="function">env.subst</code>
+from within a Python function used
+as an SCons action.
+</p><p>
+Returned string values or sequence elements
+are converted to their string representation by default.
+The optional
+<code class="varname">conv</code>
+argument
+may specify a conversion function
+that will be used in place of
+the default.
+For example, if you want Python objects
+(including SCons Nodes)
+to be returned as Python objects,
+you can use the Python
+&#923;
+idiom to pass in an unnamed function
+that simply returns its unconverted argument.
+</p><p>
+Example:
+</p><pre class="screen">
+print env.subst("The C compiler is: $CC")
+
+def compile(target, source, env):
+    sourceDir = env.subst("${SOURCE.srcdir}",
+                          target=target,
+                          source=source)
+
+source_nodes = env.subst('$EXPAND_TO_NODELIST',
+                         conv=lambda x: x)
+</pre></dd><dt><a name="f-Tag"></a><span class="term">
+      <code class="literal">Tag(node, tags)</code>
+    </span></dt><dd><p>
+Annotates file or directory Nodes with
+information about how the
+<a class="link" href="apb.html#b-Package"><code class="function">Package</code></a>
+Builder should package those files or directories.
+All tags are optional.
+</p><p>
+Examples:
+</p><pre class="screen">
+# makes sure the built library will be installed with 0644 file
+# access mode
+Tag( Library( 'lib.c' ), UNIX_ATTR="0644" )
+
+# marks file2.txt to be a documentation file
+Tag( 'file2.txt', DOC )
+</pre></dd><dt><a name="f-TargetSignatures"></a><span class="term">
+      <code class="literal">TargetSignatures(type)</code>
+    , </span><span class="term">
+      <code class="literal">env.TargetSignatures(type)</code>
+    </span></dt><dd><p>
+Note:  Although it is not yet officially deprecated,
+use of this function is discouraged.
+See the
+<a class="link" href="apd.html#f-Decider"><code class="function">Decider</code></a>
+function for a more flexible and straightforward way
+to configure SCons' decision-making.
+</p><p>
+The
+<code class="function">TargetSignatures</code>
+function tells
+<code class="filename">scons</code>
+how to decide if a target file
+(a file that
+<span class="emphasis"><em>is</em></span>
+built from any other files)
+has changed since the last time it
+was used to build some other target file.
+Legal values are
+<code class="literal">"build"</code>;
+<code class="literal">"content"</code>
+(or its synonym
+<code class="literal">"MD5"</code>);
+<code class="literal">"timestamp"</code>;
+or
+<code class="literal">"source"</code>.
+</p><p>
+If the environment method is used,
+the specified type of target signature is only used
+for targets built with that environment.
+If the global function is used,
+the specified type of signature becomes the default
+used for all target files that
+don't have an explicit target signature type
+specified for their environments.
+</p><p>
+<code class="literal">"content"</code>
+(or its synonym
+<code class="literal">"MD5"</code>)
+means
+<code class="filename">scons</code>
+decides that a target file has changed
+if the MD5 checksum of its contents has changed since
+the last time it was used to rebuild some other target file.
+This means
+<code class="filename">scons</code>
+will open up
+MD5 sum the contents
+of target files after they're built,
+and may decide that it does not need to rebuild
+"downstream" target files if a file was
+rebuilt with exactly the same contents as the last time.
+</p><p>
+<code class="literal">"timestamp"</code>
+means
+<code class="filename">scons</code>
+decides that a target file has changed
+if its timestamp (modification time) has changed since
+the last time it was used to rebuild some other target file.
+(Note that although this is similar to the behavior of Make,
+by default it will also rebuild if the dependency is
+<span class="emphasis"><em>older</em></span>
+than the last time it was used to rebuild the target file.)
+</p><p>
+<code class="literal">"source"</code>
+means
+<code class="filename">scons</code>
+decides that a target file has changed
+as specified by the corresponding
+<code class="function">SourceSignatures</code>
+setting
+(<code class="literal">"MD5"</code>
+or
+<code class="literal">"timestamp"</code>).
+This means that
+<code class="filename">scons</code>
+will treat all input files to a target the same way,
+regardless of whether they are source files
+or have been built from other files.
+</p><p>
+<code class="literal">"build"</code>
+means
+<code class="filename">scons</code>
+decides that a target file has changed
+if it has been rebuilt in this invocation
+or if its content or timestamp have changed
+as specified by the corresponding
+<code class="function">SourceSignatures</code>
+setting.
+This "propagates" the status of a rebuilt file
+so that other "downstream" target files
+will always be rebuilt,
+even if the contents or the timestamp
+have not changed.
+</p><p>
+<code class="literal">"build"</code>
+signatures are fastest because
+<code class="literal">"content"</code>
+(or
+<code class="literal">"MD5"</code>)
+signatures take longer to compute,
+but are more accurate than
+<code class="literal">"timestamp"</code>
+signatures,
+and can prevent unnecessary "downstream" rebuilds
+when a target file is rebuilt to the exact same contents
+as the previous build.
+The
+<code class="literal">"source"</code>
+setting provides the most consistent behavior
+when other target files may be rebuilt from
+both source and target input files.
+The default value is
+<code class="literal">"source"</code>.
+</p><p>
+Because the default setting is
+<code class="literal">"source"</code>,
+using
+<code class="function">SourceSignatures</code>
+is generally preferable to
+<code class="function">TargetSignatures</code>,
+so that the up-to-date decision
+will be consistent for all files
+(or all files built with a specific construction environment).
+Use of
+<code class="function">TargetSignatures</code>
+provides specific control for how built target files
+affect their "downstream" dependencies.
+</p></dd><dt><a name="f-Tool"></a><span class="term">
+      <code class="literal">Tool(string, [toolpath, **kw])</code>
+    , </span><span class="term">
+      <code class="literal">env.Tool(string, [toolpath, **kw])</code>
+    </span></dt><dd><p>
+The
+<code class="function">Tool</code>
+form of the function
+returns a callable object
+that can be used to initialize
+a construction environment using the
+tools keyword of the Environment() method.
+The object may be called with a construction
+environment as an argument,
+in which case the object will
+add the necessary variables
+to the construction environment
+and the name of the tool will be added to the
+<a class="link" href="apa.html#cv-TOOLS"><code class="envar">$TOOLS</code></a>
+construction variable.
+</p><p>
+Additional keyword arguments are passed to the tool's
+<code class="function">generate</code>()
+method.
+</p><p>
+Examples:
+</p><pre class="screen">
+env = Environment(tools = [ Tool('msvc') ])
+
+env = Environment()
+t = Tool('msvc')
+t(env)  # adds 'msvc' to the TOOLS variable
+u = Tool('opengl', toolpath = ['tools'])
+u(env)  # adds 'opengl' to the TOOLS variable
+</pre><p>
+The
+<code class="function">env.Tool</code>
+form of the function
+applies the callable object for the specified tool
+<code class="varname">string</code>
+to the environment through which the method was called.
+</p><p>
+Additional keyword arguments are passed to the tool's
+<code class="function">generate</code>()
+method.
+</p><pre class="screen">
+env.Tool('gcc')
+env.Tool('opengl', toolpath = ['build/tools'])
+</pre></dd><dt><a name="f-Value"></a><span class="term">
+      <code class="literal">Value(value, [built_value])</code>
+    , </span><span class="term">
+      <code class="literal">env.Value(value, [built_value])</code>
+    </span></dt><dd><p>
+Returns a Node object representing the specified Python value.  Value
+Nodes can be used as dependencies of targets.  If the result of
+calling
+<code class="function">str</code>(<code class="varname">value</code>)
+changes between SCons runs, any targets depending on
+<code class="function">Value</code>(<code class="varname">value</code>)
+will be rebuilt.
+(This is true even when using timestamps to decide if
+files are up-to-date.)
+When using timestamp source signatures, Value Nodes'
+timestamps are equal to the system time when the Node is created.
+</p><p>
+The returned Value Node object has a
+<code class="function">write</code>()
+method that can be used to "build" a Value Node
+by setting a new value.
+The optional
+<code class="varname">built_value</code>
+argument can be specified
+when the Value Node is created
+to indicate the Node should already be considered
+"built."
+There is a corresponding
+<code class="function">read</code>()
+method that will return the built value of the Node.
+</p><p>
+Examples:
+</p><pre class="screen">
+env = Environment()
+
+def create(target, source, env):
+    # A function that will write a 'prefix=$SOURCE'
+    # string into the file name specified as the
+    # $TARGET.
+    f = open(str(target[0]), 'wb')
+    f.write('prefix=' + source[0].get_contents())
+
+# Fetch the prefix= argument, if any, from the command
+# line, and use /usr/local as the default.
+prefix = ARGUMENTS.get('prefix', '/usr/local')
+
+# Attach a .Config() builder for the above function action
+# to the construction environment.
+env['BUILDERS']['Config'] = Builder(action = create)
+env.Config(target = 'package-config', source = Value(prefix))
+
+def build_value(target, source, env):
+    # A function that "builds" a Python Value by updating
+    # the the Python value with the contents of the file
+    # specified as the source of the Builder call ($SOURCE).
+    target[0].write(source[0].get_contents())
+
+output = env.Value('before')
+input = env.Value('after')
+
+# Attach a .UpdateValue() builder for the above function
+# action to the construction environment.
+env['BUILDERS']['UpdateValue'] = Builder(action = build_value)
+env.UpdateValue(target = Value(output), source = Value(input))
+</pre></dd><dt><a name="f-VariantDir"></a><span class="term">
+      <code class="literal">VariantDir(variant_dir, src_dir, [duplicate])</code>
+    , </span><span class="term">
+      <code class="literal">env.VariantDir(variant_dir, src_dir, [duplicate])</code>
+    </span></dt><dd><p>
+Use the
+<code class="function">VariantDir</code>
+function to create a copy of your sources in another location:
+if a name under
+<code class="varname">variant_dir</code>
+is not found but exists under
+<code class="varname">src_dir</code>,
+the file or directory is copied to
+<code class="varname">variant_dir</code>.
+Target files can be built in a different directory
+than the original sources by simply refering to the sources (and targets)
+within the variant tree.
+</p><p>
+<code class="function">VariantDir</code>
+can be called multiple times with the same
+<code class="varname">src_dir</code>
+to set up multiple builds with different options
+(<code class="varname">variants</code>).
+The
+<code class="varname">src_dir</code>
+location must be in or underneath the SConstruct file's directory, and
+<code class="varname">variant_dir</code>
+may not be underneath
+<code class="varname">src_dir</code>.
+
+</p><p>
+The default behavior is for
+<code class="filename">scons</code>
+to physically duplicate the source files in the variant tree.
+Thus, a build performed in the variant tree is guaranteed to be identical
+to a build performed in the source tree even if
+intermediate source files are generated during the build,
+or preprocessors or other scanners search for included files
+relative to the source file,
+or individual compilers or other invoked tools are hard-coded
+to put derived files in the same directory as source files.
+</p><p>
+If possible on the platform,
+the duplication is performed by linking rather than copying;
+see also the
+<code class="option">--duplicate</code>
+command-line option.
+Moreover, only the files needed for the build are duplicated;
+files and directories that are not used are not present in
+<code class="varname">variant_dir</code>.
+</p><p>
+Duplicating the source tree may be disabled by setting the
+<code class="literal">duplicate</code>
+argument to
+<code class="literal">0</code>
+(zero).
+This will cause
+<code class="filename">scons</code>
+to invoke Builders using the path names of source files in
+<code class="varname">src_dir</code>
+and the path names of derived files within
+<code class="varname">variant_dir</code>.
+This is always more efficient than
+<code class="literal">duplicate=1</code>,
+and is usually safe for most builds
+(but see above for cases that may cause problems).
+</p><p>
+Note that
+<code class="function">VariantDir</code>
+works most naturally with a subsidiary SConscript file.
+However, you would then call the subsidiary SConscript file
+not in the source directory, but in the
+<code class="varname">variant_dir</code>,
+regardless of the value of
+<code class="literal">duplicate</code>.
+This is how you tell
+<code class="filename">scons</code>
+which variant of a source tree to build:
+</p><pre class="screen">
+# run src/SConscript in two variant directories
+VariantDir('build/variant1', 'src')
+SConscript('build/variant1/SConscript')
+VariantDir('build/variant2', 'src')
+SConscript('build/variant2/SConscript')
+</pre><p>
+See also the
+<a class="link" href="apd.html#f-SConscript"><code class="function">SConscript</code></a>
+function, described above,
+for another way to specify a variant directory
+in conjunction with calling a subsidiary SConscript file.
+</p><p>
+Examples:
+</p><pre class="screen">
+# use names in the build directory, not the source directory
+VariantDir('build', 'src', duplicate=0)
+Program('build/prog', 'build/source.c')
+</pre><pre class="screen">
+# this builds both the source and docs in a separate subtree
+VariantDir('build', '.', duplicate=0)
+SConscript(dirs=['build/src','build/doc'])
+</pre><pre class="screen">
+# same as previous example, but only uses SConscript
+SConscript(dirs='src', variant_dir='build/src', duplicate=0)
+SConscript(dirs='doc', variant_dir='build/doc', duplicate=0)
+</pre></dd><dt><a name="f-WhereIs"></a><span class="term">
+      <code class="literal">WhereIs(program, [path, pathext, reject])</code>
+    , </span><span class="term">
+      <code class="literal">env.WhereIs(program, [path, pathext, reject])</code>
+    </span></dt><dd><p>
+Searches for the specified executable
+<code class="varname">program</code>,
+returning the full path name to the program
+if it is found,
+and returning None if not.
+Searches the specified
+<code class="varname">path</code>,
+the value of the calling environment's PATH
+(<code class="literal">env['ENV']['PATH']</code>),
+or the user's current external PATH
+(<code class="literal">os.environ['PATH']</code>)
+by default.
+On Windows systems, searches for executable
+programs with any of the file extensions
+listed in the specified
+<code class="varname">pathext</code>,
+the calling environment's PATHEXT
+(<code class="literal">env['ENV']['PATHEXT']</code>)
+or the user's current PATHEXT
+(<code class="literal">os.environ['PATHEXT']</code>)
+by default.
+Will not select any
+path name or names
+in the specified
+<code class="varname">reject</code>
+list, if any.
+</p></dd></dl></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="apc.html">Prev</a> </td><td width="20%" align="center"> </td><td width="40%" align="right"> <a accesskey="n" href="ape.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Appendix C. Tools </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Appendix E. Handling Common Tasks</td></tr></table></div></body></html>

@@ -1,0 +1,158 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>7.3. Controlling the Execution Environment for Issued Commands</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.7.0"><link rel="up" href="ch07.html" title="Chapter 7. Environments"><link rel="prev" href="ch07s02.html" title="7.2. Construction Environments"><link rel="next" href="ch07s04.html" title="7.4. Using the toolpath for external Tools"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">7.3. Controlling the Execution Environment for Issued Commands</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch07s02.html">Prev</a> </td><th width="60%" align="center">Chapter 7. Environments</th><td width="20%" align="right"> <a accesskey="n" href="ch07s04.html">Next</a></td></tr></table><hr></div><div class="section" title="7.3. Controlling the Execution Environment for Issued Commands"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="sect-execution-environments"></a>7.3. Controlling the Execution Environment for Issued Commands</h2></div></div></div><p>
+
+      When <span class="application">SCons</span> builds a target file,
+      it does not execute the commands with
+      the external environment
+      that you used to execute <span class="application">SCons</span>.
+      Instead, it builds an execution environment from the values
+      stored in the <a class="link" href="apa.html#cv-ENV"><code class="envar">$ENV</code></a> <span>construction variable</span>
+      and uses that for executing commands.
+
+    </p><p>
+
+      The most important ramification of this behavior
+      is that the <code class="envar">PATH</code> environment variable,
+      which controls where the operating system
+      will look for commands and utilities,
+      will almost certainly not be the same as in the external environment
+      from which you called <span class="application">SCons</span>.
+      This means that <span class="application">SCons</span> might not
+      necessarily find all of the tools
+      that you can successfully execute from the command line.
+
+    </p><p>
+
+      The default value of the <code class="envar">PATH</code> environment variable
+      on a POSIX system
+      is <code class="literal">/usr/local/bin:/opt/bin:/bin:/usr/bin:/snap/bin</code>.
+      The default value of the <code class="envar">PATH</code> environment variable
+      on a Windows system comes from the Windows registry
+      value for the command interpreter.
+      If you want to execute any commands--compilers, linkers, etc.--that
+      are not in these default locations,
+      you need to set the <code class="envar">PATH</code> value
+      in the <code class="envar">$ENV</code> dictionary
+      in your construction environment.
+
+    </p><p>
+
+      The simplest way to do this is to initialize explicitly
+      the value when you create the construction environment;
+      this is one way to do that:
+
+    </p><pre class="programlisting">
+path = ['/usr/local/bin', '/bin', '/usr/bin']
+env = Environment(ENV={'PATH': path})
+    </pre><p>
+
+    Assigning a dictionary to the <code class="envar">$ENV</code>
+    construction variable in this way
+    completely resets the execution environment,
+    so that the only variable that will be
+    set when external commands are executed
+    will be the <code class="envar">PATH</code> value.
+    If you want to use the rest of
+    the values in <code class="envar">$ENV</code> and only
+    set the value of <code class="envar">PATH</code>, you can assign a value only
+    to that variable:
+
+    </p><pre class="programlisting">
+env['ENV']['PATH'] = ['/usr/local/bin', '/bin', '/usr/bin']
+    </pre><p>
+
+    Note that <span class="application">SCons</span> does allow you to define
+    the directories in the <code class="envar">PATH</code> in a string with paths
+    separated by the pathname-separator character
+    for your system (<code class="literal">':'</code> on POSIX systems,
+    <code class="literal">';'</code> on Windows).
+
+    </p><pre class="programlisting">
+env['ENV']['PATH'] = '/usr/local/bin:/bin:/usr/bin'
+    </pre><p>
+
+    But doing so makes your <code class="filename">SConscript</code> file less portable,
+    since it will be correct only for the system type that
+    matches the separator. You can use the <span class="application">Python</span>
+    <code class="varname">os.pathsep</code> for for greater portability -
+    don't worry too much if this <span class="application">Python</span> syntax doesn't make sense
+    since there are other ways available:
+
+    </p><pre class="programlisting">
+import os
+env['ENV']['PATH'] = os.pathsep.join(['/usr/local/bin', '/bin', '/usr/bin'])
+    </pre><div class="section" title="7.3.1. Propagating PATH From the External Environment"><div class="titlepage"><div><div><h3 class="title"><a name="id1349"></a>7.3.1. Propagating <code class="envar">PATH</code> From the External Environment</h3></div></div></div><p>
+
+      You may want to propagate the external environment <code class="envar">PATH</code>
+      to the execution environment for commands.
+      You do this by initializing the <code class="envar">PATH</code>
+      variable with the <code class="envar">PATH</code> value from
+      the <code class="varname">os.environ</code>
+      dictionary,
+      which is <span class="application">Python</span>'s way of letting you
+      get at the external environment:
+
+      </p><pre class="programlisting">
+import os
+env = Environment(ENV={'PATH': os.environ['PATH']})
+      </pre><p>
+
+      Alternatively, you may find it easier
+      to just propagate the entire external
+      environment to the execution environment
+      for commands.
+      This is simpler to code than explicity
+      selecting the <code class="envar">PATH</code> value:
+
+      </p><pre class="programlisting">
+import os
+env = Environment(ENV=os.environ.copy())
+      </pre><p>
+
+      Either of these will guarantee that
+      <span class="application">SCons</span> will be able to execute
+      any command that you can execute from the command line.
+      The drawback is that the build can behave
+      differently if it's run by people with
+      different <code class="envar">PATH</code> values in their environment--for example,
+      if both the <code class="literal">/bin</code> and
+      <code class="literal">/usr/local/bin</code> directories
+      have different <span class="application">cc</span> commands,
+      then which one will be used to compile programs
+      will depend on which directory is listed
+      first in the user's <code class="envar">PATH</code> variable.
+
+      </p></div><div class="section" title="7.3.2. Adding to PATH Values in the Execution Environment"><div class="titlepage"><div><div><h3 class="title"><a name="id1351"></a>7.3.2. Adding to <code class="varname">PATH</code> Values in the Execution Environment</h3></div></div></div><p>
+
+      One of the most common requirements
+      for manipulating a variable in the execution environment
+      is to add one or more custom directories to a path search variable
+      like <code class="envar">PATH</code> on Linux or POSIX systems,
+      or <code class="envar">%PATH%</code> on Windows,
+      so that a locally-installed compiler or other utility
+      can be found when <span class="application">SCons</span> tries to execute it to update a target.
+      <span class="application">SCons</span> provides <a class="link" href="apd.html#f-PrependENVPath"><code class="function">env.PrependENVPath</code></a>
+      and <a class="link" href="apd.html#f-AppendENVPath"><code class="function">env.AppendENVPath</code></a> functions
+      to make adding things to execution variables convenient.
+      You call these functions by specifying the variable
+      to which you want the value added,
+      and then value itself.
+      So to add some <code class="filename">/usr/local</code> directories
+      to the <code class="envar">$PATH</code> and <code class="envar">$LIB</code> variables,
+      you might:
+
+      </p><pre class="programlisting">
+env = Environment(ENV=os.environ.copy())
+env.PrependENVPath('PATH', '/usr/local/bin')
+env.AppendENVPath('LIB', '/usr/local/lib')
+      </pre><p>
+
+      Note that the added values are strings,
+      and if you want to add multiple directories to
+      a variable like <code class="envar">$PATH</code>,
+      you must include the path separator character
+      in the string
+      (<code class="literal">:</code> on Linux or POSIX,
+      <code class="literal">;</code> on Windows, or use
+      <code class="literal">os.pathsep</code> for portability).
+
+      </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch07s02.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch07.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch07s04.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">7.2. Construction Environments </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 7.4. Using the toolpath for external Tools</td></tr></table></div></body></html>

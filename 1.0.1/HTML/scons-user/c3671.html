@@ -1,0 +1,281 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Not Writing a Builder:  the Command Builder</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 1.0.1"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Where To Put Your Custom Builders and Tools"
+HREF="x3627.html"><LINK
+REL="NEXT"
+TITLE="Pseudo-Builders:  the AddMethod function"
+HREF="c3707.html"></HEAD
+><BODY
+CLASS="chapter"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 1.0.1</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x3627.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="c3707.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="chapter"
+><H1
+><A
+NAME="chap-builders-commands"
+></A
+>Chapter 20. Not Writing a Builder:  the <CODE
+CLASS="function"
+>Command</CODE
+> Builder</H1
+><P
+>&#13;
+  Creating a <CODE
+CLASS="classname"
+>Builder</CODE
+> and attaching it to a <TT
+CLASS="literal"
+>construction environment</TT
+>
+  allows for a lot of flexibility when you
+  want to re-use actions
+  to build multiple files of the same type.
+  This can, however, be cumbersome
+  if you only need to execute one specific command
+  to build a single file (or group of files).
+  For these situations, <SPAN
+CLASS="application"
+>SCons</SPAN
+> supports a
+  <CODE
+CLASS="function"
+>Command</CODE
+> <CODE
+CLASS="classname"
+>Builder</CODE
+> that arranges
+  for a specific action to be executed
+  to build a specific file or files.
+  This looks a lot like the other builders
+  (like <A
+HREF="a8284.html#b-Program"
+><CODE
+CLASS="function"
+>Program</CODE
+></A
+>, <A
+HREF="a8284.html#b-Object"
+><CODE
+CLASS="function"
+>Object</CODE
+></A
+>, etc.),
+  but takes as an additional argument
+  the command to be executed to build the file:
+
+  </P
+><PRE
+CLASS="programlisting"
+>&#13;     env = Environment()
+     env.Command('foo.out', 'foo.in', "sed 's/x/y/' &#60; $SOURCE &#62; $TARGET")
+  </PRE
+><P
+>&#13;
+  When executed,
+  <SPAN
+CLASS="application"
+>SCons</SPAN
+> runs the specified command,
+  substituting <A
+HREF="a4754.html#cv-SOURCE"
+><CODE
+CLASS="envar"
+>$SOURCE</CODE
+></A
+> and <A
+HREF="a4754.html#cv-TARGET"
+><CODE
+CLASS="envar"
+>$TARGET</CODE
+></A
+>
+  as expected:
+
+  </P
+><PRE
+CLASS="screen"
+>&#13;    % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+    sed 's/x/y/' &#60; foo.in &#62; foo.out
+  </PRE
+><P
+>&#13;
+  This is often more convenient than
+  creating a <CODE
+CLASS="classname"
+>Builder</CODE
+> object
+  and adding it to the <A
+HREF="a4754.html#cv-BUILDERS"
+><CODE
+CLASS="envar"
+>$BUILDERS</CODE
+></A
+> variable
+  of a <TT
+CLASS="literal"
+>construction environment</TT
+>
+
+  </P
+><P
+>&#13;
+  Note that the action you specify to the
+  <CODE
+CLASS="function"
+>Command</CODE
+> <CODE
+CLASS="classname"
+>Builder</CODE
+> can be any legal <SPAN
+CLASS="application"
+>SCons</SPAN
+> <CODE
+CLASS="classname"
+>Action</CODE
+>,
+  such as a Python function:
+
+  </P
+><PRE
+CLASS="programlisting"
+>&#13;     env = Environment()
+     def build(target, source, env):
+         # Whatever it takes to build
+         return None
+     env.Command('foo.out', 'foo.in', build)
+  </PRE
+><P
+>&#13;
+  Which executes as follows:
+
+  </P
+><PRE
+CLASS="screen"
+>&#13;    % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+    build(["foo.out"], ["foo.in"])
+  </PRE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x3627.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="c3707.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Where To Put Your Custom Builders and Tools</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Pseudo-Builders:  the AddMethod function</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

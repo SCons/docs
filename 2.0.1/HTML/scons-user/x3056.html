@@ -1,0 +1,197 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Creating a Directory:  The Mkdir Factory</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 2.0.1"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Platform-Independent File System Manipulation"
+HREF="c2968.html"><LINK
+REL="PREVIOUS"
+TITLE="Updating the Modification Time of a File:  The Touch Factory"
+HREF="x3047.html"><LINK
+REL="NEXT"
+TITLE="Changing File or Directory Permissions:  The Chmod Factory"
+HREF="x3065.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 2.0.1</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x3047.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 14. Platform-Independent File System Manipulation</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x3065.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN3056"
+>14.5. Creating a Directory:  The <CODE
+CLASS="function"
+>Mkdir</CODE
+> Factory</A
+></H1
+><P
+>&#13;
+    If you need to create a directory,
+    use the <CODE
+CLASS="function"
+>Mkdir</CODE
+> factory.
+    For example, if we need to process
+    a file in a temporary directory
+    in which the processing tool
+    will create other files that we don't care about, 
+    you could use:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;      Command("file.out", "file.in",
+              [
+                Delete("tempdir"),
+                Mkdir("tempdir"),
+                Copy("tempdir/${SOURCE.file}", "$SOURCE"),
+                "process tempdir",
+                Move("$TARGET", "tempdir/output_file"),
+                Delete("tempdir"),
+              ])
+    </PRE
+><P
+>&#13;
+    Which executes as:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      Delete("tempdir")
+      Mkdir("tempdir")
+      Copy("tempdir/file.in", "file.in")
+      process tempdir
+      Move("file.out", "tempdir/output_file")
+      scons: *** [file.out] tempdir/output_file: No such file or directory
+    </PRE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x3047.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x3065.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Updating the Modification Time of a File:  The <CODE
+CLASS="function"
+>Touch</CODE
+> Factory</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c2968.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Changing File or Directory Permissions:  The <CODE
+CLASS="function"
+>Chmod</CODE
+> Factory</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

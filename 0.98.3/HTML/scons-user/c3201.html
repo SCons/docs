@@ -1,0 +1,271 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Alias Targets</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 0.98.3"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Minimizing Cache Contention:  the --random Option"
+HREF="x3172.html"><LINK
+REL="NEXT"
+TITLE="Java Builds"
+HREF="c3227.html"></HEAD
+><BODY
+CLASS="chapter"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 0.98.3</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x3172.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="c3227.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="chapter"
+><H1
+><A
+NAME="chap-alias"
+></A
+>Chapter 24. Alias Targets</H1
+><P
+>&#13;
+  We've already seen how you can use the <CODE
+CLASS="function"
+>Alias</CODE
+>
+  function to create a target named <TT
+CLASS="literal"
+>install</TT
+>:
+
+  </P
+><PRE
+CLASS="programlisting"
+>&#13;     env = Environment()
+     hello = env.Program('hello.c')
+     env.Install('/usr/bin', hello)
+     env.Alias('install', '/usr/bin')
+  </PRE
+><P
+>&#13;
+  You can then use this alias on the command line
+  to tell <SPAN
+CLASS="application"
+>SCons</SPAN
+> more naturally that you want to install files:
+
+  </P
+><PRE
+CLASS="screen"
+>&#13;     % <KBD
+CLASS="userinput"
+>scons -Q install</KBD
+>
+     cc -o hello.o -c hello.c
+     cc -o hello hello.o
+     Install file: "hello" as "/usr/bin/hello"
+  </PRE
+><P
+>&#13;
+  Like other <CODE
+CLASS="classname"
+>Builder</CODE
+> methods, though,
+  the <CODE
+CLASS="function"
+>Alias</CODE
+> method returns an object
+  representing the alias being built.
+  You can then use this object as input to anothother <CODE
+CLASS="classname"
+>Builder</CODE
+>.
+  This is especially useful if you use such an object
+  as input to another call to the <CODE
+CLASS="function"
+>Alias</CODE
+> <CODE
+CLASS="classname"
+>Builder</CODE
+>,
+  allowing you to create a hierarchy
+  of nested aliases:
+
+  </P
+><PRE
+CLASS="programlisting"
+>&#13;     env = Environment()
+     p = env.Program('foo.c')
+     l = env.Library('bar.c')
+     env.Install('/usr/bin', p)
+     env.Install('/usr/lib', l)
+     ib = env.Alias('install-bin', '/usr/bin')
+     il = env.Alias('install-lib', '/usr/lib')
+     env.Alias('install', [ib, il])
+  </PRE
+><P
+>&#13;
+  This example defines separate <TT
+CLASS="literal"
+>install</TT
+>,
+  <TT
+CLASS="literal"
+>install-bin</TT
+>,
+  and <TT
+CLASS="literal"
+>install-lib</TT
+> aliases,
+  allowing you finer control over what gets installed:
+
+  </P
+><PRE
+CLASS="screen"
+>&#13;     % <KBD
+CLASS="userinput"
+>scons -Q install-bin</KBD
+>
+     cc -o foo.o -c foo.c
+     cc -o foo foo.o
+     Install file: "foo" as "/usr/bin/foo"
+     % <KBD
+CLASS="userinput"
+>scons -Q install-lib</KBD
+>
+     cc -o bar.o -c bar.c
+     ar rc libbar.a bar.o
+     ranlib libbar.a
+     Install file: "libbar.a" as "/usr/lib/libbar.a"
+     % <KBD
+CLASS="userinput"
+>scons -Q -c /</KBD
+>
+     Removed foo.o
+     Removed foo
+     Removed /usr/bin/foo
+     Removed bar.o
+     Removed libbar.a
+     Removed /usr/lib/libbar.a
+     % <KBD
+CLASS="userinput"
+>scons -Q install</KBD
+>
+     cc -o foo.o -c foo.c
+     cc -o foo foo.o
+     Install file: "foo" as "/usr/bin/foo"
+     cc -o bar.o -c bar.c
+     ar rc libbar.a bar.o
+     ranlib libbar.a
+     Install file: "libbar.a" as "/usr/lib/libbar.a"
+  </PRE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x3172.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="c3227.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Minimizing Cache Contention:  the <TT
+CLASS="literal"
+>--random</TT
+> Option</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Java Builds</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

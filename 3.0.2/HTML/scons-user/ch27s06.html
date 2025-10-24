@@ -1,0 +1,36 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>27.6. Finding the Invocation Directory: the GetLaunchDir Function</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 3.0.2"><link rel="up" href="ch27.html" title="Chapter 27. Miscellaneous Functionality"><link rel="prev" href="ch27s05.html" title="27.5. Handling Nested Lists: the Flatten Function"><link rel="next" href="ch27s07.html" title="27.7. Virtual environments (virtualenvs)"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">27.6. Finding the Invocation Directory:  the <code class="function">GetLaunchDir</code> Function</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch27s05.html">Prev</a> </td><th width="60%" align="center">Chapter 27. Miscellaneous Functionality</th><td width="20%" align="right"> <a accesskey="n" href="ch27s07.html">Next</a></td></tr></table><hr></div><div class="section" title="27.6. Finding the Invocation Directory: the GetLaunchDir Function"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idm140272270949264"></a>27.6. Finding the Invocation Directory:  the <code class="function">GetLaunchDir</code> Function</h2></div></div></div><p>
+
+    If you need to find the directory from
+    which the user invoked the <code class="filename">scons</code> command,
+    you can use the <code class="function">GetLaunchDir</code> function:
+
+    </p><pre class="programlisting">
+env = Environment(
+    LAUNCHDIR = GetLaunchDir(),
+)
+env.Command('directory_build_info',
+            '$LAUNCHDIR/build_info'
+            Copy('$TARGET', '$SOURCE'))
+    </pre><p>
+
+    Because <span class="application">SCons</span> is usually invoked from the top-level
+    directory in which the <code class="filename">SConstruct</code> file lives,
+    the Python <code class="function">os.getcwd()</code>
+    is often equivalent.
+    However, the <span class="application">SCons</span>
+    <code class="literal">-u</code>,
+    <code class="literal">-U</code>
+    and
+    <code class="literal">-D</code>
+    command-line options,
+    when invoked from a subdirectory,
+    will cause <span class="application">SCons</span> to change to the directory
+    in which the <code class="filename">SConstruct</code> file is found.
+    When those options are used,
+    <code class="function">GetLaunchDir</code> will still return the path to the
+    user's invoking subdirectory,
+    allowing the <code class="filename">SConscript</code> configuration
+    to still get at configuration (or other) files
+    from the originating directory.
+
+    </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch27s05.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch27.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch27s07.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">27.5. Handling Nested Lists:  the <code class="function">Flatten</code> Function </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 27.7. Virtual environments (virtualenvs)</td></tr></table></div></body></html>

@@ -1,0 +1,617 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>SCons.CacheDir &mdash; SCons 4.2.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex/" />
+    <link rel="search" title="Search" href="../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../" class="icon icon-home"> SCons
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                4.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons/">SCons package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Variables/">SCons.Variables package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.compat/">SCons.compat package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Action">SCons.Action module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Builder">SCons.Builder module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.CacheDir">SCons.CacheDir module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Conftest">SCons.Conftest module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Debug">SCons.Debug module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Defaults">SCons.Defaults module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Environment">SCons.Environment module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Errors">SCons.Errors module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Executor">SCons.Executor module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Job">SCons.Job module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Memoize">SCons.Memoize module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.PathList">SCons.PathList module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.SConf">SCons.SConf module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.SConsign">SCons.SConsign module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Subst">SCons.Subst module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Taskmaster">SCons.Taskmaster module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Util">SCons.Util module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Warnings">SCons.Warnings module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.cpp">SCons.cpp module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.dblite">SCons.dblite module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.exitfuncs">SCons.exitfuncs module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.compat/">SCons.compat package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.compat/#module-SCons.compat">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Node/">SCons.Node package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#module-SCons.Node.Alias">SCons.Node.Alias module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#module-SCons.Node.FS">SCons.Node.FS module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#module-SCons.Node.Python">SCons.Node.Python module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#module-SCons.Node">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Platform/">SCons.Platform package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.aix">SCons.Platform.aix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.cygwin">SCons.Platform.cygwin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.darwin">SCons.Platform.darwin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.hpux">SCons.Platform.hpux module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.irix">SCons.Platform.irix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.mingw">SCons.Platform.mingw module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.os2">SCons.Platform.os2 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.posix">SCons.Platform.posix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.sunos">SCons.Platform.sunos module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.virtualenv">SCons.Platform.virtualenv module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.win32">SCons.Platform.win32 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Scanner/">SCons.Scanner package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.C">SCons.Scanner.C module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.D">SCons.Scanner.D module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.Dir">SCons.Scanner.Dir module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.Fortran">SCons.Scanner.Fortran module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.IDL">SCons.Scanner.IDL module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.LaTeX">SCons.Scanner.LaTeX module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.Prog">SCons.Scanner.Prog module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.RC">SCons.Scanner.RC module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.SWIG">SCons.Scanner.SWIG module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Script/">SCons.Script package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script.Interactive">SCons.Script.Interactive module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script.Main">SCons.Script.Main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script.SConsOptions">SCons.Script.SConsOptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script.SConscript">SCons.Script.SConscript module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Tool/">SCons.Tool package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Tool/#module-SCons.Tool">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Variables/">SCons.Variables package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.BoolVariable">SCons.Variables.BoolVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.EnumVariable">SCons.Variables.EnumVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.ListVariable">SCons.Variables.ListVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.PackageVariable">SCons.Variables.PackageVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.PathVariable">SCons.Variables.PathVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../">SCons</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../">Module code</a> &raquo;</li>
+        
+      <li>SCons.CacheDir</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for SCons.CacheDir</h1><div class="highlight"><pre>
+<span></span><span class="c1"># MIT License</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright The SCons Foundation</span>
+<span class="c1">#</span>
+<span class="c1"># Permission is hereby granted, free of charge, to any person obtaining</span>
+<span class="c1"># a copy of this software and associated documentation files (the</span>
+<span class="c1"># &quot;Software&quot;), to deal in the Software without restriction, including</span>
+<span class="c1"># without limitation the rights to use, copy, modify, merge, publish,</span>
+<span class="c1"># distribute, sublicense, and/or sell copies of the Software, and to</span>
+<span class="c1"># permit persons to whom the Software is furnished to do so, subject to</span>
+<span class="c1"># the following conditions:</span>
+<span class="c1">#</span>
+<span class="c1"># The above copyright notice and this permission notice shall be included</span>
+<span class="c1"># in all copies or substantial portions of the Software.</span>
+<span class="c1">#</span>
+<span class="c1"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY</span>
+<span class="c1"># KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND</span>
+<span class="c1"># NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE</span>
+<span class="c1"># LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION</span>
+<span class="c1"># OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</span>
+<span class="c1"># WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</span>
+
+<span class="sd">&quot;&quot;&quot;CacheDir support</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">atexit</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">stat</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
+
+<span class="kn">import</span> <span class="nn">SCons.Action</span>
+<span class="kn">import</span> <span class="nn">SCons.Errors</span>
+<span class="kn">import</span> <span class="nn">SCons.Warnings</span>
+<span class="kn">import</span> <span class="nn">SCons</span>
+
+<span class="n">cache_enabled</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">cache_debug</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">cache_force</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">cache_show</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">cache_readonly</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">cache_tmp_uuid</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span>
+
+<div class="viewcode-block" id="CacheRetrieveFunc"><a class="viewcode-back" href="../../../SCons/#SCons.CacheDir.CacheRetrieveFunc">[docs]</a><span class="k">def</span> <span class="nf">CacheRetrieveFunc</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">target</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">fs</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">fs</span>
+    <span class="n">cd</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get_CacheDir</span><span class="p">()</span>
+    <span class="n">cd</span><span class="o">.</span><span class="n">requests</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">cachedir</span><span class="p">,</span> <span class="n">cachefile</span> <span class="o">=</span> <span class="n">cd</span><span class="o">.</span><span class="n">cachepath</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">fs</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">cachefile</span><span class="p">):</span>
+        <span class="n">cd</span><span class="o">.</span><span class="n">CacheDebug</span><span class="p">(</span><span class="s1">&#39;CacheRetrieve(</span><span class="si">%s</span><span class="s1">):  </span><span class="si">%s</span><span class="s1"> not in cache</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">cachefile</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="n">cd</span><span class="o">.</span><span class="n">hits</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">cd</span><span class="o">.</span><span class="n">CacheDebug</span><span class="p">(</span><span class="s1">&#39;CacheRetrieve(</span><span class="si">%s</span><span class="s1">):  retrieving from </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">cachefile</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Action</span><span class="o">.</span><span class="n">execute_actions</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">fs</span><span class="o">.</span><span class="n">islink</span><span class="p">(</span><span class="n">cachefile</span><span class="p">):</span>
+            <span class="n">fs</span><span class="o">.</span><span class="n">symlink</span><span class="p">(</span><span class="n">fs</span><span class="o">.</span><span class="n">readlink</span><span class="p">(</span><span class="n">cachefile</span><span class="p">),</span> <span class="n">t</span><span class="o">.</span><span class="n">get_internal_path</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cd</span><span class="o">.</span><span class="n">copy_from_cache</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">cachefile</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">get_internal_path</span><span class="p">())</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">utime</span><span class="p">(</span><span class="n">cachefile</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="n">st</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">cachefile</span><span class="p">)</span>
+        <span class="n">fs</span><span class="o">.</span><span class="n">chmod</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">get_internal_path</span><span class="p">(),</span> <span class="n">stat</span><span class="o">.</span><span class="n">S_IMODE</span><span class="p">(</span><span class="n">st</span><span class="p">[</span><span class="n">stat</span><span class="o">.</span><span class="n">ST_MODE</span><span class="p">])</span> <span class="o">|</span> <span class="n">stat</span><span class="o">.</span><span class="n">S_IWRITE</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="CacheRetrieveString"><a class="viewcode-back" href="../../../SCons/#SCons.CacheDir.CacheRetrieveString">[docs]</a><span class="k">def</span> <span class="nf">CacheRetrieveString</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">target</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">fs</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">fs</span>
+    <span class="n">cd</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get_CacheDir</span><span class="p">()</span>
+    <span class="n">cachedir</span><span class="p">,</span> <span class="n">cachefile</span> <span class="o">=</span> <span class="n">cd</span><span class="o">.</span><span class="n">cachepath</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">fs</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">cachefile</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Retrieved `</span><span class="si">%s</span><span class="s2">&#39; from cache&quot;</span> <span class="o">%</span> <span class="n">t</span><span class="o">.</span><span class="n">get_internal_path</span><span class="p">()</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+<span class="n">CacheRetrieve</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Action</span><span class="o">.</span><span class="n">Action</span><span class="p">(</span><span class="n">CacheRetrieveFunc</span><span class="p">,</span> <span class="n">CacheRetrieveString</span><span class="p">)</span>
+
+<span class="n">CacheRetrieveSilent</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Action</span><span class="o">.</span><span class="n">Action</span><span class="p">(</span><span class="n">CacheRetrieveFunc</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CachePushFunc"><a class="viewcode-back" href="../../../SCons/#SCons.CacheDir.CachePushFunc">[docs]</a><span class="k">def</span> <span class="nf">CachePushFunc</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">cache_readonly</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="n">t</span> <span class="o">=</span> <span class="n">target</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">nocache</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="n">fs</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">fs</span>
+    <span class="n">cd</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get_CacheDir</span><span class="p">()</span>
+    <span class="n">cachedir</span><span class="p">,</span> <span class="n">cachefile</span> <span class="o">=</span> <span class="n">cd</span><span class="o">.</span><span class="n">cachepath</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">fs</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">cachefile</span><span class="p">):</span>
+        <span class="c1"># Don&#39;t bother copying it if it&#39;s already there.  Note that</span>
+        <span class="c1"># usually this &quot;shouldn&#39;t happen&quot; because if the file already</span>
+        <span class="c1"># existed in cache, we&#39;d have retrieved the file from there,</span>
+        <span class="c1"># not built it.  This can happen, though, in a race, if some</span>
+        <span class="c1"># other person running the same build pushes their copy to</span>
+        <span class="c1"># the cache after we decide we need to build it but before our</span>
+        <span class="c1"># build completes.</span>
+        <span class="n">cd</span><span class="o">.</span><span class="n">CacheDebug</span><span class="p">(</span><span class="s1">&#39;CachePush(</span><span class="si">%s</span><span class="s1">):  </span><span class="si">%s</span><span class="s1"> already exists in cache</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">cachefile</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="n">cd</span><span class="o">.</span><span class="n">CacheDebug</span><span class="p">(</span><span class="s1">&#39;CachePush(</span><span class="si">%s</span><span class="s1">):  pushing to </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">cachefile</span><span class="p">)</span>
+
+    <span class="n">tempfile</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.tmp</span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">cachefile</span><span class="p">,</span><span class="n">cache_tmp_uuid</span><span class="p">)</span>
+    <span class="n">errfmt</span> <span class="o">=</span> <span class="s2">&quot;Unable to copy </span><span class="si">%s</span><span class="s2"> to cache. Cache file is </span><span class="si">%s</span><span class="s2">&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">fs</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">cachedir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">errfmt</span> <span class="o">%</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">target</span><span class="p">),</span> <span class="n">cachefile</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">SConsEnvironmentError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">fs</span><span class="o">.</span><span class="n">islink</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">get_internal_path</span><span class="p">()):</span>
+            <span class="n">fs</span><span class="o">.</span><span class="n">symlink</span><span class="p">(</span><span class="n">fs</span><span class="o">.</span><span class="n">readlink</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">get_internal_path</span><span class="p">()),</span> <span class="n">tempfile</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cd</span><span class="o">.</span><span class="n">copy_to_cache</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">get_internal_path</span><span class="p">(),</span> <span class="n">tempfile</span><span class="p">)</span>
+        <span class="n">fs</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">tempfile</span><span class="p">,</span> <span class="n">cachefile</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">EnvironmentError</span><span class="p">:</span>
+        <span class="c1"># It&#39;s possible someone else tried writing the file at the</span>
+        <span class="c1"># same time we did, or else that there was some problem like</span>
+        <span class="c1"># the CacheDir being on a separate file system that&#39;s full.</span>
+        <span class="c1"># In any case, inability to push a file to cache doesn&#39;t affect</span>
+        <span class="c1"># the correctness of the build, so just print a warning.</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">errfmt</span> <span class="o">%</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">target</span><span class="p">),</span> <span class="n">cachefile</span><span class="p">)</span>
+        <span class="n">SCons</span><span class="o">.</span><span class="n">Warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Warnings</span><span class="o">.</span><span class="n">CacheWriteErrorWarning</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span></div>
+
+<span class="n">CachePush</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Action</span><span class="o">.</span><span class="n">Action</span><span class="p">(</span><span class="n">CachePushFunc</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="CacheDir"><a class="viewcode-back" href="../../../SCons/#SCons.CacheDir.CacheDir">[docs]</a><span class="k">class</span> <span class="nc">CacheDir</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a CacheDir object.</span>
+
+<span class="sd">        The cache configuration is stored in the object. It</span>
+<span class="sd">        is read from the config file in the supplied path if</span>
+<span class="sd">        one exists,  if not the config file is created and</span>
+<span class="sd">        the default config is written, as well as saved in the object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">requests</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hits</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_cache_debug</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">debugFP</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_readconfig</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="CacheDir._readconfig"><a class="viewcode-back" href="../../../SCons/#SCons.CacheDir.CacheDir._readconfig">[docs]</a>    <span class="k">def</span> <span class="nf">_readconfig</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read the cache config.</span>
+
+<span class="sd">        If directory or config file do not exist, create.  Take advantage</span>
+<span class="sd">        of Py3 capability in os.makedirs() and in file open(): just try</span>
+<span class="sd">        the operation and handle failure appropriately.</span>
+
+<span class="sd">        Omit the check for old cache format, assume that&#39;s old enough</span>
+<span class="sd">        there will be none of those left to worry about.</span>
+
+<span class="sd">        :param path: path to the cache directory</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">config_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;config&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">FileExistsError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Failed to create cache directory &quot;</span> <span class="o">+</span> <span class="n">path</span>
+            <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">SConsEnvironmentError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_file</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">config</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;prefix_len&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Failed to write cache configuration for &quot;</span> <span class="o">+</span> <span class="n">path</span>
+                    <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">SConsEnvironmentError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">FileExistsError</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">config</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Failed to read cache configuration for &quot;</span> <span class="o">+</span> <span class="n">path</span>
+                <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">SConsEnvironmentError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CacheDir.CacheDebug"><a class="viewcode-back" href="../../../SCons/#SCons.CacheDir.CacheDir.CacheDebug">[docs]</a>    <span class="k">def</span> <span class="nf">CacheDebug</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fmt</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">cachefile</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">cache_debug</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_cache_debug</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">cache_debug</span> <span class="o">==</span> <span class="s1">&#39;-&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">debugFP</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span>
+            <span class="k">elif</span> <span class="n">cache_debug</span><span class="p">:</span>
+                <span class="k">def</span> <span class="nf">debug_cleanup</span><span class="p">(</span><span class="n">debugFP</span><span class="p">):</span>
+                    <span class="n">debugFP</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">debugFP</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">cache_debug</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+                <span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">debug_cleanup</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">debugFP</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">debugFP</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_cache_debug</span> <span class="o">=</span> <span class="n">cache_debug</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debugFP</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">debugFP</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">cachefile</span><span class="p">)[</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">debugFP</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;requests: </span><span class="si">%d</span><span class="s2">, hits: </span><span class="si">%d</span><span class="s2">, misses: </span><span class="si">%d</span><span class="s2">, hit rate: </span><span class="si">%.2f%%</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span>
+                               <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">requests</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hits</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">misses</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hit_ratio</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="CacheDir.copy_from_cache"><a class="viewcode-back" href="../../../SCons/#SCons.CacheDir.CacheDir.copy_from_cache">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">copy_from_cache</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">env</span><span class="o">.</span><span class="n">cache_timestamp_newer</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">env</span><span class="o">.</span><span class="n">fs</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">env</span><span class="o">.</span><span class="n">fs</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CacheDir.copy_to_cache"><a class="viewcode-back" href="../../../SCons/#SCons.CacheDir.CacheDir.copy_to_cache">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">copy_to_cache</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">fs</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span>
+            <span class="n">fs</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">src</span><span class="p">)</span><span class="o">.</span><span class="n">fs</span>
+            <span class="n">st</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
+            <span class="n">fs</span><span class="o">.</span><span class="n">chmod</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="n">stat</span><span class="o">.</span><span class="n">S_IMODE</span><span class="p">(</span><span class="n">st</span><span class="p">[</span><span class="n">stat</span><span class="o">.</span><span class="n">ST_MODE</span><span class="p">])</span> <span class="o">|</span> <span class="n">stat</span><span class="o">.</span><span class="n">S_IWRITE</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">result</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">EnvironmentError</span> <span class="kn">from</span> <span class="nn">ex</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">hit_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mf">100.0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">hits</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">requests</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">requests</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">100</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">misses</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">requests</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">hits</span>
+
+<div class="viewcode-block" id="CacheDir.is_enabled"><a class="viewcode-back" href="../../../SCons/#SCons.CacheDir.CacheDir.is_enabled">[docs]</a>    <span class="k">def</span> <span class="nf">is_enabled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">cache_enabled</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="CacheDir.is_readonly"><a class="viewcode-back" href="../../../SCons/#SCons.CacheDir.CacheDir.is_readonly">[docs]</a>    <span class="k">def</span> <span class="nf">is_readonly</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">cache_readonly</span></div>
+
+<div class="viewcode-block" id="CacheDir.get_cachedir_csig"><a class="viewcode-back" href="../../../SCons/#SCons.CacheDir.CacheDir.get_cachedir_csig">[docs]</a>    <span class="k">def</span> <span class="nf">get_cachedir_csig</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="n">cachedir</span><span class="p">,</span> <span class="n">cachefile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cachepath</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cachefile</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">cachefile</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">hash_file_signature</span><span class="p">(</span><span class="n">cachefile</span><span class="p">,</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">FS</span><span class="o">.</span><span class="n">File</span><span class="o">.</span><span class="n">hash_chunksize</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CacheDir.cachepath"><a class="viewcode-back" href="../../../SCons/#SCons.CacheDir.CacheDir.cachepath">[docs]</a>    <span class="k">def</span> <span class="nf">cachepath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_enabled</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+        <span class="n">sig</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">get_cachedir_bsig</span><span class="p">()</span>
+
+        <span class="n">subdir</span> <span class="o">=</span> <span class="n">sig</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;prefix_len&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+
+        <span class="nb">dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">subdir</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">dir</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">dir</span><span class="p">,</span> <span class="n">sig</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CacheDir.retrieve"><a class="viewcode-back" href="../../../SCons/#SCons.CacheDir.CacheDir.retrieve">[docs]</a>    <span class="k">def</span> <span class="nf">retrieve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method is called from multiple threads in a parallel build,</span>
+<span class="sd">        so only do thread safe stuff here. Do thread unsafe stuff in</span>
+<span class="sd">        built().</span>
+
+<span class="sd">        Note that there&#39;s a special trick here with the execute flag</span>
+<span class="sd">        (one that&#39;s not normally done for other actions).  Basically</span>
+<span class="sd">        if the user requested a no_exec (-n) build, then</span>
+<span class="sd">        SCons.Action.execute_actions is set to 0 and when any action</span>
+<span class="sd">        is called, it does its showing but then just returns zero</span>
+<span class="sd">        instead of actually calling the action execution operation.</span>
+<span class="sd">        The problem for caching is that if the file does NOT exist in</span>
+<span class="sd">        cache then the CacheRetrieveString won&#39;t return anything to</span>
+<span class="sd">        show for the task, but the Action.__call__ won&#39;t call</span>
+<span class="sd">        CacheRetrieveFunc; instead it just returns zero, which makes</span>
+<span class="sd">        the code below think that the file *was* successfully</span>
+<span class="sd">        retrieved from the cache, therefore it doesn&#39;t do any</span>
+<span class="sd">        subsequent building.  However, the CacheRetrieveString didn&#39;t</span>
+<span class="sd">        print anything because it didn&#39;t actually exist in the cache,</span>
+<span class="sd">        and no more build actions will be performed, so the user just</span>
+<span class="sd">        sees nothing.  The fix is to tell Action.__call__ to always</span>
+<span class="sd">        execute the CacheRetrieveFunc and then have the latter</span>
+<span class="sd">        explicitly check SCons.Action.execute_actions itself.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_enabled</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">env</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">get_build_env</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">cache_show</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">CacheRetrieveSilent</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="p">[],</span> <span class="n">env</span><span class="p">,</span> <span class="n">execute</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">node</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">presub</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">execute</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">CacheRetrieve</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="p">[],</span> <span class="n">env</span><span class="p">,</span> <span class="n">execute</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="CacheDir.push"><a class="viewcode-back" href="../../../SCons/#SCons.CacheDir.CacheDir.push">[docs]</a>    <span class="k">def</span> <span class="nf">push</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_readonly</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_enabled</span><span class="p">():</span>
+            <span class="k">return</span>
+        <span class="k">return</span> <span class="n">CachePush</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="p">[],</span> <span class="n">node</span><span class="o">.</span><span class="n">get_build_env</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="CacheDir.push_if_forced"><a class="viewcode-back" href="../../../SCons/#SCons.CacheDir.CacheDir.push_if_forced">[docs]</a>    <span class="k">def</span> <span class="nf">push_if_forced</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">cache_force</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">node</span><span class="p">)</span></div></div>
+
+<span class="c1"># Local Variables:</span>
+<span class="c1"># tab-width:4</span>
+<span class="c1"># indent-tabs-mode:nil</span>
+<span class="c1"># End:</span>
+<span class="c1"># vim: set expandtab tabstop=4 shiftwidth=4:</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, SCons Project.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

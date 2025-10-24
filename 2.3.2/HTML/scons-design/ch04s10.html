@@ -1,0 +1,40 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>4.10. Code repositories</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 2.3.2"><link rel="up" href="ch04.html" title="Chapter 4. Build Engine API"><link rel="prev" href="ch04s09.html" title="4.9. Variant builds"><link rel="next" href="ch04s11.html" title="4.11. Derived-file caching"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">4.10. Code repositories</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s09.html">Prev</a> </td><th width="60%" align="center">Chapter 4. Build Engine API</th><td width="20%" align="right"> <a accesskey="n" href="ch04s11.html">Next</a></td></tr></table><hr></div><div class="section" title="4.10. Code repositories"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="sect-repositories"></a>4.10. Code repositories</h2></div></div></div><p>
+
+  <span class="application">SCons</span> may use files from one or more shared code repositories in order
+  to build local copies of changed target files.  A repository would
+  typically be a central directory tree, maintained by an integrator,
+  with known good libraries and executables.
+
+ </p><pre class="programlisting">
+	Repository('/home/source/1.1', '/home/source/1.0')
+	</pre><p>
+
+  Specified repositories will be searched in-order for any file
+  (configuration file, input file, target file) that does not exist
+  in the local directory tree.  When building a local target file,
+  <span class="application">SCons</span> will rewrite path names in the build command to use the
+  necessary repository files.  This includes modifying lists of
+  <code class="option">-I</code> or <code class="option">-L</code> flags to specify an
+  appropriate set of include paths for dependency analysis.
+
+ </p><p>
+
+  <span class="application">SCons</span> will modify the Python <code class="varname">sys.path</code> variable to
+  reflect the addition of repositories to the search path, so that any
+  imported modules or packages necessary for the build can be found in a
+  repository, as well.
+
+ </p><p>
+
+  If an up-to-date target file is found in a code repository, the file
+  will not be rebuilt or copied locally.  Files that must exist locally
+  (for example, to run tests) may be specified:
+
+ </p><pre class="programlisting">
+	Local('program', 'libfoo.a')
+	</pre><p>
+
+  in which case <span class="application">SCons</span> will copy or link an up-to-date copy of the
+  file from the appropriate repository.
+
+ </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch04s09.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch04.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch04s11.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">4.9. Variant builds </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 4.11. Derived-file caching</td></tr></table></div></body></html>

@@ -1,0 +1,259 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Java Builds</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 1.2.0"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Alias Targets"
+HREF="c4226.html"><LINK
+REL="NEXT"
+TITLE="How SCons Handles Java Dependencies"
+HREF="x4281.html"></HEAD
+><BODY
+CLASS="chapter"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 1.2.0</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="c4226.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x4281.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="chapter"
+><H1
+><A
+NAME="chap-java"
+></A
+>Chapter 27. Java Builds</H1
+><P
+>&#13;
+  So far, we've been using examples of
+  building C and C++ programs
+  to demonstrate the features of <SPAN
+CLASS="application"
+>SCons</SPAN
+>.
+  <SPAN
+CLASS="application"
+>SCons</SPAN
+> also supports building Java programs,
+  but Java builds are handled slightly differently,
+  which reflects the ways in which
+  the Java compiler and tools
+  build programs differently than
+  other languages' tool chains.
+
+  </P
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN4257"
+>27.1. Building Java Class Files:  the <CODE
+CLASS="function"
+>Java</CODE
+> Builder</A
+></H1
+><P
+>&#13;
+    The basic activity when programming in Java,
+    of course, is to take one or more <TT
+CLASS="filename"
+>.java</TT
+> files
+    containing Java source code
+    and to call the Java compiler
+    to turn them into one or more
+    <TT
+CLASS="filename"
+>.class</TT
+> files.
+    In <SPAN
+CLASS="application"
+>SCons</SPAN
+>, you do this
+    by giving the <A
+HREF="a8304.html#b-Java"
+><CODE
+CLASS="function"
+>Java</CODE
+></A
+> Builder
+    a target directory in which
+    to put the <TT
+CLASS="filename"
+>.class</TT
+> files,
+    and a source directory that contains
+    the <TT
+CLASS="filename"
+>.java</TT
+> files:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;      Java('classes', 'src')
+    </PRE
+><P
+>&#13;
+    If the <TT
+CLASS="filename"
+>src</TT
+> directory contains
+    three <TT
+CLASS="filename"
+>.java</TT
+> source files,
+    then running <SPAN
+CLASS="application"
+>SCons</SPAN
+> might look like this:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      javac -d classes -sourcepath src src/Example1.java src/Example2.java src/Example3.java
+    </PRE
+><P
+>&#13;
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> will actually search the <TT
+CLASS="filename"
+>src</TT
+>
+    directory tree for all of the <TT
+CLASS="filename"
+>.java</TT
+> files.
+    The Java compiler will then create the
+    necessary class files in the <TT
+CLASS="filename"
+>classes</TT
+> subdirectory,
+    based on the class names found in the <TT
+CLASS="filename"
+>.java</TT
+> files.
+
+    </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="c4226.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x4281.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Alias Targets</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>How <SPAN
+CLASS="application"
+>SCons</SPAN
+> Handles Java Dependencies</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

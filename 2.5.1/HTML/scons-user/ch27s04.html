@@ -1,0 +1,81 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>27.4. Searching for Files: the FindFile Function</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 2.5.1"><link rel="up" href="ch27.html" title="Chapter 27. Miscellaneous Functionality"><link rel="prev" href="ch27s03.html" title="27.3. Explicitly Terminating SCons While Reading SConscript Files: the Exit Function"><link rel="next" href="ch27s05.html" title="27.5. Handling Nested Lists: the Flatten Function"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">27.4. Searching for Files:  the <code class="function">FindFile</code> Function</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch27s03.html">Prev</a> </td><th width="60%" align="center">Chapter 27. Miscellaneous Functionality</th><td width="20%" align="right"> <a accesskey="n" href="ch27s05.html">Next</a></td></tr></table><hr></div><div class="section" title="27.4. Searching for Files: the FindFile Function"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idm139837617436832"></a>27.4. Searching for Files:  the <code class="function">FindFile</code> Function</h2></div></div></div><p>
+
+     The <code class="function">FindFile</code> function searches for a file in a list of directories.
+     If there is only one directory, it can be given as a simple string.
+     The function returns a File node if a matching file exists,
+     or None if no file is found.
+     (See the documentation for the <code class="function">Glob</code> function for an alternative way
+     of searching for entries in a directory.)
+
+    </p><pre class="programlisting">
+# one directory
+print FindFile('missing', '.')
+t = FindFile('exists', '.')
+print t.__class__, t
+      </pre><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+None
+&lt;class 'SCons.Node.FS.File'&gt; exists
+scons: `.' is up to date.
+</pre><pre class="programlisting">
+# several directories
+includes = [ '.', 'include', 'src/include']
+headers = [ 'nonesuch.h', 'config.h', 'private.h', 'dist.h']
+for hdr in headers:
+    print '%-12s' % ('%s:' % hdr), FindFile(hdr, includes)
+      </pre><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+nonesuch.h:  None
+config.h:    config.h
+private.h:   src/include/private.h
+dist.h:      include/dist.h
+scons: `.' is up to date.
+</pre><p>
+
+     If the file exists in more than one directory,
+     only the first occurrence is returned.
+
+    </p><pre class="programlisting">
+print FindFile('multiple', ['sub1', 'sub2', 'sub3'])
+print FindFile('multiple', ['sub2', 'sub3', 'sub1'])
+print FindFile('multiple', ['sub3', 'sub1', 'sub2'])
+      </pre><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+sub1/multiple
+sub2/multiple
+sub3/multiple
+scons: `.' is up to date.
+</pre><p>
+
+    In addition to existing files, <code class="function">FindFile</code> will also find derived files
+    (that is, non-leaf files) that haven't been built yet.
+    (Leaf files should already exist, or the build will fail!)
+
+    </p><pre class="programlisting">
+# Neither file exists, so build will fail
+Command('derived', 'leaf', 'cat &gt;$TARGET $SOURCE')
+print FindFile('leaf', '.')
+print FindFile('derived', '.')
+      </pre><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+leaf
+derived
+cat &gt; derived leaf
+</pre><pre class="programlisting">
+# Only 'leaf' exists
+Command('derived', 'leaf', 'cat &gt;$TARGET $SOURCE')
+print FindFile('leaf', '.')
+print FindFile('derived', '.')
+      </pre><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+leaf
+derived
+cat &gt; derived leaf
+</pre><p>
+
+    If a source file exists, <code class="function">FindFile</code> will correctly return the name
+    in the build directory.
+
+    </p><pre class="programlisting">
+# Only 'src/leaf' exists
+VariantDir('build', 'src')
+print FindFile('leaf', 'build')
+      </pre><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+build/leaf
+scons: `.' is up to date.
+</pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch27s03.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch27.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch27s05.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">27.3. Explicitly Terminating <span class="application">SCons</span> While Reading <code class="filename">SConscript</code> Files:  the <code class="function">Exit</code> Function </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 27.5. Handling Nested Lists:  the <code class="function">Flatten</code> Function</td></tr></table></div></body></html>

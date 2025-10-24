@@ -1,0 +1,39 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>24.4. Disabling the Shared Cache</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 3.0.2"><link rel="up" href="ch24.html" title="Chapter 24. Caching Built Files"><link rel="prev" href="ch24s03.html" title="24.3. Not Using the Shared Cache for Specific Files"><link rel="next" href="ch24s05.html" title="24.5. Populating a Shared Cache With Already-Built Files"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">24.4. Disabling the Shared Cache</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch24s03.html">Prev</a> </td><th width="60%" align="center">Chapter 24. Caching Built Files</th><td width="20%" align="right"> <a accesskey="n" href="ch24s05.html">Next</a></td></tr></table><hr></div><div class="section" title="24.4. Disabling the Shared Cache"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idm140272271156208"></a>24.4. Disabling the Shared Cache</h2></div></div></div><p>
+
+    Retrieving an already-built file
+    from the shared cache
+    is usually a significant time-savings
+    over rebuilding the file,
+    but how much of a savings
+    (or even whether it saves time at all)
+    can depend a great deal on your
+    system or network configuration.
+    For example, retrieving cached files
+    from a busy server over a busy network
+    might end up being slower than
+    rebuilding the files locally.
+
+    </p><p>
+
+    In these cases, you can specify
+    the <code class="literal">--cache-disable</code>
+    command-line option to tell <span class="application">SCons</span>
+    to not retrieve already-built files from the
+    shared cache directory:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o hello.o -c hello.c
+cc -o hello hello.o
+% <strong class="userinput"><code>scons -Q -c</code></strong>
+Removed hello.o
+Removed hello
+% <strong class="userinput"><code>scons -Q</code></strong>
+Retrieved `hello.o' from cache
+Retrieved `hello' from cache
+% <strong class="userinput"><code>scons -Q -c</code></strong>
+Removed hello.o
+Removed hello
+% <strong class="userinput"><code>scons -Q --cache-disable</code></strong>
+cc -o hello.o -c hello.c
+cc -o hello hello.o
+</pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch24s03.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch24.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch24s05.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">24.3. Not Using the Shared Cache for Specific Files </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 24.5. Populating a Shared Cache With Already-Built Files</td></tr></table></div></body></html>

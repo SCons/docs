@@ -1,0 +1,50 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>24.5. Populating a Shared Cache With Already-Built Files</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 3.0.5"><link rel="up" href="ch24.html" title="Chapter 24. Caching Built Files"><link rel="prev" href="ch24s04.html" title="24.4. Disabling the Shared Cache"><link rel="next" href="ch24s06.html" title="24.6. Minimizing Cache Contention: the --random Option"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">24.5. Populating a Shared Cache With Already-Built Files</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch24s04.html">Prev</a> </td><th width="60%" align="center">Chapter 24. Caching Built Files</th><td width="20%" align="right"> <a accesskey="n" href="ch24s06.html">Next</a></td></tr></table><hr></div><div class="section" title="24.5. Populating a Shared Cache With Already-Built Files"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idm4460"></a>24.5. Populating a Shared Cache With Already-Built Files</h2></div></div></div><p>
+
+    Sometimes, you may have one or more derived files
+    already built in your local build tree
+    that you wish to make available to other people doing builds.
+    For example, you may find it more effective to perform
+    integration builds with the cache disabled
+    (per the previous section)
+    and only populate the shared cache directory
+    with the built files after the integration build
+    has completed successfully.
+    This way, the cache will only get filled up
+    with derived files that are part of a complete, successful build
+    not with files that might be later overwritten
+    while you debug integration problems.
+
+    </p><p>
+
+    In this case, you can use the
+    the <code class="literal">--cache-force</code> option
+    to tell <span class="application">SCons</span> to put all derived files in the cache,
+    even if the files already exist in your local tree
+    from having been built by a previous invocation:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q --cache-disable</code></strong>
+cc -o hello.o -c hello.c
+cc -o hello hello.o
+% <strong class="userinput"><code>scons -Q -c</code></strong>
+Removed hello.o
+Removed hello
+% <strong class="userinput"><code>scons -Q --cache-disable</code></strong>
+cc -o hello.o -c hello.c
+cc -o hello hello.o
+% <strong class="userinput"><code>scons -Q --cache-force</code></strong>
+scons: `.' is up to date.
+% <strong class="userinput"><code>scons -Q</code></strong>
+scons: `.' is up to date.
+</pre><p>
+
+    Notice how the above sample run
+    demonstrates that the <code class="literal">--cache-disable</code>
+    option avoids putting the built
+    <code class="filename">hello.o</code>
+    and
+    <code class="filename">hello</code> files in the cache,
+    but after using the <code class="literal">--cache-force</code> option,
+    the files have been put in the cache
+    for the next invocation to retrieve.
+
+    </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch24s04.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch24.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch24s06.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">24.4. Disabling the Shared Cache </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 24.6. Minimizing Cache Contention:  the <code class="literal">--random</code> Option</td></tr></table></div></body></html>

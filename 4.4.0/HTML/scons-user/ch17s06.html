@@ -1,0 +1,87 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>17.6. Builders That Modify the Target or Source Lists Using an Emitter</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.4.0"><link rel="up" href="ch17.html" title="Chapter 17. Extending SCons: Writing Your Own Builders"><link rel="prev" href="ch17s05.html" title="17.5. Builders That Create Actions Using a Generator"><link rel="next" href="ch17s07.html" title="17.7. Modifying a Builder by adding an Emitter"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">17.6. Builders That Modify the Target or Source Lists Using an <span>Emitter</span></th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch17s05.html">Prev</a> </td><th width="60%" align="center">Chapter 17. Extending <span class="application">SCons</span>: Writing Your Own Builders</th><td width="20%" align="right"> <a accesskey="n" href="ch17s07.html">Next</a></td></tr></table><hr></div><div class="section" title="17.6. Builders That Modify the Target or Source Lists Using an Emitter"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idp105548825896784"></a>17.6. Builders That Modify the Target or Source Lists Using an <span>Emitter</span></h2></div></div></div><p>
+
+    <span class="application">SCons</span> supports the ability for a Builder to modify the
+    lists of target(s) from the specified source(s).
+    You do this by defining an <span>emitter</span> function
+    that takes as its arguments
+    the list of the targets passed to the builder,
+    the list of the sources passed to the builder,
+    and the <span>construction environment</span>.
+    The emitter function should return the modified
+    lists of targets that should be built
+    and sources from which the targets will be built.
+
+    </p><p>
+
+    For example, suppose you want to define a Builder
+    that always calls a <span class="command"><strong>foobuild</strong></span> program,
+    and you want to automatically add
+    a new target file named
+    <code class="filename">new_target</code>
+    and a new source file named
+    <code class="filename">new_source</code>
+    whenever it's called.
+    The <code class="filename">SConstruct</code> file might look like this:
+
+    </p><pre class="programlisting">
+def modify_targets(target, source, env):
+    target.append('new_target')
+    source.append('new_source')
+    return target, source
+
+bld = Builder(
+    action='foobuild $TARGETS - $SOURCES',
+    suffix='.foo',
+    src_suffix='.input',
+    emitter=modify_targets,
+)
+env = Environment(BUILDERS={'Foo': bld})
+env.Foo('file')
+    </pre><p>
+
+    And would yield the following output:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+foobuild file.foo new_target - file.input new_source
+</pre><p>
+
+    One very flexible thing that you can do is
+    use a <span>construction variable</span> to specify
+    different emitter functions for different <span>construction environments</span>.
+    To do this, specify a string
+    containing a <span>construction variable</span>
+    expansion as the emitter when you call
+    the <a class="link" href="apd.html#f-Builder"><code class="function">Builder</code></a> function,
+    and set that <span>construction variable</span> to
+    the desired emitter function
+    in different <span>construction environments</span>:
+
+    </p><pre class="programlisting">
+bld = Builder(
+    action='./my_command $SOURCES &gt; $TARGET',
+    suffix='.foo',
+    src_suffix='.input',
+    emitter='$MY_EMITTER',
+)
+
+def modify1(target, source, env):
+    return target, source + ['modify1.in']
+
+def modify2(target, source, env):
+    return target, source + ['modify2.in']
+
+env1 = Environment(BUILDERS={'Foo': bld}, MY_EMITTER=modify1)
+env2 = Environment(BUILDERS={'Foo': bld}, MY_EMITTER=modify2)
+env1.Foo('file1')
+env2.Foo('file2')
+        </pre><p>
+
+    In this example, the <code class="filename">modify1.in</code>
+    and <code class="filename">modify2.in</code> files
+    get added to the source lists
+    of the different commands:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+./my_command file1.input modify1.in &gt; file1.foo
+./my_command file2.input modify2.in &gt; file2.foo
+</pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch17s05.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch17.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch17s07.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">17.5. Builders That Create Actions Using a <span>Generator</span> </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 17.7. Modifying a Builder by adding an Emitter</td></tr></table></div></body></html>

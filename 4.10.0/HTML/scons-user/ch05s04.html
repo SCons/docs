@@ -1,0 +1,32 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>5.4. Using a Node's File Name as a String</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.10.0"><link rel="up" href="ch05.html" title="Chapter 5. Node Objects"><link rel="prev" href="ch05s03.html" title="5.3. Printing Node File Names"><link rel="next" href="ch05s05.html" title="5.5. GetBuildPath: Getting the Path From a Node or String"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.4. Using a <code class="classname">Node</code>'s File Name as a String</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05s03.html">Prev</a> </td><th width="60%" align="center">Chapter 5. Node Objects</th><td width="20%" align="right"> <a accesskey="n" href="ch05s05.html">Next</a></td></tr></table><hr></div><div class="section" title="5.4. Using a Node's File Name as a String"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="sect-node-names"></a>5.4. Using a <code class="classname">Node</code>'s File Name as a String</h2></div></div></div><p>
+
+    Printing a <code class="classname">Node</code>'s name
+    as described in the previous section
+    works because the string representation of a <code class="classname">Node</code> object
+    is the name of the file.
+    If you want to do something other than
+    print the name of the file,
+    you can fetch it by using the built-in Python
+    <code class="function">str</code> function.
+    For example, if you want to use the Python
+    <code class="function">os.path.exists</code>
+    to figure out whether a file
+    exists while the <code class="filename">SConstruct</code> file
+    is being read and executed,
+    you can fetch the string as follows:
+
+    </p><pre class="programlisting">
+import os.path
+program_list = Program('hello.c')
+program_name = str(program_list[0])
+if not os.path.exists(program_name):
+    print("%s does not exist!"%program_name)
+      </pre><p>
+
+    Which executes as follows on a POSIX system:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+hello does not exist!
+cc -o hello.o -c hello.c
+cc -o hello hello.o
+</pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05s03.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch05s05.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">5.3. Printing <code class="classname">Node</code> File Names </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 5.5. <code class="function">GetBuildPath</code>: Getting the Path From a <code class="classname">Node</code> or String</td></tr></table></div></body></html>

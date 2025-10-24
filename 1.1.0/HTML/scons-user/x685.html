@@ -1,0 +1,254 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Finding Libraries:  the $LIBPATH Construction Variable</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 1.1.0"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Building and Linking with Libraries"
+HREF="c593.html"><LINK
+REL="PREVIOUS"
+TITLE="Linking with Libraries"
+HREF="x658.html"><LINK
+REL="NEXT"
+TITLE="Node Objects"
+HREF="c709.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 1.1.0</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x658.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 4. Building and Linking with Libraries</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="c709.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN685"
+>4.3. Finding Libraries:  the <CODE
+CLASS="envar"
+>$LIBPATH</CODE
+> Construction Variable</A
+></H1
+><P
+>&#13;
+    By default, the linker will only look in
+    certain system-defined directories for libraries.
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> knows how to look for libraries
+    in directories that you specify with the
+    <A
+HREF="a4761.html#cv-LIBPATH"
+><CODE
+CLASS="envar"
+>$LIBPATH</CODE
+></A
+> construction variable.
+    <CODE
+CLASS="envar"
+>$LIBPATH</CODE
+> consists of a list of
+    directory names, like so:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;      Program('prog.c', LIBS = 'm',
+                        LIBPATH = ['/usr/lib', '/usr/local/lib'])
+    </PRE
+><P
+>&#13;
+    Using a Python list is preferred because it's portable
+    across systems.  Alternatively, you could put all of
+    the directory names in a single string, separated by the
+    system-specific path separator character:
+    a colon on POSIX systems:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;      LIBPATH = '/usr/lib:/usr/local/lib'
+    </PRE
+><P
+>&#13;
+    or a semi-colon on Windows systems:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;      LIBPATH = 'C:\\lib;D:\\lib'
+    </PRE
+><P
+>&#13;
+    (Note that Python requires that the backslash
+    separators in a Windows path name
+    be escaped within strings.)
+
+    </P
+><P
+>&#13;
+    When the linker is executed,
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> will create appropriate flags
+    so that the linker will look for
+    libraries in the same directories as <SPAN
+CLASS="application"
+>SCons</SPAN
+>.
+    So on a POSIX or Linux system,
+    a build of the above example would look like:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      cc -o prog.o -c prog.c
+      cc -o prog prog.o -L/usr/lib -L/usr/local/lib -lm
+    </PRE
+><P
+>&#13;
+    On a Windows system,
+    a build of the above example would look like:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      C:\&#62;<KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      cl /Foprog.obj /c prog.c /nologo
+      link /nologo /OUT:prog.exe /LIBPATH:\usr\lib /LIBPATH:\usr\local\lib m.lib prog.obj
+    </PRE
+><P
+>&#13;
+    Note again that <SPAN
+CLASS="application"
+>SCons</SPAN
+> has taken care of
+    the system-specific details of creating
+    the right command-line options.
+
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x658.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="c709.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Linking with Libraries</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c593.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Node Objects</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

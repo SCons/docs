@@ -1,0 +1,382 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Attaching a Builder to a Construction Environment</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 1.3.0"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Writing Your Own Builders"
+HREF="c3455.html"><LINK
+REL="PREVIOUS"
+TITLE="Writing Your Own Builders"
+HREF="c3455.html"><LINK
+REL="NEXT"
+TITLE="Letting SCons Handle The File Suffixes"
+HREF="x3532.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 1.3.0</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="c3455.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 19. Writing Your Own Builders</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x3532.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN3475"
+>19.2. Attaching a Builder to a <TT
+CLASS="literal"
+>Construction Environment</TT
+></A
+></H1
+><P
+>&#13;
+    A <CODE
+CLASS="classname"
+>Builder</CODE
+> object isn't useful
+    until it's attached to a <TT
+CLASS="literal"
+>construction environment</TT
+>
+    so that we can call it to arrange
+    for files to be built.
+    This is done through the <A
+HREF="a4819.html#cv-BUILDERS"
+><CODE
+CLASS="envar"
+>$BUILDERS</CODE
+></A
+>
+    <TT
+CLASS="literal"
+>construction variable</TT
+> in an environment.
+    The <CODE
+CLASS="envar"
+>$BUILDERS</CODE
+> variable is a Python dictionary
+    that maps the names by which you want to call
+    various <CODE
+CLASS="classname"
+>Builder</CODE
+> objects to the objects themselves.
+    For example, if we want to call the
+    <CODE
+CLASS="classname"
+>Builder</CODE
+> we just defined by the name
+    <CODE
+CLASS="function"
+>Foo</CODE
+>,
+    our <TT
+CLASS="filename"
+>SConstruct</TT
+> file might look like:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;       bld = Builder(action = 'foobuild &#60; $SOURCE &#62; $TARGET')
+       env = Environment(BUILDERS = {'Foo' : bld})
+    </PRE
+><P
+>&#13;
+    With the <CODE
+CLASS="classname"
+>Builder</CODE
+> attached to our <TT
+CLASS="literal"
+>construction environment</TT
+>
+    with the name <CODE
+CLASS="function"
+>Foo</CODE
+>,
+    we can now actually call it like so:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;       env.Foo('file.foo', 'file.input')
+    </PRE
+><P
+>&#13;
+    Then when we run <SPAN
+CLASS="application"
+>SCons</SPAN
+> it looks like:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      foobuild &#60; file.input &#62; file.foo
+    </PRE
+><P
+>&#13;
+    Note, however, that the default <CODE
+CLASS="envar"
+>$BUILDERS</CODE
+>
+    variable in a <TT
+CLASS="literal"
+>construction environment</TT
+>
+    comes with a default set of <CODE
+CLASS="classname"
+>Builder</CODE
+> objects
+    already defined:
+    <A
+HREF="a8465.html#b-Program"
+><CODE
+CLASS="function"
+>Program</CODE
+></A
+>, <A
+HREF="a8465.html#b-Library"
+><CODE
+CLASS="function"
+>Library</CODE
+></A
+>, etc.
+    And when we explicitly set the <CODE
+CLASS="envar"
+>$BUILDERS</CODE
+> variable
+    when we create the <TT
+CLASS="literal"
+>construction environment</TT
+>,
+    the default <CODE
+CLASS="classname"
+>Builder</CODE
+>s are no longer part of
+    the environment:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;       bld = Builder(action = 'foobuild &#60; $SOURCE &#62; $TARGET')
+       env = Environment(BUILDERS = {'Foo' : bld})
+       env.Foo('file.foo', 'file.input')
+       env.Program('hello.c')
+    </PRE
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      AttributeError: SConsEnvironment instance has no attribute 'Program':
+        File "/home/my/project/SConstruct", line 4:
+          env.Program('hello.c')
+    </PRE
+><P
+>&#13;
+    To be able to use both our own defined <CODE
+CLASS="classname"
+>Builder</CODE
+> objects
+    and the default <CODE
+CLASS="classname"
+>Builder</CODE
+> objects in the same <TT
+CLASS="literal"
+>construction environment</TT
+>,
+    you can either add to the <CODE
+CLASS="envar"
+>$BUILDERS</CODE
+> variable
+    using the <CODE
+CLASS="function"
+>Append</CODE
+> function:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;       env = Environment()
+       bld = Builder(action = 'foobuild &#60; $SOURCE &#62; $TARGET')
+       env.Append(BUILDERS = {'Foo' : bld})
+       env.Foo('file.foo', 'file.input')
+       env.Program('hello.c')
+    </PRE
+><P
+>&#13;
+    Or you can explicitly set the appropriately-named
+    key in the <CODE
+CLASS="envar"
+>$BUILDERS</CODE
+> dictionary:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;       env = Environment()
+       bld = Builder(action = 'foobuild &#60; $SOURCE &#62; $TARGET')
+       env['BUILDERS']['Foo'] = bld
+       env.Foo('file.foo', 'file.input')
+       env.Program('hello.c')
+    </PRE
+><P
+>&#13;
+    Either way, the same <TT
+CLASS="literal"
+>construction environment</TT
+>
+    can then use both the newly-defined
+    <CODE
+CLASS="function"
+>Foo</CODE
+> <CODE
+CLASS="classname"
+>Builder</CODE
+>
+    and the default <A
+HREF="a8465.html#b-Program"
+><CODE
+CLASS="function"
+>Program</CODE
+></A
+> <CODE
+CLASS="classname"
+>Builder</CODE
+>:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      foobuild &#60; file.input &#62; file.foo
+      cc -o hello.o -c hello.c
+      cc -o hello hello.o
+    </PRE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="c3455.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x3532.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Writing Your Own Builders</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c3455.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Letting <SPAN
+CLASS="application"
+>SCons</SPAN
+> Handle The File Suffixes</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

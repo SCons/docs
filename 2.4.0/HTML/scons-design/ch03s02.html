@@ -1,0 +1,72 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>3.2. Build Engine</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 2.4.0"><link rel="up" href="ch03.html" title="Chapter 3. Overview"><link rel="prev" href="ch03.html" title="Chapter 3. Overview"><link rel="next" href="ch03s03.html" title="3.3. Interfaces"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">3.2. Build Engine</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch03.html">Prev</a> </td><th width="60%" align="center">Chapter 3. Overview</th><td width="20%" align="right"> <a accesskey="n" href="ch03s03.html">Next</a></td></tr></table><hr></div><div class="section" title="3.2. Build Engine"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="sect-engine"></a>3.2. Build Engine</h2></div></div></div><p>
+
+   More detailed discussion of some of the
+   Build Engine's characteristics:
+
+ </p><div class="section" title="3.2.1. Python API"><div class="titlepage"><div><div><h3 class="title"><a name="idm139949620505312"></a>3.2.1. Python API</h3></div></div></div><p>
+
+   The Build Engine can be embedded in any other software
+   that supports embedding Python:
+   in a GUI,
+   in a wrapper script that
+   interprets classic <code class="filename">Makefile</code> syntax,
+   or in any other software that
+   can translate its dependency representation
+   into the appropriate calls to the Build Engine API.
+    describes in detail
+   the specification for a "Native Python" interface
+   that will drive the <span class="application">SCons</span> implementation effort.
+
+   </p></div><div class="section" title="3.2.2. Single-image execution"><div class="titlepage"><div><div><h3 class="title"><a name="idm139949620502640"></a>3.2.2. Single-image execution</h3></div></div></div><p>
+
+   When building/updating the objects,
+   the Build Engine operates as a single executable
+   with a complete Directed Acyclic Graph (DAG)
+   of the dependencies in the entire build tree.
+   This is in stark contrast to the
+   commonplace recursive use of Make
+   to handle hierarchical directory-tree builds.
+
+   </p></div><div class="section" title="3.2.3. Dependency analysis"><div class="titlepage"><div><div><h3 class="title"><a name="idm139949620501152"></a>3.2.3. Dependency analysis</h3></div></div></div><p>
+
+   Dependency analysis is carried out via digital signatures
+   (a.k.a. "fingerprints").
+   Contents of object are examined and reduced
+   to a number that can be stored and compared to
+   see if the object has changed.
+   Additionally, <span class="application">SCons</span> uses the same
+   signature technique on the command-lines that
+   are executed to update an object.
+   If the command-line has changed since the last time,
+   then the object must be rebuilt.
+
+   </p></div><div class="section" title="3.2.4. Customized output"><div class="titlepage"><div><div><h3 class="title"><a name="idm139949620499152"></a>3.2.4. Customized output</h3></div></div></div><p>
+
+   The output of Build Engine is customizable
+   through user-defined functions.
+   This could be used to print additional desired
+   information about what <span class="application">SCons</span> is doing,
+   or tailor output to a specific build analyzer,
+   GUI, or IDE.
+
+   </p></div><div class="section" title="3.2.5. Build failures"><div class="titlepage"><div><div><h3 class="title"><a name="idm139949620497344"></a>3.2.5. Build failures</h3></div></div></div><p>
+
+   <span class="application">SCons</span> detects build failures via the exit status from the tools
+   used to build the target files.  By default, a failed exit status
+   (non-zero on UNIX systems) terminates the build with an appropriate
+   error message.  An appropriate class from the Python library will
+   interpret build-tool failures via an OS-independent API.
+
+   </p><p>
+
+   If multiple tasks are executing in a parallel build, and one tool
+   returns failure, <span class="application">SCons</span> will not initiate any further build tasks,
+   but allow the other build tasks to complete before terminating.
+
+   </p><p>
+
+   A <code class="option">-k</code> command-line option may be used to ignore
+   errors and continue building other targets.  In no case will a target
+   that depends on a failed build be rebuilt.
+
+   </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch03.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch03.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch03s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 3. Overview </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 3.3. Interfaces</td></tr></table></div></body></html>

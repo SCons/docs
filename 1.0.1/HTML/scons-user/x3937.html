@@ -1,0 +1,272 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Finding derived files in repositories</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 1.0.1"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Building From Code Repositories"
+HREF="c3790.html"><LINK
+REL="PREVIOUS"
+TITLE="Finding the SConstruct file in repositories"
+HREF="x3919.html"><LINK
+REL="NEXT"
+TITLE="Guaranteeing local copies of files"
+HREF="x3966.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 1.0.1</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x3919.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 23. Building From Code Repositories</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x3966.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN3937"
+>23.5. Finding derived files in repositories</A
+></H1
+><P
+>&#13;
+    If a repository contains not only source files,
+    but also derived files (such as object files,
+    libraries, or executables), <SPAN
+CLASS="application"
+>SCons</SPAN
+> will perform
+    its normal MD5 signature calculation to
+    decide if a derived file in a repository is up-to-date,
+    or the derived file must be rebuilt in the local build directory.
+    For the <SPAN
+CLASS="application"
+>SCons</SPAN
+> signature calculation to work correctly,
+    a repository tree must contain the <TT
+CLASS="filename"
+>.sconsign</TT
+> files
+    that <SPAN
+CLASS="application"
+>SCons</SPAN
+> uses to keep track of signature information.
+
+    </P
+><P
+>&#13;
+    Usually, this would be done by a build integrator
+    who would run <SPAN
+CLASS="application"
+>SCons</SPAN
+> in the repository
+    to create all of its derived files and <TT
+CLASS="filename"
+>.sconsign</TT
+> files,
+    or who would run <SPAN
+CLASS="application"
+>SCons</SPAN
+> in a separate build directory
+    and copy the resulting tree to the desired repository:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>cd /usr/repository1</KBD
+>
+      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      cc -o file1.o -c file1.c
+      cc -o file2.o -c file2.c
+      cc -o hello.o -c hello.c
+      cc -o hello hello.o file1.o file2.o
+    </PRE
+><P
+>&#13;    
+    (Note that this is safe even if the <TT
+CLASS="filename"
+>SConstruct</TT
+> file
+    lists <TT
+CLASS="filename"
+>/usr/repository1</TT
+> as a repository,
+    because <SPAN
+CLASS="application"
+>SCons</SPAN
+> will remove the current build directory
+    from its repository list for that invocation.)
+
+    </P
+><P
+>&#13;
+    Now, with the repository populated,
+    we only need to create the one local source file
+    we're interested in working with at the moment,
+    and use the <TT
+CLASS="literal"
+>-Y</TT
+> option to
+    tell <SPAN
+CLASS="application"
+>SCons</SPAN
+> to fetch any other files it needs
+    from the repository:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>cd $HOME/build</KBD
+>
+      % <KBD
+CLASS="userinput"
+>edit hello.c</KBD
+>
+      % <KBD
+CLASS="userinput"
+>scons -Q -Y /usr/repository1</KBD
+>
+      cc -c -o hello.o hello.c
+      cc -o hello hello.o /usr/repository1/file1.o /usr/repository1/file2.o
+    </PRE
+><P
+>&#13;
+    Notice that <SPAN
+CLASS="application"
+>SCons</SPAN
+> realizes that it does not need to
+    rebuild local copies <TT
+CLASS="filename"
+>file1.o</TT
+> and <TT
+CLASS="filename"
+>file2.o</TT
+> files,
+    but instead uses the already-compiled files
+    from the repository.
+
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x3919.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x3966.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Finding the <TT
+CLASS="filename"
+>SConstruct</TT
+> file in repositories</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c3790.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Guaranteeing local copies of files</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,206 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>26.7. Declaring Additional Outputs: the SideEffect Function</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.5.1"><link rel="up" href="ch26.html" title="Chapter 26. Miscellaneous Functionality"><link rel="prev" href="ch26s06.html" title="26.6. Finding the Invocation Directory: the GetLaunchDir Function"><link rel="next" href="ch26s08.html" title="26.8. Virtual environments (virtualenvs)"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">26.7. Declaring Additional Outputs: the <code class="function">SideEffect</code> Function </th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch26s06.html">Prev</a> </td><th width="60%" align="center">Chapter 26. Miscellaneous Functionality</th><td width="20%" align="right"> <a accesskey="n" href="ch26s08.html">Next</a></td></tr></table><hr></div><div class="section" title="26.7. Declaring Additional Outputs: the SideEffect Function"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="sect-sideeffect"></a>26.7. Declaring Additional Outputs: the <code class="function">SideEffect</code> Function </h2></div></div></div><p>
+
+ Sometimes the way an action is defined causes effects on files
+ that <span class="application">SCons</span> does not recognize as targets. The <a class="link" href="apd.html#f-SideEffect"><code class="function">SideEffect</code></a>
+ method can be used to informs <span class="application">SCons</span> about such files.
+ This can be used just to flag a dependency for use in subsequent
+ build steps, although there is usually a better way to do that.
+ The primary use for the <code class="function">SideEffect</code> method
+ is to prevent two build steps from simultaneously modifying
+ or accessing the same file in a way that could impact each other.
+
+ </p><p>
+
+ In this example, the rule to build <code class="filename">file1</code>
+ will also put data into <code class="filename">log</code>, which is used
+ as a source for the command to generate <code class="filename">file2</code>,
+ but <code class="filename">log</code> is unknown to <span class="application">SCons</span> on a clean
+ build: it neither exists, nor is it a target output by any builder.
+ The <code class="filename">SConscript</code> uses
+ <code class="function">SideEffect</code> to inform <span class="application">SCons</span> about the additional output file.
+
+ </p><pre class="programlisting">
+env = Environment()
+f2 = env.Command(
+    target='file2',
+    source='log',
+    action=Copy('$TARGET', '$SOURCE')
+)
+f1 = env.Command(
+    target='file1',
+    source=[],
+    action='echo &gt;$TARGET data1; echo &gt;log updated file1'
+)
+env.SideEffect('log', f1)
+   </pre><p>
+
+ Without the <code class="function">SideEffect</code>, this build would fail with a message
+ <code class="computeroutput">Source `log' not found, needed by target `file2'</code>,
+ but now it can proceed:
+
+ </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+echo &gt; file1 data1; echo &gt;log updated file1
+Copy("file2", "log")
+</pre><p>
+
+ However, it is better to actually identify
+ <code class="filename">log</code> as a target, since in this
+ case that's what it is:
+
+ </p><pre class="programlisting">
+env = Environment()
+f2 = env.Command(
+    target='file2',
+    source='log',
+    action=Copy('$TARGET', '$SOURCE')
+)
+f1 = env.Command(
+    target=['file1', 'log'],
+    source=[],
+    action='echo &gt;$TARGET data1; echo &gt;log updated file1'
+)
+   </pre><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+echo &gt; file1 data1; echo &gt;log updated file1
+Copy("file2", "log")
+</pre><p>
+
+ In general, <code class="function">SideEffect</code> is not intended for the case when
+ a command produces extra target files (that is, files which
+ will be used as sources to other build steps). For example, the
+ the Microsoft Visual C/C++ compiler is capable of performing
+ incremental linking, for which it uses a status file - such that
+ linking <code class="filename">foo.exe</code> also produces
+ a <code class="filename">foo.ilk</code>, or uses it if it was already present,
+ if the <code class="option">/INCREMENTAL</code> option was supplied.
+ Specifying <code class="filename">foo.ilk</code> as a
+ side-effect of <code class="filename">foo.exe</code>
+ is <span class="emphasis"><em>not</em></span> a recommended use of <code class="function">SideEffect</code>
+ since <code class="filename">foo.ilk</code> is used by the link.
+ <span class="application">SCons</span> handles side-effect files
+ slightly differently in its analysis of the dependency graph.
+ When a command produces multiple output files,
+ they should be specified as multiple targets of
+ the call to the relevant builder function.
+ The <code class="function">SideEffect</code> function itself should really only be used
+ when it's important to ensure that commands are not executed in parallel,
+ such as when a "peripheral" file (such as a log file)
+ may actually be updated by more than one command invocation.
+
+ </p><p>
+
+ Unfortunately, the tool which sets up the <code class="function">Program</code> builder
+ for the MSVC compiler chain does not come prebuilt
+ with an understanding of the details of the <code class="filename">.ilk</code>
+ example - that the target list would need to change 
+ in the presence of that specific option flag. Unlike the trivial
+ example above where we could simply tell the <code class="function">Command</code> builder
+ there were two targets of the action, modifying the
+ chain of events for a builder like <code class="function">Program</code>,
+ though not inherently complex, is definitely an
+ advanced <span class="application">SCons</span> topic.  It's okay to use <code class="function">SideEffect</code> here
+ to get started, as long as it comes with an understanding
+ that it's "not quite right". Perhaps leave a comment in
+ the file as a reminder, if it does turn out to cause problems later.
+
+ </p><p>
+
+ So if the main use is to prevent parallelism problems,
+ here is an example to illustrate.
+ Say a program that you need to call to build a target file
+ will also update a log file describing what the program
+ does while building the target.
+ The following configuration
+ would have <span class="application">SCons</span> invoke a hypothetical
+ script named <span class="application">build</span>
+ (in the local directory)
+ with command-line arguments telling it to write
+ log information to a common
+ <code class="filename">logfile.txt</code> file:
+
+ </p><pre class="screen">
+env = Environment()
+env.Command(
+    target='file1.out',
+    source='file1.in',
+    action='./build --log logfile.txt $SOURCE $TARGET'
+)
+env.Command(
+    target='file2.out',
+    source='file2.in',
+    action='./build --log logfile.txt $SOURCE $TARGET'
+)
+ </pre><p>
+
+ This can cause problems when running
+ the build in parallel if
+ <span class="application">SCons</span> decides to update both targets
+ by running both program invocations at the same time.
+ The multiple program invocations
+ may interfere with each other
+ writing to the common log file,
+ leading at best to intermixed output in the log file,
+ and at worst to an actual failed build
+ (on a system like Windows, for example,
+ where only one process at a time can open the log file for writing).
+
+ </p><p>
+
+ We can make sure that <span class="application">SCons</span> does not
+ run these <span class="application">build</span>
+ commands at the same time
+ by using the <code class="function">SideEffect</code> function
+ to specify that updating
+ the <code class="filename">logfile.txt</code> file
+ is a side effect of building the specified
+ <code class="filename">file1</code>
+ and
+ <code class="filename">file2</code>
+ target files:
+
+ </p><pre class="programlisting">
+env = Environment()
+f1 = env.Command(
+    target='file1.out',
+    source='file1.in',
+    action='./build --log logfile.txt $SOURCE $TARGET'
+)
+f2 = env.Command(
+    target='file2.out',
+    source='file2.in',
+    action='./build --log logfile.txt $SOURCE $TARGET'
+)
+env.SideEffect('logfile.txt', f1 + f2)
+   </pre><p>
+
+ </p><p>
+
+ This makes sure the the two
+ <span class="application">./build</span> steps are run sequentially,
+ even with the <code class="filename">--jobs=2</code> in the command line:
+
+ </p><pre class="screen">% <strong class="userinput"><code>scons -Q --jobs=2</code></strong>
+./build --log logfile.txt file1.in file1.out
+./build --log logfile.txt file2.in file2.out
+</pre><p>
+
+ The <code class="function">SideEffect</code> function can be called multiple
+ times for the same side-effect file.
+ In fact, the name used as a <code class="function">SideEffect</code> does not
+ even need to actually exist as a file on disk -
+ <span class="application">SCons</span> will still make sure
+ that the relevant targets
+ will be executed sequentially, not in parallel.
+ The side effect is actually a pseudo-target, and <span class="application">SCons</span>
+ mainly cares whether nodes are listed as depending on it,
+ not about its contents.
+
+ </p><pre class="programlisting">
+env = Environment()
+f1 = env.Command('file1.out', [], action='echo &gt;$TARGET data1')
+env.SideEffect('not_really_updated', f1)
+f2 = env.Command('file2.out', [], action='echo &gt;$TARGET data2')
+env.SideEffect('not_really_updated', f2)
+   </pre><pre class="screen">% <strong class="userinput"><code>scons -Q --jobs=2</code></strong>
+echo &gt; file1.out data1
+echo &gt; file2.out data2
+</pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch26s06.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch26.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch26s08.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">26.6. Finding the Invocation Directory:  the <code class="function">GetLaunchDir</code> Function </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 26.8. Virtual environments (virtualenvs)</td></tr></table></div></body></html>

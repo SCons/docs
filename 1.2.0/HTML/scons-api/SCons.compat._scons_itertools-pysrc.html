@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>SCons.compat._scons_itertools</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="SCons-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://www.scons.org/">SCons</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="SCons-module.html">Package&nbsp;SCons</a> ::
+        <a href="SCons.compat-module.html">Package&nbsp;compat</a> ::
+        Module&nbsp;_scons_itertools
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="SCons.compat._scons_itertools-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="SCons.compat._scons_itertools-module.html">Module SCons.compat._scons_itertools</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># Copyright (c) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008 The SCons Foundation</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment">#</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># Permission is hereby granted, free of charge, to any person obtaining</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># a copy of this software and associated documentation files (the</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># "Software"), to deal in the Software without restriction, including</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># without limitation the rights to use, copy, modify, merge, publish,</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># distribute, sublicense, and/or sell copies of the Software, and to</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># permit persons to whom the Software is furnished to do so, subject to</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># the following conditions:</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment">#</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># The above copyright notice and this permission notice shall be included</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># in all copies or substantial portions of the Software.</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment">#</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment">#</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-comment"></tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt id="link-0" class="py-name" targets="Variable SCons.Action.__revision__=SCons.Action-module.html#__revision__,Variable SCons.Builder.__revision__=SCons.Builder-module.html#__revision__,Variable SCons.CacheDir.__revision__=SCons.CacheDir-module.html#__revision__,Variable SCons.Debug.__revision__=SCons.Debug-module.html#__revision__,Variable SCons.Defaults.__revision__=SCons.Defaults-module.html#__revision__,Variable SCons.Environment.__revision__=SCons.Environment-module.html#__revision__,Variable SCons.Errors.__revision__=SCons.Errors-module.html#__revision__,Variable SCons.Executor.__revision__=SCons.Executor-module.html#__revision__,Variable SCons.Job.__revision__=SCons.Job-module.html#__revision__,Variable SCons.Memoize.__revision__=SCons.Memoize-module.html#__revision__,Variable SCons.Node.Alias.__revision__=SCons.Node.Alias-module.html#__revision__,Variable SCons.Node.FS.__revision__=SCons.Node.FS-module.html#__revision__,Variable SCons.Node.Python.__revision__=SCons.Node.Python-module.html#__revision__,Variable SCons.Node.__revision__=SCons.Node-module.html#__revision__,Variable SCons.PathList.__revision__=SCons.PathList-module.html#__revision__,Variable SCons.SConf.__revision__=SCons.SConf-module.html#__revision__,Variable SCons.SConsign.__revision__=SCons.SConsign-module.html#__revision__,Variable SCons.Scanner.C.__revision__=SCons.Scanner.C-module.html#__revision__,Variable SCons.Scanner.D.__revision__=SCons.Scanner.D-module.html#__revision__,Variable SCons.Scanner.Dir.__revision__=SCons.Scanner.Dir-module.html#__revision__,Variable SCons.Scanner.Fortran.__revision__=SCons.Scanner.Fortran-module.html#__revision__,Variable SCons.Scanner.IDL.__revision__=SCons.Scanner.IDL-module.html#__revision__,Variable SCons.Scanner.LaTeX.__revision__=SCons.Scanner.LaTeX-module.html#__revision__,Variable SCons.Scanner.Prog.__revision__=SCons.Scanner.Prog-module.html#__revision__,Variable SCons.Scanner.RC.__revision__=SCons.Scanner.RC-module.html#__revision__,Variable SCons.Scanner.__revision__=SCons.Scanner-module.html#__revision__,Variable SCons.Script.Interactive.__revision__=SCons.Script.Interactive-module.html#__revision__,Variable SCons.Script.Main.__revision__=SCons.Script.Main-module.html#__revision__,Variable SCons.Script.SConscript'.__revision__=SCons.Script.SConscript%27-module.html#__revision__,Variable SCons.Script.__revision__=SCons.Script-module.html#__revision__,Variable SCons.Sig.__revision__=SCons.Sig-module.html#__revision__,Variable SCons.Subst.__revision__=SCons.Subst-module.html#__revision__,Variable SCons.Taskmaster.__revision__=SCons.Taskmaster-module.html#__revision__,Variable SCons.Variables.BoolVariable'.__revision__=SCons.Variables.BoolVariable%27-module.html#__revision__,Variable SCons.Variables.EnumVariable'.__revision__=SCons.Variables.EnumVariable%27-module.html#__revision__,Variable SCons.Variables.ListVariable'.__revision__=SCons.Variables.ListVariable%27-module.html#__revision__,Variable SCons.Variables.PackageVariable'.__revision__=SCons.Variables.PackageVariable%27-module.html#__revision__,Variable SCons.Variables.PathVariable'.__revision__=SCons.Variables.PathVariable%27-module.html#__revision__,Variable SCons.Variables.__revision__=SCons.Variables-module.html#__revision__,Variable SCons.Warnings.__revision__=SCons.Warnings-module.html#__revision__,Variable SCons.__revision__=SCons-module.html#__revision__,Variable SCons.compat.__revision__=SCons.compat-module.html#__revision__,Variable SCons.compat._scons_UserString.__revision__=SCons.compat._scons_UserString-module.html#__revision__,Variable SCons.compat._scons_hashlib.__revision__=SCons.compat._scons_hashlib-module.html#__revision__,Variable SCons.compat._scons_itertools.__revision__=SCons.compat._scons_itertools-module.html#__revision__,Variable SCons.compat._scons_textwrap.__revision__=SCons.compat._scons_textwrap-module.html#__revision__,Variable SCons.compat.builtins.__revision__=SCons.compat.builtins-module.html#__revision__,Variable SCons.exitfuncs.__revision__=SCons.exitfuncs-module.html#__revision__"><a title="SCons.Action.__revision__
+SCons.Builder.__revision__
+SCons.CacheDir.__revision__
+SCons.Debug.__revision__
+SCons.Defaults.__revision__
+SCons.Environment.__revision__
+SCons.Errors.__revision__
+SCons.Executor.__revision__
+SCons.Job.__revision__
+SCons.Memoize.__revision__
+SCons.Node.Alias.__revision__
+SCons.Node.FS.__revision__
+SCons.Node.Python.__revision__
+SCons.Node.__revision__
+SCons.PathList.__revision__
+SCons.SConf.__revision__
+SCons.SConsign.__revision__
+SCons.Scanner.C.__revision__
+SCons.Scanner.D.__revision__
+SCons.Scanner.Dir.__revision__
+SCons.Scanner.Fortran.__revision__
+SCons.Scanner.IDL.__revision__
+SCons.Scanner.LaTeX.__revision__
+SCons.Scanner.Prog.__revision__
+SCons.Scanner.RC.__revision__
+SCons.Scanner.__revision__
+SCons.Script.Interactive.__revision__
+SCons.Script.Main.__revision__
+SCons.Script.SConscript'.__revision__
+SCons.Script.__revision__
+SCons.Sig.__revision__
+SCons.Subst.__revision__
+SCons.Taskmaster.__revision__
+SCons.Variables.BoolVariable'.__revision__
+SCons.Variables.EnumVariable'.__revision__
+SCons.Variables.ListVariable'.__revision__
+SCons.Variables.PackageVariable'.__revision__
+SCons.Variables.PathVariable'.__revision__
+SCons.Variables.__revision__
+SCons.Warnings.__revision__
+SCons.__revision__
+SCons.compat.__revision__
+SCons.compat._scons_UserString.__revision__
+SCons.compat._scons_hashlib.__revision__
+SCons.compat._scons_itertools.__revision__
+SCons.compat._scons_textwrap.__revision__
+SCons.compat.builtins.__revision__
+SCons.exitfuncs.__revision__" class="py-name" href="#" onclick="return doclink('link-0', '__revision__', 'link-0');">__revision__</a></tt> <tt class="py-op">=</tt> <tt class="py-docstring">"src/engine/SCons/compat/_scons_itertools.py 3842 2008/12/20 22:59:52 scons"</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt id="link-1" class="py-name" targets="Variable SCons.CacheDir.__doc__=SCons.CacheDir-module.html#__doc__,Variable SCons.Memoize.__doc__=SCons.Memoize-module.html#__doc__,Variable SCons.PathList.__doc__=SCons.PathList-module.html#__doc__,Variable SCons.Script.Interactive.__doc__=SCons.Script.Interactive-module.html#__doc__,Variable SCons.Sig.__doc__=SCons.Sig-module.html#__doc__,Variable SCons.Taskmaster.__doc__=SCons.Taskmaster-module.html#__doc__,Variable SCons.compat.__doc__=SCons.compat-module.html#__doc__,Variable SCons.compat._scons_UserString.__doc__=SCons.compat._scons_UserString-module.html#__doc__,Variable SCons.compat._scons_hashlib.__doc__=SCons.compat._scons_hashlib-module.html#__doc__,Variable SCons.compat._scons_itertools.__doc__=SCons.compat._scons_itertools-module.html#__doc__,Variable SCons.compat.builtins.__doc__=SCons.compat.builtins-module.html#__doc__,Variable SCons.cpp.__doc__=SCons.cpp-module.html#__doc__"><a title="SCons.CacheDir.__doc__
+SCons.Memoize.__doc__
+SCons.PathList.__doc__
+SCons.Script.Interactive.__doc__
+SCons.Sig.__doc__
+SCons.Taskmaster.__doc__
+SCons.compat.__doc__
+SCons.compat._scons_UserString.__doc__
+SCons.compat._scons_hashlib.__doc__
+SCons.compat._scons_itertools.__doc__
+SCons.compat.builtins.__doc__
+SCons.cpp.__doc__" class="py-name" href="#" onclick="return doclink('link-1', '__doc__', 'link-1');">__doc__</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"""</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-string">Implementations of itertools functions for Python versions that don't</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-string">have iterators.</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"><tt class="py-string">These implement the functions by creating the entire list, not returning</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"><tt class="py-string">it element-by-element as the real itertools functions do.  This means</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"><tt class="py-string">that early Python versions won't get the performance benefit of using</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt class="py-string">the itertools, but we can still use them so the later Python versions</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"><tt class="py-string">do get the advantages of using iterators.</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"><tt class="py-string">Because we return the entire list, we intentionally do not implement the</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"><tt class="py-string">itertools functions that "return" infinitely-long lists: the count(),</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"><tt class="py-string">cycle() and repeat() functions.  Other functions below have remained</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line"><tt class="py-string">unimplemented simply because they aren't being used (yet) and it wasn't</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"><tt class="py-string">obvious how to do it.  Or, conversely, we only implemented those functions</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"><tt class="py-string">that *were* easy to implement (mostly because the Python documentation</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"><tt class="py-string">contained examples of equivalent code).</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"><tt class="py-string">Note that these do not have independent unit tests, so it's possible</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"><tt class="py-string">that there are bugs.</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"><tt class="py-string">"""</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"> </tt>
+<a name="chain"></a><div id="chain-def"><a name="L48"></a><tt class="py-lineno"> 48</tt> <a class="py-toggle" href="#" id="chain-toggle" onclick="return toggle('chain');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.compat._scons_itertools-module.html#chain">chain</a><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-param">iterables</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="chain-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="chain-expanded"><a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">    <tt id="link-2" class="py-name" targets="Variable SCons.SConf.SConfBuildInfo.result=SCons.SConf.SConfBuildInfo-class.html#result"><a title="SCons.SConf.SConfBuildInfo.result" class="py-name" href="#" onclick="return doclink('link-2', 'result', 'link-2');">result</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt id="link-3" class="py-name" targets="Variable SCons.compat._scons_textwrap.TextWrapper.x=SCons.compat._scons_textwrap.TextWrapper-class.html#x,Variable SCons.exitfuncs.x=SCons.exitfuncs-module.html#x"><a title="SCons.compat._scons_textwrap.TextWrapper.x
+SCons.exitfuncs.x" class="py-name" href="#" onclick="return doclink('link-3', 'x', 'link-3');">x</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">iterables</tt><tt class="py-op">:</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">        <tt id="link-4" class="py-name"><a title="SCons.SConf.SConfBuildInfo.result" class="py-name" href="#" onclick="return doclink('link-4', 'result', 'link-2');">result</a></tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Method SCons.Util.UniqueList.extend()=SCons.Util.UniqueList-class.html#extend"><a title="SCons.Util.UniqueList.extend" class="py-name" href="#" onclick="return doclink('link-5', 'extend', 'link-5');">extend</a></tt><tt class="py-op">(</tt><tt class="py-name">list</tt><tt class="py-op">(</tt><tt id="link-6" class="py-name"><a title="SCons.compat._scons_textwrap.TextWrapper.x
+SCons.exitfuncs.x" class="py-name" href="#" onclick="return doclink('link-6', 'x', 'link-3');">x</a></tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-7" class="py-name"><a title="SCons.SConf.SConfBuildInfo.result" class="py-name" href="#" onclick="return doclink('link-7', 'result', 'link-2');">result</a></tt> </tt>
+</div><a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line"> </tt>
+<a name="count"></a><div id="count-def"><a name="L54"></a><tt class="py-lineno"> 54</tt> <a class="py-toggle" href="#" id="count-toggle" onclick="return toggle('count');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.compat._scons_itertools-module.html#count">count</a><tt class="py-op">(</tt><tt class="py-param">n</tt><tt class="py-op">=</tt><tt class="py-number">0</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="count-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="count-expanded"><a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">    <tt class="py-comment"># returns infinite length, should not be supported</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"><tt class="py-comment"></tt>    <tt class="py-keyword">raise</tt> <tt class="py-name">NotImplementedError</tt> </tt>
+</div><a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"> </tt>
+<a name="cycle"></a><div id="cycle-def"><a name="L58"></a><tt class="py-lineno"> 58</tt> <a class="py-toggle" href="#" id="cycle-toggle" onclick="return toggle('cycle');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.compat._scons_itertools-module.html#cycle">cycle</a><tt class="py-op">(</tt><tt class="py-param">iterable</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="cycle-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="cycle-expanded"><a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">    <tt class="py-comment"># returns infinite length, should not be supported</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line"><tt class="py-comment"></tt>    <tt class="py-keyword">raise</tt> <tt class="py-name">NotImplementedError</tt> </tt>
+</div><a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"> </tt>
+<a name="dropwhile"></a><div id="dropwhile-def"><a name="L62"></a><tt class="py-lineno"> 62</tt> <a class="py-toggle" href="#" id="dropwhile-toggle" onclick="return toggle('dropwhile');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.compat._scons_itertools-module.html#dropwhile">dropwhile</a><tt class="py-op">(</tt><tt class="py-param">predicate</tt><tt class="py-op">,</tt> <tt class="py-param">iterable</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="dropwhile-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="dropwhile-expanded"><a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">    <tt id="link-8" class="py-name"><a title="SCons.SConf.SConfBuildInfo.result" class="py-name" href="#" onclick="return doclink('link-8', 'result', 'link-2');">result</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt id="link-9" class="py-name"><a title="SCons.compat._scons_textwrap.TextWrapper.x
+SCons.exitfuncs.x" class="py-name" href="#" onclick="return doclink('link-9', 'x', 'link-3');">x</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">iterable</tt><tt class="py-op">:</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">predicate</tt><tt class="py-op">(</tt><tt id="link-10" class="py-name"><a title="SCons.compat._scons_textwrap.TextWrapper.x
+SCons.exitfuncs.x" class="py-name" href="#" onclick="return doclink('link-10', 'x', 'link-3');">x</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">            <tt id="link-11" class="py-name"><a title="SCons.SConf.SConfBuildInfo.result" class="py-name" href="#" onclick="return doclink('link-11', 'result', 'link-2');">result</a></tt><tt class="py-op">.</tt><tt id="link-12" class="py-name" targets="Method SCons.Util.UniqueList.append()=SCons.Util.UniqueList-class.html#append"><a title="SCons.Util.UniqueList.append" class="py-name" href="#" onclick="return doclink('link-12', 'append', 'link-12');">append</a></tt><tt class="py-op">(</tt><tt id="link-13" class="py-name"><a title="SCons.compat._scons_textwrap.TextWrapper.x
+SCons.exitfuncs.x" class="py-name" href="#" onclick="return doclink('link-13', 'x', 'link-3');">x</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">            <tt class="py-keyword">break</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">    <tt id="link-14" class="py-name"><a title="SCons.SConf.SConfBuildInfo.result" class="py-name" href="#" onclick="return doclink('link-14', 'result', 'link-2');">result</a></tt><tt class="py-op">.</tt><tt id="link-15" class="py-name"><a title="SCons.Util.UniqueList.extend" class="py-name" href="#" onclick="return doclink('link-15', 'extend', 'link-5');">extend</a></tt><tt class="py-op">(</tt><tt class="py-name">iterable</tt><tt class="py-op">)</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-16" class="py-name"><a title="SCons.SConf.SConfBuildInfo.result" class="py-name" href="#" onclick="return doclink('link-16', 'result', 'link-2');">result</a></tt> </tt>
+</div><a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line"> </tt>
+<a name="groupby"></a><div id="groupby-def"><a name="L71"></a><tt class="py-lineno"> 71</tt> <a class="py-toggle" href="#" id="groupby-toggle" onclick="return toggle('groupby');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.compat._scons_itertools-module.html#groupby">groupby</a><tt class="py-op">(</tt><tt class="py-param">iterable</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="groupby-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="groupby-expanded"><a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">    <tt class="py-keyword">raise</tt> <tt class="py-name">NotImplementedError</tt> </tt>
+</div><a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line"> </tt>
+<a name="ifilter"></a><div id="ifilter-def"><a name="L74"></a><tt class="py-lineno"> 74</tt> <a class="py-toggle" href="#" id="ifilter-toggle" onclick="return toggle('ifilter');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.compat._scons_itertools-module.html#ifilter">ifilter</a><tt class="py-op">(</tt><tt class="py-param">predicate</tt><tt class="py-op">,</tt> <tt class="py-param">iterable</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ifilter-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ifilter-expanded"><a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">    <tt id="link-17" class="py-name"><a title="SCons.SConf.SConfBuildInfo.result" class="py-name" href="#" onclick="return doclink('link-17', 'result', 'link-2');">result</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">predicate</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">        <tt class="py-name">predicate</tt> <tt class="py-op">=</tt> <tt id="link-18" class="py-name" targets="Function SCons.compat.builtins.bool()=SCons.compat.builtins-module.html#bool"><a title="SCons.compat.builtins.bool" class="py-name" href="#" onclick="return doclink('link-18', 'bool', 'link-18');">bool</a></tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt id="link-19" class="py-name"><a title="SCons.compat._scons_textwrap.TextWrapper.x
+SCons.exitfuncs.x" class="py-name" href="#" onclick="return doclink('link-19', 'x', 'link-3');">x</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">iterable</tt><tt class="py-op">:</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">predicate</tt><tt class="py-op">(</tt><tt id="link-20" class="py-name"><a title="SCons.compat._scons_textwrap.TextWrapper.x
+SCons.exitfuncs.x" class="py-name" href="#" onclick="return doclink('link-20', 'x', 'link-3');">x</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">            <tt id="link-21" class="py-name"><a title="SCons.SConf.SConfBuildInfo.result" class="py-name" href="#" onclick="return doclink('link-21', 'result', 'link-2');">result</a></tt><tt class="py-op">.</tt><tt id="link-22" class="py-name"><a title="SCons.Util.UniqueList.append" class="py-name" href="#" onclick="return doclink('link-22', 'append', 'link-12');">append</a></tt><tt class="py-op">(</tt><tt id="link-23" class="py-name"><a title="SCons.compat._scons_textwrap.TextWrapper.x
+SCons.exitfuncs.x" class="py-name" href="#" onclick="return doclink('link-23', 'x', 'link-3');">x</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-24" class="py-name"><a title="SCons.SConf.SConfBuildInfo.result" class="py-name" href="#" onclick="return doclink('link-24', 'result', 'link-2');">result</a></tt> </tt>
+</div><a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line"> </tt>
+<a name="ifilterfalse"></a><div id="ifilterfalse-def"><a name="L83"></a><tt class="py-lineno"> 83</tt> <a class="py-toggle" href="#" id="ifilterfalse-toggle" onclick="return toggle('ifilterfalse');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.compat._scons_itertools-module.html#ifilterfalse">ifilterfalse</a><tt class="py-op">(</tt><tt class="py-param">predicate</tt><tt class="py-op">,</tt> <tt class="py-param">iterable</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ifilterfalse-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ifilterfalse-expanded"><a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">    <tt id="link-25" class="py-name"><a title="SCons.SConf.SConfBuildInfo.result" class="py-name" href="#" onclick="return doclink('link-25', 'result', 'link-2');">result</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">predicate</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">        <tt class="py-name">predicate</tt> <tt class="py-op">=</tt> <tt id="link-26" class="py-name"><a title="SCons.compat.builtins.bool" class="py-name" href="#" onclick="return doclink('link-26', 'bool', 'link-18');">bool</a></tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt id="link-27" class="py-name"><a title="SCons.compat._scons_textwrap.TextWrapper.x
+SCons.exitfuncs.x" class="py-name" href="#" onclick="return doclink('link-27', 'x', 'link-3');">x</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">iterable</tt><tt class="py-op">:</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">predicate</tt><tt class="py-op">(</tt><tt id="link-28" class="py-name"><a title="SCons.compat._scons_textwrap.TextWrapper.x
+SCons.exitfuncs.x" class="py-name" href="#" onclick="return doclink('link-28', 'x', 'link-3');">x</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">            <tt id="link-29" class="py-name"><a title="SCons.SConf.SConfBuildInfo.result" class="py-name" href="#" onclick="return doclink('link-29', 'result', 'link-2');">result</a></tt><tt class="py-op">.</tt><tt id="link-30" class="py-name"><a title="SCons.Util.UniqueList.append" class="py-name" href="#" onclick="return doclink('link-30', 'append', 'link-12');">append</a></tt><tt class="py-op">(</tt><tt id="link-31" class="py-name"><a title="SCons.compat._scons_textwrap.TextWrapper.x
+SCons.exitfuncs.x" class="py-name" href="#" onclick="return doclink('link-31', 'x', 'link-3');">x</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-32" class="py-name"><a title="SCons.SConf.SConfBuildInfo.result" class="py-name" href="#" onclick="return doclink('link-32', 'result', 'link-2');">result</a></tt> </tt>
+</div><a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line"> </tt>
+<a name="imap"></a><div id="imap-def"><a name="L92"></a><tt class="py-lineno"> 92</tt> <a class="py-toggle" href="#" id="imap-toggle" onclick="return toggle('imap');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.compat._scons_itertools-module.html#imap">imap</a><tt class="py-op">(</tt><tt class="py-param">function</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">iterables</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="imap-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="imap-expanded"><a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">apply</tt><tt class="py-op">(</tt><tt class="py-name">map</tt><tt class="py-op">,</tt> <tt class="py-op">(</tt><tt class="py-name">function</tt><tt class="py-op">,</tt><tt class="py-op">)</tt> <tt class="py-op">+</tt> <tt class="py-name">tuple</tt><tt class="py-op">(</tt><tt class="py-name">iterables</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line"> </tt>
+<a name="islice"></a><div id="islice-def"><a name="L95"></a><tt class="py-lineno"> 95</tt> <a class="py-toggle" href="#" id="islice-toggle" onclick="return toggle('islice');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.compat._scons_itertools-module.html#islice">islice</a><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kw</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="islice-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="islice-expanded"><a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">    <tt class="py-keyword">raise</tt> <tt class="py-name">NotImplementedError</tt> </tt>
+</div><a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line"> </tt>
+<a name="izip"></a><div id="izip-def"><a name="L98"></a><tt class="py-lineno"> 98</tt> <a class="py-toggle" href="#" id="izip-toggle" onclick="return toggle('izip');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.compat._scons_itertools-module.html#izip">izip</a><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-param">iterables</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="izip-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="izip-expanded"><a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">apply</tt><tt class="py-op">(</tt><tt id="link-33" class="py-name" targets="Function SCons.compat.builtins.zip()=SCons.compat.builtins-module.html#zip"><a title="SCons.compat.builtins.zip" class="py-name" href="#" onclick="return doclink('link-33', 'zip', 'link-33');">zip</a></tt><tt class="py-op">,</tt> <tt class="py-name">iterables</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line"> </tt>
+<a name="repeat"></a><div id="repeat-def"><a name="L101"></a><tt class="py-lineno">101</tt> <a class="py-toggle" href="#" id="repeat-toggle" onclick="return toggle('repeat');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.compat._scons_itertools-module.html#repeat">repeat</a><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kw</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="repeat-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="repeat-expanded"><a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">    <tt class="py-comment"># returns infinite length, should not be supported</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line"><tt class="py-comment"></tt>    <tt class="py-keyword">raise</tt> <tt class="py-name">NotImplementedError</tt> </tt>
+</div><a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line"> </tt>
+<a name="starmap"></a><div id="starmap-def"><a name="L105"></a><tt class="py-lineno">105</tt> <a class="py-toggle" href="#" id="starmap-toggle" onclick="return toggle('starmap');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.compat._scons_itertools-module.html#starmap">starmap</a><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kw</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="starmap-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="starmap-expanded"><a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">    <tt class="py-keyword">raise</tt> <tt class="py-name">NotImplementedError</tt> </tt>
+</div><a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line"> </tt>
+<a name="takewhile"></a><div id="takewhile-def"><a name="L108"></a><tt class="py-lineno">108</tt> <a class="py-toggle" href="#" id="takewhile-toggle" onclick="return toggle('takewhile');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.compat._scons_itertools-module.html#takewhile">takewhile</a><tt class="py-op">(</tt><tt class="py-param">predicate</tt><tt class="py-op">,</tt> <tt class="py-param">iterable</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="takewhile-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="takewhile-expanded"><a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">    <tt id="link-34" class="py-name"><a title="SCons.SConf.SConfBuildInfo.result" class="py-name" href="#" onclick="return doclink('link-34', 'result', 'link-2');">result</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt id="link-35" class="py-name"><a title="SCons.compat._scons_textwrap.TextWrapper.x
+SCons.exitfuncs.x" class="py-name" href="#" onclick="return doclink('link-35', 'x', 'link-3');">x</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">iterable</tt><tt class="py-op">:</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">predicate</tt><tt class="py-op">(</tt><tt id="link-36" class="py-name"><a title="SCons.compat._scons_textwrap.TextWrapper.x
+SCons.exitfuncs.x" class="py-name" href="#" onclick="return doclink('link-36', 'x', 'link-3');">x</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">            <tt id="link-37" class="py-name"><a title="SCons.SConf.SConfBuildInfo.result" class="py-name" href="#" onclick="return doclink('link-37', 'result', 'link-2');">result</a></tt><tt class="py-op">.</tt><tt id="link-38" class="py-name"><a title="SCons.Util.UniqueList.append" class="py-name" href="#" onclick="return doclink('link-38', 'append', 'link-12');">append</a></tt><tt class="py-op">(</tt><tt id="link-39" class="py-name"><a title="SCons.compat._scons_textwrap.TextWrapper.x
+SCons.exitfuncs.x" class="py-name" href="#" onclick="return doclink('link-39', 'x', 'link-3');">x</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">            <tt class="py-keyword">break</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-40" class="py-name"><a title="SCons.SConf.SConfBuildInfo.result" class="py-name" href="#" onclick="return doclink('link-40', 'result', 'link-2');">result</a></tt> </tt>
+</div><a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line"> </tt>
+<a name="tee"></a><div id="tee-def"><a name="L117"></a><tt class="py-lineno">117</tt> <a class="py-toggle" href="#" id="tee-toggle" onclick="return toggle('tee');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.compat._scons_itertools-module.html#tee">tee</a><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kw</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="tee-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="tee-expanded"><a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">    <tt class="py-keyword">raise</tt> <tt class="py-name">NotImplementedError</tt> </tt>
+</div><a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="SCons-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://www.scons.org/">SCons</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0beta1 on Sat Dec 20 23:02:32 2008
+    </td>
+    <td align="right" class="footer">
+      <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie()
+  // -->
+</script>
+  
+</body>
+</html>

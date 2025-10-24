@@ -1,0 +1,259 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<HTML
+><HEAD
+><TITLE
+>How is SCons Making Its Decisions?  the --taskmastertrace Option</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="HOME"
+TITLE="SCons User Guide 0.97"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Troubleshooting"
+HREF="c3196.html"><LINK
+REL="PREVIOUS"
+TITLE="Where is SCons Blowing Up?  the --debug=stacktrace Option"
+HREF="x3375.html"><LINK
+REL="NEXT"
+TITLE="Construction Variables"
+HREF="a3414.html"></HEAD
+><BODY
+CLASS="SECTION"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 0.97</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x3375.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Troubleshooting</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="a3414.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECTION"
+><H1
+CLASS="SECTION"
+><A
+NAME="AEN3396"
+>How is <TT
+CLASS="APPLICATION"
+>SCons</TT
+> Making Its Decisions?  the <TT
+CLASS="LITERAL"
+>--taskmastertrace</TT
+> Option</A
+></H1
+><P
+>&#13;    The internal <TT
+CLASS="APPLICATION"
+>SCons</TT
+> subsystem that handles walking
+    the dependency graph
+    and controls the decision-making about what to rebuild
+    is the <TT
+CLASS="LITERAL"
+>Taskmaster</TT
+>.
+    <TT
+CLASS="APPLICATION"
+>SCons</TT
+> supports a <TT
+CLASS="LITERAL"
+>--taskmastertrace</TT
+>
+    option that tells the Taskmaster to print
+    information about the children (dependencies)
+    of the various Nodes on its walk down the graph,
+    which specific dependent Nodes are being evaluated,
+    and in what order.
+
+    </P
+><P
+>&#13;    The <TT
+CLASS="LITERAL"
+>--taskmastertrace</TT
+> option
+    takes as an argument the name of a file in
+    which to put the trace output,
+    with <TT
+CLASS="FILENAME"
+>-</TT
+> (a single hyphen)
+    indicating that the trace messages
+    should be printed to the standard output:
+
+    </P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>      env = Environment(CPPPATH = ['.'])
+      env.Program('prog.c')
+    </PRE
+></TD
+></TR
+></TABLE
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>      % <KBD
+CLASS="USERINPUT"
+>scons -Q --taskmastertrace=- prog</KBD
+>
+      Taskmaster: 'prog': children:
+          ['prog.o']
+          waiting on unstarted children:
+          ['prog.o']
+      Taskmaster: 'prog.o': children:
+          ['inc.h', 'prog.c']
+          evaluating prog.o
+      cc -o prog.o -c -I. prog.c
+      Taskmaster: 'prog': children:
+          ['prog.o']
+          evaluating prog
+      cc -o prog prog.o
+      Taskmaster: 'prog': already handled (executed)
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>&#13;    The <TT
+CLASS="LITERAL"
+>--taskmastertrace</TT
+> option
+    doesn't provide information about the actual
+    calculations involved in deciding if a file is up-to-date,
+    but it does show all of the dependencies
+    it knows about for each Node,
+    and the order in which those dependencies are evaluated.
+    This can be useful as an alternate way to determine
+    whether or not your <TT
+CLASS="APPLICATION"
+>SCons</TT
+> configuration,
+    or the implicit dependency scan,
+    has actually identified all the correct dependencies
+    you want it to.
+
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x3375.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="a3414.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Where is <TT
+CLASS="APPLICATION"
+>SCons</TT
+> Blowing Up?  the <TT
+CLASS="LITERAL"
+>--debug=stacktrace</TT
+> Option</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c3196.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Construction Variables</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

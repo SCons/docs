@@ -1,0 +1,628 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>SCons.Variables package &mdash; SCons 4.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="SCons.compat package" href="../SCons.compat/" />
+    <link rel="prev" title="SCons.Tool package" href="../SCons.Tool/" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../" class="icon icon-home"> SCons
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                4.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../SCons/">SCons package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons">Module contents</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../SCons/#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">SCons.Variables package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SCons.compat/">SCons.compat package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Action">SCons.Action module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Builder">SCons.Builder module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.CacheDir">SCons.CacheDir module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Conftest">SCons.Conftest module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Debug">SCons.Debug module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Defaults">SCons.Defaults module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Environment">SCons.Environment module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Errors">SCons.Errors module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Executor">SCons.Executor module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Job">SCons.Job module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Memoize">SCons.Memoize module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.PathList">SCons.PathList module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.SConf">SCons.SConf module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.SConsign">SCons.SConsign module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Subst">SCons.Subst module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Taskmaster">SCons.Taskmaster module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../SCons/#generic-taskmaster-module-for-the-scons-build-engine">Generic Taskmaster module for the SCons build engine.</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Util">SCons.Util module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Warnings">SCons.Warnings module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.cpp">SCons.cpp module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.dblite">SCons.dblite module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.exitfuncs">SCons.exitfuncs module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.compat/">SCons.compat package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.compat/#module-SCons.compat">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.Node/">SCons.Node package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Node/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Node/#module-SCons.Node.Alias">SCons.Node.Alias module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Node/#module-SCons.Node.FS">SCons.Node.FS module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Node/#module-SCons.Node.Python">SCons.Node.Python module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Node/#module-SCons.Node">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.Platform/">SCons.Platform package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform.aix">SCons.Platform.aix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform.cygwin">SCons.Platform.cygwin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform.darwin">SCons.Platform.darwin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform.hpux">SCons.Platform.hpux module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform.irix">SCons.Platform.irix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform.mingw">SCons.Platform.mingw module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform.os2">SCons.Platform.os2 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform.posix">SCons.Platform.posix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform.sunos">SCons.Platform.sunos module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform.virtualenv">SCons.Platform.virtualenv module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform.win32">SCons.Platform.win32 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.Scanner/">SCons.Scanner package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Scanner/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Scanner/#module-SCons.Scanner.C">SCons.Scanner.C module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Scanner/#module-SCons.Scanner.D">SCons.Scanner.D module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Scanner/#module-SCons.Scanner.Dir">SCons.Scanner.Dir module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Scanner/#module-SCons.Scanner.Fortran">SCons.Scanner.Fortran module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Scanner/#module-SCons.Scanner.IDL">SCons.Scanner.IDL module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Scanner/#module-SCons.Scanner.LaTeX">SCons.Scanner.LaTeX module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Scanner/#module-SCons.Scanner.Prog">SCons.Scanner.Prog module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Scanner/#module-SCons.Scanner.RC">SCons.Scanner.RC module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Scanner/#module-SCons.Scanner.SWIG">SCons.Scanner.SWIG module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Scanner/#module-SCons.Scanner">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.Script/">SCons.Script package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Script/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Script/#module-SCons.Script.Interactive">SCons.Script.Interactive module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Script/#module-SCons.Script.Main">SCons.Script.Main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Script/#module-SCons.Script.SConsOptions">SCons.Script.SConsOptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Script/#module-SCons.Script.SConscript">SCons.Script.SConscript module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Script/#module-SCons.Script">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.Tool/">SCons.Tool package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Tool/#module-SCons.Tool">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">SCons.Variables package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-SCons.Variables.BoolVariable">SCons.Variables.BoolVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-SCons.Variables.EnumVariable">SCons.Variables.EnumVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-SCons.Variables.ListVariable">SCons.Variables.ListVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-SCons.Variables.PackageVariable">SCons.Variables.PackageVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-SCons.Variables.PathVariable">SCons.Variables.PathVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-SCons.Variables">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">SCons</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../">Docs</a> &raquo;</li>
+        
+          <li><a href="../SCons/">SCons package</a> &raquo;</li>
+        
+      <li>SCons.Variables package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/SCons.Variables.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="scons-variables-package">
+<h1>SCons.Variables package<a class="headerlink" href="#scons-variables-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-SCons.Variables.BoolVariable">
+<span id="scons-variables-boolvariable-module"></span><h2>SCons.Variables.BoolVariable module<a class="headerlink" href="#module-SCons.Variables.BoolVariable" title="Permalink to this headline">¶</a></h2>
+<p>SCons.Variables.BoolVariable</p>
+<p>This file defines the option type for SCons implementing true/false values.</p>
+<p>Usage example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">opts</span> <span class="o">=</span> <span class="n">Variables</span><span class="p">()</span>
+<span class="n">opts</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">BoolVariable</span><span class="p">(</span><span class="s1">&#39;embedded&#39;</span><span class="p">,</span> <span class="s1">&#39;build for an embedded system&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="o">...</span>
+<span class="k">if</span> <span class="n">env</span><span class="p">[</span><span class="s1">&#39;embedded&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<dl class="function">
+<dt id="SCons.Variables.BoolVariable.BoolVariable">
+<code class="sig-prename descclassname">SCons.Variables.BoolVariable.</code><code class="sig-name descname">BoolVariable</code><span class="sig-paren">(</span><em class="sig-param">key</em>, <em class="sig-param">help</em>, <em class="sig-param">default</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Variables/BoolVariable/#BoolVariable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Variables.BoolVariable.BoolVariable" title="Permalink to this definition">¶</a></dt>
+<dd><p>The input parameters describe a boolean option, thus they are
+returned with the correct converter and validator appended. The
+‘help’ text will by appended by ‘(yes|no) to show the valid
+valued. The result is usable for input to opts.Add().</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-SCons.Variables.EnumVariable">
+<span id="scons-variables-enumvariable-module"></span><h2>SCons.Variables.EnumVariable module<a class="headerlink" href="#module-SCons.Variables.EnumVariable" title="Permalink to this headline">¶</a></h2>
+<p>SCons.Variables.EnumVariable</p>
+<p>This file defines the option type for SCons allowing only specified
+input-values.</p>
+<p>Usage example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">opts</span> <span class="o">=</span> <span class="n">Variables</span><span class="p">()</span>
+<span class="n">opts</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">EnumVariable</span><span class="p">(</span><span class="s1">&#39;debug&#39;</span><span class="p">,</span> <span class="s1">&#39;debug output and symbols&#39;</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">,</span>
+                  <span class="n">allowed_values</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">,</span> <span class="s1">&#39;full&#39;</span><span class="p">),</span>
+                  <span class="nb">map</span><span class="o">=</span><span class="p">{},</span> <span class="n">ignorecase</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+<span class="o">...</span>
+<span class="k">if</span> <span class="n">env</span><span class="p">[</span><span class="s1">&#39;debug&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;full&#39;</span><span class="p">:</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<dl class="function">
+<dt id="SCons.Variables.EnumVariable.EnumVariable">
+<code class="sig-prename descclassname">SCons.Variables.EnumVariable.</code><code class="sig-name descname">EnumVariable</code><span class="sig-paren">(</span><em class="sig-param">key</em>, <em class="sig-param">help</em>, <em class="sig-param">default</em>, <em class="sig-param">allowed_values</em>, <em class="sig-param">map={}</em>, <em class="sig-param">ignorecase=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Variables/EnumVariable/#EnumVariable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Variables.EnumVariable.EnumVariable" title="Permalink to this definition">¶</a></dt>
+<dd><p>The input parameters describe an option with only certain values
+allowed. They are returned with an appropriate converter and
+validator appended. The result is usable for input to
+Variables.Add().</p>
+<p>‘key’ and ‘default’ are the values to be passed on to Variables.Add().</p>
+<p>‘help’ will be appended by the allowed values automatically</p>
+<p>‘allowed_values’ is a list of strings, which are allowed as values
+for this option.</p>
+<p>The ‘map’-dictionary may be used for converting the input value
+into canonical values (e.g. for aliases).</p>
+<p>‘ignorecase’ defines the behaviour of the validator:</p>
+<blockquote>
+<div><p>If ignorecase == 0, the validator/converter are case-sensitive.
+If ignorecase == 1, the validator/converter are case-insensitive.
+If ignorecase == 2, the validator/converter is case-insensitive and the converted value will always be lower-case.</p>
+</div></blockquote>
+<p>The ‘validator’ tests whether the value is in the list of allowed values. The ‘converter’ converts input values
+according to the given ‘map’-dictionary (unmapped input values are returned unchanged).</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-SCons.Variables.ListVariable">
+<span id="scons-variables-listvariable-module"></span><h2>SCons.Variables.ListVariable module<a class="headerlink" href="#module-SCons.Variables.ListVariable" title="Permalink to this headline">¶</a></h2>
+<p>SCons.Variables.ListVariable</p>
+<p>This file defines the option type for SCons implementing ‘lists’.</p>
+<p>A ‘list’ option may either be ‘all’, ‘none’ or a list of names
+separated by comma. After the option has been processed, the option
+value holds either the named list elements, all list elements or no
+list elements at all.</p>
+<p>Usage example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">list_of_libs</span> <span class="o">=</span> <span class="n">Split</span><span class="p">(</span><span class="s1">&#39;x11 gl qt ical&#39;</span><span class="p">)</span>
+
+<span class="n">opts</span> <span class="o">=</span> <span class="n">Variables</span><span class="p">()</span>
+<span class="n">opts</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">ListVariable</span><span class="p">(</span><span class="s1">&#39;shared&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;libraries to build as shared libraries&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;all&#39;</span><span class="p">,</span>
+                  <span class="n">elems</span> <span class="o">=</span> <span class="n">list_of_libs</span><span class="p">))</span>
+<span class="o">...</span>
+<span class="k">for</span> <span class="n">lib</span> <span class="ow">in</span> <span class="n">list_of_libs</span><span class="p">:</span>
+ <span class="k">if</span> <span class="n">lib</span> <span class="ow">in</span> <span class="n">env</span><span class="p">[</span><span class="s1">&#39;shared&#39;</span><span class="p">]:</span>
+     <span class="n">env</span><span class="o">.</span><span class="n">SharedObject</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+ <span class="k">else</span><span class="p">:</span>
+     <span class="n">env</span><span class="o">.</span><span class="n">Object</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="function">
+<dt id="SCons.Variables.ListVariable.ListVariable">
+<code class="sig-prename descclassname">SCons.Variables.ListVariable.</code><code class="sig-name descname">ListVariable</code><span class="sig-paren">(</span><em class="sig-param">key</em>, <em class="sig-param">help</em>, <em class="sig-param">default</em>, <em class="sig-param">names</em>, <em class="sig-param">map={}</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Variables/ListVariable/#ListVariable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Variables.ListVariable.ListVariable" title="Permalink to this definition">¶</a></dt>
+<dd><p>The input parameters describe a ‘package list’ option, thus they
+are returned with the correct converter and validator appended. The
+result is usable for input to opts.Add() .</p>
+<p>A ‘package list’ option may either be ‘all’, ‘none’ or a list of
+package names (separated by space).</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-SCons.Variables.PackageVariable">
+<span id="scons-variables-packagevariable-module"></span><h2>SCons.Variables.PackageVariable module<a class="headerlink" href="#module-SCons.Variables.PackageVariable" title="Permalink to this headline">¶</a></h2>
+<p>SCons.Variables.PackageVariable</p>
+<p>This file defines the option type for SCons implementing ‘package
+activation’.</p>
+<p>To be used whenever a ‘package’ may be enabled/disabled and the
+package path may be specified.</p>
+<p>Usage example:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>Examples:</dt><dd><p>x11=no   (disables X11 support)
+x11=yes  (will search for the package installation dir)
+x11=/usr/local/X11 (will check this path for existence)</p>
+</dd>
+</dl>
+<p>To replace autoconf’s –with-xxx=yyy</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">opts</span> <span class="o">=</span> <span class="n">Variables</span><span class="p">()</span>
+<span class="n">opts</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">PackageVariable</span><span class="p">(</span><span class="s1">&#39;x11&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;use X11 installed here (yes = search some places&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;yes&#39;</span><span class="p">))</span>
+<span class="o">...</span>
+<span class="k">if</span> <span class="n">env</span><span class="p">[</span><span class="s1">&#39;x11&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="nb">dir</span> <span class="o">=</span> <span class="o">...</span> <span class="n">search</span> <span class="n">X11</span> <span class="ow">in</span> <span class="n">some</span> <span class="n">standard</span> <span class="n">places</span> <span class="o">...</span>
+    <span class="n">env</span><span class="p">[</span><span class="s1">&#39;x11&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dir</span>
+<span class="k">if</span> <span class="n">env</span><span class="p">[</span><span class="s1">&#39;x11&#39;</span><span class="p">]:</span>
+    <span class="o">...</span> <span class="n">build</span> <span class="k">with</span> <span class="n">x11</span> <span class="o">...</span>
+</pre></div>
+</div>
+</div></blockquote>
+<dl class="function">
+<dt id="SCons.Variables.PackageVariable.PackageVariable">
+<code class="sig-prename descclassname">SCons.Variables.PackageVariable.</code><code class="sig-name descname">PackageVariable</code><span class="sig-paren">(</span><em class="sig-param">key</em>, <em class="sig-param">help</em>, <em class="sig-param">default</em>, <em class="sig-param">searchfunc=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Variables/PackageVariable/#PackageVariable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Variables.PackageVariable.PackageVariable" title="Permalink to this definition">¶</a></dt>
+<dd><p>The input parameters describe a ‘package list’ option, thus they
+are returned with the correct converter and validator appended. The
+result is usable for input to opts.Add() .</p>
+<p>A ‘package list’ option may either be ‘all’, ‘none’ or a list of
+package names (separated by space).</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-SCons.Variables.PathVariable">
+<span id="scons-variables-pathvariable-module"></span><h2>SCons.Variables.PathVariable module<a class="headerlink" href="#module-SCons.Variables.PathVariable" title="Permalink to this headline">¶</a></h2>
+<p>SCons.Variables.PathVariable</p>
+<p>This file defines an option type for SCons implementing path settings.</p>
+<p>To be used whenever a user-specified path override should be allowed.</p>
+<dl>
+<dt>Arguments to PathVariable are:</dt><dd><p>option-name  = name of this option on the command line (e.g. “prefix”)
+option-help  = help string for option
+option-dflt  = default value for this option
+validator    = [optional] validator for option value.  Predefined validators are:</p>
+<blockquote>
+<div><blockquote>
+<div><p>PathAccept – accepts any path setting; no validation
+PathIsDir  – path must be an existing directory
+PathIsDirCreate – path must be a dir; will create
+PathIsFile – path must be a file
+PathExists – path must exist (any type) [default]</p>
+</div></blockquote>
+<p>The validator is a function that is called and which
+should return True or False to indicate if the path
+is valid.  The arguments to the validator function
+are: (key, val, env).  The key is the name of the
+option, the val is the path specified for the option,
+and the env is the env to which the Options have been
+added.</p>
+</div></blockquote>
+</dd>
+</dl>
+<p>Usage example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Examples</span><span class="p">:</span>
+    <span class="n">prefix</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span>
+
+<span class="n">opts</span> <span class="o">=</span> <span class="n">Variables</span><span class="p">()</span>
+
+<span class="n">opts</span> <span class="o">=</span> <span class="n">Variables</span><span class="p">()</span>
+<span class="n">opts</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">PathVariable</span><span class="p">(</span><span class="s1">&#39;qtdir&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;where the root of Qt is installed&#39;</span><span class="p">,</span>
+                      <span class="n">qtdir</span><span class="p">,</span> <span class="n">PathIsDir</span><span class="p">))</span>
+<span class="n">opts</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">PathVariable</span><span class="p">(</span><span class="s1">&#39;qt_includes&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;where the Qt includes are installed&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;$qtdir/includes&#39;</span><span class="p">,</span> <span class="n">PathIsDirCreate</span><span class="p">))</span>
+<span class="n">opts</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">PathVariable</span><span class="p">(</span><span class="s1">&#39;qt_libraries&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;where the Qt library is installed&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;$qtdir/lib&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="module-SCons.Variables">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-SCons.Variables" title="Permalink to this headline">¶</a></h2>
+<p>SCons.Variables</p>
+<p>This file defines the Variables class that is used to add user-friendly
+customizable variables to an SCons build.</p>
+<dl class="class">
+<dt id="SCons.Variables.Variables">
+<em class="property">class </em><code class="sig-prename descclassname">SCons.Variables.</code><code class="sig-name descname">Variables</code><span class="sig-paren">(</span><em class="sig-param">files=None</em>, <em class="sig-param">args=None</em>, <em class="sig-param">is_global=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Variables/#Variables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Variables.Variables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Holds all the options, updates the environment with the variables,
+and renders the help text.</p>
+<p>If is_global is True, this is a singleton, create only once.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>files</strong> (<em>optional</em>) – List of option configuration files to load
+(backward compatibility). If a single string is passed it is
+automatically placed in a file list (Default value = None)</p></li>
+<li><p><strong>args</strong> (<em>optional</em>) – dictionary to override values set from <em>files</em>.
+(Default value = None)</p></li>
+<li><p><strong>is_global</strong> (<em>optional</em>) – global instance? (Default value = True)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="SCons.Variables.Variables.Add">
+<code class="sig-name descname">Add</code><span class="sig-paren">(</span><em class="sig-param">key</em>, <em class="sig-param">help=''</em>, <em class="sig-param">default=None</em>, <em class="sig-param">validator=None</em>, <em class="sig-param">converter=None</em>, <em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Variables/#Variables.Add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Variables.Variables.Add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an option.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> – the name of the variable, or a list or tuple of arguments</p></li>
+<li><p><strong>help</strong> – optional help text for the options (Default value = “”)</p></li>
+<li><p><strong>default</strong> – optional default value for option (Default value = None)</p></li>
+<li><p><strong>validator</strong> – optional function called to validate the option’s value
+(Default value = None)</p></li>
+<li><p><strong>converter</strong> – optional function to be called to convert the option’s
+value before putting it in the environment. (Default value = None)</p></li>
+<li><p><strong>**kw</strong> – keyword args, unused.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="SCons.Variables.Variables.AddVariables">
+<code class="sig-name descname">AddVariables</code><span class="sig-paren">(</span><em class="sig-param">*optlist</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Variables/#Variables.AddVariables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Variables.Variables.AddVariables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a list of options.</p>
+<p>Each list element is a tuple/list of arguments to be passed on
+to the underlying method for adding options.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">opt</span><span class="o">.</span><span class="n">AddVariables</span><span class="p">(</span>
+    <span class="p">(</span><span class="s1">&#39;debug&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;CC&#39;</span><span class="p">,</span> <span class="s1">&#39;The C compiler&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;VALIDATE&#39;</span><span class="p">,</span> <span class="s1">&#39;An option for testing validation&#39;</span><span class="p">,</span> <span class="s1">&#39;notset&#39;</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="SCons.Variables.Variables.FormatVariableHelpText">
+<code class="sig-name descname">FormatVariableHelpText</code><span class="sig-paren">(</span><em class="sig-param">env</em>, <em class="sig-param">key</em>, <em class="sig-param">help</em>, <em class="sig-param">default</em>, <em class="sig-param">actual</em>, <em class="sig-param">aliases=[]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Variables/#Variables.FormatVariableHelpText"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Variables.Variables.FormatVariableHelpText" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="SCons.Variables.Variables.GenerateHelpText">
+<code class="sig-name descname">GenerateHelpText</code><span class="sig-paren">(</span><em class="sig-param">env</em>, <em class="sig-param">sort=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Variables/#Variables.GenerateHelpText"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Variables.Variables.GenerateHelpText" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the help text for the options.</p>
+<dl class="simple">
+<dt>env - an environment that is used to get the current values</dt><dd><p>of the options.</p>
+</dd>
+<dt>cmp - Either a function as follows: The specific sort function should take two arguments and return -1, 0 or 1</dt><dd><p>or a boolean to indicate if it should be sorted.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="SCons.Variables.Variables.Save">
+<code class="sig-name descname">Save</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">env</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Variables/#Variables.Save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Variables.Variables.Save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves all the options in the given file.  This file can
+then be used to load the options next run.  This can be used
+to create an option cache file.</p>
+<p>filename - Name of the file to save into
+env - the environment get the option values from</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="SCons.Variables.Variables.UnknownVariables">
+<code class="sig-name descname">UnknownVariables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Variables/#Variables.UnknownVariables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Variables.Variables.UnknownVariables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns any options in the specified arguments lists that
+were not known, declared options in this object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="SCons.Variables.Variables.Update">
+<code class="sig-name descname">Update</code><span class="sig-paren">(</span><em class="sig-param">env</em>, <em class="sig-param">args=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Variables/#Variables.Update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Variables.Variables.Update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update an environment with the option variables.</p>
+<p>env - the environment to update.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="SCons.Variables.Variables._do_add">
+<code class="sig-name descname">_do_add</code><span class="sig-paren">(</span><em class="sig-param">key</em>, <em class="sig-param">help=''</em>, <em class="sig-param">default=None</em>, <em class="sig-param">validator=None</em>, <em class="sig-param">converter=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Variables/#Variables._do_add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Variables.Variables._do_add" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="SCons.Variables.Variables.format">
+<code class="sig-name descname">format</code><em class="property"> = '\n%s: %s\n    default: %s\n    actual: %s\n'</em><a class="headerlink" href="#SCons.Variables.Variables.format" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="SCons.Variables.Variables.format_">
+<code class="sig-name descname">format_</code><em class="property"> = '\n%s: %s\n    default: %s\n    actual: %s\n    aliases: %s\n'</em><a class="headerlink" href="#SCons.Variables.Variables.format_" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="SCons.Variables.Variables.instance">
+<code class="sig-name descname">instance</code><em class="property"> = None</em><a class="headerlink" href="#SCons.Variables.Variables.instance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="SCons.Variables.Variables.keys">
+<code class="sig-name descname">keys</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Variables/#Variables.keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Variables.Variables.keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the keywords for the options</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../SCons.compat/" class="btn btn-neutral float-right" title="SCons.compat package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../SCons.Tool/" class="btn btn-neutral float-left" title="SCons.Tool package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, SCons Project
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

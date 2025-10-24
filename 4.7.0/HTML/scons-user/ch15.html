@@ -1,0 +1,157 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Chapter 15. Separating Source and Build Trees: Variant Directories</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.7.0"><link rel="up" href="index.html" title="SCons 4.7.0"><link rel="prev" href="ch14s05.html" title="14.5. Sharing Environments (and Other Variables) Between SConscript Files"><link rel="next" href="ch15s02.html" title="15.2. Why SCons Duplicates Source Files in a Variant Directory Tree"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 15. Separating Source and Build Trees: Variant Directories</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch14s05.html">Prev</a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="ch15s02.html">Next</a></td></tr></table><hr></div><div class="chapter" title="Chapter 15. Separating Source and Build Trees: Variant Directories"><div class="titlepage"><div><div><h2 class="title"><a name="chap-separate"></a>Chapter 15. Separating Source and Build Trees: Variant Directories</h2></div></div></div><p>
+
+  It is often useful to keep built files completely
+  separate from the source files. Two main benefits are
+  the ability to have different configurations simultaneously
+  without build conflicts, and being version-control friendly.
+
+  </p><p>
+
+  Consider if you have a project to build an embedded
+  software system for a variety of different controller hardware.
+  The system is able to share a lot of code,
+  so it makes sense to use a common source tree,
+  but certain build options in the source code
+  and header files differ. For a regular in-place build,
+  the build outputs go in the same place as the source code.
+  If you build <span class="emphasis"><em>Controller A</em></span> first,
+  followed by <span class="emphasis"><em>Controller B</em></span>,
+  on the <span class="emphasis"><em>Controller B</em></span> build everything that
+  uses different build options has to be rebuilt since those
+  objects will be different
+  (the build lines, including preprocessor defines, are part of
+  <span class="application">SCons</span>'s out-of-date calculation for this reason).
+  If you go back and build for <span class="emphasis"><em>Controller A</em></span> again,
+  things have to be rebuilt again for the same reason.
+  However, if you can separate the locations of the output files,
+  so each controller has its own location for build outputs,
+  this problem can be avoided.
+
+  </p><p>
+
+  Having a separated build tree also helps you keep your source tree clean -
+  there is less chance of accidentally checking in build products
+  to version control that were not intended to be checked in.
+  You can add a separated build directory to your
+  version control system's list of items not to track.
+  You can even remove the whole build tree with a single command without
+  risking removing any of the source code.
+
+  </p><p>
+
+  The key to making this separation work is the ability to
+  do out-of-tree builds: building under a separate root
+  than the sources being built.
+  You set up out of tree builds by establishing what <span class="application">SCons</span>
+  calls a <em class="firstterm">variant directory</em>,
+  a place where you can build a single variant of your software
+  (of course you can define more than one of these if you need to).
+  Since <span class="application">SCons</span> tracks targets by their path, it is able to distinguish
+  build products like <code class="filename">build/A/network.obj</code>
+  of the <span class="emphasis"><em>Controller A</em></span> build
+  from <code class="filename">build/B/network.obj</code>
+  of the <span class="emphasis"><em>Controller B</em></span> build,
+  thus avoiding conflicts.
+
+  </p><p>
+
+  <span class="application">SCons</span> provides two ways to establish variant directories,
+  one through the <a class="link" href="apd.html#f-SConscript"><code class="function">SConscript</code></a> function that we have already seen,
+  and the second through a more flexible <a class="link" href="apd.html#f-VariantDir"><code class="function">VariantDir</code></a> function.
+
+  </p><p>
+
+  The variant directory mechanism does support doing multiple builds
+  in one invocation of <span class="application">SCons</span>, but the remainder of this chapter
+  will focus on setting up a single build. You can combine these
+  techniques with ones from the previous chapter and elsewhere
+  in this Guide to set up more complex scenarios.
+
+  </p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+
+  The <code class="function">VariantDir</code> function used to be called <code class="function">BuildDir</code>,
+  a name which was changed because it turned out to be confusing:
+  the <span class="application">SCons</span> functionality
+  differs from a familiar model of a "build directory"
+  implemented by certain other build systems like GNU Autotools.
+  You might still find references to the old name on
+  the Internet in postings about <span class="application">SCons</span>, but it no longer works.
+
+  </p></div><div class="section" title="15.1. Specifying a Variant Directory Tree as Part of an SConscript Call"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="sect-variant-sconscript"></a>15.1. Specifying a Variant Directory Tree as Part of an <code class="filename">SConscript</code> Call</h2></div></div></div><p>
+
+    The most straightforward way to establish a variant directory tree
+    relies on the fact that the usual way to
+    set up a build hierarchy is to have an
+    <code class="filename">SConscript</code> file in the source directory.
+    If you pass a <code class="varname">variant_dir</code> argument to the
+    <a class="link" href="apd.html#f-SConscript"><code class="function">SConscript</code></a> function call:
+
+    </p><pre class="programlisting">
+SConscript('src/SConscript', variant_dir='build')
+      </pre><p>
+
+    <span class="application">SCons</span> will then build all of the files in
+    the <code class="filename">build</code> directory:
+
+    </p><pre class="screen">% <strong class="userinput"><code>ls src</code></strong>
+SConscript  hello.c
+% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o build/hello.o -c build/hello.c
+cc -o build/hello build/hello.o
+% <strong class="userinput"><code>ls src</code></strong>
+SConscript  hello.c
+% <strong class="userinput"><code>ls build</code></strong>
+SConscript  hello  hello.c  hello.o
+</pre><p>
+
+    No files were built in <code class="filename">src</code>:
+    the object file
+    <code class="filename">build/hello.o</code>
+    and the executable file
+    <code class="filename">build/hello</code>
+    were built in the <code class="filename">build</code> directory, as expected.
+    But notice that even though our <code class="filename">hello.c</code> file actually
+    lives in the <code class="filename">src</code> directory, <span class="application">SCons</span> has compiled a
+    <code class="filename">build/hello.c</code> file
+    to create the object file,
+    and that file is now seen in <code class="filename">build</code>.
+
+    </p><p>
+
+    You can ask <span class="application">SCons</span> to show the dependency tree to illustrate
+    a bit more:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q --tree=prune</code></strong>
+cc -o build/hello.o -c build/hello.c
+cc -o build/hello build/hello.o
++-.
+  +-SConstruct
+  +-build
+  | +-build/SConscript
+  | +-build/hello
+  | | +-build/hello.o
+  | |   +-build/hello.c
+  | +-build/hello.c
+  | +-[build/hello.o]
+  +-src
+    +-src/SConscript
+    +-src/hello.c
+</pre><p>
+
+    What's happened is that <span class="application">SCons</span> has <span class="emphasis"><em>duplicated</em></span>
+    the <code class="filename">hello.c</code> file from the <code class="filename">src</code> directory
+    to the <code class="filename">build</code> directory,
+    and built the program from there (it also duplicated <code class="filename">SConscript</code>).
+    The next section explains why <span class="application">SCons</span> does this.
+
+    </p><p>
+
+    The nice thing about the <code class="filename">SConscript</code> approach is it is almost
+    invisible to you:
+    this build looks just like an ordinary in-place build
+    except for the extra <code class="varname">variant_dir</code> argument in the
+    <a class="link" href="apd.html#f-SConscript"><code class="function">SConscript</code></a> call.
+    <span class="application">SCons</span> handles all the path adjustments for the
+    out of tree <code class="filename">build</code> directory while it processes that SConscript file.
+
+    </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch14s05.html">Prev</a> </td><td width="20%" align="center"> </td><td width="40%" align="right"> <a accesskey="n" href="ch15s02.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">14.5. Sharing Environments (and Other Variables) Between <code class="filename">SConscript</code> Files </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 15.2. Why <span class="application">SCons</span> Duplicates Source Files in a Variant Directory Tree</td></tr></table></div></body></html>

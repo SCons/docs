@@ -1,0 +1,215 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Preventing target removal during clean: the NoClean Function</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 0.98.1"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Preventing Removal of Targets"
+HREF="c2111.html"><LINK
+REL="PREVIOUS"
+TITLE="Preventing Removal of Targets"
+HREF="c2111.html"><LINK
+REL="NEXT"
+TITLE="Removing additional files during clean: the Clean Function"
+HREF="x2150.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 0.98.1</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="c2111.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 13. Preventing Removal of Targets</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x2150.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN2136"
+>13.2. Preventing target removal during clean: the <CODE
+CLASS="function"
+>NoClean</CODE
+> Function</A
+></H1
+><P
+>&#13;
+    By default, <SPAN
+CLASS="application"
+>SCons</SPAN
+> removes all built targets when invoked
+    with the <TT
+CLASS="literal"
+>-c</TT
+> option to clean a source tree
+    of built targets.
+    Sometimes, however, this is not what you want.
+    For example, you may want to remove only intermediate generated files
+    (such as object files),
+    but leave the final targets
+    (the libraries)
+    untouched.
+
+    In such cases, you can use the <CODE
+CLASS="function"
+>NoClean</CODE
+> method to prevent <SPAN
+CLASS="application"
+>SCons</SPAN
+>
+    from removing a target during a clean:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;        env = Environment(RANLIBCOM='')
+        lib = env.Library('foo', ['f1.c', 'f2.c', 'f3.c'])
+        env.NoClean(lib)
+    </PRE
+><P
+>&#13;
+    Notice that the <TT
+CLASS="filename"
+>libfoo.a</TT
+>
+    is not listed as a removed file:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;        % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+        cc -o f1.o -c f1.c
+        cc -o f2.o -c f2.c
+        cc -o f3.o -c f3.c
+        ar rc libfoo.a f1.o f2.o f3.o
+        % <KBD
+CLASS="userinput"
+>scons -c</KBD
+>
+        scons: Reading SConscript files ...
+        scons: done reading SConscript files.
+        scons: Cleaning targets ...
+        Removed f1.o
+        Removed f2.o
+        Removed f3.o
+        scons: done cleaning targets.
+    </PRE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="c2111.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x2150.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Preventing Removal of Targets</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c2111.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Removing additional files during clean: the <CODE
+CLASS="function"
+>Clean</CODE
+> Function</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

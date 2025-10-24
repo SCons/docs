@@ -1,0 +1,301 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Command-Line variable=value Build Options</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 0.98.2"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Controlling a Build From the Command Line"
+HREF="c1460.html"><LINK
+REL="PREVIOUS"
+TITLE="Getting at the List of Build Targets, Regardless of Origin"
+HREF="x1587.html"><LINK
+REL="NEXT"
+TITLE="Controlling Command-Line Build Options"
+HREF="x1646.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 0.98.2</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x1587.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 9. Controlling a Build From the Command Line</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x1646.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN1612"
+>9.5. Command-Line <CODE
+CLASS="varname"
+>variable</CODE
+>=<CODE
+CLASS="varname"
+>value</CODE
+> Build Options</A
+></H1
+><P
+>&#13;
+    You may want to control various aspects
+    of your build by allowing the user
+    to specify <CODE
+CLASS="varname"
+>variable</CODE
+>=<CODE
+CLASS="varname"
+>value</CODE
+>
+    values on the command line.
+    For example, suppose you
+    want users to be able to
+    build a debug version of a program
+    by running <SPAN
+CLASS="application"
+>SCons</SPAN
+> as follows:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q debug=1</KBD
+>
+    </PRE
+><P
+>&#13;
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> provides an <CODE
+CLASS="varname"
+>ARGUMENTS</CODE
+> dictionary
+    that stores all of the
+    <CODE
+CLASS="varname"
+>variable</CODE
+>=<CODE
+CLASS="varname"
+>value</CODE
+>
+    assignments from the command line.
+    This allows you to modify
+    aspects of your build in response
+    to specifications on the command line.
+    (Note that unless you want to require
+    that users <SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>always</I
+></SPAN
+>
+    specify an option,
+    you probably want to use
+    the Python
+    <TT
+CLASS="literal"
+>ARGUMENTS.get()</TT
+> function,
+    which allows you to specify a default value
+    to be used if there is no specification
+    on the command line.)
+
+    </P
+><P
+>&#13;
+    The following code sets the <A
+HREF="a3610.html#cv-CCFLAGS"
+><CODE
+CLASS="envar"
+>$CCFLAGS</CODE
+></A
+> construction
+    variable in response to the <CODE
+CLASS="varname"
+>debug</CODE
+>
+    flag being set in the <CODE
+CLASS="varname"
+>ARGUMENTS</CODE
+> dictionary:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;       env = Environment()
+       debug = ARGUMENTS.get('debug', 0)
+       if int(debug):
+           env.Append(CCFLAGS = '-g')
+       env.Program('prog.c')
+    </PRE
+><P
+>&#13;
+    This results in the <CODE
+CLASS="varname"
+>-g</CODE
+>
+    compiler option being used when
+    <TT
+CLASS="literal"
+>debug=1</TT
+>
+    is used on the command line:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;       % <KBD
+CLASS="userinput"
+>scons -Q debug=0</KBD
+>
+       cc -o prog.o -c prog.c
+       cc -o prog prog.o
+       % <KBD
+CLASS="userinput"
+>scons -Q debug=0</KBD
+>
+       scons: `.' is up to date.
+       % <KBD
+CLASS="userinput"
+>scons -Q debug=1</KBD
+>
+       cc -o prog.o -c -g prog.c
+       cc -o prog prog.o
+       % <KBD
+CLASS="userinput"
+>scons -Q debug=1</KBD
+>
+       scons: `.' is up to date.
+    </PRE
+><P
+>&#13;
+    Notice that <SPAN
+CLASS="application"
+>SCons</SPAN
+> keeps track of
+    the last values used to build the object files,
+    and as a result correctly rebuilds
+    the object and executable files
+    only when the value of the <TT
+CLASS="literal"
+>debug</TT
+>
+    argument has changed.
+
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x1587.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x1646.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Getting at the List of Build Targets, Regardless of Origin</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c1460.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Controlling Command-Line Build Options</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

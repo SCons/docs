@@ -1,0 +1,1422 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>SCons.SConf &mdash; SCons 4.2.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex/" />
+    <link rel="search" title="Search" href="../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../" class="icon icon-home"> SCons
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                4.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons/">SCons package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Variables/">SCons.Variables package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.compat/">SCons.compat package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Action">SCons.Action module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Builder">SCons.Builder module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.CacheDir">SCons.CacheDir module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Conftest">SCons.Conftest module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Debug">SCons.Debug module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Defaults">SCons.Defaults module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Environment">SCons.Environment module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Errors">SCons.Errors module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Executor">SCons.Executor module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Job">SCons.Job module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Memoize">SCons.Memoize module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.PathList">SCons.PathList module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.SConf">SCons.SConf module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.SConsign">SCons.SConsign module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Subst">SCons.Subst module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Taskmaster">SCons.Taskmaster module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Util">SCons.Util module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Warnings">SCons.Warnings module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.cpp">SCons.cpp module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.dblite">SCons.dblite module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.exitfuncs">SCons.exitfuncs module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.compat/">SCons.compat package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.compat/#module-SCons.compat">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Node/">SCons.Node package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#module-SCons.Node.Alias">SCons.Node.Alias module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#module-SCons.Node.FS">SCons.Node.FS module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#module-SCons.Node.Python">SCons.Node.Python module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#module-SCons.Node">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Platform/">SCons.Platform package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.aix">SCons.Platform.aix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.cygwin">SCons.Platform.cygwin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.darwin">SCons.Platform.darwin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.hpux">SCons.Platform.hpux module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.irix">SCons.Platform.irix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.mingw">SCons.Platform.mingw module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.os2">SCons.Platform.os2 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.posix">SCons.Platform.posix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.sunos">SCons.Platform.sunos module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.virtualenv">SCons.Platform.virtualenv module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.win32">SCons.Platform.win32 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Scanner/">SCons.Scanner package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.C">SCons.Scanner.C module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.D">SCons.Scanner.D module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.Dir">SCons.Scanner.Dir module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.Fortran">SCons.Scanner.Fortran module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.IDL">SCons.Scanner.IDL module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.LaTeX">SCons.Scanner.LaTeX module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.Prog">SCons.Scanner.Prog module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.RC">SCons.Scanner.RC module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.SWIG">SCons.Scanner.SWIG module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Script/">SCons.Script package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script.Interactive">SCons.Script.Interactive module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script.Main">SCons.Script.Main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script.SConsOptions">SCons.Script.SConsOptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script.SConscript">SCons.Script.SConscript module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Tool/">SCons.Tool package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Tool/#module-SCons.Tool">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Variables/">SCons.Variables package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.BoolVariable">SCons.Variables.BoolVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.EnumVariable">SCons.Variables.EnumVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.ListVariable">SCons.Variables.ListVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.PackageVariable">SCons.Variables.PackageVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.PathVariable">SCons.Variables.PathVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../">SCons</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../">Module code</a> &raquo;</li>
+        
+      <li>SCons.SConf</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for SCons.SConf</h1><div class="highlight"><pre>
+<span></span><span class="c1"># MIT License</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright The SCons Foundation</span>
+<span class="c1">#</span>
+<span class="c1"># Permission is hereby granted, free of charge, to any person obtaining</span>
+<span class="c1"># a copy of this software and associated documentation files (the</span>
+<span class="c1"># &quot;Software&quot;), to deal in the Software without restriction, including</span>
+<span class="c1"># without limitation the rights to use, copy, modify, merge, publish,</span>
+<span class="c1"># distribute, sublicense, and/or sell copies of the Software, and to</span>
+<span class="c1"># permit persons to whom the Software is furnished to do so, subject to</span>
+<span class="c1"># the following conditions:</span>
+<span class="c1">#</span>
+<span class="c1"># The above copyright notice and this permission notice shall be included</span>
+<span class="c1"># in all copies or substantial portions of the Software.</span>
+<span class="c1">#</span>
+<span class="c1"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY</span>
+<span class="c1"># KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND</span>
+<span class="c1"># NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE</span>
+<span class="c1"># LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION</span>
+<span class="c1"># OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</span>
+<span class="c1"># WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</span>
+
+<span class="sd">&quot;&quot;&quot;Autoconf-like configuration support.</span>
+
+<span class="sd">In other words, SConf allows to run tests on the build machine to detect</span>
+<span class="sd">capabilities of system and do some things based on result: generate config</span>
+<span class="sd">files, header files for C/C++, update variables in environment.</span>
+
+<span class="sd">Tests on the build system can detect if compiler sees header files, if</span>
+<span class="sd">libraries are installed, if some command line options are supported etc.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">SCons.compat</span>
+
+<span class="kn">import</span> <span class="nn">atexit</span>
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
+
+<span class="kn">import</span> <span class="nn">SCons.Action</span>
+<span class="kn">import</span> <span class="nn">SCons.Builder</span>
+<span class="kn">import</span> <span class="nn">SCons.Errors</span>
+<span class="kn">import</span> <span class="nn">SCons.Job</span>
+<span class="kn">import</span> <span class="nn">SCons.Node.FS</span>
+<span class="kn">import</span> <span class="nn">SCons.Taskmaster</span>
+<span class="kn">import</span> <span class="nn">SCons.Util</span>
+<span class="kn">import</span> <span class="nn">SCons.Warnings</span>
+<span class="kn">import</span> <span class="nn">SCons.Conftest</span>
+
+<span class="kn">from</span> <span class="nn">SCons.Debug</span> <span class="kn">import</span> <span class="n">Trace</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+
+<span class="c1"># Turn off the Conftest error logging</span>
+<span class="n">SCons</span><span class="o">.</span><span class="n">Conftest</span><span class="o">.</span><span class="n">LogInputFiles</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">SCons</span><span class="o">.</span><span class="n">Conftest</span><span class="o">.</span><span class="n">LogErrorMessages</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c1"># Set</span>
+<span class="n">build_type</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">build_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;clean&#39;</span><span class="p">,</span> <span class="s1">&#39;help&#39;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="SetBuildType"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.SetBuildType">[docs]</a><span class="k">def</span> <span class="nf">SetBuildType</span><span class="p">(</span><span class="n">buildtype</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">build_type</span>
+    <span class="n">build_type</span> <span class="o">=</span> <span class="n">buildtype</span></div>
+
+<span class="c1"># to be set, if we are in dry-run mode</span>
+<span class="n">dryrun</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="n">AUTO</span><span class="o">=</span><span class="mi">0</span>  <span class="c1"># use SCons dependency scanning for up-to-date checks</span>
+<span class="n">FORCE</span><span class="o">=</span><span class="mi">1</span> <span class="c1"># force all tests to be rebuilt</span>
+<span class="n">CACHE</span><span class="o">=</span><span class="mi">2</span> <span class="c1"># force all tests to be taken from cache (raise an error, if necessary)</span>
+<span class="n">cache_mode</span> <span class="o">=</span> <span class="n">AUTO</span>
+
+<div class="viewcode-block" id="_set_conftest_node"><a class="viewcode-back" href="../../../SCons/#SCons.SConf._set_conftest_node">[docs]</a><span class="k">def</span> <span class="nf">_set_conftest_node</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+    <span class="n">node</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">conftest_node</span> <span class="o">=</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="SetCacheMode"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.SetCacheMode">[docs]</a><span class="k">def</span> <span class="nf">SetCacheMode</span><span class="p">(</span><span class="n">mode</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Set the Configure cache mode. mode must be one of &quot;auto&quot;, &quot;force&quot;,</span>
+<span class="sd">    or &quot;cache&quot;.&quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">cache_mode</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;auto&quot;</span><span class="p">:</span>
+        <span class="n">cache_mode</span> <span class="o">=</span> <span class="n">AUTO</span>
+    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;force&quot;</span><span class="p">:</span>
+        <span class="n">cache_mode</span> <span class="o">=</span> <span class="n">FORCE</span>
+    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;cache&quot;</span><span class="p">:</span>
+        <span class="n">cache_mode</span> <span class="o">=</span> <span class="n">CACHE</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;SCons.SConf.SetCacheMode: Unknown mode &quot;</span> <span class="o">+</span> <span class="n">mode</span><span class="p">)</span></div>
+
+<span class="n">progress_display</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">display</span> <span class="c1"># will be overwritten by SCons.Script</span>
+<div class="viewcode-block" id="SetProgressDisplay"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.SetProgressDisplay">[docs]</a><span class="k">def</span> <span class="nf">SetProgressDisplay</span><span class="p">(</span><span class="n">display</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Set the progress display to use (called from SCons.Script)&quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">progress_display</span>
+    <span class="n">progress_display</span> <span class="o">=</span> <span class="n">display</span></div>
+
+<span class="n">SConfFS</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="n">_ac_build_counter</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">_ac_config_logs</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># all config.log files created in this build</span>
+<span class="n">_ac_config_hs</span>   <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># all config.h files created in this build</span>
+<span class="n">sconf_global</span> <span class="o">=</span> <span class="kc">None</span>   <span class="c1"># current sconf object</span>
+
+<div class="viewcode-block" id="_createConfigH"><a class="viewcode-back" href="../../../SCons/#SCons.SConf._createConfigH">[docs]</a><span class="k">def</span> <span class="nf">_createConfigH</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">target</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+    <span class="n">defname</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;[^A-Za-z0-9_]&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">target</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;#ifndef </span><span class="si">%(DEFNAME)s</span><span class="s2">_SEEN</span>
+<span class="s2">#define </span><span class="si">%(DEFNAME)s</span><span class="s2">_SEEN</span>
+
+<span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">{</span><span class="s1">&#39;DEFNAME&#39;</span> <span class="p">:</span> <span class="n">defname</span><span class="p">})</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">source</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_contents</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">#endif /* </span><span class="si">%(DEFNAME)s</span><span class="s2">_SEEN */</span>
+<span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">{</span><span class="s1">&#39;DEFNAME&#39;</span> <span class="p">:</span> <span class="n">defname</span><span class="p">})</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="_stringConfigH"><a class="viewcode-back" href="../../../SCons/#SCons.SConf._stringConfigH">[docs]</a><span class="k">def</span> <span class="nf">_stringConfigH</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s2">&quot;scons: Configure: creating &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">target</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="NeedConfigHBuilder"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.NeedConfigHBuilder">[docs]</a><span class="k">def</span> <span class="nf">NeedConfigHBuilder</span><span class="p">():</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">_ac_config_hs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+       <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">else</span><span class="p">:</span>
+       <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="CreateConfigHBuilder"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.CreateConfigHBuilder">[docs]</a><span class="k">def</span> <span class="nf">CreateConfigHBuilder</span><span class="p">(</span><span class="n">env</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Called if necessary just before the building targets phase begins.&quot;&quot;&quot;</span>
+    <span class="n">action</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Action</span><span class="o">.</span><span class="n">Action</span><span class="p">(</span><span class="n">_createConfigH</span><span class="p">,</span>
+                                 <span class="n">_stringConfigH</span><span class="p">)</span>
+    <span class="n">sconfigHBld</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Builder</span><span class="o">.</span><span class="n">Builder</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="n">action</span><span class="p">)</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">Append</span><span class="p">(</span> <span class="n">BUILDERS</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;SConfigHBuilder&#39;</span><span class="p">:</span><span class="n">sconfigHBld</span><span class="p">}</span> <span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">_ac_config_hs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">SConfigHBuilder</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">v</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="SConfWarning"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.SConfWarning">[docs]</a><span class="k">class</span> <span class="nc">SConfWarning</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Warnings</span><span class="o">.</span><span class="n">SConsWarning</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+<span class="n">SCons</span><span class="o">.</span><span class="n">Warnings</span><span class="o">.</span><span class="n">enableWarningClass</span><span class="p">(</span><span class="n">SConfWarning</span><span class="p">)</span>
+
+<span class="c1"># some error definitions</span>
+<div class="viewcode-block" id="SConfError"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.SConfError">[docs]</a><span class="k">class</span> <span class="nc">SConfError</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">UserError</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">msg</span><span class="p">):</span>
+        <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">UserError</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">msg</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ConfigureDryRunError"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.ConfigureDryRunError">[docs]</a><span class="k">class</span> <span class="nc">ConfigureDryRunError</span><span class="p">(</span><span class="n">SConfError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Raised when a file or directory needs to be updated during a Configure</span>
+<span class="sd">    process, but the user requested a dry-run&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">target</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">FS</span><span class="o">.</span><span class="n">File</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Cannot create configure directory &quot;</span><span class="si">%s</span><span class="s1">&quot; within a dry-run.&#39;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Cannot update configure test &quot;</span><span class="si">%s</span><span class="s1">&quot; within a dry-run.&#39;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+        <span class="n">SConfError</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">msg</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ConfigureCacheError"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.ConfigureCacheError">[docs]</a><span class="k">class</span> <span class="nc">ConfigureCacheError</span><span class="p">(</span><span class="n">SConfError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Raised when a use explicitely requested the cache feature, but the test</span>
+<span class="sd">    is run the first time.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">target</span><span class="p">):</span>
+        <span class="n">SConfError</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;&quot;</span><span class="si">%s</span><span class="s1">&quot; is not yet built and cache is forced.&#39;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">target</span><span class="p">))</span></div>
+
+
+<span class="c1"># define actions for building text files</span>
+<div class="viewcode-block" id="_createSource"><a class="viewcode-back" href="../../../SCons/#SCons.SConf._createSource">[docs]</a><span class="k">def</span> <span class="nf">_createSource</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+    <span class="n">fd</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">target</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+    <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">source</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_contents</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+    <span class="n">fd</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="_stringSource"><a class="viewcode-back" href="../../../SCons/#SCons.SConf._stringSource">[docs]</a><span class="k">def</span> <span class="nf">_stringSource</span><span class="p">(</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">env</span> <span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">target</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39; &lt;-</span><span class="se">\n</span><span class="s1">  |&#39;</span> <span class="o">+</span>
+            <span class="n">source</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_contents</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  |&quot;</span> <span class="p">)</span> <span class="p">)</span></div>
+
+<div class="viewcode-block" id="SConfBuildInfo"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.SConfBuildInfo">[docs]</a><span class="k">class</span> <span class="nc">SConfBuildInfo</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">FS</span><span class="o">.</span><span class="n">FileBuildInfo</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Special build info for targets of configure tests. Additional members</span>
+<span class="sd">    are result (did the builder succeed last time?) and string, which</span>
+<span class="sd">    contains messages of the original build phase.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;result&#39;</span><span class="p">,</span> <span class="s1">&#39;string&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># -&gt; 0/None -&gt; no error, != 0 error</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">string</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># the stdout / stderr output when building the target</span>
+
+<div class="viewcode-block" id="SConfBuildInfo.set_build_result"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.SConfBuildInfo.set_build_result">[docs]</a>    <span class="k">def</span> <span class="nf">set_build_result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="n">result</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">string</span> <span class="o">=</span> <span class="n">string</span></div></div>
+
+
+<div class="viewcode-block" id="Streamer"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.Streamer">[docs]</a><span class="k">class</span> <span class="nc">Streamer</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    &#39;Sniffer&#39; for a file-like writable object. Similar to the unix tool tee.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orig</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orig</span> <span class="o">=</span> <span class="n">orig</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Streamer.write"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.Streamer.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">orig</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="c1"># &quot;unicode argument expected&quot; bug in IOStream (python 2.x)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="Streamer.writelines"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.Streamer.writelines">[docs]</a>    <span class="k">def</span> <span class="nf">writelines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">l</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Streamer.getvalue"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.Streamer.getvalue">[docs]</a>    <span class="k">def</span> <span class="nf">getvalue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return everything written to orig since the Streamer was created.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Streamer.flush"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.Streamer.flush">[docs]</a>    <span class="k">def</span> <span class="nf">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">orig</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="SConfBuildTask"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.SConfBuildTask">[docs]</a><span class="k">class</span> <span class="nc">SConfBuildTask</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Taskmaster</span><span class="o">.</span><span class="n">AlwaysTask</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is almost the same as SCons.Script.BuildTask. Handles SConfErrors</span>
+<span class="sd">    correctly and knows about the current cache_mode.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="SConfBuildTask.display"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.SConfBuildTask.display">[docs]</a>    <span class="k">def</span> <span class="nf">display</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">sconf_global</span><span class="o">.</span><span class="n">logstream</span><span class="p">:</span>
+            <span class="n">sconf_global</span><span class="o">.</span><span class="n">logstream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;scons: Configure: &quot;</span> <span class="o">+</span> <span class="n">message</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SConfBuildTask.display_cached_string"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.SConfBuildTask.display_cached_string">[docs]</a>    <span class="k">def</span> <span class="nf">display_cached_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bi</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Logs the original builder messages, given the SConfBuildInfo instance</span>
+<span class="sd">        bi.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bi</span><span class="p">,</span> <span class="n">SConfBuildInfo</span><span class="p">):</span>
+            <span class="n">SCons</span><span class="o">.</span><span class="n">Warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="n">SConfWarning</span><span class="p">,</span>
+                <span class="s2">&quot;The stored build information has an unexpected class: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">bi</span><span class="o">.</span><span class="vm">__class__</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">display</span><span class="p">(</span><span class="s2">&quot;The original builder output was:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
+                         <span class="p">(</span><span class="s2">&quot;  |&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">bi</span><span class="o">.</span><span class="n">string</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  |&quot;</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="SConfBuildTask.failed"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.SConfBuildTask.failed">[docs]</a>    <span class="k">def</span> <span class="nf">failed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># check, if the reason was a ConfigureDryRunError or a</span>
+        <span class="c1"># ConfigureCacheError and if yes, reraise the exception</span>
+        <span class="n">exc_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">SConfError</span><span class="p">):</span>
+            <span class="c1"># TODO pylint E0704: bare raise not inside except</span>
+            <span class="k">raise</span>
+        <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">BuildError</span><span class="p">):</span>
+            <span class="c1"># we ignore Build Errors (occurs, when a test doesn&#39;t pass)</span>
+            <span class="c1"># Clear the exception to prevent the contained traceback</span>
+            <span class="c1"># to build a reference cycle.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">exc_clear</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">display</span><span class="p">(</span><span class="s1">&#39;Caught exception while building &quot;</span><span class="si">%s</span><span class="s1">&quot;:</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">excepthook</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">exc_info</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Taskmaster</span><span class="o">.</span><span class="n">Task</span><span class="o">.</span><span class="n">failed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SConfBuildTask.collect_node_states"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.SConfBuildTask.collect_node_states">[docs]</a>    <span class="k">def</span> <span class="nf">collect_node_states</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># returns (is_up_to_date, cached_error, cachable)</span>
+        <span class="c1"># where is_up_to_date is 1, if the node(s) are up_to_date</span>
+        <span class="c1">#       cached_error  is 1, if the node(s) are up_to_date, but the</span>
+        <span class="c1">#                           build will fail</span>
+        <span class="c1">#       cachable      is 0, if some nodes are not in our cache</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">changed</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">cached_error</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">cachable</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">T</span><span class="p">:</span> <span class="n">Trace</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">t</span><span class="p">)</span>
+            <span class="n">bi</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">get_stored_info</span><span class="p">()</span><span class="o">.</span><span class="n">binfo</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bi</span><span class="p">,</span> <span class="n">SConfBuildInfo</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">T</span><span class="p">:</span> <span class="n">Trace</span><span class="p">(</span><span class="s1">&#39;: SConfBuildInfo&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">cache_mode</span> <span class="o">==</span> <span class="n">CACHE</span><span class="p">:</span>
+                    <span class="n">t</span><span class="o">.</span><span class="n">set_state</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">up_to_date</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">T</span><span class="p">:</span> <span class="n">Trace</span><span class="p">(</span><span class="s1">&#39;: set_state(up_to-date)&#39;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">T</span><span class="p">:</span> <span class="n">Trace</span><span class="p">(</span><span class="s1">&#39;: get_state() </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">t</span><span class="o">.</span><span class="n">get_state</span><span class="p">())</span>
+                    <span class="k">if</span> <span class="n">T</span><span class="p">:</span> <span class="n">Trace</span><span class="p">(</span><span class="s1">&#39;: changed() </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">t</span><span class="o">.</span><span class="n">changed</span><span class="p">())</span>
+                    <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">get_state</span><span class="p">()</span> <span class="o">!=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">up_to_date</span> <span class="ow">and</span> <span class="n">t</span><span class="o">.</span><span class="n">changed</span><span class="p">():</span>
+                        <span class="n">changed</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">if</span> <span class="n">T</span><span class="p">:</span> <span class="n">Trace</span><span class="p">(</span><span class="s1">&#39;: changed </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">changed</span><span class="p">)</span>
+                <span class="n">cached_error</span> <span class="o">=</span> <span class="n">cached_error</span> <span class="ow">or</span> <span class="n">bi</span><span class="o">.</span><span class="n">result</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">T</span><span class="p">:</span> <span class="n">Trace</span><span class="p">(</span><span class="s1">&#39;: else&#39;</span><span class="p">)</span>
+                <span class="c1"># the node hasn&#39;t been built in a SConf context or doesn&#39;t</span>
+                <span class="c1"># exist</span>
+                <span class="n">cachable</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">changed</span> <span class="o">=</span> <span class="p">(</span> <span class="n">t</span><span class="o">.</span><span class="n">get_state</span><span class="p">()</span> <span class="o">!=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">up_to_date</span> <span class="p">)</span>
+                <span class="k">if</span> <span class="n">T</span><span class="p">:</span> <span class="n">Trace</span><span class="p">(</span><span class="s1">&#39;: changed </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">changed</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">T</span><span class="p">:</span> <span class="n">Trace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="ow">not</span> <span class="n">changed</span><span class="p">,</span> <span class="n">cached_error</span><span class="p">,</span> <span class="n">cachable</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SConfBuildTask.execute"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.SConfBuildTask.execute">[docs]</a>    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">has_builder</span><span class="p">():</span>
+            <span class="k">return</span>
+
+        <span class="n">sconf</span> <span class="o">=</span> <span class="n">sconf_global</span>
+
+        <span class="n">is_up_to_date</span><span class="p">,</span> <span class="n">cached_error</span><span class="p">,</span> <span class="n">cachable</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">collect_node_states</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">cache_mode</span> <span class="o">==</span> <span class="n">CACHE</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">cachable</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ConfigureCacheError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">cache_mode</span> <span class="o">==</span> <span class="n">FORCE</span><span class="p">:</span>
+            <span class="n">is_up_to_date</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">if</span> <span class="n">cached_error</span> <span class="ow">and</span> <span class="n">is_up_to_date</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">display</span><span class="p">(</span><span class="s2">&quot;Building </span><span class="se">\&quot;</span><span class="si">%s</span><span class="se">\&quot;</span><span class="s2"> failed in a previous run and all &quot;</span>
+                         <span class="s2">&quot;its sources are up to date.&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="n">binfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_stored_info</span><span class="p">()</span><span class="o">.</span><span class="n">binfo</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">display_cached_string</span><span class="p">(</span><span class="n">binfo</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">BuildError</span> <span class="c1"># will be &#39;caught&#39; in self.failed</span>
+        <span class="k">elif</span> <span class="n">is_up_to_date</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">display</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\&quot;</span><span class="si">%s</span><span class="se">\&quot;</span><span class="s2"> is up to date.&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="n">binfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_stored_info</span><span class="p">()</span><span class="o">.</span><span class="n">binfo</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">display_cached_string</span><span class="p">(</span><span class="n">binfo</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">dryrun</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ConfigureDryRunError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># note stdout and stderr are the same here</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span> <span class="o">=</span> <span class="n">Streamer</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_build_env</span><span class="p">()</span>
+                <span class="n">env</span><span class="p">[</span><span class="s1">&#39;PSTDOUT&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">env</span><span class="p">[</span><span class="s1">&#39;PSTDERR&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">sconf</span><span class="o">.</span><span class="n">cached</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+                <span class="k">finally</span><span class="p">:</span>
+                    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span> <span class="o">=</span> <span class="n">env</span><span class="p">[</span><span class="s1">&#39;PSTDOUT&#39;</span><span class="p">]</span> <span class="o">=</span> \
+                                 <span class="n">env</span><span class="p">[</span><span class="s1">&#39;PSTDERR&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sconf</span><span class="o">.</span><span class="n">logstream</span>
+            <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+                <span class="k">raise</span>
+            <span class="k">except</span> <span class="ne">SystemExit</span><span class="p">:</span>
+                <span class="n">exc_value</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">ExplicitExit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">exc_value</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">:</span>
+                    <span class="n">binfo</span> <span class="o">=</span> <span class="n">SConfBuildInfo</span><span class="p">()</span>
+                    <span class="n">binfo</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">get_binfo</span><span class="p">())</span>
+                    <span class="n">binfo</span><span class="o">.</span><span class="n">set_build_result</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">getvalue</span><span class="p">())</span>
+                    <span class="n">sconsign_entry</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">SConsign</span><span class="o">.</span><span class="n">SConsignEntry</span><span class="p">()</span>
+                    <span class="n">sconsign_entry</span><span class="o">.</span><span class="n">binfo</span> <span class="o">=</span> <span class="n">binfo</span>
+                    <span class="c1">#sconsign_entry.ninfo = self.get_ninfo()</span>
+                    <span class="c1"># We&#39;d like to do this as follows:</span>
+                    <span class="c1">#    t.store_info(binfo)</span>
+                    <span class="c1"># However, we need to store it as an SConfBuildInfo</span>
+                    <span class="c1"># object, and store_info() will turn it into a</span>
+                    <span class="c1"># regular FileNodeInfo if the target is itself a</span>
+                    <span class="c1"># regular File.</span>
+                    <span class="n">sconsign</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">dir</span><span class="o">.</span><span class="n">sconsign</span><span class="p">()</span>
+                    <span class="n">sconsign</span><span class="o">.</span><span class="n">set_entry</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">sconsign_entry</span><span class="p">)</span>
+                    <span class="n">sconsign</span><span class="o">.</span><span class="n">merge</span><span class="p">()</span>
+                <span class="k">raise</span> <span class="n">e</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">:</span>
+                    <span class="n">binfo</span> <span class="o">=</span> <span class="n">SConfBuildInfo</span><span class="p">()</span>
+                    <span class="n">binfo</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">get_binfo</span><span class="p">())</span>
+                    <span class="n">binfo</span><span class="o">.</span><span class="n">set_build_result</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">getvalue</span><span class="p">())</span>
+                    <span class="n">sconsign_entry</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">SConsign</span><span class="o">.</span><span class="n">SConsignEntry</span><span class="p">()</span>
+                    <span class="n">sconsign_entry</span><span class="o">.</span><span class="n">binfo</span> <span class="o">=</span> <span class="n">binfo</span>
+                    <span class="c1">#sconsign_entry.ninfo = self.get_ninfo()</span>
+                    <span class="c1"># We&#39;d like to do this as follows:</span>
+                    <span class="c1">#    t.store_info(binfo)</span>
+                    <span class="c1"># However, we need to store it as an SConfBuildInfo</span>
+                    <span class="c1"># object, and store_info() will turn it into a</span>
+                    <span class="c1"># regular FileNodeInfo if the target is itself a</span>
+                    <span class="c1"># regular File.</span>
+                    <span class="n">sconsign</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">dir</span><span class="o">.</span><span class="n">sconsign</span><span class="p">()</span>
+                    <span class="n">sconsign</span><span class="o">.</span><span class="n">set_entry</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">sconsign_entry</span><span class="p">)</span>
+                    <span class="n">sconsign</span><span class="o">.</span><span class="n">merge</span><span class="p">()</span></div></div>
+
+<div class="viewcode-block" id="SConfBase"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.SConfBase">[docs]</a><span class="k">class</span> <span class="nc">SConfBase</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;This is simply a class to represent a configure context. After</span>
+<span class="sd">    creating a SConf object, you can call any tests. After finished with your</span>
+<span class="sd">    tests, be sure to call the Finish() method, which returns the modified</span>
+<span class="sd">    environment.</span>
+<span class="sd">    Some words about caching: In most cases, it is not necessary to cache</span>
+<span class="sd">    Test results explicitly. Instead, we use the scons dependency checking</span>
+<span class="sd">    mechanism. For example, if one wants to compile a test program</span>
+<span class="sd">    (SConf.TryLink), the compiler is only called, if the program dependencies</span>
+<span class="sd">    have changed. However, if the program could not be compiled in a former</span>
+<span class="sd">    SConf run, we need to explicitly cache this error.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">custom_tests</span> <span class="o">=</span> <span class="p">{},</span> <span class="n">conf_dir</span><span class="o">=</span><span class="s1">&#39;$CONFIGUREDIR&#39;</span><span class="p">,</span>
+                 <span class="n">log_file</span><span class="o">=</span><span class="s1">&#39;$CONFIGURELOG&#39;</span><span class="p">,</span> <span class="n">config_h</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">_depth</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor. Pass additional tests in the custom_tests-dictionary,</span>
+<span class="sd">        e.g. custom_tests={&#39;CheckPrivate&#39;:MyPrivateTest}, where MyPrivateTest</span>
+<span class="sd">        defines a custom test.</span>
+<span class="sd">        Note also the conf_dir and log_file arguments (you may want to</span>
+<span class="sd">        build tests in the VariantDir, not in the SourceDir)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">global</span> <span class="n">SConfFS</span>
+
+        <span class="c1"># Now create isolated override so setting source_decider doesn&#39;t affect parent Environment</span>
+        <span class="k">if</span> <span class="n">cache_mode</span> <span class="o">==</span> <span class="n">FORCE</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">original_env</span> <span class="o">=</span> <span class="n">env</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">Clone</span><span class="p">()</span>
+
+            <span class="c1"># Set up the Decider() to force rebuilds by saying</span>
+            <span class="c1"># that every source has changed.  Note that we still</span>
+            <span class="c1"># call the environment&#39;s underlying source decider so</span>
+            <span class="c1"># that the correct .sconsign info will get calculated</span>
+            <span class="c1"># and keep the build state consistent.</span>
+            <span class="k">def</span> <span class="nf">force_build</span><span class="p">(</span><span class="n">dependency</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">prev_ni</span><span class="p">,</span>
+                            <span class="n">repo_node</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                            <span class="n">env_decider</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">decide_source</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">env_decider</span><span class="p">(</span><span class="n">dependency</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">prev_ni</span><span class="p">,</span> <span class="n">repo_node</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">e</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">decide_source</span><span class="o">.</span><span class="vm">__code__</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">force_build</span><span class="o">.</span><span class="vm">__code__</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">Decider</span><span class="p">(</span><span class="n">force_build</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">env</span>
+
+        <span class="c1"># print(&quot;Override env:%s&quot;%env)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">SConfFS</span><span class="p">:</span>
+            <span class="n">SConfFS</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">FS</span><span class="o">.</span><span class="n">default_fs</span> <span class="ow">or</span> \
+                      <span class="n">SCons</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">FS</span><span class="o">.</span><span class="n">FS</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">fs</span><span class="o">.</span><span class="n">pathTop</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">sconf_global</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">UserError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Configure() called while another Configure() exists.</span>
+<span class="s2">            Please call .Finish() before creating and second Configure() context&quot;&quot;&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">log_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">log_file</span> <span class="o">=</span> <span class="n">SConfFS</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">subst</span><span class="p">(</span><span class="n">log_file</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logfile</span> <span class="o">=</span> <span class="n">log_file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logstream</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lastTarget</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">=</span> <span class="n">_depth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cached</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># will be set, if all test results are cached</span>
+
+        <span class="c1"># add default tests</span>
+        <span class="n">default_tests</span> <span class="o">=</span> <span class="p">{</span>
+                 <span class="s1">&#39;CheckCC&#39;</span>            <span class="p">:</span> <span class="n">CheckCC</span><span class="p">,</span>
+                 <span class="s1">&#39;CheckCXX&#39;</span>           <span class="p">:</span> <span class="n">CheckCXX</span><span class="p">,</span>
+                 <span class="s1">&#39;CheckSHCC&#39;</span>          <span class="p">:</span> <span class="n">CheckSHCC</span><span class="p">,</span>
+                 <span class="s1">&#39;CheckSHCXX&#39;</span>         <span class="p">:</span> <span class="n">CheckSHCXX</span><span class="p">,</span>
+                 <span class="s1">&#39;CheckFunc&#39;</span>          <span class="p">:</span> <span class="n">CheckFunc</span><span class="p">,</span>
+                 <span class="s1">&#39;CheckType&#39;</span>          <span class="p">:</span> <span class="n">CheckType</span><span class="p">,</span>
+                 <span class="s1">&#39;CheckTypeSize&#39;</span>      <span class="p">:</span> <span class="n">CheckTypeSize</span><span class="p">,</span>
+                 <span class="s1">&#39;CheckDeclaration&#39;</span>   <span class="p">:</span> <span class="n">CheckDeclaration</span><span class="p">,</span>
+                 <span class="s1">&#39;CheckHeader&#39;</span>        <span class="p">:</span> <span class="n">CheckHeader</span><span class="p">,</span>
+                 <span class="s1">&#39;CheckCHeader&#39;</span>       <span class="p">:</span> <span class="n">CheckCHeader</span><span class="p">,</span>
+                 <span class="s1">&#39;CheckCXXHeader&#39;</span>     <span class="p">:</span> <span class="n">CheckCXXHeader</span><span class="p">,</span>
+                 <span class="s1">&#39;CheckLib&#39;</span>           <span class="p">:</span> <span class="n">CheckLib</span><span class="p">,</span>
+                 <span class="s1">&#39;CheckLibWithHeader&#39;</span> <span class="p">:</span> <span class="n">CheckLibWithHeader</span><span class="p">,</span>
+                 <span class="s1">&#39;CheckProg&#39;</span>          <span class="p">:</span> <span class="n">CheckProg</span><span class="p">,</span>
+               <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">AddTests</span><span class="p">(</span><span class="n">default_tests</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">AddTests</span><span class="p">(</span><span class="n">custom_tests</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">confdir</span> <span class="o">=</span> <span class="n">SConfFS</span><span class="o">.</span><span class="n">Dir</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">subst</span><span class="p">(</span><span class="n">conf_dir</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">config_h</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">config_h</span> <span class="o">=</span> <span class="n">SConfFS</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">config_h</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config_h</span> <span class="o">=</span> <span class="n">config_h</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_startup</span><span class="p">()</span>
+
+<div class="viewcode-block" id="SConfBase.Finish"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.SConfBase.Finish">[docs]</a>    <span class="k">def</span> <span class="nf">Finish</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Call this method after finished with your tests:</span>
+<span class="sd">                env = sconf.Finish()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_shutdown</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span></div>
+
+<div class="viewcode-block" id="SConfBase.Define"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.SConfBase.Define">[docs]</a>    <span class="k">def</span> <span class="nf">Define</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">comment</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Define a pre processor symbol name, with the optional given value in the</span>
+<span class="sd">        current config header.</span>
+
+<span class="sd">        If value is None (default), then #define name is written. If value is not</span>
+<span class="sd">        none, then #define name value is written.</span>
+
+<span class="sd">        comment is a string which will be put as a C comment in the header, to explain the meaning of the value</span>
+<span class="sd">        (appropriate C comments will be added automatically).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">comment</span><span class="p">:</span>
+            <span class="n">comment_str</span> <span class="o">=</span> <span class="s2">&quot;/* </span><span class="si">%s</span><span class="s2"> */&quot;</span> <span class="o">%</span> <span class="n">comment</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">comment_str</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">define_str</span> <span class="o">=</span> <span class="s2">&quot;#define </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">define_str</span> <span class="o">=</span> <span class="s2">&quot;#define </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">name</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">define_str</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">config_h_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config_h_text</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SConfBase.BuildNodes"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.SConfBase.BuildNodes">[docs]</a>    <span class="k">def</span> <span class="nf">BuildNodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodes</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Tries to build the given nodes immediately. Returns 1 on success,</span>
+<span class="sd">        0 on error.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">logstream</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># override stdout / stderr to write in log file</span>
+            <span class="n">oldStdout</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">logstream</span>
+            <span class="n">oldStderr</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">logstream</span>
+
+        <span class="c1"># the engine assumes the current path is the SConstruct directory ...</span>
+        <span class="n">old_fs_dir</span> <span class="o">=</span> <span class="n">SConfFS</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+        <span class="n">old_os_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+        <span class="n">SConfFS</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">SConfFS</span><span class="o">.</span><span class="n">Top</span><span class="p">,</span> <span class="n">change_os_dir</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Because we take responsibility here for writing out our</span>
+        <span class="c1"># own .sconsign info (see SConfBuildTask.execute(), above),</span>
+        <span class="c1"># we override the store_info() method with a null place-holder</span>
+        <span class="c1"># so we really control how it gets written.</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+            <span class="n">_set_conftest_node</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+            <span class="n">n</span><span class="o">.</span><span class="n">store_info</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s1">&#39;attributes&#39;</span><span class="p">):</span>
+                <span class="n">n</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">Attrs</span><span class="p">()</span>
+            <span class="n">n</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">keep_targetinfo</span> <span class="o">=</span> <span class="mi">1</span>
+
+            <span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="c1"># Some checkers have intermediate files (for example anything that compiles a c file into a program to run</span>
+                <span class="c1"># Those files need to be set to not release their target info, otherwise taskmaster will throw a</span>
+                <span class="c1"># Nonetype not callable</span>
+                <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">n</span><span class="o">.</span><span class="n">children</span><span class="p">(</span><span class="n">scan</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+                    <span class="c1"># Keep debug code here.</span>
+                    <span class="c1"># print(&quot;Checking [%s] for builders and then setting keep_targetinfo&quot;%c)</span>
+                    <span class="n">_set_conftest_node</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+                    <span class="k">if</span>  <span class="n">c</span><span class="o">.</span><span class="n">has_builder</span><span class="p">():</span>
+                        <span class="n">n</span><span class="o">.</span><span class="n">store_info</span> <span class="o">=</span> <span class="mi">0</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s1">&#39;attributes&#39;</span><span class="p">):</span>
+                            <span class="n">c</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">Attrs</span><span class="p">()</span>
+                        <span class="n">c</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">keep_targetinfo</span> <span class="o">=</span> <span class="mi">1</span>
+                    <span class="c1"># pass</span>
+
+        <span class="n">ret</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># ToDo: use user options for calc</span>
+            <span class="n">save_max_drift</span> <span class="o">=</span> <span class="n">SConfFS</span><span class="o">.</span><span class="n">get_max_drift</span><span class="p">()</span>
+            <span class="n">SConfFS</span><span class="o">.</span><span class="n">set_max_drift</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">tm</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Taskmaster</span><span class="o">.</span><span class="n">Taskmaster</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">SConfBuildTask</span><span class="p">)</span>
+            <span class="c1"># we don&#39;t want to build tests in parallel</span>
+            <span class="n">jobs</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Job</span><span class="o">.</span><span class="n">Jobs</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">tm</span> <span class="p">)</span>
+            <span class="n">jobs</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+                <span class="n">state</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">get_state</span><span class="p">()</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">state</span> <span class="o">!=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">executed</span> <span class="ow">and</span>
+                    <span class="n">state</span> <span class="o">!=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">up_to_date</span><span class="p">):</span>
+                    <span class="c1"># the node could not be built. we return 0 in this case</span>
+                    <span class="n">ret</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">SConfFS</span><span class="o">.</span><span class="n">set_max_drift</span><span class="p">(</span><span class="n">save_max_drift</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">old_os_dir</span><span class="p">)</span>
+            <span class="n">SConfFS</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">old_fs_dir</span><span class="p">,</span> <span class="n">change_os_dir</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">logstream</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># restore stdout / stderr</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">oldStdout</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span> <span class="o">=</span> <span class="n">oldStderr</span>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
+<div class="viewcode-block" id="SConfBase.pspawn_wrapper"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.SConfBase.pspawn_wrapper">[docs]</a>    <span class="k">def</span> <span class="nf">pspawn_wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sh</span><span class="p">,</span> <span class="n">escape</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Wrapper function for handling piped spawns.</span>
+
+<span class="sd">        This looks to the calling interface (in Action.py) like a &quot;normal&quot;</span>
+<span class="sd">        spawn, but associates the call with the PSPAWN variable from</span>
+<span class="sd">        the construction environment and with the streams to which we</span>
+<span class="sd">        want the output logged.  This gets slid into the construction</span>
+<span class="sd">        environment as the SPAWN variable so Action.py doesn&#39;t have to</span>
+<span class="sd">        know or care whether it&#39;s spawning a piped command or not.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pspawn</span><span class="p">(</span><span class="n">sh</span><span class="p">,</span> <span class="n">escape</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">logstream</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">logstream</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SConfBase.TryBuild"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.SConfBase.TryBuild">[docs]</a>    <span class="k">def</span> <span class="nf">TryBuild</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Low level TryBuild implementation. Normally you don&#39;t need to</span>
+<span class="sd">        call that - you can use TryCompile / TryLink / TryRun instead</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">global</span> <span class="n">_ac_build_counter</span>
+
+        <span class="c1"># Make sure we have a PSPAWN value, and save the current</span>
+        <span class="c1"># SPAWN value.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pspawn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;PSPAWN&#39;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">UserError</span><span class="p">(</span><span class="s1">&#39;Missing PSPAWN construction variable.&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">save_spawn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;SPAWN&#39;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">UserError</span><span class="p">(</span><span class="s1">&#39;Missing SPAWN construction variable.&#39;</span><span class="p">)</span>
+
+        <span class="n">nodesToBeBuilt</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">sourcetext</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">_set_conftest_node</span><span class="p">(</span><span class="n">sourcetext</span><span class="p">)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="s2">&quot;conftest&quot;</span>
+
+        <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">textSig</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">hash_signature</span><span class="p">(</span><span class="n">sourcetext</span><span class="p">)</span>
+            <span class="n">textSigCounter</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">_ac_build_counter</span><span class="p">[</span><span class="n">textSig</span><span class="p">])</span>
+            <span class="n">_ac_build_counter</span><span class="p">[</span><span class="n">textSig</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="n">f</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">f</span><span class="p">,</span> <span class="n">textSig</span><span class="p">,</span> <span class="n">textSigCounter</span><span class="p">])</span>
+            <span class="n">textFile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">confdir</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">f</span> <span class="o">+</span> <span class="n">extension</span><span class="p">)</span>
+            <span class="n">_set_conftest_node</span><span class="p">(</span><span class="n">textFile</span><span class="p">)</span>
+            <span class="n">textFileNode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">SConfSourceBuilder</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">textFile</span><span class="p">,</span>
+                                                       <span class="n">source</span><span class="o">=</span><span class="n">sourcetext</span><span class="p">)</span>
+            <span class="n">nodesToBeBuilt</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">textFileNode</span><span class="p">)</span>
+
+            <span class="n">source</span> <span class="o">=</span> <span class="n">textFile</span>
+            <span class="n">target</span> <span class="o">=</span> <span class="n">textFile</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">f</span> <span class="o">+</span> <span class="s2">&quot;SConfActionsContentDummyTarget&quot;</span><span class="p">)</span>
+            <span class="n">_set_conftest_node</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">target</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">action</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">get_contents</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="p">[</span><span class="n">source</span><span class="p">],</span> <span class="n">env</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">)</span>
+        <span class="n">actionsig</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">hash_signature</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">f</span><span class="p">,</span> <span class="n">actionsig</span><span class="p">])</span>
+
+        <span class="n">pref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">subst</span><span class="p">(</span> <span class="n">builder</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">prefix</span> <span class="p">)</span>
+        <span class="n">suff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">subst</span><span class="p">(</span> <span class="n">builder</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">suffix</span> <span class="p">)</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">confdir</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">pref</span> <span class="o">+</span> <span class="n">f</span> <span class="o">+</span> <span class="n">suff</span><span class="p">)</span>
+        <span class="n">_set_conftest_node</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Slide our wrapper into the construction environment as</span>
+            <span class="c1"># the SPAWN function.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;SPAWN&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pspawn_wrapper</span>
+
+            <span class="n">nodes</span> <span class="o">=</span> <span class="n">builder</span><span class="p">(</span><span class="n">target</span> <span class="o">=</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span> <span class="o">=</span> <span class="n">source</span><span class="p">,</span> <span class="n">SCONF_NODE</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_List</span><span class="p">(</span><span class="n">nodes</span><span class="p">):</span>
+                <span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">nodes</span><span class="p">]</span>
+            <span class="n">nodesToBeBuilt</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">BuildNodes</span><span class="p">(</span><span class="n">nodesToBeBuilt</span><span class="p">)</span>
+
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;SPAWN&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">save_spawn</span>
+
+        <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lastTarget</span> <span class="o">=</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lastTarget</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="n">result</span></div>
+
+<div class="viewcode-block" id="SConfBase.TryAction"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.SConfBase.TryAction">[docs]</a>    <span class="k">def</span> <span class="nf">TryAction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">text</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">extension</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Tries to execute the given action with optional source file</span>
+<span class="sd">        contents &lt;text&gt; and optional source file extension &lt;extension&gt;,</span>
+<span class="sd">        Returns the status (0 : failed, 1 : ok) and the contents of the</span>
+<span class="sd">        output file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">builder</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Builder</span><span class="o">.</span><span class="n">Builder</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="n">action</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">Append</span><span class="p">(</span> <span class="n">BUILDERS</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;SConfActionBuilder&#39;</span> <span class="p">:</span> <span class="n">builder</span><span class="p">}</span> <span class="p">)</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">TryBuild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">SConfActionBuilder</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">extension</span><span class="p">)</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;BUILDERS&#39;</span><span class="p">][</span><span class="s1">&#39;SConfActionBuilder&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">ok</span><span class="p">:</span>
+            <span class="n">outputStr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastTarget</span><span class="o">.</span><span class="n">get_text_contents</span><span class="p">()</span>
+            <span class="k">return</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">outputStr</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SConfBase.TryCompile"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.SConfBase.TryCompile">[docs]</a>    <span class="k">def</span> <span class="nf">TryCompile</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">extension</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compiles the program given in text to an env.Object, using extension</span>
+<span class="sd">        as file extension (e.g. &#39;.c&#39;). Returns 1, if compilation was</span>
+<span class="sd">        successful, 0 otherwise. The target is saved in self.lastTarget (for</span>
+<span class="sd">        further processing).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">TryBuild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">Object</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">extension</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SConfBase.TryLink"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.SConfBase.TryLink">[docs]</a>    <span class="k">def</span> <span class="nf">TryLink</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">extension</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compiles the program given in text to an executable env.Program,</span>
+<span class="sd">        using extension as file extension (e.g. &#39;.c&#39;). Returns 1, if</span>
+<span class="sd">        compilation was successful, 0 otherwise. The target is saved in</span>
+<span class="sd">        self.lastTarget (for further processing).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">TryBuild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">Program</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">extension</span> <span class="p">)</span></div>
+
+<div class="viewcode-block" id="SConfBase.TryRun"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.SConfBase.TryRun">[docs]</a>    <span class="k">def</span> <span class="nf">TryRun</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">extension</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compiles and runs the program given in text, using extension</span>
+<span class="sd">        as file extension (e.g. &#39;.c&#39;). Returns (1, outputStr) on success,</span>
+<span class="sd">        (0, &#39;&#39;) otherwise. The target (a file containing the program&#39;s stdout)</span>
+<span class="sd">        is saved in self.lastTarget (for further processing).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">TryLink</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">extension</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ok</span><span class="p">:</span>
+            <span class="n">prog</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastTarget</span>
+            <span class="n">pname</span> <span class="o">=</span> <span class="n">prog</span><span class="o">.</span><span class="n">get_internal_path</span><span class="p">()</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">confdir</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">pname</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;.out&#39;</span><span class="p">)</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">Command</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">prog</span><span class="p">,</span> <span class="p">[</span> <span class="p">[</span> <span class="n">pname</span><span class="p">,</span> <span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;$</span><span class="si">{TARGET}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="p">])</span>
+            <span class="n">ok</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">BuildNodes</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">ok</span><span class="p">:</span>
+                <span class="n">outputStr</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">to_str</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">get_contents</span><span class="p">())</span>
+                <span class="k">return</span><span class="p">(</span> <span class="mi">1</span><span class="p">,</span> <span class="n">outputStr</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SConfBase.TestWrapper"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.SConfBase.TestWrapper">[docs]</a>    <span class="k">class</span> <span class="nc">TestWrapper</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;A wrapper around Tests (to ensure sanity)&quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">sconf</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">test</span> <span class="o">=</span> <span class="n">test</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sconf</span> <span class="o">=</span> <span class="n">sconf</span>
+        <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sconf</span><span class="o">.</span><span class="n">active</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">UserError</span>
+            <span class="n">context</span> <span class="o">=</span> <span class="n">CheckContext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sconf</span><span class="p">)</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">test</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sconf</span><span class="o">.</span><span class="n">config_h</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sconf</span><span class="o">.</span><span class="n">config_h_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sconf</span><span class="o">.</span><span class="n">config_h_text</span> <span class="o">+</span> <span class="n">context</span><span class="o">.</span><span class="n">config_h</span>
+            <span class="n">context</span><span class="o">.</span><span class="n">Result</span><span class="p">(</span><span class="s2">&quot;error: no result&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">ret</span></div>
+
+<div class="viewcode-block" id="SConfBase.AddTest"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.SConfBase.AddTest">[docs]</a>    <span class="k">def</span> <span class="nf">AddTest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">test_name</span><span class="p">,</span> <span class="n">test_instance</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adds test_class to this SConf instance. It can be called with</span>
+<span class="sd">        self.test_name(...)&quot;&quot;&quot;</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">test_name</span><span class="p">,</span> <span class="n">SConfBase</span><span class="o">.</span><span class="n">TestWrapper</span><span class="p">(</span><span class="n">test_instance</span><span class="p">,</span> <span class="bp">self</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="SConfBase.AddTests"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.SConfBase.AddTests">[docs]</a>    <span class="k">def</span> <span class="nf">AddTests</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tests</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adds all the tests given in the tests dictionary to this SConf</span>
+<span class="sd">        instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">tests</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">AddTest</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">tests</span><span class="p">[</span><span class="n">name</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="SConfBase._createDir"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.SConfBase._createDir">[docs]</a>    <span class="k">def</span> <span class="nf">_createDir</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">node</span> <span class="p">):</span>
+        <span class="n">dirName</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dryrun</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span> <span class="n">dirName</span> <span class="p">):</span>
+                <span class="k">raise</span> <span class="n">ConfigureDryRunError</span><span class="p">(</span><span class="n">dirName</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span> <span class="n">dirName</span> <span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span> <span class="n">dirName</span> <span class="p">)</span></div>
+
+<div class="viewcode-block" id="SConfBase._startup"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.SConfBase._startup">[docs]</a>    <span class="k">def</span> <span class="nf">_startup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Private method. Set up logstream, and set the environment</span>
+<span class="sd">        variables necessary for a piped build</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">global</span> <span class="n">_ac_config_logs</span>
+        <span class="k">global</span> <span class="n">sconf_global</span>
+        <span class="k">global</span> <span class="n">SConfFS</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">lastEnvFs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">fs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">fs</span> <span class="o">=</span> <span class="n">SConfFS</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_createDir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">confdir</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">confdir</span><span class="o">.</span><span class="n">up</span><span class="p">()</span><span class="o">.</span><span class="n">add_ignore</span><span class="p">(</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">confdir</span><span class="p">]</span> <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">logfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">dryrun</span><span class="p">:</span>
+            <span class="c1"># truncate logfile, if SConf.Configure is called for the first time</span>
+            <span class="c1"># in a build</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">logfile</span> <span class="ow">in</span> <span class="n">_ac_config_logs</span><span class="p">:</span>
+                <span class="n">log_mode</span> <span class="o">=</span> <span class="s2">&quot;a&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">_ac_config_logs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">logfile</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">log_mode</span> <span class="o">=</span> <span class="s2">&quot;w&quot;</span>
+            <span class="n">fp</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logfile</span><span class="p">),</span> <span class="n">log_mode</span><span class="p">)</span>
+
+            <span class="k">def</span> <span class="nf">conflog_cleanup</span><span class="p">(</span><span class="n">logf</span><span class="p">):</span>
+                <span class="n">logf</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+            <span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">conflog_cleanup</span><span class="p">,</span> <span class="n">fp</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logstream</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">Unbuffered</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+            <span class="c1"># logfile may stay in a build directory, so we tell</span>
+            <span class="c1"># the build system not to override it with an eventually</span>
+            <span class="c1"># existing file with the same name in the source directory</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logfile</span><span class="o">.</span><span class="n">dir</span><span class="o">.</span><span class="n">add_ignore</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">logfile</span><span class="p">])</span>
+
+            <span class="n">tb</span> <span class="o">=</span> <span class="n">traceback</span><span class="o">.</span><span class="n">extract_stack</span><span class="p">()[</span><span class="o">-</span><span class="mi">3</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">depth</span><span class="p">]</span>
+            <span class="n">old_fs_dir</span> <span class="o">=</span> <span class="n">SConfFS</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+            <span class="n">SConfFS</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">SConfFS</span><span class="o">.</span><span class="n">Top</span><span class="p">,</span> <span class="n">change_os_dir</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logstream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;file </span><span class="si">%s</span><span class="s1">,line </span><span class="si">%d</span><span class="s1">:</span><span class="se">\n\t</span><span class="s1">Configure(confdir = </span><span class="si">%s</span><span class="s1">)</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span>
+                                 <span class="p">(</span><span class="n">tb</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tb</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">confdir</span><span class="p">))</span> <span class="p">)</span>
+            <span class="n">SConfFS</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">old_fs_dir</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logstream</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># we use a special builder to create source files from TEXT</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Action</span><span class="o">.</span><span class="n">Action</span><span class="p">(</span><span class="n">_createSource</span><span class="p">,</span>
+                                     <span class="n">_stringSource</span><span class="p">)</span>
+        <span class="n">sconfSrcBld</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Builder</span><span class="o">.</span><span class="n">Builder</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="n">action</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">Append</span><span class="p">(</span> <span class="n">BUILDERS</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;SConfSourceBuilder&#39;</span><span class="p">:</span><span class="n">sconfSrcBld</span><span class="p">}</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config_h_text</span> <span class="o">=</span> <span class="n">_ac_config_hs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config_h</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="c1"># only one SConf instance should be active at a time ...</span>
+        <span class="n">sconf_global</span> <span class="o">=</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="SConfBase._shutdown"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.SConfBase._shutdown">[docs]</a>    <span class="k">def</span> <span class="nf">_shutdown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Private method. Reset to non-piped spawn&quot;&quot;&quot;</span>
+        <span class="k">global</span> <span class="n">sconf_global</span><span class="p">,</span> <span class="n">_ac_config_hs</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">active</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">UserError</span><span class="p">(</span><span class="s2">&quot;Finish may be called only once!&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">logstream</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">dryrun</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logstream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logstream</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logstream</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Now reset the decider if we changed it due to --config=force</span>
+        <span class="c1"># We saved original Environment passed in and cloned it to isolate</span>
+        <span class="c1"># it from being changed.</span>
+        <span class="k">if</span> <span class="n">cache_mode</span> <span class="o">==</span> <span class="n">FORCE</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">Decider</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">original_env</span><span class="o">.</span><span class="n">decide_source</span><span class="p">)</span>
+
+            <span class="c1"># remove the SConfSourceBuilder from the environment</span>
+            <span class="n">blds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;BUILDERS&#39;</span><span class="p">]</span>
+            <span class="k">del</span> <span class="n">blds</span><span class="p">[</span><span class="s1">&#39;SConfSourceBuilder&#39;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">Replace</span><span class="p">(</span> <span class="n">BUILDERS</span><span class="o">=</span><span class="n">blds</span> <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">sconf_global</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config_h</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">_ac_config_hs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config_h</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config_h_text</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">fs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastEnvFs</span></div></div>
+
+<div class="viewcode-block" id="CheckContext"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.CheckContext">[docs]</a><span class="k">class</span> <span class="nc">CheckContext</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Provides a context for configure tests. Defines how a test writes to the</span>
+<span class="sd">    screen and log file.</span>
+
+<span class="sd">    A typical test is just a callable with an instance of CheckContext as</span>
+<span class="sd">    first argument:</span>
+
+<span class="sd">        def CheckCustom(context, ...):</span>
+<span class="sd">            context.Message(&#39;Checking my weird test ... &#39;)</span>
+<span class="sd">            ret = myWeirdTestFunction(...)</span>
+<span class="sd">            context.Result(ret)</span>
+
+<span class="sd">    Often, myWeirdTestFunction will be one of</span>
+<span class="sd">    context.TryCompile/context.TryLink/context.TryRun. The results of</span>
+<span class="sd">    those are cached, for they are only rebuild, if the dependencies have</span>
+<span class="sd">    changed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sconf</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor. Pass the corresponding SConf instance.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sconf</span> <span class="o">=</span> <span class="n">sconf</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">did_show_result</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># for Conftest.py:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vardict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">havedict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">headerfilename</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config_h</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="c1"># config_h text will be stored here</span>
+        <span class="c1"># we don&#39;t regenerate the config.h file after each test. That means,</span>
+        <span class="c1"># that tests won&#39;t be able to include the config.h file, and so</span>
+        <span class="c1"># they can&#39;t do an #ifdef HAVE_XXX_H. This shouldn&#39;t be a major</span>
+        <span class="c1"># issue, though. If it turns out, that we need to include config.h</span>
+        <span class="c1"># in tests, we must ensure, that the dependencies are worked out</span>
+        <span class="c1"># correctly. Note that we can&#39;t use Conftest.py&#39;s support for config.h,</span>
+        <span class="c1"># cause we will need to specify a builder for the config.h file ...</span>
+
+<div class="viewcode-block" id="CheckContext.Message"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.CheckContext.Message">[docs]</a>    <span class="k">def</span> <span class="nf">Message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Inform about what we are doing right now, e.g.</span>
+<span class="sd">        &#39;Checking for SOMETHING ... &#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Display</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sconf</span><span class="o">.</span><span class="n">cached</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">did_show_result</span> <span class="o">=</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="CheckContext.Result"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.CheckContext.Result">[docs]</a>    <span class="k">def</span> <span class="nf">Result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">res</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Inform about the result of the test. If res is not a string, displays</span>
+<span class="sd">        &#39;yes&#39; or &#39;no&#39; depending on whether res is evaluated as true or false.</span>
+<span class="sd">        The result is only displayed when self.did_show_result is not set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">res</span>
+        <span class="k">elif</span> <span class="n">res</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;yes&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;no&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">did_show_result</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># Didn&#39;t show result yet, do it now.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Display</span><span class="p">(</span><span class="n">text</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">did_show_result</span> <span class="o">=</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="CheckContext.TryBuild"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.CheckContext.TryBuild">[docs]</a>    <span class="k">def</span> <span class="nf">TryBuild</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sconf</span><span class="o">.</span><span class="n">TryBuild</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CheckContext.TryAction"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.CheckContext.TryAction">[docs]</a>    <span class="k">def</span> <span class="nf">TryAction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sconf</span><span class="o">.</span><span class="n">TryAction</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CheckContext.TryCompile"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.CheckContext.TryCompile">[docs]</a>    <span class="k">def</span> <span class="nf">TryCompile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sconf</span><span class="o">.</span><span class="n">TryCompile</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CheckContext.TryLink"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.CheckContext.TryLink">[docs]</a>    <span class="k">def</span> <span class="nf">TryLink</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sconf</span><span class="o">.</span><span class="n">TryLink</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CheckContext.TryRun"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.CheckContext.TryRun">[docs]</a>    <span class="k">def</span> <span class="nf">TryRun</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sconf</span><span class="o">.</span><span class="n">TryRun</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">attr</span> <span class="p">):</span>
+        <span class="k">if</span> <span class="n">attr</span> <span class="o">==</span> <span class="s1">&#39;env&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sconf</span><span class="o">.</span><span class="n">env</span>
+        <span class="k">elif</span> <span class="n">attr</span> <span class="o">==</span> <span class="s1">&#39;lastTarget&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sconf</span><span class="o">.</span><span class="n">lastTarget</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;CheckContext instance has no attribute &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">attr</span><span class="p">)</span>
+
+    <span class="c1">#### Stuff used by Conftest.py (look there for explanations).</span>
+
+<div class="viewcode-block" id="CheckContext.BuildProg"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.CheckContext.BuildProg">[docs]</a>    <span class="k">def</span> <span class="nf">BuildProg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">ext</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sconf</span><span class="o">.</span><span class="n">cached</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="c1"># TODO: should use self.vardict for $CC, $CPPFLAGS, etc.</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">TryBuild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">Program</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CheckContext.CompileProg"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.CheckContext.CompileProg">[docs]</a>    <span class="k">def</span> <span class="nf">CompileProg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">ext</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sconf</span><span class="o">.</span><span class="n">cached</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="c1"># TODO: should use self.vardict for $CC, $CPPFLAGS, etc.</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">TryBuild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">Object</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CheckContext.CompileSharedObject"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.CheckContext.CompileSharedObject">[docs]</a>    <span class="k">def</span> <span class="nf">CompileSharedObject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">ext</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sconf</span><span class="o">.</span><span class="n">cached</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="c1"># TODO: should use self.vardict for $SHCC, $CPPFLAGS, etc.</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">TryBuild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">SharedObject</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CheckContext.RunProg"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.CheckContext.RunProg">[docs]</a>    <span class="k">def</span> <span class="nf">RunProg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">ext</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sconf</span><span class="o">.</span><span class="n">cached</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="c1"># TODO: should use self.vardict for $CC, $CPPFLAGS, etc.</span>
+        <span class="n">st</span><span class="p">,</span> <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">TryRun</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="n">st</span><span class="p">,</span> <span class="n">out</span></div>
+
+<div class="viewcode-block" id="CheckContext.AppendLIBS"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.CheckContext.AppendLIBS">[docs]</a>    <span class="k">def</span> <span class="nf">AppendLIBS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lib_name_list</span><span class="p">):</span>
+        <span class="n">oldLIBS</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span> <span class="s1">&#39;LIBS&#39;</span><span class="p">,</span> <span class="p">[]</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">Append</span><span class="p">(</span><span class="n">LIBS</span> <span class="o">=</span> <span class="n">lib_name_list</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">oldLIBS</span></div>
+
+<div class="viewcode-block" id="CheckContext.PrependLIBS"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.CheckContext.PrependLIBS">[docs]</a>    <span class="k">def</span> <span class="nf">PrependLIBS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lib_name_list</span><span class="p">):</span>
+        <span class="n">oldLIBS</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span> <span class="s1">&#39;LIBS&#39;</span><span class="p">,</span> <span class="p">[]</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">Prepend</span><span class="p">(</span><span class="n">LIBS</span> <span class="o">=</span> <span class="n">lib_name_list</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">oldLIBS</span></div>
+
+<div class="viewcode-block" id="CheckContext.SetLIBS"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.CheckContext.SetLIBS">[docs]</a>    <span class="k">def</span> <span class="nf">SetLIBS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="n">oldLIBS</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span> <span class="s1">&#39;LIBS&#39;</span><span class="p">,</span> <span class="p">[]</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">Replace</span><span class="p">(</span><span class="n">LIBS</span> <span class="o">=</span> <span class="n">val</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">oldLIBS</span></div>
+
+<div class="viewcode-block" id="CheckContext.Display"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.CheckContext.Display">[docs]</a>    <span class="k">def</span> <span class="nf">Display</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sconf</span><span class="o">.</span><span class="n">cached</span><span class="p">:</span>
+            <span class="c1"># We assume that Display is called twice for each test here</span>
+            <span class="c1"># once for the Checking for ... message and once for the result.</span>
+            <span class="c1"># The self.sconf.cached flag can only be set between those calls</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;(cached) &quot;</span> <span class="o">+</span> <span class="n">msg</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sconf</span><span class="o">.</span><span class="n">cached</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">progress_display</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">append_newline</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Log</span><span class="p">(</span><span class="s2">&quot;scons: Configure: &quot;</span> <span class="o">+</span> <span class="n">msg</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CheckContext.Log"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.CheckContext.Log">[docs]</a>    <span class="k">def</span> <span class="nf">Log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sconf</span><span class="o">.</span><span class="n">logstream</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sconf</span><span class="o">.</span><span class="n">logstream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div></div>
+
+    <span class="c1">#### End of stuff used by Conftest.py.</span>
+
+
+<div class="viewcode-block" id="SConf"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.SConf">[docs]</a><span class="k">def</span> <span class="nf">SConf</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">build_type</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="n">kw</span><span class="p">[</span><span class="s1">&#39;_depth&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;_depth&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">bt</span> <span class="ow">in</span> <span class="n">build_types</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">del</span> <span class="n">kw</span><span class="p">[</span><span class="n">bt</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="k">return</span> <span class="n">SConfBase</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">Null</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="CheckFunc"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.CheckFunc">[docs]</a><span class="k">def</span> <span class="nf">CheckFunc</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">function_name</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">language</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Conftest</span><span class="o">.</span><span class="n">CheckFunc</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">function_name</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="n">header</span><span class="p">,</span> <span class="n">language</span> <span class="o">=</span> <span class="n">language</span><span class="p">)</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">did_show_result</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="ow">not</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="CheckType"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.CheckType">[docs]</a><span class="k">def</span> <span class="nf">CheckType</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">type_name</span><span class="p">,</span> <span class="n">includes</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">language</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Conftest</span><span class="o">.</span><span class="n">CheckType</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">type_name</span><span class="p">,</span>
+                                   <span class="n">header</span> <span class="o">=</span> <span class="n">includes</span><span class="p">,</span> <span class="n">language</span> <span class="o">=</span> <span class="n">language</span><span class="p">)</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">did_show_result</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="ow">not</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="CheckTypeSize"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.CheckTypeSize">[docs]</a><span class="k">def</span> <span class="nf">CheckTypeSize</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">type_name</span><span class="p">,</span> <span class="n">includes</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">language</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">expect</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Conftest</span><span class="o">.</span><span class="n">CheckTypeSize</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">type_name</span><span class="p">,</span>
+                                       <span class="n">header</span> <span class="o">=</span> <span class="n">includes</span><span class="p">,</span> <span class="n">language</span> <span class="o">=</span> <span class="n">language</span><span class="p">,</span>
+                                       <span class="n">expect</span> <span class="o">=</span> <span class="n">expect</span><span class="p">)</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">did_show_result</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="CheckDeclaration"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.CheckDeclaration">[docs]</a><span class="k">def</span> <span class="nf">CheckDeclaration</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">declaration</span><span class="p">,</span> <span class="n">includes</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">language</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Conftest</span><span class="o">.</span><span class="n">CheckDeclaration</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">declaration</span><span class="p">,</span>
+                                          <span class="n">includes</span> <span class="o">=</span> <span class="n">includes</span><span class="p">,</span>
+                                          <span class="n">language</span> <span class="o">=</span> <span class="n">language</span><span class="p">)</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">did_show_result</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="ow">not</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="createIncludesFromHeaders"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.createIncludesFromHeaders">[docs]</a><span class="k">def</span> <span class="nf">createIncludesFromHeaders</span><span class="p">(</span><span class="n">headers</span><span class="p">,</span> <span class="n">leaveLast</span><span class="p">,</span> <span class="n">include_quotes</span> <span class="o">=</span> <span class="s1">&#39;&quot;&quot;&#39;</span><span class="p">):</span>
+    <span class="c1"># used by CheckHeader and CheckLibWithHeader to produce C - #include</span>
+    <span class="c1"># statements from the specified header (list)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_List</span><span class="p">(</span><span class="n">headers</span><span class="p">):</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="n">headers</span><span class="p">]</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">leaveLast</span><span class="p">:</span>
+        <span class="n">lastHeader</span> <span class="o">=</span> <span class="n">headers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">lastHeader</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">headers</span><span class="p">:</span>
+        <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;#include </span><span class="si">%s%s%s</span><span class="se">\n</span><span class="s2">&quot;</span>
+                 <span class="o">%</span> <span class="p">(</span><span class="n">include_quotes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">s</span><span class="p">,</span> <span class="n">include_quotes</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">l</span><span class="p">),</span> <span class="n">lastHeader</span></div>
+
+<div class="viewcode-block" id="CheckHeader"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.CheckHeader">[docs]</a><span class="k">def</span> <span class="nf">CheckHeader</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">header</span><span class="p">,</span> <span class="n">include_quotes</span> <span class="o">=</span> <span class="s1">&#39;&lt;&gt;&#39;</span><span class="p">,</span> <span class="n">language</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A test for a C or C++ header file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">prog_prefix</span><span class="p">,</span> <span class="n">hdr_to_check</span> <span class="o">=</span> \
+                 <span class="n">createIncludesFromHeaders</span><span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">include_quotes</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Conftest</span><span class="o">.</span><span class="n">CheckHeader</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">hdr_to_check</span><span class="p">,</span> <span class="n">prog_prefix</span><span class="p">,</span>
+                                     <span class="n">language</span> <span class="o">=</span> <span class="n">language</span><span class="p">,</span>
+                                     <span class="n">include_quotes</span> <span class="o">=</span> <span class="n">include_quotes</span><span class="p">)</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">did_show_result</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="ow">not</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="CheckCC"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.CheckCC">[docs]</a><span class="k">def</span> <span class="nf">CheckCC</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Conftest</span><span class="o">.</span><span class="n">CheckCC</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">did_show_result</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="ow">not</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="CheckCXX"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.CheckCXX">[docs]</a><span class="k">def</span> <span class="nf">CheckCXX</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Conftest</span><span class="o">.</span><span class="n">CheckCXX</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">did_show_result</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="ow">not</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="CheckSHCC"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.CheckSHCC">[docs]</a><span class="k">def</span> <span class="nf">CheckSHCC</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Conftest</span><span class="o">.</span><span class="n">CheckSHCC</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">did_show_result</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="ow">not</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="CheckSHCXX"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.CheckSHCXX">[docs]</a><span class="k">def</span> <span class="nf">CheckSHCXX</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Conftest</span><span class="o">.</span><span class="n">CheckSHCXX</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">did_show_result</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="ow">not</span> <span class="n">res</span></div>
+
+<span class="c1"># Bram: Make this function obsolete?  CheckHeader() is more generic.</span>
+
+<div class="viewcode-block" id="CheckCHeader"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.CheckCHeader">[docs]</a><span class="k">def</span> <span class="nf">CheckCHeader</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">header</span><span class="p">,</span> <span class="n">include_quotes</span> <span class="o">=</span> <span class="s1">&#39;&quot;&quot;&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A test for a C header file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">CheckHeader</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">header</span><span class="p">,</span> <span class="n">include_quotes</span><span class="p">,</span> <span class="n">language</span> <span class="o">=</span> <span class="s2">&quot;C&quot;</span><span class="p">)</span></div>
+
+
+<span class="c1"># Bram: Make this function obsolete?  CheckHeader() is more generic.</span>
+
+<div class="viewcode-block" id="CheckCXXHeader"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.CheckCXXHeader">[docs]</a><span class="k">def</span> <span class="nf">CheckCXXHeader</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">header</span><span class="p">,</span> <span class="n">include_quotes</span> <span class="o">=</span> <span class="s1">&#39;&quot;&quot;&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A test for a C++ header file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">CheckHeader</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">header</span><span class="p">,</span> <span class="n">include_quotes</span><span class="p">,</span> <span class="n">language</span> <span class="o">=</span> <span class="s2">&quot;C++&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="CheckLib"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.CheckLib">[docs]</a><span class="k">def</span> <span class="nf">CheckLib</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">library</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">symbol</span> <span class="o">=</span> <span class="s2">&quot;main&quot;</span><span class="p">,</span>
+             <span class="n">header</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">language</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">autoadd</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A test for a library. See also CheckLibWithHeader.</span>
+<span class="sd">    Note that library may also be None to test whether the given symbol</span>
+<span class="sd">    compiles without flags.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">library</span><span class="p">:</span>
+        <span class="n">library</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_List</span><span class="p">(</span><span class="n">library</span><span class="p">):</span>
+        <span class="n">library</span> <span class="o">=</span> <span class="p">[</span><span class="n">library</span><span class="p">]</span>
+
+    <span class="c1"># ToDo: accept path for the library</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Conftest</span><span class="o">.</span><span class="n">CheckLib</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">library</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="n">header</span><span class="p">,</span>
+                                        <span class="n">language</span> <span class="o">=</span> <span class="n">language</span><span class="p">,</span> <span class="n">autoadd</span> <span class="o">=</span> <span class="n">autoadd</span><span class="p">)</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">did_show_result</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="ow">not</span> <span class="n">res</span></div>
+
+<span class="c1"># XXX</span>
+<span class="c1"># Bram: Can only include one header and can&#39;t use #ifdef HAVE_HEADER_H.</span>
+
+<div class="viewcode-block" id="CheckLibWithHeader"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.CheckLibWithHeader">[docs]</a><span class="k">def</span> <span class="nf">CheckLibWithHeader</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">libs</span><span class="p">,</span> <span class="n">header</span><span class="p">,</span> <span class="n">language</span><span class="p">,</span>
+                       <span class="n">call</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">autoadd</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="c1"># ToDo: accept path for library. Support system header files.</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Another (more sophisticated) test for a library.</span>
+<span class="sd">    Checks, if library and header is available for language (may be &#39;C&#39;</span>
+<span class="sd">    or &#39;CXX&#39;). Call maybe be a valid expression _with_ a trailing &#39;;&#39;.</span>
+<span class="sd">    As in CheckLib, we support library=None, to test if the call compiles</span>
+<span class="sd">    without extra link flags.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">prog_prefix</span><span class="p">,</span> <span class="n">dummy</span> <span class="o">=</span> \
+                 <span class="n">createIncludesFromHeaders</span><span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">libs</span><span class="p">:</span>
+        <span class="n">libs</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_List</span><span class="p">(</span><span class="n">libs</span><span class="p">):</span>
+        <span class="n">libs</span> <span class="o">=</span> <span class="p">[</span><span class="n">libs</span><span class="p">]</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Conftest</span><span class="o">.</span><span class="n">CheckLib</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">libs</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">prog_prefix</span><span class="p">,</span>
+            <span class="n">call</span> <span class="o">=</span> <span class="n">call</span><span class="p">,</span> <span class="n">language</span> <span class="o">=</span> <span class="n">language</span><span class="p">,</span> <span class="n">autoadd</span> <span class="o">=</span> <span class="n">autoadd</span><span class="p">)</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">did_show_result</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="ow">not</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="CheckProg"><a class="viewcode-back" href="../../../SCons/#SCons.SConf.CheckProg">[docs]</a><span class="k">def</span> <span class="nf">CheckProg</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">prog_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Simple check if a program exists in the path.  Returns the path</span>
+<span class="sd">    for the application, or None if not found.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Conftest</span><span class="o">.</span><span class="n">CheckProg</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">prog_name</span><span class="p">)</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">did_show_result</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">res</span></div>
+
+<span class="c1"># Local Variables:</span>
+<span class="c1"># tab-width:4</span>
+<span class="c1"># indent-tabs-mode:nil</span>
+<span class="c1"># End:</span>
+<span class="c1"># vim: set expandtab tabstop=4 shiftwidth=4:</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, SCons Project.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

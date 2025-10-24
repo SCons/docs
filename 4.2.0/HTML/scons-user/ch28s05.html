@@ -1,0 +1,32 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>28.5. Where is SCons Searching for Libraries? the --debug=findlibs Option</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.2.0"><link rel="up" href="ch28.html" title="Chapter 28. Troubleshooting"><link rel="prev" href="ch28s04.html" title="28.4. How is SCons Constructing the Command Lines It Executes? the --debug=presub Option"><link rel="next" href="ch28s06.html" title="28.6. Where is SCons Blowing Up? the --debug=stacktrace Option"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">28.5. Where is <span class="application">SCons</span> Searching for Libraries?  the <code class="option">--debug=findlibs</code> Option</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch28s04.html">Prev</a> </td><th width="60%" align="center">Chapter 28. Troubleshooting</th><td width="20%" align="right"> <a accesskey="n" href="ch28s06.html">Next</a></td></tr></table><hr></div><div class="section" title="28.5. Where is SCons Searching for Libraries? the --debug=findlibs Option"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idp140211690197632"></a>28.5. Where is <span class="application">SCons</span> Searching for Libraries?  the <code class="option">--debug=findlibs</code> Option</h2></div></div></div><p>
+
+    To get some insight into what library names
+    <span class="application">SCons</span> is searching for,
+    and in which directories it is searching,
+    Use the <code class="option">--debug=findlibs</code> option.
+    Given the following input <code class="filename">SConstruct</code> file:
+
+    </p><pre class="programlisting">
+env = Environment(LIBPATH = ['libs1', 'libs2'])
+env.Program('prog.c', LIBS=['foo', 'bar'])
+      </pre><p>
+
+    And the libraries <code class="filename">libfoo.a</code>
+    and <code class="filename">libbar.a</code>
+    in <code class="filename">libs1</code> and <code class="filename">libs2</code>,
+    respectively,
+    use of the <code class="option">--debug=findlibs</code> option yields:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q --debug=findlibs</code></strong>
+  findlibs: looking for 'libfoo.a' in 'libs1' ...
+  findlibs: ... FOUND 'libfoo.a' in 'libs1'
+  findlibs: looking for 'libfoo.so' in 'libs1' ...
+  findlibs: looking for 'libfoo.so' in 'libs2' ...
+  findlibs: looking for 'libbar.a' in 'libs1' ...
+  findlibs: looking for 'libbar.a' in 'libs2' ...
+  findlibs: ... FOUND 'libbar.a' in 'libs2'
+  findlibs: looking for 'libbar.so' in 'libs1' ...
+  findlibs: looking for 'libbar.so' in 'libs2' ...
+cc -o prog.o -c prog.c
+cc -o prog prog.o -Llibs1 -Llibs2 -lfoo -lbar
+</pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch28s04.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch28.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch28s06.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">28.4. How is <span class="application">SCons</span> Constructing the Command Lines It Executes?  the <code class="option">--debug=presub</code> Option </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 28.6. Where is <span class="application">SCons</span> Blowing Up?  the <code class="option">--debug=stacktrace</code> Option</td></tr></table></div></body></html>

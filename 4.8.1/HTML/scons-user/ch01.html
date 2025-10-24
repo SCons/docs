@@ -1,0 +1,99 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Chapter 1. Building and Installing SCons</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.8.1"><link rel="up" href="index.html" title="SCons 4.8.1"><link rel="prev" href="pr01s05.html" title="5. Contact"><link rel="next" href="ch01s02.html" title="1.2. Installing SCons"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 1. Building and Installing <span class="application">SCons</span></th></tr><tr><td width="20%" align="left"><a accesskey="p" href="pr01s05.html">Prev</a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="ch01s02.html">Next</a></td></tr></table><hr></div><div class="chapter" title="Chapter 1. Building and Installing SCons"><div class="titlepage"><div><div><h2 class="title"><a name="chap-build-install"></a>Chapter 1. Building and Installing <span class="application">SCons</span></h2></div></div></div><p>
+
+  This chapter will take you through the basic steps
+  of installing <span class="application">SCons</span> so you can use it for your projects.
+  Before that, however, this chapter will also describe the basic steps
+  involved in installing <span class="application">Python</span> on your system,
+  in case that is necessary.
+  Fortunately, both <span class="application">SCons</span> and <span class="application">Python</span>
+  are easy to install on almost any system,
+  and <span class="application">Python</span> already comes installed on many systems.
+
+  </p><div class="section" title="1.1. Installing Python"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="sect-install-python"></a>1.1. Installing Python</h2></div></div></div><p>
+    Because <span class="application">SCons</span> is written in the <span class="application">Python</span> programming language,
+    you need to have a <span class="application">Python</span> interpreter available on your system
+    to use <span class="application">SCons</span>.
+    Before you try to install <span class="application">Python</span>,
+    check to see if <span class="application">Python</span> is already
+    available on your system  by typing
+    <strong class="userinput"><code>python -V</code></strong>
+    (capital 'V')
+    or
+    <strong class="userinput"><code>python --version</code></strong>
+    at your system's command-line prompt.
+    For Linux/Unix/MacOS/BSD type systems this looks like:
+    </p><pre class="screen">
+$ <strong class="userinput"><code>python -V</code></strong>
+Python 3.9.15
+    </pre><p>
+    If you get a version like 2.7.x, you may need to try using the
+    name <span class="command"><strong>python3</strong></span> - current <span class="application">SCons</span> no longer
+    works with <span class="application">Python</span> 2.
+    </p><p>
+    Note to Windows users: there are a number of different ways <span class="application">Python</span>
+    can be installed or invoked on Windows, it is beyond the scope
+    of this guide to unravel all of them. Some have an additional
+    program called the <em class="firstterm">Python launcher</em> (described,
+    somewhat technically, in
+    <a class="ulink" href="https://www.python.org/dev/peps/pep-0397/" target="_top">PEP 397</a>):
+    try using the command name <span class="command"><strong>py</strong></span> instead of
+    <span class="command"><strong>python</strong></span>, if that is not available drop
+    back to trying <span class="command"><strong>python</strong></span>
+    </p><pre class="screen">
+C:\&gt;<strong class="userinput"><code>py -V</code></strong>
+Python 3.9.15
+    </pre><p>
+    If <span class="application">Python</span> is not installed on your system,
+    or is not findable in the current search path,
+    you will see an error message
+    stating something like <code class="computeroutput">"command not found"</code>
+    (on UNIX or Linux)
+    or <code class="computeroutput">"'python' is not recognized as an internal
+    or external command, operable progam or batch file"</code>
+    (on Windows <span class="command"><strong>cmd</strong></span>).
+    In that case, you need to either install <span class="application">Python</span>
+    or fix the search path
+    before you can install <span class="application">SCons</span>.
+    </p><p>
+    The link for downloading <span class="application">Python</span> installers (Windows and Mac)
+    from the project's own website is:
+    <a class="ulink" href="https://www.python.org/download" target="_top">https://www.python.org/download</a>.
+    There are useful system-specific entries on setup and
+    usage to be found at:
+    <a class="ulink" href="https://docs.python.org/3/using" target="_top">https://docs.python.org/3/using</a>
+    </p><p>
+    For Linux systems, <span class="application">Python</span> is
+    almost certainly available as a supported package, probably
+    installed by default; this is often preferred over installing
+    by other means as the system package will be built with
+    carefully chosen optimizations, and will be kept up to date
+    with bug fixes and security patches. In fact, the <span class="application">Python</span>
+    project itself does not build installers for Linux for this reason.
+    Many such systems have separate packages for
+    <span class="application">Python</span> 2 and <span class="application">Python</span> 3 - make sure the <span class="application">Python</span> 3 package is
+    installed, as the latest <span class="application">SCons</span> requires it.
+    Building from source may still be a
+    useful option if you need a specific version that is not offered by
+    the distribution you are using.
+    </p><p>
+    Recent versions of the Mac no longer come with <span class="application">Python</span>
+    pre-installed; older versions came with a rather out of date
+    version (based on <span class="application">Python</span> 2.7) which is insufficient to run
+    current <span class="application">SCons</span>.
+    The python.org installer can be used on the Mac, but there are
+    also other sources such as MacPorts and Homebrew.
+    The Anaconda installation also comes with a bundled <span class="application">Python</span>.
+    </p><p>
+    Windows has even more choices.  The Python.org installer is
+    a traditional <code class="filename">.exe</code> style;
+    the same software is also released as a Windows application through
+    the Microsoft Store.  Several alternative builds also exist
+    such as Chocolatey and ActiveState, and, again,
+    a version of Python comes with Anaconda.
+    </p><p>
+    <span class="application">SCons</span> will work with <span class="application">Python</span> 3.6 or later.
+    If you need to install <span class="application">Python</span> and have a choice,
+    we recommend using the most recent <span class="application">Python</span> version available.
+    Newer <span class="application">Python</span> versions have significant improvements
+    that help speed up the performance of <span class="application">SCons</span>.
+    </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="pr01s05.html">Prev</a> </td><td width="20%" align="center"> </td><td width="40%" align="right"> <a accesskey="n" href="ch01s02.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">5. Contact </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 1.2. Installing <span class="application">SCons</span></td></tr></table></div></body></html>

@@ -1,0 +1,746 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>SCons.Platform.win32 &mdash; SCons 4.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../" class="icon icon-home"> SCons
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                4.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons/">SCons package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../SCons.Variables/">SCons.Variables package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../SCons.compat/">SCons.compat package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Action">SCons.Action module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Builder">SCons.Builder module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.CacheDir">SCons.CacheDir module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Conftest">SCons.Conftest module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Debug">SCons.Debug module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Defaults">SCons.Defaults module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Environment">SCons.Environment module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Errors">SCons.Errors module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Executor">SCons.Executor module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Job">SCons.Job module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Memoize">SCons.Memoize module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.PathList">SCons.PathList module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.SConf">SCons.SConf module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.SConsign">SCons.SConsign module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Subst">SCons.Subst module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Taskmaster">SCons.Taskmaster module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../SCons/#generic-taskmaster-module-for-the-scons-build-engine">Generic Taskmaster module for the SCons build engine.</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Util">SCons.Util module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.Warnings">SCons.Warnings module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.cpp">SCons.cpp module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.dblite">SCons.dblite module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons/#module-SCons.exitfuncs">SCons.exitfuncs module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.compat/">SCons.compat package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.compat/#module-SCons.compat">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Node/">SCons.Node package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Node/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Node/#module-SCons.Node.Alias">SCons.Node.Alias module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Node/#module-SCons.Node.FS">SCons.Node.FS module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Node/#module-SCons.Node.Python">SCons.Node.Python module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Node/#module-SCons.Node">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Platform/">SCons.Platform package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform.aix">SCons.Platform.aix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform.cygwin">SCons.Platform.cygwin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform.darwin">SCons.Platform.darwin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform.hpux">SCons.Platform.hpux module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform.irix">SCons.Platform.irix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform.mingw">SCons.Platform.mingw module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform.os2">SCons.Platform.os2 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform.posix">SCons.Platform.posix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform.sunos">SCons.Platform.sunos module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform.virtualenv">SCons.Platform.virtualenv module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform.win32">SCons.Platform.win32 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/#module-SCons.Platform">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Scanner/">SCons.Scanner package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/#module-SCons.Scanner.C">SCons.Scanner.C module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/#module-SCons.Scanner.D">SCons.Scanner.D module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/#module-SCons.Scanner.Dir">SCons.Scanner.Dir module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/#module-SCons.Scanner.Fortran">SCons.Scanner.Fortran module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/#module-SCons.Scanner.IDL">SCons.Scanner.IDL module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/#module-SCons.Scanner.LaTeX">SCons.Scanner.LaTeX module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/#module-SCons.Scanner.Prog">SCons.Scanner.Prog module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/#module-SCons.Scanner.RC">SCons.Scanner.RC module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/#module-SCons.Scanner.SWIG">SCons.Scanner.SWIG module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/#module-SCons.Scanner">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Script/">SCons.Script package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Script/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Script/#module-SCons.Script.Interactive">SCons.Script.Interactive module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Script/#module-SCons.Script.Main">SCons.Script.Main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Script/#module-SCons.Script.SConsOptions">SCons.Script.SConsOptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Script/#module-SCons.Script.SConscript">SCons.Script.SConscript module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Script/#module-SCons.Script">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Tool/">SCons.Tool package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Tool/#module-SCons.Tool">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Variables/">SCons.Variables package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Variables/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Variables/#module-SCons.Variables.BoolVariable">SCons.Variables.BoolVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Variables/#module-SCons.Variables.EnumVariable">SCons.Variables.EnumVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Variables/#module-SCons.Variables.ListVariable">SCons.Variables.ListVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Variables/#module-SCons.Variables.PackageVariable">SCons.Variables.PackageVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Variables/#module-SCons.Variables.PathVariable">SCons.Variables.PathVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Variables/#module-SCons.Variables">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../">SCons</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../">Module code</a> &raquo;</li>
+        
+          <li><a href="../">SCons.Platform</a> &raquo;</li>
+        
+      <li>SCons.Platform.win32</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for SCons.Platform.win32</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;SCons.Platform.win32</span>
+
+<span class="sd">Platform-specific initialization for Win32 systems.</span>
+
+<span class="sd">There normally shouldn&#39;t be any need to import this module directly.  It</span>
+<span class="sd">will usually be imported through the generic SCons.Platform.Platform()</span>
+<span class="sd">selection method.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1">#</span>
+<span class="c1"># __COPYRIGHT__</span>
+<span class="c1">#</span>
+<span class="c1"># Permission is hereby granted, free of charge, to any person obtaining</span>
+<span class="c1"># a copy of this software and associated documentation files (the</span>
+<span class="c1"># &quot;Software&quot;), to deal in the Software without restriction, including</span>
+<span class="c1"># without limitation the rights to use, copy, modify, merge, publish,</span>
+<span class="c1"># distribute, sublicense, and/or sell copies of the Software, and to</span>
+<span class="c1"># permit persons to whom the Software is furnished to do so, subject to</span>
+<span class="c1"># the following conditions:</span>
+<span class="c1">#</span>
+<span class="c1"># The above copyright notice and this permission notice shall be included</span>
+<span class="c1"># in all copies or substantial portions of the Software.</span>
+<span class="c1">#</span>
+<span class="c1"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY</span>
+<span class="c1"># KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND</span>
+<span class="c1"># NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE</span>
+<span class="c1"># LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION</span>
+<span class="c1"># OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</span>
+<span class="c1"># WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</span>
+<span class="c1">#</span>
+
+<span class="n">__revision__</span> <span class="o">=</span> <span class="s2">&quot;__FILE__ __REVISION__ __DATE__ __DEVELOPER__&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+
+<span class="kn">from</span> <span class="nn">SCons.Platform.posix</span> <span class="kn">import</span> <span class="n">exitvalmap</span>
+<span class="kn">from</span> <span class="nn">SCons.Platform</span> <span class="kn">import</span> <span class="n">TempFileMunge</span>
+<span class="kn">from</span> <span class="nn">SCons.Platform.virtualenv</span> <span class="kn">import</span> <span class="n">ImportVirtualenv</span>
+<span class="kn">from</span> <span class="nn">SCons.Platform.virtualenv</span> <span class="kn">import</span> <span class="n">ignore_virtualenv</span><span class="p">,</span> <span class="n">enable_virtualenv</span>
+<span class="kn">import</span> <span class="nn">SCons.Util</span>
+
+<span class="n">CHOCO_DEFAULT_PATH</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="sa">r</span><span class="s1">&#39;C:\ProgramData\chocolatey\bin&#39;</span>
+<span class="p">]</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">msvcrt</span>
+    <span class="kn">import</span> <span class="nn">win32api</span>
+    <span class="kn">import</span> <span class="nn">win32con</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">parallel_msg</span> <span class="o">=</span> \
+        <span class="s2">&quot;you do not seem to have the pywin32 extensions installed;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> \
+        <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">parallel (-j) builds may not work reliably with open Python files.&quot;</span>
+<span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+    <span class="n">parallel_msg</span> <span class="o">=</span> \
+        <span class="s2">&quot;your pywin32 extensions do not support file handle operations;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> \
+        <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">parallel (-j) builds may not work reliably with open Python files.&quot;</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">parallel_msg</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<span class="k">if</span> <span class="kc">False</span><span class="p">:</span>
+    <span class="c1"># Now swap out shutil.filecopy and filecopy2 for win32 api native CopyFile</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">ctypes</span> <span class="kn">import</span> <span class="n">windll</span>
+        <span class="kn">import</span> <span class="nn">shutil</span>
+
+        <span class="n">CopyFile</span> <span class="o">=</span> <span class="n">windll</span><span class="o">.</span><span class="n">kernel32</span><span class="o">.</span><span class="n">CopyFileA</span>
+        <span class="n">SetFileTime</span> <span class="o">=</span> <span class="n">windll</span><span class="o">.</span><span class="n">kernel32</span><span class="o">.</span><span class="n">SetFileTime</span>
+
+        <span class="n">_shutil_copy</span> <span class="o">=</span> <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span>
+        <span class="n">_shutil_copy2</span> <span class="o">=</span> <span class="n">shutil</span><span class="o">.</span><span class="n">copy2</span>
+
+        <span class="n">shutil</span><span class="o">.</span><span class="n">copy2</span> <span class="o">=</span> <span class="n">CopyFile</span>
+
+        <span class="k">def</span> <span class="nf">win_api_copyfile</span><span class="p">(</span><span class="n">src</span><span class="p">,</span><span class="n">dst</span><span class="p">):</span>
+            <span class="n">CopyFile</span><span class="p">(</span><span class="n">src</span><span class="p">,</span><span class="n">dst</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">utime</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span>
+
+        <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span> <span class="o">=</span> <span class="n">win_api_copyfile</span>
+
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="n">parallel_msg</span> <span class="o">=</span> \
+            <span class="s2">&quot;Couldn&#39;t override shutil.copy or shutil.copy2 falling back to shutil defaults&quot;</span>
+
+
+
+
+
+
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">threading</span>
+    <span class="n">spawn_lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+
+    <span class="c1"># This locked version of spawnve works around a Windows</span>
+    <span class="c1"># MSVCRT bug, because its spawnve is not thread-safe.</span>
+    <span class="c1"># Without this, python can randomly crash while using -jN.</span>
+    <span class="c1"># See the python bug at http://bugs.python.org/issue6476</span>
+    <span class="c1"># and SCons issue at</span>
+    <span class="c1"># https://github.com/SCons/scons/issues/2449</span>
+    <span class="k">def</span> <span class="nf">spawnve</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+        <span class="n">spawn_lock</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="n">os</span><span class="o">.</span><span class="n">P_WAIT</span><span class="p">:</span>
+                <span class="n">ret</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">spawnve</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">P_NOWAIT</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ret</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">spawnve</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">spawn_lock</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="n">os</span><span class="o">.</span><span class="n">P_WAIT</span><span class="p">:</span>
+            <span class="n">pid</span><span class="p">,</span> <span class="n">status</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">waitpid</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">status</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span>
+        <span class="k">return</span> <span class="n">ret</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="c1"># Use the unsafe method of spawnve.</span>
+    <span class="c1"># Please, don&#39;t try to optimize this try-except block</span>
+    <span class="c1"># away by assuming that the threading module is always present.</span>
+    <span class="c1"># In the test test/option-j.py we intentionally call SCons with</span>
+    <span class="c1"># a fake threading.py that raises an import exception right away,</span>
+    <span class="c1"># simulating a non-existent package.</span>
+<div class="viewcode-block" id="spawnve"><a class="viewcode-back" href="../../../../SCons.Platform/#SCons.Platform.win32.spawnve">[docs]</a>    <span class="k">def</span> <span class="nf">spawnve</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">spawnve</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span></div>
+
+<span class="c1"># The upshot of all this is that, if you are using Python 1.5.2,</span>
+<span class="c1"># you had better have cmd or command.com in your PATH when you run</span>
+<span class="c1"># scons.</span>
+
+
+<div class="viewcode-block" id="piped_spawn"><a class="viewcode-back" href="../../../../SCons.Platform/#SCons.Platform.win32.piped_spawn">[docs]</a><span class="k">def</span> <span class="nf">piped_spawn</span><span class="p">(</span><span class="n">sh</span><span class="p">,</span> <span class="n">escape</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="p">):</span>
+    <span class="c1"># There is no direct way to do that in python. What we do</span>
+    <span class="c1"># here should work for most cases:</span>
+    <span class="c1">#   In case stdout (stderr) is not redirected to a file,</span>
+    <span class="c1">#   we redirect it into a temporary file tmpFileStdout</span>
+    <span class="c1">#   (tmpFileStderr) and copy the contents of this file</span>
+    <span class="c1">#   to stdout (stderr) given in the argument</span>
+    <span class="c1"># Note that because this will paste shell redirection syntax</span>
+    <span class="c1"># into the cmdline, we have to call a shell to run the command,</span>
+    <span class="c1"># even though that&#39;s a bit of a performance hit.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sh</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;scons: Could not find command interpreter, is it in your PATH?</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">127</span>
+
+    <span class="c1"># one temporary file for stdout and stderr</span>
+    <span class="n">tmpFileStdout</span><span class="p">,</span> <span class="n">tmpFileStdoutName</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkstemp</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">tmpFileStdout</span><span class="p">)</span>  <span class="c1"># don&#39;t need open until the subproc is done</span>
+    <span class="n">tmpFileStderr</span><span class="p">,</span> <span class="n">tmpFileStderrName</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkstemp</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">tmpFileStderr</span><span class="p">)</span>
+
+    <span class="c1"># check if output is redirected</span>
+    <span class="n">stdoutRedirected</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">stderrRedirected</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="c1"># are there more possibilities to redirect stdout ?</span>
+        <span class="k">if</span> <span class="n">arg</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">arg</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;1&gt;&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">stdoutRedirected</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="c1"># are there more possibilities to redirect stderr ?</span>
+        <span class="k">if</span> <span class="n">arg</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;2&gt;&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">stderrRedirected</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="c1"># redirect output of non-redirected streams to our tempfiles</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">stdoutRedirected</span><span class="p">:</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&gt;&quot;</span> <span class="o">+</span> <span class="n">tmpFileStdoutName</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">stderrRedirected</span><span class="p">:</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;2&gt;&quot;</span> <span class="o">+</span> <span class="n">tmpFileStderrName</span><span class="p">)</span>
+
+    <span class="c1"># actually do the spawn</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">sh</span><span class="p">,</span> <span class="s1">&#39;/C&#39;</span><span class="p">,</span> <span class="n">escape</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">))]</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">spawnve</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">P_WAIT</span><span class="p">,</span> <span class="n">sh</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="c1"># catch any error</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">exitvalmap</span><span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">errno</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;scons: unknown OSError exception code </span><span class="si">%d</span><span class="s2"> - </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">errno</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">strerror</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">stderr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;scons: </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">strerror</span><span class="p">))</span>
+
+    <span class="c1"># copy child output from tempfiles to our streams</span>
+    <span class="c1"># and do clean up stuff</span>
+    <span class="k">if</span> <span class="n">stdout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">stdoutRedirected</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">tmpFileStdoutName</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">tmpFileStdout</span><span class="p">:</span>
+                <span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">tmpFileStdout</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tmpFileStdoutName</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">IOError</span><span class="p">,</span> <span class="ne">OSError</span><span class="p">):</span>
+            <span class="k">pass</span>
+
+    <span class="k">if</span> <span class="n">stderr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">stderrRedirected</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">tmpFileStderrName</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">tmpFileStderr</span><span class="p">:</span>
+                <span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">tmpFileStderr</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tmpFileStderrName</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">IOError</span><span class="p">,</span> <span class="ne">OSError</span><span class="p">):</span>
+            <span class="k">pass</span>
+
+    <span class="k">return</span> <span class="n">ret</span></div>
+
+
+<div class="viewcode-block" id="exec_spawn"><a class="viewcode-back" href="../../../../SCons.Platform/#SCons.Platform.win32.exec_spawn">[docs]</a><span class="k">def</span> <span class="nf">exec_spawn</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">spawnve</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">P_WAIT</span><span class="p">,</span> <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">l</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">OSError</span><span class="p">,</span> <span class="ne">EnvironmentError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">exitvalmap</span><span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">errno</span><span class="p">]</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;scons: </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">e</span><span class="o">.</span><span class="n">strerror</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="mi">127</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">:</span>
+                    <span class="n">command</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">command</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">command</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;scons: unknown OSError exception code </span><span class="si">%d</span><span class="s2"> - &#39;</span><span class="si">%s</span><span class="s2">&#39;: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">errno</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">strerror</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="spawn"><a class="viewcode-back" href="../../../../SCons.Platform/#SCons.Platform.win32.spawn">[docs]</a><span class="k">def</span> <span class="nf">spawn</span><span class="p">(</span><span class="n">sh</span><span class="p">,</span> <span class="n">escape</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sh</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;scons: Could not find command interpreter, is it in your PATH?</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">127</span>
+    <span class="k">return</span> <span class="n">exec_spawn</span><span class="p">([</span><span class="n">sh</span><span class="p">,</span> <span class="s1">&#39;/C&#39;</span><span class="p">,</span> <span class="n">escape</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">))],</span> <span class="n">env</span><span class="p">)</span></div>
+
+<span class="c1"># Windows does not allow special characters in file names anyway, so no</span>
+<span class="c1"># need for a complex escape function, we will just quote the arg, except</span>
+<span class="c1"># that &quot;cmd /c&quot; requires that if an argument ends with a backslash it</span>
+<span class="c1"># needs to be escaped so as not to interfere with closing double quote</span>
+<span class="c1"># that we add.</span>
+<div class="viewcode-block" id="escape"><a class="viewcode-back" href="../../../../SCons.Platform/#SCons.Platform.win32.escape">[docs]</a><span class="k">def</span> <span class="nf">escape</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span>
+    <span class="k">return</span> <span class="s1">&#39;&quot;&#39;</span> <span class="o">+</span> <span class="n">x</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span></div>
+
+<span class="c1"># Get the windows system directory name</span>
+<span class="n">_system_root</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="get_system_root"><a class="viewcode-back" href="../../../../SCons.Platform/#SCons.Platform.win32.get_system_root">[docs]</a><span class="k">def</span> <span class="nf">get_system_root</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">_system_root</span>
+    <span class="k">if</span> <span class="n">_system_root</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_system_root</span>
+
+    <span class="c1"># A resonable default if we can&#39;t read the registry</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;SystemRoot&#39;</span><span class="p">,</span> <span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">WINDOWS&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">can_read_reg</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Look for Windows NT system root</span>
+            <span class="n">k</span><span class="o">=</span><span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">RegOpenKeyEx</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">hkey_mod</span><span class="o">.</span><span class="n">HKEY_LOCAL_MACHINE</span><span class="p">,</span>
+                                      <span class="s1">&#39;Software</span><span class="se">\\</span><span class="s1">Microsoft</span><span class="se">\\</span><span class="s1">Windows NT</span><span class="se">\\</span><span class="s1">CurrentVersion&#39;</span><span class="p">)</span>
+            <span class="n">val</span><span class="p">,</span> <span class="n">tok</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">RegQueryValueEx</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="s1">&#39;SystemRoot&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">RegError</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># Okay, try the Windows 9x system root</span>
+                <span class="n">k</span><span class="o">=</span><span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">RegOpenKeyEx</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">hkey_mod</span><span class="o">.</span><span class="n">HKEY_LOCAL_MACHINE</span><span class="p">,</span>
+                                          <span class="s1">&#39;Software</span><span class="se">\\</span><span class="s1">Microsoft</span><span class="se">\\</span><span class="s1">Windows</span><span class="se">\\</span><span class="s1">CurrentVersion&#39;</span><span class="p">)</span>
+                <span class="n">val</span><span class="p">,</span> <span class="n">tok</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">RegQueryValueEx</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="s1">&#39;SystemRoot&#39;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+                <span class="k">raise</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+    <span class="n">_system_root</span> <span class="o">=</span> <span class="n">val</span>
+    <span class="k">return</span> <span class="n">val</span></div>
+
+
+<div class="viewcode-block" id="get_program_files_dir"><a class="viewcode-back" href="../../../../SCons.Platform/#SCons.Platform.win32.get_program_files_dir">[docs]</a><span class="k">def</span> <span class="nf">get_program_files_dir</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the location of the program files directory</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Now see if we can look in the registry...</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">can_read_reg</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Look for Windows Program Files directory</span>
+            <span class="n">k</span><span class="o">=</span><span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">RegOpenKeyEx</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">hkey_mod</span><span class="o">.</span><span class="n">HKEY_LOCAL_MACHINE</span><span class="p">,</span>
+                                      <span class="s1">&#39;Software</span><span class="se">\\</span><span class="s1">Microsoft</span><span class="se">\\</span><span class="s1">Windows</span><span class="se">\\</span><span class="s1">CurrentVersion&#39;</span><span class="p">)</span>
+            <span class="n">val</span><span class="p">,</span> <span class="n">tok</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">RegQueryValueEx</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="s1">&#39;ProgramFilesDir&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">RegError</span><span class="p">:</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="k">pass</span>
+
+    <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="c1"># A reasonable default if we can&#39;t read the registry</span>
+        <span class="c1"># (Actually, it&#39;s pretty reasonable even if we can :-)</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">get_system_root</span><span class="p">()),</span><span class="s2">&quot;Program Files&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">val</span></div>
+
+
+<div class="viewcode-block" id="ArchDefinition"><a class="viewcode-back" href="../../../../SCons.Platform/#SCons.Platform.win32.ArchDefinition">[docs]</a><span class="k">class</span> <span class="nc">ArchDefinition</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Determine which windows CPU were running on.</span>
+<span class="sd">    A class for defining architecture-specific settings and logic.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arch</span><span class="p">,</span> <span class="n">synonyms</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">arch</span> <span class="o">=</span> <span class="n">arch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">synonyms</span> <span class="o">=</span> <span class="n">synonyms</span></div>
+
+<span class="n">SupportedArchitectureList</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">ArchDefinition</span><span class="p">(</span>
+        <span class="s1">&#39;x86&#39;</span><span class="p">,</span>
+        <span class="p">[</span><span class="s1">&#39;i386&#39;</span><span class="p">,</span> <span class="s1">&#39;i486&#39;</span><span class="p">,</span> <span class="s1">&#39;i586&#39;</span><span class="p">,</span> <span class="s1">&#39;i686&#39;</span><span class="p">],</span>
+    <span class="p">),</span>
+
+    <span class="n">ArchDefinition</span><span class="p">(</span>
+        <span class="s1">&#39;x86_64&#39;</span><span class="p">,</span>
+        <span class="p">[</span><span class="s1">&#39;AMD64&#39;</span><span class="p">,</span> <span class="s1">&#39;amd64&#39;</span><span class="p">,</span> <span class="s1">&#39;em64t&#39;</span><span class="p">,</span> <span class="s1">&#39;EM64T&#39;</span><span class="p">,</span> <span class="s1">&#39;x86_64&#39;</span><span class="p">],</span>
+    <span class="p">),</span>
+
+    <span class="n">ArchDefinition</span><span class="p">(</span>
+        <span class="s1">&#39;ia64&#39;</span><span class="p">,</span>
+        <span class="p">[</span><span class="s1">&#39;IA64&#39;</span><span class="p">],</span>
+    <span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">SupportedArchitectureMap</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">SupportedArchitectureList</span><span class="p">:</span>
+    <span class="n">SupportedArchitectureMap</span><span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">arch</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">a</span><span class="o">.</span><span class="n">synonyms</span><span class="p">:</span>
+        <span class="n">SupportedArchitectureMap</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span>
+
+
+<div class="viewcode-block" id="get_architecture"><a class="viewcode-back" href="../../../../SCons.Platform/#SCons.Platform.win32.get_architecture">[docs]</a><span class="k">def</span> <span class="nf">get_architecture</span><span class="p">(</span><span class="n">arch</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the definition for the specified architecture string.</span>
+
+<span class="sd">    If no string is specified, the system default is returned (as defined</span>
+<span class="sd">    by the PROCESSOR_ARCHITEW6432 or PROCESSOR_ARCHITECTURE environment</span>
+<span class="sd">    variables).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">arch</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">arch</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PROCESSOR_ARCHITEW6432&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">arch</span><span class="p">:</span>
+            <span class="n">arch</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PROCESSOR_ARCHITECTURE&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">SupportedArchitectureMap</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">arch</span><span class="p">,</span> <span class="n">ArchDefinition</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">]))</span></div>
+
+
+<div class="viewcode-block" id="generate"><a class="viewcode-back" href="../../../../SCons.Platform/#SCons.Platform.win32.generate">[docs]</a><span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="n">env</span><span class="p">):</span>
+    <span class="c1"># Attempt to find cmd.exe (for WinNT/2k/XP) or</span>
+    <span class="c1"># command.com for Win9x</span>
+    <span class="n">cmd_interp</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="c1"># First see if we can look in the registry...</span>
+    <span class="k">if</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">can_read_reg</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Look for Windows NT system root</span>
+            <span class="n">k</span><span class="o">=</span><span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">RegOpenKeyEx</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">hkey_mod</span><span class="o">.</span><span class="n">HKEY_LOCAL_MACHINE</span><span class="p">,</span>
+                                          <span class="s1">&#39;Software</span><span class="se">\\</span><span class="s1">Microsoft</span><span class="se">\\</span><span class="s1">Windows NT</span><span class="se">\\</span><span class="s1">CurrentVersion&#39;</span><span class="p">)</span>
+            <span class="n">val</span><span class="p">,</span> <span class="n">tok</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">RegQueryValueEx</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="s1">&#39;SystemRoot&#39;</span><span class="p">)</span>
+            <span class="n">cmd_interp</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="s1">&#39;System32</span><span class="se">\\</span><span class="s1">cmd.exe&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">RegError</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># Okay, try the Windows 9x system root</span>
+                <span class="n">k</span><span class="o">=</span><span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">RegOpenKeyEx</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">hkey_mod</span><span class="o">.</span><span class="n">HKEY_LOCAL_MACHINE</span><span class="p">,</span>
+                                              <span class="s1">&#39;Software</span><span class="se">\\</span><span class="s1">Microsoft</span><span class="se">\\</span><span class="s1">Windows</span><span class="se">\\</span><span class="s1">CurrentVersion&#39;</span><span class="p">)</span>
+                <span class="n">val</span><span class="p">,</span> <span class="n">tok</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">RegQueryValueEx</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="s1">&#39;SystemRoot&#39;</span><span class="p">)</span>
+                <span class="n">cmd_interp</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="s1">&#39;command.com&#39;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+                <span class="k">raise</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+    <span class="c1"># For the special case of not having access to the registry, we</span>
+    <span class="c1"># use a temporary path and pathext to attempt to find the command</span>
+    <span class="c1"># interpreter.  If we fail, we try to find the interpreter through</span>
+    <span class="c1"># the env&#39;s PATH.  The problem with that is that it might not</span>
+    <span class="c1"># contain an ENV and a PATH.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">cmd_interp</span><span class="p">:</span>
+        <span class="n">systemroot</span> <span class="o">=</span> <span class="n">get_system_root</span><span class="p">()</span>
+        <span class="n">tmp_path</span> <span class="o">=</span> <span class="n">systemroot</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">pathsep</span> <span class="o">+</span> \
+                   <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">systemroot</span><span class="p">,</span><span class="s1">&#39;System32&#39;</span><span class="p">)</span>
+        <span class="n">tmp_pathext</span> <span class="o">=</span> <span class="s1">&#39;.com;.exe;.bat;.cmd&#39;</span>
+        <span class="k">if</span> <span class="s1">&#39;PATHEXT&#39;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
+            <span class="n">tmp_pathext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;PATHEXT&#39;</span><span class="p">]</span>
+        <span class="n">cmd_interp</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">WhereIs</span><span class="p">(</span><span class="s1">&#39;cmd&#39;</span><span class="p">,</span> <span class="n">tmp_path</span><span class="p">,</span> <span class="n">tmp_pathext</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">cmd_interp</span><span class="p">:</span>
+            <span class="n">cmd_interp</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">WhereIs</span><span class="p">(</span><span class="s1">&#39;command&#39;</span><span class="p">,</span> <span class="n">tmp_path</span><span class="p">,</span> <span class="n">tmp_pathext</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">cmd_interp</span><span class="p">:</span>
+        <span class="n">cmd_interp</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">Detect</span><span class="p">(</span><span class="s1">&#39;cmd&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">cmd_interp</span><span class="p">:</span>
+            <span class="n">cmd_interp</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">Detect</span><span class="p">(</span><span class="s1">&#39;command&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s1">&#39;ENV&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">env</span><span class="p">:</span>
+        <span class="n">env</span><span class="p">[</span><span class="s1">&#39;ENV&#39;</span><span class="p">]</span>        <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># Import things from the external environment to the construction</span>
+    <span class="c1"># environment&#39;s ENV.  This is a potential slippery slope, because we</span>
+    <span class="c1"># *don&#39;t* want to make builds dependent on the user&#39;s environment by</span>
+    <span class="c1"># default.  We&#39;re doing this for SystemRoot, though, because it&#39;s</span>
+    <span class="c1"># needed for anything that uses sockets, and seldom changes, and</span>
+    <span class="c1"># for SystemDrive because it&#39;s related.</span>
+    <span class="c1">#</span>
+    <span class="c1"># Weigh the impact carefully before adding other variables to this list.</span>
+    <span class="n">import_env</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;SystemDrive&#39;</span><span class="p">,</span> <span class="s1">&#39;SystemRoot&#39;</span><span class="p">,</span> <span class="s1">&#39;TEMP&#39;</span><span class="p">,</span> <span class="s1">&#39;TMP&#39;</span> <span class="p">]</span>
+    <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">import_env</span><span class="p">:</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+            <span class="n">env</span><span class="p">[</span><span class="s1">&#39;ENV&#39;</span><span class="p">][</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+
+    <span class="k">if</span> <span class="s1">&#39;COMSPEC&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">env</span><span class="p">[</span><span class="s1">&#39;ENV&#39;</span><span class="p">]:</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;COMSPEC&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+            <span class="n">env</span><span class="p">[</span><span class="s1">&#39;ENV&#39;</span><span class="p">][</span><span class="s1">&#39;COMSPEC&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+
+    <span class="n">env</span><span class="o">.</span><span class="n">AppendENVPath</span><span class="p">(</span><span class="s1">&#39;PATH&#39;</span><span class="p">,</span> <span class="n">get_system_root</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">System32&#39;</span><span class="p">)</span>
+
+    <span class="n">env</span><span class="p">[</span><span class="s1">&#39;ENV&#39;</span><span class="p">][</span><span class="s1">&#39;PATHEXT&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;.COM;.EXE;.BAT;.CMD&#39;</span>
+    <span class="n">env</span><span class="p">[</span><span class="s1">&#39;OBJPREFIX&#39;</span><span class="p">]</span>      <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">env</span><span class="p">[</span><span class="s1">&#39;OBJSUFFIX&#39;</span><span class="p">]</span>      <span class="o">=</span> <span class="s1">&#39;.obj&#39;</span>
+    <span class="n">env</span><span class="p">[</span><span class="s1">&#39;SHOBJPREFIX&#39;</span><span class="p">]</span>    <span class="o">=</span> <span class="s1">&#39;$OBJPREFIX&#39;</span>
+    <span class="n">env</span><span class="p">[</span><span class="s1">&#39;SHOBJSUFFIX&#39;</span><span class="p">]</span>    <span class="o">=</span> <span class="s1">&#39;$OBJSUFFIX&#39;</span>
+    <span class="n">env</span><span class="p">[</span><span class="s1">&#39;PROGPREFIX&#39;</span><span class="p">]</span>     <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">env</span><span class="p">[</span><span class="s1">&#39;PROGSUFFIX&#39;</span><span class="p">]</span>     <span class="o">=</span> <span class="s1">&#39;.exe&#39;</span>
+    <span class="n">env</span><span class="p">[</span><span class="s1">&#39;LIBPREFIX&#39;</span><span class="p">]</span>      <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">env</span><span class="p">[</span><span class="s1">&#39;LIBSUFFIX&#39;</span><span class="p">]</span>      <span class="o">=</span> <span class="s1">&#39;.lib&#39;</span>
+    <span class="n">env</span><span class="p">[</span><span class="s1">&#39;SHLIBPREFIX&#39;</span><span class="p">]</span>    <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">env</span><span class="p">[</span><span class="s1">&#39;SHLIBSUFFIX&#39;</span><span class="p">]</span>    <span class="o">=</span> <span class="s1">&#39;.dll&#39;</span>
+    <span class="n">env</span><span class="p">[</span><span class="s1">&#39;LIBPREFIXES&#39;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">[</span> <span class="s1">&#39;$LIBPREFIX&#39;</span> <span class="p">]</span>
+    <span class="n">env</span><span class="p">[</span><span class="s1">&#39;LIBSUFFIXES&#39;</span><span class="p">]</span>    <span class="o">=</span> <span class="p">[</span> <span class="s1">&#39;$LIBSUFFIX&#39;</span> <span class="p">]</span>
+    <span class="n">env</span><span class="p">[</span><span class="s1">&#39;PSPAWN&#39;</span><span class="p">]</span>         <span class="o">=</span> <span class="n">piped_spawn</span>
+    <span class="n">env</span><span class="p">[</span><span class="s1">&#39;SPAWN&#39;</span><span class="p">]</span>          <span class="o">=</span> <span class="n">spawn</span>
+    <span class="n">env</span><span class="p">[</span><span class="s1">&#39;SHELL&#39;</span><span class="p">]</span>          <span class="o">=</span> <span class="n">cmd_interp</span>
+    <span class="n">env</span><span class="p">[</span><span class="s1">&#39;TEMPFILE&#39;</span><span class="p">]</span>       <span class="o">=</span> <span class="n">TempFileMunge</span>
+    <span class="n">env</span><span class="p">[</span><span class="s1">&#39;TEMPFILEPREFIX&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;@&#39;</span>
+    <span class="n">env</span><span class="p">[</span><span class="s1">&#39;MAXLINELENGTH&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="mi">2048</span>
+    <span class="n">env</span><span class="p">[</span><span class="s1">&#39;ESCAPE&#39;</span><span class="p">]</span>         <span class="o">=</span> <span class="n">escape</span>
+
+    <span class="n">env</span><span class="p">[</span><span class="s1">&#39;HOST_OS&#39;</span><span class="p">]</span>        <span class="o">=</span> <span class="s1">&#39;win32&#39;</span>
+    <span class="n">env</span><span class="p">[</span><span class="s1">&#39;HOST_ARCH&#39;</span><span class="p">]</span>      <span class="o">=</span> <span class="n">get_architecture</span><span class="p">()</span><span class="o">.</span><span class="n">arch</span>
+
+    <span class="k">if</span> <span class="n">enable_virtualenv</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">ignore_virtualenv</span><span class="p">:</span>
+        <span class="n">ImportVirtualenv</span><span class="p">(</span><span class="n">env</span><span class="p">)</span></div>
+
+
+<span class="c1"># Local Variables:</span>
+<span class="c1"># tab-width:4</span>
+<span class="c1"># indent-tabs-mode:nil</span>
+<span class="c1"># End:</span>
+<span class="c1"># vim: set expandtab tabstop=4 shiftwidth=4:</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, SCons Project
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

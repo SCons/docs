@@ -1,0 +1,251 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Controlling Removal of Targets</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 1.0.0"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Executing an action immediately:  the Execute Function"
+HREF="x2962.html"><LINK
+REL="NEXT"
+TITLE="Preventing target removal during clean: the NoClean Function"
+HREF="x3010.html"></HEAD
+><BODY
+CLASS="chapter"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 1.0.0</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x2962.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x3010.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="chapter"
+><H1
+><A
+NAME="chap-file-removal"
+></A
+>Chapter 15. Controlling Removal of Targets</H1
+><P
+>&#13;
+  There are two occasions when <SPAN
+CLASS="application"
+>SCons</SPAN
+> will,
+  by default, remove target files.
+  The first is when <SPAN
+CLASS="application"
+>SCons</SPAN
+> determines that
+  an target file needs to be rebuilt
+  and removes the existing version of the target
+  before executing
+  The second is when <SPAN
+CLASS="application"
+>SCons</SPAN
+> is invoked with the
+  <TT
+CLASS="literal"
+>-c</TT
+> option to "clean"
+  a tree of its built targets.
+
+  These behaviours can be suppressed with the
+  <CODE
+CLASS="function"
+>Precious</CODE
+> and <CODE
+CLASS="function"
+>NoClean</CODE
+> functions, respectively.
+
+  </P
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN2994"
+>15.1. Preventing target removal during build: the <CODE
+CLASS="function"
+>Precious</CODE
+> Function</A
+></H1
+><P
+>&#13;
+    By default, <SPAN
+CLASS="application"
+>SCons</SPAN
+> removes targets before building them.
+    Sometimes, however, this is not what you want.
+    For example, you may want to update a library incrementally,
+    not by having it deleted and then rebuilt from all
+    of the constituent object files.
+    In such cases, you can use the
+    <CODE
+CLASS="function"
+>Precious</CODE
+> method to prevent
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> from removing the target before it is built:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;        env = Environment(RANLIBCOM='')
+        lib = env.Library('foo', ['f1.c', 'f2.c', 'f3.c'])
+        env.Precious(lib)
+    </PRE
+><P
+>&#13;
+    Although the output doesn't look any different,
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> does not, in fact,
+    delete the target library before rebuilding it:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;        % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+        cc -o f1.o -c f1.c
+        cc -o f2.o -c f2.c
+        cc -o f3.o -c f3.c
+        ar rc libfoo.a f1.o f2.o f3.o
+    </PRE
+><P
+>&#13;
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> will, however, still delete files marked as <CODE
+CLASS="function"
+>Precious</CODE
+>
+    when the <TT
+CLASS="literal"
+>-c</TT
+> option is used.
+
+    </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x2962.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x3010.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Executing an action immediately:  the <CODE
+CLASS="function"
+>Execute</CODE
+> Function</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Preventing target removal during clean: the <CODE
+CLASS="function"
+>NoClean</CODE
+> Function</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

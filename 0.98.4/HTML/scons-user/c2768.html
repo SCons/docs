@@ -1,0 +1,222 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Pseudo-Builders:  the AddMethod function</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 0.98.4"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Not Writing a Builder:  the Command Builder"
+HREF="c2732.html"><LINK
+REL="NEXT"
+TITLE="Writing Scanners"
+HREF="c2781.html"></HEAD
+><BODY
+CLASS="chapter"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 0.98.4</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="c2732.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="c2781.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="chapter"
+><H1
+><A
+NAME="chap-add-method"
+></A
+>Chapter 19. Pseudo-Builders:  the AddMethod function</H1
+><P
+>&#13;
+  The env.AddMethod(function, [name]) function is used to add a method
+  to an environment.  It's typically used to add a "pseudo-builder" or
+  wrap up a call to multiple builders.  In the first example, we want
+  to install the program into the standard bin dir, but also copy it
+  into a local install/bin dir that might be used to build a package
+  from.
+
+  </P
+><PRE
+CLASS="programlisting"
+>&#13;     def install_in_bin_dirs(env, source):
+         """Install source in both bin dirs"""
+         i1 = env.Install("$BIN", source)
+         i2 = env.Install("$LOCALBIN", source)
+         return [i1[0], i2][0] # Return a list, like a normal builder
+     env = Environment(BIN='/usr/bin', LOCALBIN='#install/bin')
+     env.AddMethod(install_in_bin_dirs, "InstallInBinDirs")
+     env.InstallInBinDirs(Program('hello.c')) # installs hello in both bin dirs     
+  </PRE
+><P
+>&#13;  This produces the following:
+  </P
+><PRE
+CLASS="screen"
+>&#13;    % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+    cc -o hello.o -c hello.c
+    cc -o hello hello.o
+    Install file: "hello" as "install/bin/hello"
+  </PRE
+><P
+>&#13;
+  It also gives more flexibility in parsing arguments than you can get
+  with a builder.  The next example shows a pseudo-builder with a
+  named argument that modifies the filename, and a separate argument
+  for the resource file (rather than having the builder figure it out
+  by file extension).  Also this example demonstrates using the global
+  AddMethod function to add a method to the global Environment class,
+  so it will be used in all subsequently created environments.
+
+  </P
+><PRE
+CLASS="programlisting"
+>&#13;     import sys
+     def BuildTestProg(env, testfile, resourcefile, testdir="tests"):
+         """Build the test program;
+         prepends "test_" to src and target, and puts target into testdir."""
+         srcfile="test_%s.c"%testfile
+         if sys.platform=='win32':
+             target="%s/test_%s$EXESUFFIX"%(testdir,[testfile, resourcefile])
+         else:
+             target="%s/test_%s$EXESUFFIX"%(testdir,testfile)
+         p = env.Program(target, srcfile)
+         return p
+     AddMethod(Environment, BuildTestProg)
+
+     # Now use it
+     env=Environment()
+     env.BuildTestProg('stuff', resourcefile='res.rc')
+  </PRE
+><P
+>&#13;  This produces the following (on Linux, anyway; Windows would include the
+  resource file):
+  </P
+><PRE
+CLASS="screen"
+>&#13;    % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+    cc -o test_stuff.o -c test_stuff.c
+    cc -o tests/test_stuff test_stuff.o
+  </PRE
+><P
+>&#13;  Using AddMethod is better than just adding an instance method to an
+  Environment because it gets called as a proper method, and AddMethod
+  provides for copying the method to any copies of the Environment
+  instance.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="c2732.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="c2781.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Not Writing a Builder:  the <CODE
+CLASS="function"
+>Command</CODE
+> Builder</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Writing Scanners</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

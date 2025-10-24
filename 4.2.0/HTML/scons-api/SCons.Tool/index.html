@@ -1,0 +1,526 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>SCons.Tool package &mdash; SCons 4.2.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="SCons.Variables package" href="../SCons.Variables/" />
+    <link rel="prev" title="SCons.Script package" href="../SCons.Script/" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../" class="icon icon-home"> SCons
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                4.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../SCons/">SCons package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons">Module contents</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../SCons/#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">SCons.Tool package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SCons.Variables/">SCons.Variables package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SCons.compat/">SCons.compat package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Action">SCons.Action module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Builder">SCons.Builder module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.CacheDir">SCons.CacheDir module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Conftest">SCons.Conftest module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Debug">SCons.Debug module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Defaults">SCons.Defaults module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Environment">SCons.Environment module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Errors">SCons.Errors module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Executor">SCons.Executor module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Job">SCons.Job module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Memoize">SCons.Memoize module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.PathList">SCons.PathList module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.SConf">SCons.SConf module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.SConsign">SCons.SConsign module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Subst">SCons.Subst module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Taskmaster">SCons.Taskmaster module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Util">SCons.Util module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.Warnings">SCons.Warnings module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.cpp">SCons.cpp module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.dblite">SCons.dblite module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons/#module-SCons.exitfuncs">SCons.exitfuncs module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.compat/">SCons.compat package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.compat/#module-SCons.compat">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.Node/">SCons.Node package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Node/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Node/#module-SCons.Node.Alias">SCons.Node.Alias module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Node/#module-SCons.Node.FS">SCons.Node.FS module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Node/#module-SCons.Node.Python">SCons.Node.Python module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Node/#module-SCons.Node">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.Platform/">SCons.Platform package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform.aix">SCons.Platform.aix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform.cygwin">SCons.Platform.cygwin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform.darwin">SCons.Platform.darwin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform.hpux">SCons.Platform.hpux module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform.irix">SCons.Platform.irix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform.mingw">SCons.Platform.mingw module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform.os2">SCons.Platform.os2 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform.posix">SCons.Platform.posix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform.sunos">SCons.Platform.sunos module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform.virtualenv">SCons.Platform.virtualenv module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform.win32">SCons.Platform.win32 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Platform/#module-SCons.Platform">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.Scanner/">SCons.Scanner package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Scanner/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Scanner/#module-SCons.Scanner.C">SCons.Scanner.C module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Scanner/#module-SCons.Scanner.D">SCons.Scanner.D module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Scanner/#module-SCons.Scanner.Dir">SCons.Scanner.Dir module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Scanner/#module-SCons.Scanner.Fortran">SCons.Scanner.Fortran module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Scanner/#module-SCons.Scanner.IDL">SCons.Scanner.IDL module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Scanner/#module-SCons.Scanner.LaTeX">SCons.Scanner.LaTeX module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Scanner/#module-SCons.Scanner.Prog">SCons.Scanner.Prog module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Scanner/#module-SCons.Scanner.RC">SCons.Scanner.RC module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Scanner/#module-SCons.Scanner.SWIG">SCons.Scanner.SWIG module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Scanner/#module-SCons.Scanner">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.Script/">SCons.Script package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Script/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Script/#module-SCons.Script.Interactive">SCons.Script.Interactive module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Script/#module-SCons.Script.Main">SCons.Script.Main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Script/#module-SCons.Script.SConsOptions">SCons.Script.SConsOptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Script/#module-SCons.Script.SConscript">SCons.Script.SConscript module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Script/#module-SCons.Script">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">SCons.Tool package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-SCons.Tool">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SCons.Variables/">SCons.Variables package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Variables/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Variables/#module-SCons.Variables.BoolVariable">SCons.Variables.BoolVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Variables/#module-SCons.Variables.EnumVariable">SCons.Variables.EnumVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Variables/#module-SCons.Variables.ListVariable">SCons.Variables.ListVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Variables/#module-SCons.Variables.PackageVariable">SCons.Variables.PackageVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Variables/#module-SCons.Variables.PathVariable">SCons.Variables.PathVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SCons.Variables/#module-SCons.Variables">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">SCons</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../SCons/">SCons package</a> &raquo;</li>
+        
+      <li>SCons.Tool package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/SCons.Tool.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="scons-tool-package">
+<h1>SCons.Tool package<a class="headerlink" href="#scons-tool-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-SCons.Tool">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-SCons.Tool" title="Permalink to this headline">¶</a></h2>
+<p>SCons.Tool</p>
+<p>SCons tool selection.</p>
+<p>This looks for modules that define a callable object that can modify
+a construction environment as appropriate for a given tool (or tool
+chain).</p>
+<p>Note that because this subsystem just <em>selects</em> a callable that can
+modify a construction environment, it’s possible for people to define
+their own “tool specification” in an arbitrary callable function.  No
+one needs to use or tie in to this subsystem in order to roll their own
+tool specifications.</p>
+<dl class="py function">
+<dt id="SCons.Tool.CreateJarBuilder">
+<code class="sig-prename descclassname">SCons.Tool.</code><code class="sig-name descname">CreateJarBuilder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Tool/#CreateJarBuilder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Tool.CreateJarBuilder" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Jar builder expects a list of class files
+which it can package into a jar file.</p>
+<p>The jar tool provides an interface for passing other types
+of java files such as .java, directories or swig interfaces
+and will build them to class files in which it can package
+into the jar.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="SCons.Tool.CreateJavaClassDirBuilder">
+<code class="sig-prename descclassname">SCons.Tool.</code><code class="sig-name descname">CreateJavaClassDirBuilder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Tool/#CreateJavaClassDirBuilder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Tool.CreateJavaClassDirBuilder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="SCons.Tool.CreateJavaClassFileBuilder">
+<code class="sig-prename descclassname">SCons.Tool.</code><code class="sig-name descname">CreateJavaClassFileBuilder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Tool/#CreateJavaClassFileBuilder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Tool.CreateJavaClassFileBuilder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="SCons.Tool.CreateJavaFileBuilder">
+<code class="sig-prename descclassname">SCons.Tool.</code><code class="sig-name descname">CreateJavaFileBuilder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Tool/#CreateJavaFileBuilder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Tool.CreateJavaFileBuilder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="SCons.Tool.CreateJavaHBuilder">
+<code class="sig-prename descclassname">SCons.Tool.</code><code class="sig-name descname">CreateJavaHBuilder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Tool/#CreateJavaHBuilder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Tool.CreateJavaHBuilder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="SCons.Tool.FindAllTools">
+<code class="sig-prename descclassname">SCons.Tool.</code><code class="sig-name descname">FindAllTools</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tools</span></em>, <em class="sig-param"><span class="n">env</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Tool/#FindAllTools"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Tool.FindAllTools" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="SCons.Tool.FindTool">
+<code class="sig-prename descclassname">SCons.Tool.</code><code class="sig-name descname">FindTool</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tools</span></em>, <em class="sig-param"><span class="n">env</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Tool/#FindTool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Tool.FindTool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="SCons.Tool.Initializers">
+<code class="sig-prename descclassname">SCons.Tool.</code><code class="sig-name descname">Initializers</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Tool/#Initializers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Tool.Initializers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt id="SCons.Tool.Tool">
+<em class="property">class </em><code class="sig-prename descclassname">SCons.Tool.</code><code class="sig-name descname">Tool</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">toolpath</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Tool/#Tool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Tool.Tool" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="SCons.Tool.Tool._load_dotted_module_py2">
+<code class="sig-name descname">_load_dotted_module_py2</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">short_name</span></em>, <em class="sig-param"><span class="n">full_name</span></em>, <em class="sig-param"><span class="n">searchpaths</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Tool/#Tool._load_dotted_module_py2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Tool.Tool._load_dotted_module_py2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Tool.Tool._tool_module">
+<code class="sig-name descname">_tool_module</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Tool/#Tool._tool_module"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Tool.Tool._tool_module" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="SCons.Tool.ToolInitializer">
+<em class="property">class </em><code class="sig-prename descclassname">SCons.Tool.</code><code class="sig-name descname">ToolInitializer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span></em>, <em class="sig-param"><span class="n">tools</span></em>, <em class="sig-param"><span class="n">names</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Tool/#ToolInitializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Tool.ToolInitializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class for delayed initialization of Tools modules.</p>
+<p>Instances of this class associate a list of Tool modules with
+a list of Builder method names that will be added by those Tool
+modules.  As part of instantiating this object for a particular
+construction environment, we also add the appropriate
+ToolInitializerMethod objects for the various Builder methods
+that we want to use to delay Tool searches until necessary.</p>
+<dl class="py method">
+<dt id="SCons.Tool.ToolInitializer.apply_tools">
+<code class="sig-name descname">apply_tools</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Tool/#ToolInitializer.apply_tools"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Tool.ToolInitializer.apply_tools" title="Permalink to this definition">¶</a></dt>
+<dd><p>Searches the list of associated Tool modules for one that
+exists, and applies that to the construction environment.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SCons.Tool.ToolInitializer.remove_methods">
+<code class="sig-name descname">remove_methods</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Tool/#ToolInitializer.remove_methods"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Tool.ToolInitializer.remove_methods" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes the methods that were added by the tool initialization
+so we no longer copy and re-bind them when the construction
+environment gets cloned.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="SCons.Tool.ToolInitializerMethod">
+<em class="property">class </em><code class="sig-prename descclassname">SCons.Tool.</code><code class="sig-name descname">ToolInitializerMethod</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">initializer</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Tool/#ToolInitializerMethod"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Tool.ToolInitializerMethod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This is added to a construction environment in place of a
+method(s) normally called for a Builder (env.Object, env.StaticObject,
+etc.).  When called, it has its associated ToolInitializer
+object search the specified list of tools and apply the first
+one that exists to the construction environment.  It then calls
+whatever builder was (presumably) added to the construction
+environment in place of this particular instance.</p>
+<dl class="py method">
+<dt id="SCons.Tool.ToolInitializerMethod.get_builder">
+<code class="sig-name descname">get_builder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Tool/#ToolInitializerMethod.get_builder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Tool.ToolInitializerMethod.get_builder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the appropriate real Builder for this method name
+after having the associated ToolInitializer object apply
+the appropriate Tool module.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="SCons.Tool.createCFileBuilders">
+<code class="sig-prename descclassname">SCons.Tool.</code><code class="sig-name descname">createCFileBuilders</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Tool/#createCFileBuilders"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Tool.createCFileBuilders" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a utility function that creates the CFile/CXXFile
+Builders in an Environment if they
+are not there already.</p>
+<p>If they are there already, we return the existing ones.</p>
+<p>This is a separate function because soooo many Tools
+use this functionality.</p>
+<p>The return is a 2-tuple of (CFile, CXXFile)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="SCons.Tool.createLoadableModuleBuilder">
+<code class="sig-prename descclassname">SCons.Tool.</code><code class="sig-name descname">createLoadableModuleBuilder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span></em>, <em class="sig-param"><span class="n">loadable_module_suffix</span><span class="o">=</span><span class="default_value">'$_LDMODULESUFFIX'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Tool/#createLoadableModuleBuilder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Tool.createLoadableModuleBuilder" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a utility function that creates the LoadableModule
+Builder in an Environment if it is not there already.</p>
+<p>If it is already there, we return the existing one.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>loadable_module_suffix</strong> – The suffix specified for the loadable module builder</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="SCons.Tool.createObjBuilders">
+<code class="sig-prename descclassname">SCons.Tool.</code><code class="sig-name descname">createObjBuilders</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Tool/#createObjBuilders"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Tool.createObjBuilders" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a utility function that creates the StaticObject
+and SharedObject Builders in an Environment if they
+are not there already.</p>
+<p>If they are there already, we return the existing ones.</p>
+<p>This is a separate function because soooo many Tools
+use this functionality.</p>
+<p>The return is a 2-tuple of (StaticObject, SharedObject)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="SCons.Tool.createProgBuilder">
+<code class="sig-prename descclassname">SCons.Tool.</code><code class="sig-name descname">createProgBuilder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Tool/#createProgBuilder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Tool.createProgBuilder" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a utility function that creates the Program
+Builder in an Environment if it is not there already.</p>
+<p>If it is already there, we return the existing one.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="SCons.Tool.createSharedLibBuilder">
+<code class="sig-prename descclassname">SCons.Tool.</code><code class="sig-name descname">createSharedLibBuilder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span></em>, <em class="sig-param"><span class="n">shlib_suffix</span><span class="o">=</span><span class="default_value">'$_SHLIBSUFFIX'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Tool/#createSharedLibBuilder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Tool.createSharedLibBuilder" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a utility function that creates the SharedLibrary
+Builder in an Environment if it is not there already.</p>
+<p>If it is already there, we return the existing one.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>shlib_suffix</strong> – The suffix specified for the shared library builder</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="SCons.Tool.createStaticLibBuilder">
+<code class="sig-prename descclassname">SCons.Tool.</code><code class="sig-name descname">createStaticLibBuilder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Tool/#createStaticLibBuilder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Tool.createStaticLibBuilder" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a utility function that creates the StaticLibrary
+Builder in an Environment if it is not there already.</p>
+<p>If it is already there, we return the existing one.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="SCons.Tool.find_program_path">
+<code class="sig-prename descclassname">SCons.Tool.</code><code class="sig-name descname">find_program_path</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">env</span></em>, <em class="sig-param"><span class="n">key_program</span></em>, <em class="sig-param"><span class="n">default_paths</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Tool/#find_program_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Tool.find_program_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the location of a tool using various means.</p>
+<p>Mainly for windows where tools aren’t all installed in /usr/bin, etc.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>env</strong> – Current Construction Environment.</p></li>
+<li><p><strong>key_program</strong> – Tool to locate.</p></li>
+<li><p><strong>default_paths</strong> – List of additional paths this tool might be found in.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="SCons.Tool.tool_list">
+<code class="sig-prename descclassname">SCons.Tool.</code><code class="sig-name descname">tool_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">platform</span></em>, <em class="sig-param"><span class="n">env</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/SCons/Tool/#tool_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#SCons.Tool.tool_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../SCons.Variables/" class="btn btn-neutral float-right" title="SCons.Variables package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../SCons.Script/" class="btn btn-neutral float-left" title="SCons.Script package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, SCons Project.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

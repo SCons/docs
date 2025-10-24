@@ -1,0 +1,47 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>1.4. Running Multiple Versions of SCons Side-by-Side</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.8.1"><link rel="up" href="ch01.html" title="Chapter 1. Building and Installing SCons"><link rel="prev" href="ch01s03.html" title="1.3. Using SCons Without Installing"><link rel="next" href="ch02.html" title="Chapter 2. Simple Builds"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">1.4. Running Multiple Versions of <span class="application">SCons</span> Side-by-Side</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch01s03.html">Prev</a> </td><th width="60%" align="center">Chapter 1. Building and Installing <span class="application">SCons</span></th><td width="20%" align="right"> <a accesskey="n" href="ch02.html">Next</a></td></tr></table><hr></div><div class="section" title="1.4. Running Multiple Versions of SCons Side-by-Side"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="sect-install-scons-multi"></a>1.4. Running Multiple Versions of <span class="application">SCons</span> Side-by-Side</h2></div></div></div><p>
+      In some cases you may need several versions of <span class="application">SCons</span>
+      present on a system at the same time - perhaps you have
+      an older project to build that has not yet been "ported"
+      to a newer <span class="application">SCons</span> version, or maybe you want to test a
+      new <span class="application">SCons</span> release side-by-side with a previous one
+      before switching over.
+      The use of an "uninstalled" package as described in the
+      previous section can be of use for this purpose.
+      </p><p>
+      Another approach to multiple versions is to create
+      <span class="application">Python</span> virtualenvs, and install different <span class="application">SCons</span> versions in each.
+      A Python <em class="firstterm">virtual environment</em>
+      is a directory with an isolated set of Python packages,
+      where packages you install/upgrade/remove inside the
+      environment do not affect anything outside it,
+      and those you install/upgrade/remove outside of it
+      do not affect anything inside it.
+      In other words, anything you do with <span class="command"><strong>pip</strong></span>
+      in the environment stays in that environment.
+      The <span class="application">Python</span> standard library provides a module called
+      <code class="systemitem">venv</code> for creating these
+      (<a class="ulink" href="https://docs.python.org/e/library/venv.html" target="_top">https://docs.python.org/e/library/venv.html</a>),
+      although there are also other tools which provide more precise
+      control of the setup.
+      </p><p>
+      Using a virtualenv can be useful even for a single version of
+      <span class="application">SCons</span>, to gain the advantages of having an isolated environment.
+      It also gets around the problem of not having administrative
+      privileges on a particular system to install a distribution
+      package or use <span class="command"><strong>pip</strong></span> to install to a
+      system location, as the virtualenv is completely under your control.
+      </p><p>
+      The following outline shows how this could be set up
+      on a Linux/POSIX system (the syntax will be a bit different
+      on Windows):
+      </p><pre class="screen">
+$ <span class="emphasis"><em>create virtualenv named scons3</em></span>
+$ <span class="emphasis"><em>create virtualenv named scons4</em></span>
+$ <strong class="userinput"><code>source scons3/bin/activate</code></strong>
+$ <strong class="userinput"><code>pip install scons==3.1.2</code></strong>
+$ <strong class="userinput"><code>deactivate</code></strong>
+$ <strong class="userinput"><code>source scons4/bin/activate</code></strong>
+$ <strong class="userinput"><code>pip install scons</code></strong>
+$ <strong class="userinput"><code>deactivate</code></strong>
+$ <span class="emphasis"><em>activate a virtualenv and run 'scons' to use that version</em></span>
+      </pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch01s03.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch01.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch02.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">1.3. Using <span class="application">SCons</span> Without Installing </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 2. Simple Builds</td></tr></table></div></body></html>

@@ -1,0 +1,170 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Chapter 7. Environments</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.6.0"><link rel="up" href="index.html" title="SCons 4.6.0"><link rel="prev" href="ch06s08.html" title="6.8. The AlwaysBuild Function"><link rel="next" href="ch07s02.html" title="7.2. Construction Environments"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 7. Environments</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch06s08.html">Prev</a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="ch07s02.html">Next</a></td></tr></table><hr></div><div class="chapter" title="Chapter 7. Environments"><div class="titlepage"><div><div><h2 class="title"><a name="chap-environments"></a>Chapter 7. Environments</h2></div></div></div><p>
+
+  An <em class="firstterm">environment</em>
+  is a collection of values that
+  can affect how a program executes.
+  <span class="application">SCons</span> distinguishes between three
+  different types of environments
+  that can affect the behavior of <span class="application">SCons</span> itself
+  (subject to the configuration in the <code class="filename">SConscript</code> files),
+  as well as the compilers and other tools it executes:
+
+  </p><div class="variablelist"><dl><dt><span class="term">External Environment</span></dt><dd><p>
+
+    The <em class="firstterm">External Environment</em>
+    is the set of variables in the user's environment
+    at the time the user runs <span class="application">SCons</span>. These variables are not
+    automatically part of an <span class="application">SCons</span> build
+    but are available to be examined if needed.
+    See <a class="xref" href="ch07.html#sect-external-environments" title="7.1. Using Values From the External Environment">Section 7.1, &#8220;Using Values From the External Environment&#8221;</a>, below.
+
+    </p></dd><dt><span class="term">Construction Environment</span></dt><dd><p>
+
+    A <em class="firstterm"><span>Construction Environment</span></em>
+    is a distinct object created within
+    a <code class="filename">SConscript</code> file and
+    which contains values that
+    affect how <span class="application">SCons</span> decides
+    what action to use to build a target,
+    and even to define which targets
+    should be built from which sources.
+    One of the most powerful features of <span class="application">SCons</span>
+    is the ability to create multiple <span>construction environments</span>,
+    including the ability to clone a new, customized
+    <span>construction environment</span> from an existing <span>construction environment</span>.
+    See <a class="xref" href="ch07s02.html" title="7.2. Construction Environments">Section 7.2, &#8220;Construction Environments&#8221;</a>, below.
+
+    </p></dd><dt><span class="term">Execution Environment</span></dt><dd><p>
+
+    An <em class="firstterm">Execution Environment</em>
+    is the values that <span class="application">SCons</span> sets
+    when executing an external
+    command (such as a compiler or linker)
+    to build one or more targets.
+    Note that this is not the same as
+    the external environment
+    (see above).
+    See <a class="xref" href="ch07s03.html" title="7.3. Controlling the Execution Environment for Issued Commands">Section 7.3, &#8220;Controlling the Execution Environment for Issued Commands&#8221;</a>, below.
+
+    </p></dd></dl></div><p>
+
+  Unlike <span class="application">Make</span>,  <span class="application">SCons</span> does not automatically
+  copy or import values between different environments
+  (with the exception of explicit clones of <span>construction environments</span>,
+  which inherit the values from their parent).
+  This is a deliberate design choice
+  to make sure that builds are,
+  by default, repeatable regardless of
+  the values in the user's external environment.
+  This avoids a whole class of problems with builds
+  where a developer's local build works
+  because a custom variable setting
+  causes a different compiler or build option to be used,
+  but the checked-in change breaks the official build
+  because it uses different environment variable settings.
+
+  </p><p>
+
+  Note that the <code class="filename">SConscript</code> writer can
+  easily arrange for variables to be
+  copied or imported between environments,
+  and this is often very useful
+  (or even downright necessary)
+  to make it easy for developers
+  to customize the build in appropriate ways.
+  The point is <span class="emphasis"><em>not</em></span>
+  that copying variables between different environments
+  is evil and must always be avoided.
+  Instead, it should be up to the
+  implementer of the build system
+  to make conscious choices
+  about how and when to import
+  a variable from one environment to another,
+  making informed decisions about
+  striking the right balance
+  between making the build
+  repeatable on the one hand
+  and convenient to use on the other.
+
+  </p><div class="sidebar" title="Sidebar: Python Dictionaries"><div class="titlepage"><div><div><p class="title"><b>Sidebar: Python Dictionaries</b></p></div></div></div><p>
+
+    If you're not familiar with the <span class="application">Python</span> programming language,
+    we need to talk a little bit about the <span class="application">Python</span> dictionary data type.
+    A dictionary (also known by terms such as mapping, associative array
+    and key-value store) associates keys with values, such
+    that asking the dict about a key gives you back the associated value
+    and assigning to a key creates the association - either a new
+    setting if the key was unknown, or replacing the
+    previous association if the key was already in the dictionary.
+    Values can be retrieved using <em class="firstterm">item access</em>
+    (the key name in square brackets (<code class="literal">[]</code>)),
+    and dictionaries also provide a
+    method named <code class="methodname">get</code> which responds
+    with a default value, either <code class="constant">None</code> or a value
+    you supply as the second argument, if the key is not in the dictionary,
+    which avoids failing in that case.  The syntax
+    for initializing a dictionary uses curly braces (<code class="literal">{}</code>).
+    Here are some simple examples (inspired by those in the official
+    Python tutorial) using syntax that indicates
+    interacting with the <span class="application">Python</span> interpreter
+    (<code class="prompt">&gt;&gt;&gt;</code> is the interpreter prompt) -
+    you can try these out:
+
+    </p><pre class="screen">
+<code class="prompt">&gt;&gt;&gt;</code> <strong class="userinput"><code>tel = {'jack': 4098, 'sape': 4139}</code></strong>
+<code class="prompt">&gt;&gt;&gt;</code> <strong class="userinput"><code>tel['guido'] = 4127</code></strong>
+<code class="prompt">&gt;&gt;&gt;</code> <strong class="userinput"><code>tel['jack']</code></strong>
+4098
+<code class="prompt">&gt;&gt;&gt;</code> <strong class="userinput"><code>del tel['sape']</code></strong>
+<code class="prompt">&gt;&gt;&gt;</code> <strong class="userinput"><code>tel['irv'] = 4127</code></strong>
+<code class="prompt">&gt;&gt;&gt;</code> <strong class="userinput"><code>print(tel)</code></strong>
+{'jack': 4098, 'guido': 4127, 'irv': 4127}
+<code class="prompt">&gt;&gt;&gt;</code> <strong class="userinput"><code>'guido' in tel</code></strong>
+True
+<code class="prompt">&gt;&gt;&gt;</code> <strong class="userinput"><code>print(tel['jack'])</code></strong>
+Traceback (most recent call last):
+  File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+KeyError: 'jack'
+<code class="prompt">&gt;&gt;&gt;</code> <strong class="userinput"><code>print(tel.get('jack'))</code></strong>
+None
+    </pre><p>
+
+    <span>Construction environments</span> are written to behave like a <span class="application">Python</span>
+    dictionary, and the <code class="envar">$ENV</code> construction variable in
+    a <span>construction environment</span> <span class="emphasis"><em>is</em></span> a <span class="application">Python</span> dictionary.
+    The <code class="varname">os.environ</code> value that <span class="application">Python</span> uses
+    to make available the external environment is also a
+    dictionary.  We will need these concepts in this chapter
+    and throughout the rest of this guide.
+
+    </p></div><div class="section" title="7.1. Using Values From the External Environment"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="sect-external-environments"></a>7.1. Using Values From the External Environment</h2></div></div></div><p>
+
+  The external environment
+  variable settings that
+  the user has in force
+  when executing <span class="application">SCons</span>
+  are available in the <span class="application">Python</span>
+  <code class="varname">os.environ</code> dictionary.
+  That syntax means the <code class="varname">environ</code>
+  attribute of the <code class="systemitem">os</code> module.
+  In Python, to access the contents of a module you must first
+  <code class="literal">import</code> it - so you would include the
+  <code class="literal">import os</code> statement
+  to any <code class="filename">SConscript</code> file
+  in which you want to use
+  values from the user's external environment.
+
+  </p><pre class="programlisting">
+import os
+
+print("Shell is", os.environ['SHELL'])
+     </pre><p>
+
+  More usefully, you can use the
+  <code class="varname">os.environ</code>
+  dictionary in your <code class="filename">SConscript</code>
+  files to initialize <span>construction environments</span>
+  with values from the user's external environment.
+  Read on to the next section for information on how to do this.
+
+  </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch06s08.html">Prev</a> </td><td width="20%" align="center"> </td><td width="40%" align="right"> <a accesskey="n" href="ch07s02.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">6.8. The <code class="function">AlwaysBuild</code> Function </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 7.2. Construction Environments</td></tr></table></div></body></html>

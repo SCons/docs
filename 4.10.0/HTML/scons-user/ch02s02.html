@@ -1,0 +1,41 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>2.2. Building Object Files</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.10.0"><link rel="up" href="ch02.html" title="Chapter 2. Simple Builds"><link rel="prev" href="ch02.html" title="Chapter 2. Simple Builds"><link rel="next" href="ch02s03.html" title="2.3. Simple Java Builds"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">2.2. Building Object Files</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02.html">Prev</a> </td><th width="60%" align="center">Chapter 2. Simple Builds</th><td width="20%" align="right"> <a accesskey="n" href="ch02s03.html">Next</a></td></tr></table><hr></div><div class="section" title="2.2. Building Object Files"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="sect-building-object"></a>2.2. Building Object Files</h2></div></div></div><p>
+
+   The <a class="link" href="apb.html#b-Program"><code class="function">Program</code></a> builder is only one of
+   many builders (also called a <em class="firstterm"><span>builder method</span></em>)
+   that <span class="application">SCons</span> provides to build different types of files.
+   Another is the <a class="link" href="apb.html#b-Object"><code class="function">Object</code></a> builder method,
+   which tells <span class="application">SCons</span> to build an object file
+   from the specified source file:
+
+   </p><pre class="programlisting">
+Object('hello.c')
+      </pre><p>
+
+   Now when you run the <span class="command"><strong>scons</strong></span> command to build the program,
+   it will build just the <code class="filename">hello.o</code> object file on a POSIX system:
+
+   </p><pre class="screen">% <strong class="userinput"><code>scons</code></strong>
+scons: Reading SConscript files ...
+scons: done reading SConscript files.
+scons: Building targets ...
+cc -o hello.o -c hello.c
+scons: done building targets.
+</pre><p>
+
+   And just the <code class="filename">hello.obj</code> object file
+   on a Windows system (with the <span class="application">Microsoft Visual C++</span> compiler):
+
+   </p><pre class="screen">C:\&gt;<strong class="userinput"><code>scons</code></strong>
+scons: Reading SConscript files ...
+scons: done reading SConscript files.
+scons: Building targets ...
+cl /Fohello.obj /c hello.c /nologo
+scons: done building targets.
+</pre><p>
+
+   (Note that this guide will not continue to provide duplicate side-by-side
+   POSIX and Windows output for all of the examples.
+   Just keep in mind that, unless otherwise specified,
+   any of the examples should work equally well on both types of systems.)
+
+   </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch02.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch02.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch02s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 2. Simple Builds </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 2.3. Simple Java Builds</td></tr></table></div></body></html>

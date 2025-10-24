@@ -1,0 +1,113 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Chapter 9. Controlling Build Output</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 2.3.5"><link rel="up" href="index.html" title="SCons 2.3.5"><link rel="prev" href="ch08s03.html" title="8.3. Finding Installed Library Information: the ParseConfig Function"><link rel="next" href="ch09s02.html" title="9.2. Controlling How SCons Prints Build Commands: the $*COMSTR Variables"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 9. Controlling Build Output</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch08s03.html">Prev</a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="ch09s02.html">Next</a></td></tr></table><hr></div><div class="chapter" title="Chapter 9. Controlling Build Output"><div class="titlepage"><div><div><h2 class="title"><a name="chap-output"></a>Chapter 9. Controlling Build Output</h2></div></div></div><p>
+
+  A key aspect of creating a usable build configuration
+  is providing good output from the build
+  so its users can readily understand
+  what the build is doing
+  and get information about how to control the build.
+  <span class="application">SCons</span> provides several ways of
+  controlling output from the build configuration
+  to help make the build
+  more useful and understandable.
+
+  </p><div class="section" title="9.1. Providing Build Help: the Help Function"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idp1416130564"></a>9.1. Providing Build Help:  the <code class="function">Help</code> Function</h2></div></div></div><p>
+
+    It's often very useful to be able to give
+    users some help that describes the
+    specific targets, build options, etc.,
+    that can be used for your build.
+    <span class="application">SCons</span> provides the <code class="function">Help</code> function
+    to allow you to specify this help text:
+
+    </p><pre class="programlisting">
+Help("""
+Type: 'scons program' to build the production program,
+      'scons debug' to build the debug version.
+""")
+       </pre><p>
+
+    (Note the above use of the Python triple-quote syntax,
+    which comes in very handy for
+    specifying multi-line strings like help text.)
+
+    </p><p>
+
+    When the <code class="filename">SConstruct</code> or <code class="filename">SConscript</code> files
+    contain such a call to the <code class="function">Help</code> function,
+    the specified help text will be displayed in response to
+    the <span class="application">SCons</span> <code class="literal">-h</code> option:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -h</code></strong>
+scons: Reading SConscript files ...
+scons: done reading SConscript files.
+
+Type: 'scons program' to build the production program,
+      'scons debug' to build the debug version.
+
+Use scons -H for help about command-line options.
+</pre><p>
+
+    The <code class="filename">SConscript</code> files may contain
+    multiple calls to the <code class="function">Help</code> function,
+    in which case the specified text(s)
+    will be concatenated when displayed.
+    This allows you to split up the
+    help text across multiple <code class="filename">SConscript</code> files.
+    In this situation, the order in
+    which the <code class="filename">SConscript</code> files are called
+    will determine the order in which the <code class="function">Help</code> functions are called,
+    which will determine the order in which
+    the various bits of text will get concatenated.
+
+    </p><p>
+
+    Another use would be to make the help text conditional
+    on some variable.
+    For example, suppose you only want to display
+    a line about building a Windows-only
+    version of a program when actually
+    run on Windows.
+    The following <code class="filename">SConstruct</code> file:
+
+    </p><pre class="programlisting">
+env = Environment()
+
+Help("\nType: 'scons program' to build the production program.\n")
+
+if env['PLATFORM'] == 'win32':
+    Help("\nType: 'scons windebug' to build the Windows debug version.\n")
+       </pre><p>
+
+    Will display the complete help text on Windows:
+
+    </p><pre class="screen">C:\&gt;<strong class="userinput"><code>scons -h</code></strong>
+scons: Reading SConscript files ...
+scons: done reading SConscript files.
+
+Type: 'scons program' to build the production program.
+
+Type: 'scons windebug' to build the Windows debug version.
+
+Use scons -H for help about command-line options.
+</pre><p>
+
+    But only show the relevant option on a Linux or UNIX system:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -h</code></strong>
+scons: Reading SConscript files ...
+scons: done reading SConscript files.
+
+Type: 'scons program' to build the production program.
+
+Use scons -H for help about command-line options.
+</pre><p>
+
+    If there is no <code class="function">Help</code> text in the <code class="filename">SConstruct</code> or
+    <code class="filename">SConscript</code> files,
+    <span class="application">SCons</span> will revert to displaying its
+    standard list that describes the <span class="application">SCons</span> command-line
+    options.
+    This list is also always displayed whenever
+    the <code class="literal">-H</code> option is used.
+
+    </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch08s03.html">Prev</a> </td><td width="20%" align="center"> </td><td width="40%" align="right"> <a accesskey="n" href="ch09s02.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">8.3. Finding Installed Library Information: the <code class="function">ParseConfig</code> Function </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 9.2. Controlling How <span class="application">SCons</span> Prints Build Commands:  the <code class="envar">$*COMSTR</code> Variables</td></tr></table></div></body></html>

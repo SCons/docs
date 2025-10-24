@@ -1,0 +1,47 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>20.3. Using scanners with Builders</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.6.0"><link rel="up" href="ch20.html" title="Chapter 20. Extending SCons: Writing Your Own Scanners"><link rel="prev" href="ch20s02.html" title="20.2. Adding a search path to a Scanner: FindPathDirs"><link rel="next" href="ch21.html" title="Chapter 21. Multi-Platform Configuration (Autoconf Functionality)"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">20.3. Using scanners with Builders</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch20s02.html">Prev</a> </td><th width="60%" align="center">Chapter 20. Extending <span class="application">SCons</span>: Writing Your Own Scanners</th><td width="20%" align="right"> <a accesskey="n" href="ch21.html">Next</a></td></tr></table><hr></div><div class="section" title="20.3. Using scanners with Builders"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id6062"></a>20.3. Using scanners with Builders</h2></div></div></div><p>
+
+    One approach for introducing a <em class="glossterm">Scanner</em> into the build is in
+    conjunction with a <em class="glossterm">Builder</em>.  There are two relvant optional
+    parameters we can use when creating a Builder:
+    <em class="parameter"><code>source_scanner</code></em> and
+    <em class="parameter"><code>target_scanner</code></em>.
+    <em class="parameter"><code>source_scanner</code></em> is used for scanning
+    source files, and <em class="parameter"><code>target_scanner</code></em>
+    is used for scanning the target once it is generated.
+
+    </p><pre class="programlisting">
+import re
+
+include_re = re.compile(r'^include\s+(\S+)$', re.M)
+
+def kfile_scan(node, env, path, arg):
+    contents = node.get_text_contents()
+    return env.File(include_re.findall(contents))
+
+kscan = Scanner(function=kfile_scan, skeys=['.k'], path_function=FindPathDirs('KPATH')
+
+def build_function(target, source, env):
+    # Code to build "target" from "source"
+    return None
+
+bld = Builder(
+    action=build_function,
+    suffix='.foo',
+    source_scanner=kscan,
+    src_suffix='.input',
+)
+env = Environment(BUILDERS={'Foo': bld})
+env.Foo('file')
+      </pre><p>
+
+    An emitter function can modify the list of sources or targets
+    passed to the action function when the Builder is triggered.
+
+    </p><p>
+
+    A scanner function will not affect the list of sources or targets
+    seen by the Builder during the build action. The scanner function
+    will however affect if the Builder should rebuild (if any of
+    the files sourced by the Scanner have changed for example).
+
+    </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch20s02.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch20.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch21.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">20.2. Adding a search path to a Scanner: <code class="function">FindPathDirs</code> </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 21. Multi-Platform Configuration (<span class="application">Autoconf</span> Functionality)</td></tr></table></div></body></html>

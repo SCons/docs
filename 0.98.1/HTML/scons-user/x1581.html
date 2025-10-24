@@ -1,0 +1,273 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Getting at the List of Build Targets, Regardless of Origin</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 0.98.1"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Controlling a Build From the Command Line"
+HREF="c1454.html"><LINK
+REL="PREVIOUS"
+TITLE="Controlling the Default Targets"
+HREF="x1500.html"><LINK
+REL="NEXT"
+TITLE="Command-Line variable=value Build Options"
+HREF="x1606.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 0.98.1</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x1500.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 9. Controlling a Build From the Command Line</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x1606.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN1581"
+>9.4. Getting at the List of Build Targets, Regardless of Origin</A
+></H1
+><P
+>&#13;
+    We've already been introduced to the
+    <CODE
+CLASS="varname"
+>COMMAND_LINE_TARGETS</CODE
+> variable,
+    which contains a list of targets specified on the command line,
+    and the <CODE
+CLASS="varname"
+>DEFAULT_TARGETS</CODE
+> variable,
+    which contains a list of targets specified
+    via calls to the <CODE
+CLASS="function"
+>Default</CODE
+> method or function.
+    Sometimes, however,
+    you want a list of whatever targets
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> will try to build,
+    regardless of whether the targets came from the
+    command line or a <CODE
+CLASS="function"
+>Default</CODE
+> call.
+    You could code this up by hand, as follows:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;      if COMMAND_LINE_TARGETS:
+          targets = COMMAND_LINE_TARGETS
+      else:
+          targets = DEFAULT_TARGETS
+    </PRE
+><P
+>&#13;
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+>, however, provides a convenient
+    <CODE
+CLASS="varname"
+>BUILD_TARGETS</CODE
+> variable
+    that eliminates the need for this by-hand manipulation.
+    Essentially, the <CODE
+CLASS="varname"
+>BUILD_TARGETS</CODE
+> variable
+    contains a list of the command-line targets,
+    if any were specified,
+    and if no command-line targets were specified,
+    it contains a list of the targets specified
+    via the <CODE
+CLASS="function"
+>Default</CODE
+> method or function.
+
+    </P
+><P
+>&#13;
+    Because <CODE
+CLASS="varname"
+>BUILD_TARGETS</CODE
+> may contain a list of <SPAN
+CLASS="application"
+>SCons</SPAN
+> nodes,
+    you must convert the list elements to strings
+    if you want to print them or look for a specific target name,
+    just like the <CODE
+CLASS="varname"
+>DEFAULT_TARGETS</CODE
+> list:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;      prog1 = Program('prog1.c')
+      Program('prog2.c')
+      Default(prog1)
+      print "BUILD_TARGETS is", map(str, BUILD_TARGETS)
+    </PRE
+><P
+>&#13;
+    Notice how the value of <CODE
+CLASS="varname"
+>BUILD_TARGETS</CODE
+>
+    changes depending on whether a target is
+    specified on the command line:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      BUILD_TARGETS is ['prog1']
+      cc -o prog1.o -c prog1.c
+      cc -o prog1 prog1.o
+      % <KBD
+CLASS="userinput"
+>scons -Q prog2</KBD
+>
+      BUILD_TARGETS is ['prog2']
+      cc -o prog2.o -c prog2.c
+      cc -o prog2 prog2.o
+      % <KBD
+CLASS="userinput"
+>scons -Q -c .</KBD
+>
+      BUILD_TARGETS is ['.']
+      Removed prog1.o
+      Removed prog1
+      Removed prog2.o
+      Removed prog2
+    </PRE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x1500.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x1606.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Controlling the Default Targets</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c1454.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Command-Line <CODE
+CLASS="varname"
+>variable</CODE
+>=<CODE
+CLASS="varname"
+>value</CODE
+> Build Options</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

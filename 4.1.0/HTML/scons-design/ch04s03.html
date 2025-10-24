@@ -1,0 +1,277 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>4.3. Builder Objects</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.1.0"><link rel="up" href="ch04.html" title="Chapter 4. Build Engine API"><link rel="prev" href="ch04s02.html" title="4.2. Construction Environments"><link rel="next" href="ch04s04.html" title="4.4. Dependencies"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">4.3. <code class="classname">Builder</code> Objects</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s02.html">Prev</a> </td><th width="60%" align="center">Chapter 4. Build Engine API</th><td width="20%" align="right"> <a accesskey="n" href="ch04s04.html">Next</a></td></tr></table><hr></div><div class="section" title="4.3. Builder Objects"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="sect-builders"></a>4.3. <code class="classname">Builder</code> Objects</h2></div></div></div><p>
+
+  By default, <span class="application">SCons</span> supplies (and uses) a number of pre-defined
+  <code class="classname">Builder</code> objects:
+
+ </p><div class="informaltable"><table border="1"><colgroup><col><col></colgroup><tbody><tr><td><code class="function">Object</code></td><td>compile or assemble an object file</td></tr><tr><td><code class="function">Library</code></td><td>archive files into a library</td></tr><tr><td><code class="function">SharedLibrary</code></td><td>archive files into a shared library</td></tr><tr><td><code class="function">Program</code></td><td>link objects and/or libraries into an executable</td></tr><tr><td><code class="function">Make</code></td><td>build according to file suffixes; see below</td></tr></tbody></table></div><p>
+
+  A <span>construction environment</span> can be explicitly initialized with associated <code class="classname">Builder</code>
+  objects that will be bound to the <span>construction environment</span> object:
+
+ </p><pre class="programlisting">
+	env = Environment(BUILDERS = ['Object', 'Program'])
+	</pre><p>
+
+  <code class="classname">Builder</code> objects bound to a <span>construction environment</span> can be called directly as
+  methods.  When invoked, a <code class="classname">Builder</code> object returns a (list of) objects
+  that it will build:
+
+ </p><pre class="programlisting">
+	obj = env.Object(target ='hello.o', source = 'hello.c')
+	lib = env.Library(target ='libfoo.a',
+	                  source = ['aaa.c', 'bbb.c'])
+	slib = env.SharedLibrary(target ='libbar.so',
+	                         source = ['xxx.c', 'yyy.c'])
+	prog = env.Program(target ='hello',
+	                   source = ['hello.o', 'libfoo.a', 'libbar.so'])
+	</pre><div class="section" title="4.3.1. Specifying multiple inputs"><div class="titlepage"><div><div><h3 class="title"><a name="idp140350915868368"></a>4.3.1. Specifying multiple inputs</h3></div></div></div><p>
+
+   Multiple input files that go into creating a target file may be passed
+   in as a single string, with the individual file names separated by
+   white space:
+
+  </p><pre class="programlisting">
+	env.Library(target = 'foo.a', source = 'aaa.c bbb.c ccc.c')
+	env.Object(target = 'yyy.o', source = 'yyy.c')
+	env.Program(target = 'bar', source = 'xxx.c yyy.o foo.a')
+	</pre><p>
+
+   Alternatively, multiple input files that go into creating a target
+   file may be passed in as an array.  This allows input files to be
+   specified using their object representation:
+
+  </p><pre class="programlisting">
+	env.Library(target = 'foo.a', source = ['aaa.c', 'bbb.c', 'ccc.c'])
+	yyy_obj = env.Object(target = 'yyy.o', source = 'yyy.c')
+	env.Program(target = 'bar', source = ['xxx.c', yyy_obj, 'foo.a'])
+	</pre><p>
+
+    Individual string elements within an array of input files are
+    <span class="emphasis"><em>not</em></span> further split into white-space separated
+    file names.  This allows file names that contain white space to
+    be specified by putting the value into an array:
+
+	</p><pre class="programlisting">
+	env.Program(target = 'foo', source = ['an input file.c'])
+	</pre><p>
+
+   </p></div><div class="section" title="4.3.2. Specifying multiple targets"><div class="titlepage"><div><div><h3 class="title"><a name="idp140350915872768"></a>4.3.2. Specifying multiple targets</h3></div></div></div><p>
+
+   Conversely, the generated target may be a string listing multiple
+   files separated by white space:
+
+  </p><pre class="programlisting">
+	env.Object(target = 'grammar.o y.tab.h', source = 'grammar.y')
+	</pre><p>
+
+   An array of multiple target files can be used to mix string and object
+   representations, or to accomodate file names that contain white space:
+
+  </p><pre class="programlisting">
+	env.Program(target = ['my program'], source = 'input.c')
+	</pre></div><div class="section" title="4.3.3. File prefixes and suffixes"><div class="titlepage"><div><div><h3 class="title"><a name="idp140350915875344"></a>4.3.3. File prefixes and suffixes</h3></div></div></div><p>
+
+   For portability, if the target file name does not already have an
+   appropriate file prefix or suffix, the <code class="classname">Builder</code> objects will
+   append one appropriate for the file type on the current system:
+
+  </p><pre class="programlisting">
+	# builds 'hello.o' on UNIX, 'hello.obj' on Windows NT:
+	obj = env.Object(target ='hello', source = 'hello.c')
+
+	# builds 'libfoo.a' on UNIX, 'foo.lib' on Windows NT:
+	lib = env.Library(target ='foo', source = ['aaa.c', 'bbb.c'])
+
+	# builds 'libbar.so' on UNIX, 'bar.dll' on Windows NT:
+	slib = env.SharedLibrary(target ='bar', source = ['xxx.c', 'yyy.c'])
+
+	# builds 'hello' on UNIX, 'hello.exe' on Windows NT:
+	prog = env.Program(target ='hello',
+	                   source = ['hello.o', 'libfoo.a', 'libbar.so'])
+	</pre></div><div class="section" title="4.3.4. Builder object exceptions"><div class="titlepage"><div><div><h3 class="title"><a name="idp140350915878016"></a>4.3.4. <code class="classname">Builder</code> object exceptions</h3></div></div></div><p>
+
+   <code class="classname">Builder</code> objects raise the following exceptions on error:
+
+ 
+
+  </p></div><div class="section" title="4.3.5. User-defined Builder objects"><div class="titlepage"><div><div><h3 class="title"><a name="idp140350915880064"></a>4.3.5. User-defined <code class="classname">Builder</code> objects</h3></div></div></div><p>
+
+   Users can define additional <code class="classname">Builder</code> objects for specific external
+   object types unknown to <span class="application">SCons</span>.  A <code class="classname">Builder</code> object may build its
+   target by executing an external command:
+
+  </p><pre class="programlisting">
+	WebPage = Builder(command = 'htmlgen $HTMLGENFLAGS $sources &gt; $target',
+	                  suffix = '.html',
+	                  src_suffix = '.in')
+	</pre><p>
+
+   Alternatively, a <code class="classname">Builder</code> object may also build its target by
+   executing a Python function:
+
+   </p><pre class="programlisting">
+	def update(dest):
+	        # [code to update the object]
+	        return 1
+
+	OtherBuilder1 = Builder(function = update,
+	                        src_suffix = ['.in', '.input'])
+	</pre><p>
+   
+   An optional argument to pass to the function may be specified:
+
+  </p><pre class="programlisting">
+	def update_arg(dest, arg):
+	        # [code to update the object]
+	        return 1
+
+	OtherBuilder2 = Builder(function = update_arg,
+	                        function_arg = 'xyzzy',
+	                        src_suffix = ['.in', '.input'])
+	</pre><p>
+
+   Both an external command and an internal function may be specified,
+   in which case the function will be called to build the object first,
+   followed by the command line.
+
+  </p><p>
+
+   User-defined <code class="classname">Builder</code> objects can be used like the default <code class="classname">Builder</code>
+   objects to initialize <span>construction environments</span>.
+
+  </p><pre class="programlisting">
+	WebPage = Builder(command = 'htmlgen $HTMLGENFLAGS $sources &gt; $target',
+	                  suffix = '.html',
+	                  src_suffix = '.in')
+	env = Environment(BUILDERS = ['WebPage'])
+	env.WebPage(target = 'foo.html', source = 'foo.in')
+	# Builds 'bar.html' on UNIX, 'bar.htm' on Windows NT:
+	env.WebPage(target = 'bar', source = 'bar.in')
+	</pre><p>
+
+   The command-line specification can interpolate variables from the
+   <span>construction environment</span>; see "Variable substitution," above.
+
+  </p><p>
+
+   A <code class="classname">Builder</code> object may optionally be initialized with a list of:
+
+  </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>
+
+       the prefix of the target file (e.g., 'lib' for libraries)
+
+     </p></li><li class="listitem"><p>
+
+       the suffix of the target file (e.g., '.a' for libraries)
+
+     </p></li><li class="listitem"><p>
+
+       the expected suffixes of the input files
+       (e.g., '.o' for object files)
+
+     </p></li></ul></div><p>
+
+    These arguments are used in automatic
+    dependency analysis and to generate output file names that don't
+    have suffixes supplied explicitly.
+
+  </p></div><div class="section" title="4.3.6. Copying Builder Objects"><div class="titlepage"><div><div><h3 class="title"><a name="idp140350915894384"></a>4.3.6. Copying <code class="classname">Builder</code> Objects</h3></div></div></div><p>
+
+   A <code class="function">Copy</code> method exists to return a copy of an existing <code class="classname">Builder</code>
+   object, with any overridden values specified as keyword arguments to
+   the method:
+
+  </p><pre class="programlisting">
+	build = Builder(function = my_build)
+	build_out = build.Copy(suffix = '.out')
+	</pre><p>
+
+   Typically, <code class="classname">Builder</code> objects will be supplied by a tool-master or
+   administrator through a shared <span>construction environment</span>.
+
+  </p></div><div class="section" title="4.3.7. Special-purpose build rules"><div class="titlepage"><div><div><h3 class="title"><a name="idp140350915898512"></a>4.3.7. Special-purpose build rules</h3></div></div></div><p>
+
+   A pre-defined <code class="function">Command</code> builder exists to associate a target file with
+   a specific command or list of commands for building the file:
+
+  </p><pre class="programlisting">
+	env.Command(target = 'foo.out', source = 
+	            command = 'foo.in', "foo.process $sources &gt; $target")
+
+	commands = [    "bar.process -o .tmpfile $sources",
+	                "mv .tmpfile $target" ]
+	env.Command(target = 'bar.out', source = 'bar.in', command = commands)
+	</pre><p>
+   This is useful when it's too cumbersome to create a <code class="classname">Builder</code>
+   object just to build a single file in a special way.
+
+  </p></div><div class="section" title="4.3.8. The Make Builder"><div class="titlepage"><div><div><h3 class="title"><a name="idp140350915902096"></a>4.3.8. The <code class="function">Make</code> <code class="classname">Builder</code></h3></div></div></div><p>
+
+   A pre-defined <code class="classname">Builder</code> object named <code class="function">Make</code> exists to make
+   simple builds as easy as possible for users, at the expense of
+   sacrificing some build portability.
+
+  </p><p>
+
+   The following minimal example builds the 'hello' program from the
+   'hello.c' source file:
+
+  </p><pre class="programlisting">
+	Environment().Make('hello', 'hello.c')
+	</pre><p>
+
+   Users of the <code class="function">Make</code> <code class="classname">Builder</code> object are not required to
+   understand intermediate steps involved in generating a file--for
+   example, the distinction between compiling source code into an object
+   file, and then linking object files into an executable.  The details
+   of intermediate steps are handled by the invoked method.  Users that
+   need to, however, can specify intermediate steps explicitly:
+
+  </p><pre class="programlisting">
+	env = Environment()
+	env.Make(target = 'hello.o', source = 'hello.c')
+	env.Make(target = 'hello', source = 'hello.o')
+	</pre><p>
+
+   The <code class="function">Make</code> method understands the file suffixes specified and
+   "does the right thing" to generate the target object and program
+   files, respectively.  It does this by examining the specified output
+   suffixes for the <code class="classname">Builder</code> objects bound to the environment.
+
+  </p><p>
+
+   Because file name suffixes in the target and source file names
+   must be specified, the <code class="function">Make</code> method can't be used
+   portably across operating systems.  In other words, for the
+   example above, the <code class="function">Make</code> builder will not generate
+   <code class="filename">hello.exe</code> on Windows NT.
+
+  </p></div><div class="section" title="4.3.9. Builder maps"><div class="titlepage"><div><div><h3 class="title"><a name="idp140350920121664"></a>4.3.9. <code class="classname">Builder</code> maps</h3></div></div></div><p>
+
+   The <code class="function">env.Make</code> method "does the right thing" to
+   build different file types because it uses a dictionary from the
+   <span>construction environment</span> that maps file suffixes to the appropriate <code class="classname">Builder</code> object.
+   This <code class="varname">BUILDERMAP</code> can be initialized at instantiation:
+
+  </p><pre class="programlisting">
+	env = Environment(BUILDERMAP = {
+	                        '.o' : Object,
+	                        '.a' : Library,
+	                        '.html' : WebPage,
+	                        '' : Program,
+	                })
+	</pre><p>
+
+   With the <code class="varname">BUILDERMAP</code> properly initialized, the
+   <code class="function">env.Make</code> method can be used to build additional
+   file types:
+
+  </p><pre class="programlisting">
+	env.Make(target = 'index.html', source = 'index.input')
+	</pre><p>
+
+   <code class="classname">Builder</code> objects referenced in the <code class="varname">BUILDERMAP</code> do not need to be
+   listed separately in the <code class="literal">BUILDERS</code> variable.  The <span>construction environment</span> will
+   bind the union of the <code class="classname">Builder</code> objects listed in both variables.
+
+  </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch04s02.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch04.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch04s04.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">4.2. <span>Construction Environments</span> </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 4.4. Dependencies</td></tr></table></div></body></html>

@@ -1,0 +1,59 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>3.4. Specifying Single Files Vs. Lists of Files</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 3.0.5"><link rel="up" href="ch03.html" title="Chapter 3. Less Simple Things to Do With Builds"><link rel="prev" href="ch03s03.html" title="3.3. Making a list of files with Glob"><link rel="next" href="ch03s05.html" title="3.5. Making Lists of Files Easier to Read"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">3.4. Specifying Single Files Vs. Lists of Files</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch03s03.html">Prev</a> </td><th width="60%" align="center">Chapter 3. Less Simple Things to Do With Builds</th><td width="20%" align="right"> <a accesskey="n" href="ch03s05.html">Next</a></td></tr></table><hr></div><div class="section" title="3.4. Specifying Single Files Vs. Lists of Files"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idm493"></a>3.4. Specifying Single Files Vs. Lists of Files</h2></div></div></div><p>
+
+    We've now shown you two ways to specify
+    the source for a program,
+    one with a list of files:
+
+    </p><pre class="programlisting">
+Program('hello', ['file1.c', 'file2.c'])
+    </pre><p>
+
+    And one with a single file:
+
+    </p><pre class="programlisting">
+Program('hello', 'hello.c')
+    </pre><p>
+
+    You could actually put a single file name in a list, too,
+    which you might prefer just for the sake of consistency:
+
+    </p><pre class="programlisting">
+Program('hello', ['hello.c'])
+    </pre><p>
+
+    <span class="application">SCons</span> functions will accept a single file name in either form.
+    In fact, internally, <span class="application">SCons</span> treats all input as lists of files,
+    but allows you to omit the square brackets
+    to cut down a little on the typing
+    when there's only a single file name.
+
+    </p><div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Important</h3><p>
+
+    Although <span class="application">SCons</span> functions
+    are forgiving about whether or not you
+    use a string vs. a list for a single file name,
+    Python itself is more strict about
+    treating lists and strings differently.
+    So where <span class="application">SCons</span> allows either
+    a string or list:
+
+    </p><pre class="programlisting">
+# The following two calls both work correctly:
+Program('program1', 'program1.c')
+Program('program2', ['program2.c'])
+    </pre><p>
+
+    Trying to do "Python things" that mix strings and
+    lists will cause errors or lead to incorrect results:
+
+    </p><pre class="programlisting">
+common_sources = ['file1.c', 'file2.c']
+
+# THE FOLLOWING IS INCORRECT AND GENERATES A PYTHON ERROR
+# BECAUSE IT TRIES TO ADD A STRING TO A LIST:
+Program('program1', common_sources + 'program1.c')
+
+# The following works correctly, because it's adding two
+# lists together to make another list.
+Program('program2', common_sources + ['program2.c'])
+    </pre></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch03s03.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch03.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch03s05.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">3.3. Making a list of files with <code class="function">Glob</code> </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 3.5. Making Lists of Files Easier to Read</td></tr></table></div></body></html>

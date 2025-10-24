@@ -1,0 +1,55 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>22.6. Guaranteeing local copies of files</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 2.4.0"><link rel="up" href="ch22.html" title="Chapter 22. Building From Code Repositories"><link rel="prev" href="ch22s05.html" title="22.5. Finding derived files in repositories"><link rel="next" href="ch23.html" title="Chapter 23. Multi-Platform Configuration (Autoconf Functionality)"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">22.6. Guaranteeing local copies of files</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch22s05.html">Prev</a> </td><th width="60%" align="center">Chapter 22. Building From Code Repositories</th><td width="20%" align="right"> <a accesskey="n" href="ch23.html">Next</a></td></tr></table><hr></div><div class="section" title="22.6. Guaranteeing local copies of files"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idm139970739305840"></a>22.6. Guaranteeing local copies of files</h2></div></div></div><p>
+
+    If the repository tree contains the complete results of a build,
+    and we try to build from the repository
+    without any files in our local tree,
+    something moderately surprising happens:
+
+    </p><pre class="screen">
+% <strong class="userinput"><code>mkdir $HOME/build2</code></strong>
+% <strong class="userinput"><code>cd $HOME/build2</code></strong>
+% <strong class="userinput"><code>scons -Q -Y /usr/all/repository hello</code></strong>
+scons: `hello' is up-to-date.
+    </pre><p>
+
+    Why does <span class="application">SCons</span> say that the <code class="filename">hello</code> program
+    is up-to-date when there is no <code class="filename">hello</code> program
+    in the local build directory?
+    Because the repository (not the local directory)
+    contains the up-to-date <code class="filename">hello</code> program,
+    and <span class="application">SCons</span> correctly determines that nothing
+    needs to be done to rebuild that
+    up-to-date copy of the file.
+
+    </p><p>
+
+    There are, however, many times when you want to ensure that a
+    local copy of a file always exists.
+    A packaging or testing script, for example,
+    may assume that certain generated files exist locally.
+    To tell <span class="application">SCons</span> to make a copy of any up-to-date repository
+    file in the local build directory,
+    use the <code class="function">Local</code> function:
+
+    </p><pre class="programlisting">
+env = Environment()
+hello = env.Program('hello.c')
+Local(hello)
+      </pre><p>
+
+    If we then run the same command,
+    <span class="application">SCons</span> will make a local copy of the program
+    from the repository copy,
+    and tell you that it is doing so:
+
+    </p><pre class="screen">
+% <strong class="userinput"><code>scons -Y /usr/all/repository hello</code></strong>
+Local copy of hello from /usr/all/repository/hello
+scons: `hello' is up-to-date.
+    </pre><p>
+
+    (Notice that, because the act of making the local copy
+    is not considered a "build" of the <code class="filename">hello</code> file,
+    <span class="application">SCons</span> still reports that it is up-to-date.)
+
+    </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch22s05.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch22.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch23.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">22.5. Finding derived files in repositories </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 23. Multi-Platform Configuration (<span class="application">Autoconf</span> Functionality)</td></tr></table></div></body></html>

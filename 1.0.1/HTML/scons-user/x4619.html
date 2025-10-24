@@ -1,0 +1,690 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>What Dependencies Does SCons Know About?  the --tree Option</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 1.0.1"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Troubleshooting"
+HREF="c4536.html"><LINK
+REL="PREVIOUS"
+TITLE="What's in That Construction Environment?  the Dump Method"
+HREF="x4593.html"><LINK
+REL="NEXT"
+TITLE="How is SCons Constructing the Command Lines It Executes?  the --debug=presub Option"
+HREF="x4689.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 1.0.1</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x4593.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 29. Troubleshooting</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x4689.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN4619"
+>29.3. What Dependencies Does <SPAN
+CLASS="application"
+>SCons</SPAN
+> Know About?  the <TT
+CLASS="literal"
+>--tree</TT
+> Option</A
+></H1
+><P
+>&#13;
+    Sometimes the best way to try to figure out what
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> is doing is simply to take a look at the
+    dependency graph that it constructs
+    based on your <TT
+CLASS="filename"
+>SConscript</TT
+> files.
+    The <TT
+CLASS="literal"
+>--tree</TT
+> option
+    will display all or part of the
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> dependency graph in an
+    "ASCII art" graphical format
+    that shows the dependency hierarchy.
+
+    </P
+><P
+>&#13;
+    For example, given the following input <TT
+CLASS="filename"
+>SConstruct</TT
+> file:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;         env = Environment(CPPPATH = ['.'])
+         env.Program('prog', ['f1.c', 'f2.c', 'f3.c'])
+    </PRE
+><P
+>&#13;
+    Running <SPAN
+CLASS="application"
+>SCons</SPAN
+> with the <TT
+CLASS="literal"
+>--tree=all</TT
+>
+    option yields:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q --tree=all</KBD
+>
+      cc -o f1.o -c -I. f1.c
+      cc -o f2.o -c -I. f2.c
+      cc -o f3.o -c -I. f3.c
+      cc -o prog f1.o f2.o f3.o
+      +-.
+        +-SConstruct
+        +-f1.c
+        +-f1.o
+        | +-f1.c
+        | +-inc.h
+        +-f2.c
+        +-f2.o
+        | +-f2.c
+        | +-inc.h
+        +-f3.c
+        +-f3.o
+        | +-f3.c
+        | +-inc.h
+        +-inc.h
+        +-prog
+          +-f1.o
+          | +-f1.c
+          | +-inc.h
+          +-f2.o
+          | +-f2.c
+          | +-inc.h
+          +-f3.o
+            +-f3.c
+            +-inc.h
+    </PRE
+><P
+>&#13;
+    The tree will also be printed when the
+    <TT
+CLASS="literal"
+>-n</TT
+> (no execute) option is used,
+    which allows you to examine the dependency graph
+    for a configuration without actually
+    rebuilding anything in the tree.
+
+    </P
+><P
+>&#13;
+    The <TT
+CLASS="literal"
+>--tree</TT
+> option only prints
+    the dependency graph for the specified targets
+    (or the default target(s) if none are specified on the command line).
+    So if you specify a target like <TT
+CLASS="filename"
+>f2.o</TT
+>
+    on the command line,
+    the <TT
+CLASS="literal"
+>--tree</TT
+> option will only
+    print the dependency graph for that file:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q --tree=all f2.o</KBD
+>
+      cc -o f2.o -c -I. f2.c
+      +-f2.o
+        +-f2.c
+        +-inc.h
+    </PRE
+><P
+>&#13;
+    This is, of course, useful for
+    restricting the output from a very large
+    build configuration to just a
+    portion in which you're interested.
+    Multiple targets are fine,
+    in which case a tree will be printed
+    for each specified target:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q --tree=all f1.o f3.o</KBD
+>
+      cc -o f1.o -c -I. f1.c
+      +-f1.o
+        +-f1.c
+        +-inc.h
+      cc -o f3.o -c -I. f3.c
+      +-f3.o
+        +-f3.c
+        +-inc.h
+    </PRE
+><P
+>&#13;
+    The <TT
+CLASS="literal"
+>status</TT
+> argument may be used
+    to tell <SPAN
+CLASS="application"
+>SCons</SPAN
+> to print status information about
+    each file in the dependency graph:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q --tree=status</KBD
+>
+      cc -o f1.o -c -I. f1.c
+      cc -o f2.o -c -I. f2.c
+      cc -o f3.o -c -I. f3.c
+      cc -o prog f1.o f2.o f3.o
+       E         = exists
+        R        = exists in repository only
+         b       = implicit builder
+         B       = explicit builder
+          S      = side effect
+           P     = precious
+            A    = always build
+             C   = current
+              N  = no clean
+               H = no cache
+      
+      [E b      ]+-.
+      [E     C  ]  +-SConstruct
+      [E     C  ]  +-f1.c
+      [E B   C  ]  +-f1.o
+      [E     C  ]  | +-f1.c
+      [E     C  ]  | +-inc.h
+      [E     C  ]  +-f2.c
+      [E B   C  ]  +-f2.o
+      [E     C  ]  | +-f2.c
+      [E     C  ]  | +-inc.h
+      [E     C  ]  +-f3.c
+      [E B   C  ]  +-f3.o
+      [E     C  ]  | +-f3.c
+      [E     C  ]  | +-inc.h
+      [E     C  ]  +-inc.h
+      [E B   C  ]  +-prog
+      [E B   C  ]    +-f1.o
+      [E     C  ]    | +-f1.c
+      [E     C  ]    | +-inc.h
+      [E B   C  ]    +-f2.o
+      [E     C  ]    | +-f2.c
+      [E     C  ]    | +-inc.h
+      [E B   C  ]    +-f3.o
+      [E     C  ]      +-f3.c
+      [E     C  ]      +-inc.h
+    </PRE
+><P
+>&#13;
+    Note that <TT
+CLASS="literal"
+>--tree=all,status</TT
+> is equivalent;
+    the <TT
+CLASS="literal"
+>all</TT
+>
+    is assumed if only <TT
+CLASS="literal"
+>status</TT
+> is present.
+    As an alternative to <TT
+CLASS="literal"
+>all</TT
+>,
+    you can specify <TT
+CLASS="literal"
+>--tree=derived</TT
+>
+    to have <SPAN
+CLASS="application"
+>SCons</SPAN
+> only print derived targets
+    in the tree output,
+    skipping source files
+    (like <TT
+CLASS="filename"
+>.c</TT
+> and <TT
+CLASS="filename"
+>.h</TT
+> files):
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q --tree=derived</KBD
+>
+      cc -o f1.o -c -I. f1.c
+      cc -o f2.o -c -I. f2.c
+      cc -o f3.o -c -I. f3.c
+      cc -o prog f1.o f2.o f3.o
+      +-.
+        +-f1.o
+        +-f2.o
+        +-f3.o
+        +-prog
+          +-f1.o
+          +-f2.o
+          +-f3.o
+    </PRE
+><P
+>&#13;
+    You can use the <TT
+CLASS="literal"
+>status</TT
+>
+    modifier with <TT
+CLASS="literal"
+>derived</TT
+> as well:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q --tree=derived,status</KBD
+>
+      cc -o f1.o -c -I. f1.c
+      cc -o f2.o -c -I. f2.c
+      cc -o f3.o -c -I. f3.c
+      cc -o prog f1.o f2.o f3.o
+       E         = exists
+        R        = exists in repository only
+         b       = implicit builder
+         B       = explicit builder
+          S      = side effect
+           P     = precious
+            A    = always build
+             C   = current
+              N  = no clean
+               H = no cache
+      
+      [E b      ]+-.
+      [E B   C  ]  +-f1.o
+      [E B   C  ]  +-f2.o
+      [E B   C  ]  +-f3.o
+      [E B   C  ]  +-prog
+      [E B   C  ]    +-f1.o
+      [E B   C  ]    +-f2.o
+      [E B   C  ]    +-f3.o
+    </PRE
+><P
+>&#13;
+    Note that the order of the <TT
+CLASS="literal"
+>--tree=</TT
+>
+    arguments doesn't matter;
+    <TT
+CLASS="literal"
+>--tree=status,derived</TT
+> is
+    completely equivalent.
+
+    </P
+><P
+>&#13;
+    The default behavior of the <TT
+CLASS="literal"
+>--tree</TT
+> option
+    is to repeat all of the dependencies each time the library dependency
+    (or any other dependency file) is encountered in the tree.
+    If certain target files share other target files,
+    such as two programs that use the same library:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;         env = Environment(CPPPATH = ['.'],
+                           LIBS = ['foo'],
+                           LIBPATH = ['.'])
+         env.Library('foo', ['f1.c', 'f2.c', 'f3.c'])
+         env.Program('prog1.c')
+         env.Program('prog2.c')
+    </PRE
+><P
+>&#13;
+    Then there can be a <SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>lot</I
+></SPAN
+> of repetition in the
+    <TT
+CLASS="literal"
+>--tree=</TT
+> output:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q --tree=all</KBD
+>
+      cc -o f1.o -c -I. f1.c
+      cc -o f2.o -c -I. f2.c
+      cc -o f3.o -c -I. f3.c
+      ar rc libfoo.a f1.o f2.o f3.o
+      ranlib libfoo.a
+      cc -o prog1.o -c -I. prog1.c
+      cc -o prog1 prog1.o -L. -lfoo
+      cc -o prog2.o -c -I. prog2.c
+      cc -o prog2 prog2.o -L. -lfoo
+      +-.
+        +-SConstruct
+        +-f1.c
+        +-f1.o
+        | +-f1.c
+        | +-inc.h
+        +-f2.c
+        +-f2.o
+        | +-f2.c
+        | +-inc.h
+        +-f3.c
+        +-f3.o
+        | +-f3.c
+        | +-inc.h
+        +-inc.h
+        +-libfoo.a
+        | +-f1.o
+        | | +-f1.c
+        | | +-inc.h
+        | +-f2.o
+        | | +-f2.c
+        | | +-inc.h
+        | +-f3.o
+        |   +-f3.c
+        |   +-inc.h
+        +-prog1
+        | +-prog1.o
+        | | +-prog1.c
+        | | +-inc.h
+        | +-libfoo.a
+        |   +-f1.o
+        |   | +-f1.c
+        |   | +-inc.h
+        |   +-f2.o
+        |   | +-f2.c
+        |   | +-inc.h
+        |   +-f3.o
+        |     +-f3.c
+        |     +-inc.h
+        +-prog1.c
+        +-prog1.o
+        | +-prog1.c
+        | +-inc.h
+        +-prog2
+        | +-prog2.o
+        | | +-prog2.c
+        | | +-inc.h
+        | +-libfoo.a
+        |   +-f1.o
+        |   | +-f1.c
+        |   | +-inc.h
+        |   +-f2.o
+        |   | +-f2.c
+        |   | +-inc.h
+        |   +-f3.o
+        |     +-f3.c
+        |     +-inc.h
+        +-prog2.c
+        +-prog2.o
+          +-prog2.c
+          +-inc.h
+    </PRE
+><P
+>&#13;
+    In a large configuration with many internal libraries
+    and include files,
+    this can very quickly lead to huge output trees.
+    To help make this more manageable,
+    a <TT
+CLASS="literal"
+>prune</TT
+> modifier may
+    be added to the option list,
+    in which case <SPAN
+CLASS="application"
+>SCons</SPAN
+>
+    will print the name of a target that has
+    already been visited during the tree-printing
+    in <TT
+CLASS="literal"
+>[square brackets]</TT
+>
+    as an indication that the dependencies
+    of the target file may be found
+    by looking farther up the tree:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q --tree=prune</KBD
+>
+      cc -o f1.o -c -I. f1.c
+      cc -o f2.o -c -I. f2.c
+      cc -o f3.o -c -I. f3.c
+      ar rc libfoo.a f1.o f2.o f3.o
+      ranlib libfoo.a
+      cc -o prog1.o -c -I. prog1.c
+      cc -o prog1 prog1.o -L. -lfoo
+      cc -o prog2.o -c -I. prog2.c
+      cc -o prog2 prog2.o -L. -lfoo
+      +-.
+        +-SConstruct
+        +-f1.c
+        +-f1.o
+        | +-f1.c
+        | +-inc.h
+        +-f2.c
+        +-f2.o
+        | +-f2.c
+        | +-inc.h
+        +-f3.c
+        +-f3.o
+        | +-f3.c
+        | +-inc.h
+        +-inc.h
+        +-libfoo.a
+        | +-[f1.o]
+        | +-[f2.o]
+        | +-[f3.o]
+        +-prog1
+        | +-prog1.o
+        | | +-prog1.c
+        | | +-inc.h
+        | +-[libfoo.a]
+        +-prog1.c
+        +-[prog1.o]
+        +-prog2
+        | +-prog2.o
+        | | +-prog2.c
+        | | +-inc.h
+        | +-[libfoo.a]
+        +-prog2.c
+        +-[prog2.o]
+    </PRE
+><P
+>&#13;
+    Like the <TT
+CLASS="literal"
+>status</TT
+> keyword,
+    the <TT
+CLASS="literal"
+>prune</TT
+> argument by itself
+    is equivalent to <TT
+CLASS="literal"
+>--tree=all,prune</TT
+>.
+
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x4593.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x4689.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>What's in That Construction Environment?  the <CODE
+CLASS="function"
+>Dump</CODE
+> Method</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c4536.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>How is <SPAN
+CLASS="application"
+>SCons</SPAN
+> Constructing the Command Lines It Executes?  the <TT
+CLASS="literal"
+>--debug=presub</TT
+> Option</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

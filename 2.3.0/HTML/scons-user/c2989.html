@@ -1,0 +1,355 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Platform-Independent File System Manipulation</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 2.3.0"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Installing Multiple Files Under Different Names"
+HREF="x2980.html"><LINK
+REL="NEXT"
+TITLE="Deleting Files or Directories:  The Delete Factory"
+HREF="x3030.html"></HEAD
+><BODY
+CLASS="chapter"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 2.3.0</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x2980.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x3030.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="chapter"
+><H1
+><A
+NAME="chap-factories"
+></A
+>Chapter 12. Platform-Independent File System Manipulation</H1
+><P
+>&#13;
+  <SPAN
+CLASS="application"
+>SCons</SPAN
+> provides a number of platform-independent functions,
+  called <TT
+CLASS="literal"
+>factories</TT
+>,
+  that perform common file system manipulations
+  like copying, moving or deleting files and directories,
+  or making directories.
+  These functions are <TT
+CLASS="literal"
+>factories</TT
+>
+  because they don't perform the action
+  at the time they're called,
+  they each return an <CODE
+CLASS="classname"
+>Action</CODE
+> object
+  that can be executed at the appropriate time.
+
+  </P
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN2996"
+>12.1. Copying Files or Directories:  The <CODE
+CLASS="function"
+>Copy</CODE
+> Factory</A
+></H1
+><P
+>&#13;
+    Suppose you want to arrange to make a copy of a file,
+    and don't have a suitable pre-existing builder.
+    <A
+NAME="AEN3000"
+HREF="#FTN.AEN3000"
+><SPAN
+CLASS="footnote"
+>[1]</SPAN
+></A
+>
+    One way would be to use the <CODE
+CLASS="function"
+>Copy</CODE
+> action factory
+    in conjunction with the <CODE
+CLASS="function"
+>Command</CODE
+> builder:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;        Command("file.out", "file.in", Copy("$TARGET", "$SOURCE"))
+    </PRE
+><P
+>&#13;
+    Notice that the action returned by the <CODE
+CLASS="function"
+>Copy</CODE
+> factory
+    will expand the <A
+HREF="a5025.html#cv-TARGET"
+><CODE
+CLASS="envar"
+>$TARGET</CODE
+></A
+> and <A
+HREF="a5025.html#cv-SOURCE"
+><CODE
+CLASS="envar"
+>$SOURCE</CODE
+></A
+> strings
+    at the time <TT
+CLASS="filename"
+>file.out</TT
+> is built,
+    and that the order of the arguments
+    is the same as that of a builder itself--that is,
+    target first, followed by source:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;       % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+       Copy("file.out", "file.in")
+    </PRE
+><P
+>&#13;
+    You can, of course, name a file explicitly
+    instead of using <CODE
+CLASS="envar"
+>$TARGET</CODE
+> or <CODE
+CLASS="envar"
+>$SOURCE</CODE
+>:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;      Command("file.out", [], Copy("$TARGET", "file.in"))
+    </PRE
+><P
+>&#13;
+    Which executes as:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      Copy("file.out", "file.in")
+    </PRE
+><P
+>&#13;
+    The usefulness of the <CODE
+CLASS="function"
+>Copy</CODE
+> factory
+    becomes more apparent when
+    you use it in a list of actions
+    passed to the <CODE
+CLASS="function"
+>Command</CODE
+> builder.
+    For example, suppose you needed to run a
+    file through a utility that only modifies files in-place,
+    and can't "pipe" input to output.
+    One solution is to copy the source file
+    to a temporary file name,
+    run the utility,
+    and then copy the modified temporary file to the target,
+    which the <CODE
+CLASS="function"
+>Copy</CODE
+> factory makes extremely easy:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;      Command("file.out", "file.in",
+              [
+                Copy("tempfile", "$SOURCE"),
+                "modify tempfile",
+                Copy("$TARGET", "tempfile"),
+              ])
+    </PRE
+><P
+>&#13;
+    The output then looks like:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      Copy("tempfile", "file.in")
+      modify tempfile
+      Copy("file.out", "tempfile")
+    </PRE
+></DIV
+></DIV
+><H3
+CLASS="FOOTNOTES"
+>Notes</H3
+><TABLE
+BORDER="0"
+CLASS="FOOTNOTES"
+WIDTH="100%"
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+WIDTH="5%"
+><A
+NAME="FTN.AEN3000"
+HREF="c2989.html#AEN3000"
+><SPAN
+CLASS="footnote"
+>[1]</SPAN
+></A
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+WIDTH="95%"
+><P
+>&#13;    Unfortunately, in the early days of SCons design,
+    we used the name <CODE
+CLASS="function"
+>Copy</CODE
+> for the function that
+    returns a copy of the environment,
+    otherwise that would be the logical choice for
+    a Builder that copies a file or directory tree
+    to a target location.
+    </P
+></TD
+></TR
+></TABLE
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x2980.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x3030.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Installing Multiple Files Under Different Names</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Deleting Files or Directories:  The <CODE
+CLASS="function"
+>Delete</CODE
+> Factory</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

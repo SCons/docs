@@ -1,0 +1,58 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Chapter 3. Less Simple Things to Do With Builds</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 3.0.2"><link rel="up" href="index.html" title="SCons 3.0.2"><link rel="prev" href="ch02s06.html" title="2.6. Making the SCons Output Less Verbose"><link rel="next" href="ch03s02.html" title="3.2. Compiling Multiple Source Files"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 3. Less Simple Things to Do With Builds</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02s06.html">Prev</a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="ch03s02.html">Next</a></td></tr></table><hr></div><div class="chapter" title="Chapter 3. Less Simple Things to Do With Builds"><div class="titlepage"><div><div><h2 class="title"><a name="chap-less-simple"></a>Chapter 3. Less Simple Things to Do With Builds</h2></div></div></div><p>
+
+  In this chapter,
+  you will see several examples of
+  very simple build configurations using <span class="application">SCons</span>,
+  which will demonstrate how easy
+  it is to use <span class="application">SCons</span> to
+  build programs from several different programming languages
+  on different types of systems.
+
+  </p><div class="section" title="3.1. Specifying the Name of the Target (Output) File"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idm140272276222384"></a>3.1. Specifying the Name of the Target (Output) File</h2></div></div></div><p>
+
+    You've seen that when you call the <a class="link" href="apb.html#b-Program"><code class="function">Program</code></a> builder method,
+    it builds the resulting program with the same
+    base name as the source file.
+    That is, the following call to build an
+    executable program from the <code class="filename">hello.c</code> source file
+    will build an executable program named <code class="filename">hello</code> on POSIX systems,
+    and an executable program named <code class="filename">hello.exe</code> on Windows systems:
+
+    </p><pre class="programlisting">
+Program('hello.c')
+    </pre><p>
+
+    If you want to build a program with
+    a different name than the base of the source file name,
+    you simply put the target file name
+    to the left of the source file name:
+
+    </p><pre class="programlisting">
+Program('new_hello', 'hello.c')
+       </pre><p>
+
+    (<span class="application">SCons</span> requires the target file name first,
+    followed by the source file name,
+    so that the order mimics that of an
+    assignment statement in most programming languages,
+    including Python:
+    <code class="literal">"program = source files"</code>.)
+
+    </p><p>
+
+    Now <span class="application">SCons</span> will build an executable program
+    named <code class="filename">new_hello</code> when run on a POSIX system:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o hello.o -c hello.c
+cc -o new_hello hello.o
+</pre><p>
+
+    And <span class="application">SCons</span> will build an executable program
+    named <code class="filename">new_hello.exe</code> when run on a Windows system:
+
+    </p><pre class="screen">C:\&gt;<strong class="userinput"><code>scons -Q</code></strong>
+cl /Fohello.obj /c hello.c /nologo
+link /nologo /OUT:new_hello.exe hello.obj
+embedManifestExeCheck(target, source, env)
+</pre></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch02s06.html">Prev</a> </td><td width="20%" align="center"> </td><td width="40%" align="right"> <a accesskey="n" href="ch03s02.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">2.6. Making the <span class="application">SCons</span> Output Less Verbose </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 3.2. Compiling Multiple Source Files</td></tr></table></div></body></html>

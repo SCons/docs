@@ -1,0 +1,146 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>1.3. Building and Installing SCons on Any System</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.2.0"><link rel="up" href="ch01.html" title="Chapter 1. Building and Installing SCons"><link rel="prev" href="ch01s02.html" title="1.2. Installing SCons"><link rel="next" href="ch02.html" title="Chapter 2. Simple Builds"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">1.3. Building and Installing <span class="application">SCons</span> on Any System</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch01s02.html">Prev</a> </td><th width="60%" align="center">Chapter 1. Building and Installing <span class="application">SCons</span></th><td width="20%" align="right"> <a accesskey="n" href="ch02.html">Next</a></td></tr></table><hr></div><div class="section" title="1.3. Building and Installing SCons on Any System"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idp140721267379072"></a>1.3. Building and Installing <span class="application">SCons</span> on Any System</h2></div></div></div><p>
+    If a pre-built <span class="application">SCons</span> package is not available for your system,
+    and installing using <code class="systemitem">pip</code> is not suitable,
+    then you can still easily build and install <span class="application">SCons</span> using the native
+    Python <code class="systemitem">setuptools</code> package.
+    </p><p>
+    The first step is to download either the
+    <code class="filename">scons-4.2.0.tar.gz</code>
+    or <code class="filename">scons-4.2.0.zip</code>,
+    which are available from the SCons download page at
+    <a class="ulink" href="https://scons.org/pages/download.html" target="_top">https://scons.org/pages/download.html</a>.
+    </p><p>
+    Unpack the archive you downloaded,
+    using a utility like <span class="application">tar</span>
+    on Linux or UNIX,
+    or <span class="application">WinZip</span> on Windows.
+    This will create a directory called
+    <code class="filename">scons-4.2.0</code>,
+    usually in your local directory.
+    Then change your working directory to that directory
+    and install <span class="application">SCons</span> by executing the following commands:
+    </p><pre class="screen">
+# <strong class="userinput"><code>cd scons-4.2.0</code></strong>
+# <strong class="userinput"><code>python setup.py install</code></strong>
+    </pre><p>
+
+    This will build <span class="application">SCons</span>,
+    install the <span class="command"><strong>scons</strong></span> script
+    in the python which is used to run the setup.py's scripts directory
+    (<code class="filename">/usr/local/bin</code> or
+    <code class="filename">C:\Python37\Scripts</code>),
+    and will install the <span class="application">SCons</span> build engine
+    in the corresponding library directory for the python used
+    (<code class="filename">/usr/local/lib/scons</code> or
+    <code class="filename">C:\Python37\scons</code>).
+    Because these are system directories,
+    you may need root (on Linux or UNIX) or Administrator (on Windows)
+    privileges to install <span class="application">SCons</span> like this.
+
+    </p><div class="section" title="1.3.1. Building and Installing Multiple Versions of SCons Side-by-Side"><div class="titlepage"><div><div><h3 class="title"><a name="idp140721267392368"></a>1.3.1. Building and Installing Multiple Versions of <span class="application">SCons</span> Side-by-Side</h3></div></div></div><p>
+
+      The <span class="application">SCons</span> <code class="filename">setup.py</code> script
+      has some extensions that support
+      easy installation of multiple versions of <span class="application">SCons</span>
+      in side-by-side locations.
+      This makes it easier to download and
+      experiment with different versions of <span class="application">SCons</span>
+      before moving your official build process to a new version,
+      for example.
+
+      </p><p>
+
+      To install <span class="application">SCons</span> in a version-specific location,
+      add the <code class="option">--version-lib</code> option
+      when you call <code class="filename">setup.py</code>:
+
+      </p><pre class="screen">
+# <strong class="userinput"><code>python setup.py install --version-lib</code></strong>
+      </pre><p>
+
+      This will install the <span class="application">SCons</span> build engine
+      in the
+      <code class="filename">/usr/lib/scons-4.2.0</code>
+      or
+      <code class="filename">C:\Python27\scons-4.2.0</code>
+      directory, for example.
+
+      </p><p>
+
+      If you use the <code class="option">--version-lib</code> option
+      the first time you install <span class="application">SCons</span>,
+      you do not need to specify it each time you install
+      a new version.
+      The <span class="application">SCons</span> <code class="filename">setup.py</code> script
+      will detect the version-specific directory name(s)
+      and assume you want to install all versions
+      in version-specific directories.
+      You can override that assumption in the future
+      by explicitly specifying the <code class="option">--standalone-lib</code> option.
+
+      </p></div><div class="section" title="1.3.2. Installing SCons in Other Locations"><div class="titlepage"><div><div><h3 class="title"><a name="idp140721267402832"></a>1.3.2. Installing <span class="application">SCons</span> in Other Locations</h3></div></div></div><p>
+
+      You can install <span class="application">SCons</span> in locations other than
+      the default by specifying the <code class="option">--prefix=</code> option:
+
+      </p><pre class="screen">
+# <strong class="userinput"><code>python setup.py install --prefix=/opt/scons</code></strong>
+      </pre><p>
+
+      This would
+      install the <span class="application">scons</span> script in
+      <code class="filename">/opt/scons/bin</code>
+      and the build engine in
+      <code class="filename">/opt/scons/lib/scons</code>,
+
+      </p><p>
+
+      Note that you can specify both the <code class="option">--prefix=</code>
+      and the <code class="option">--version-lib</code> options
+      at the same type,
+      in which case <code class="filename">setup.py</code>
+      will install the build engine
+      in a version-specific directory
+      relative to the specified prefix.
+      Adding <code class="option">--version-lib</code> to the
+      above example would install the build engine in
+      <code class="filename">/opt/scons/lib/scons-4.2.0</code>.
+
+      </p></div><div class="section" title="1.3.3. Building and Installing SCons Without Administrative Privileges"><div class="titlepage"><div><div><h3 class="title"><a name="idp140721267262480"></a>1.3.3. Building and Installing <span class="application">SCons</span> Without Administrative Privileges</h3></div></div></div><p>
+
+      If you don't have the right privileges to install <span class="application">SCons</span>
+      in a system location,
+      simply use the <code class="literal">--prefix=</code> option
+      to install it in a location of your choosing.
+      For example,
+      to install <span class="application">SCons</span> in appropriate locations
+      relative to the user's <code class="literal">$HOME</code> directory,
+      the <span class="command"><strong>scons</strong></span> script in
+      <code class="filename">$HOME/bin</code>
+      and the build engine in
+      <code class="filename">$HOME/lib/scons</code>,
+      simply type:
+
+      </p><pre class="screen">
+$ <strong class="userinput"><code>python setup.py install --prefix=$HOME</code></strong>
+      </pre><p>
+
+      You may, of course, specify any other location you prefer,
+      and may use the <code class="option">--version-lib</code> option
+      if you would like to install version-specific directories
+      relative to the specified prefix.
+
+      </p><p>
+
+      This can also be used to experiment with a newer
+      version of <span class="application">SCons</span> than the one installed
+      in your system locations.
+      Of course, the location in which you install the
+      newer version of the <span class="command"><strong>scons</strong></span> script
+      (<code class="filename">$HOME/bin</code> in the above example)
+      must be configured in your <code class="envar">PATH</code> variable
+      before the directory containing
+      the system-installed version
+      of the <span class="command"><strong>scons</strong></span> script.
+
+      </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch01s02.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch01.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch02.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">1.2. Installing <span class="application">SCons</span> </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 2. Simple Builds</td></tr></table></div></body></html>

@@ -1,0 +1,208 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>4.2. Construction Environments</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 2.4.0"><link rel="up" href="ch04.html" title="Chapter 4. Build Engine API"><link rel="prev" href="ch04.html" title="Chapter 4. Build Engine API"><link rel="next" href="ch04s03.html" title="4.3. Builder Objects"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">4.2. <code class="literal">Construction Environments</code></th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04.html">Prev</a> </td><th width="60%" align="center">Chapter 4. Build Engine API</th><td width="20%" align="right"> <a accesskey="n" href="ch04s03.html">Next</a></td></tr></table><hr></div><div class="section" title="4.2. Construction Environments"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="sect-envs"></a>4.2. <code class="literal">Construction Environments</code></h2></div></div></div><p>
+
+  A <code class="literal">construction environment</code> is the basic means by which a software system interacts
+  with the <span class="application">SCons</span> Python API to control a build process.
+
+ </p><p>
+
+  A <code class="literal">construction environment</code> is an object with associated methods for generating target
+  files of various types (<code class="classname">Builder</code> objects), other associated object
+  methods for automatically determining dependencies from the contents
+  of various types of source files (<code class="classname">Scanner</code> objects), and a dictionary
+  of values used by these methods.
+
+ </p><p>
+
+  Passing no arguments to the <code class="function">Environment</code> instantiation creates a
+  <code class="literal">construction environment</code> with default values for the current platform:
+
+ </p><pre class="programlisting">
+	env = Environment()
+	</pre><div class="section" title="4.2.1. Construction variables"><div class="titlepage"><div><div><h3 class="title"><a name="idm139949620452688"></a>4.2.1. <code class="literal">Construction variables</code></h3></div></div></div><p>
+
+   A <code class="literal">construction environment</code> has an associated dictionary of <code class="literal">construction variables</code> that control how
+   the build is performed.  By default, the <code class="function">Environment</code> method creates
+   a <code class="literal">construction environment</code> with values that make most software build "out of the box"
+   on the host system.  These default values will be generated at the
+   time <span class="application">SCons</span> is installed using functionality similar to that provided
+   by GNU <span class="application">Autoconf</span>.
+   <sup>[<a name="idm139949620448896" href="#ftn.idm139949620448896" class="footnote">1</a>]</sup>
+   At a minimum, there will be pre-configured sets of default values
+   that will provide reasonable defaults for UNIX and Windows NT.
+
+  </p><p>
+
+   The default <code class="literal">construction environment</code> values may be overridden when a new <code class="literal">construction environment</code> is
+   created by specifying keyword arguments:
+
+  </p><pre class="programlisting">
+	env = Environment(CC =          'gcc',
+	                  CCFLAGS =    '-g',
+	                  CPPPATH =    ['.', 'src', '/usr/include'],
+	                  LIBPATH =    ['/usr/lib', '.'])
+	</pre></div><div class="section" title="4.2.2. Fetching construction variables"><div class="titlepage"><div><div><h3 class="title"><a name="idm139949620444992"></a>4.2.2. Fetching <code class="literal">construction variables</code></h3></div></div></div><p>
+
+   A copy of the dictionary of <code class="literal">construction variables</code> can be returned using
+   the <code class="literal">Dictionary</code> method:
+
+  </p><pre class="programlisting">
+	env = Environment()
+	dict = env.Dictionary()
+	</pre><p>
+
+   If any arguments are supplied, then just the corresponding value(s)
+   are returned:
+
+  </p><pre class="programlisting">
+	ccflags = env.Dictionary('CCFLAGS')
+	cc, ld = env.Dictionary('CC', 'LD')
+	</pre></div><div class="section" title="4.2.3. Copying a construction environment"><div class="titlepage"><div><div><h3 class="title"><a name="idm139949620441296"></a>4.2.3. Copying a <code class="literal">construction environment</code></h3></div></div></div><p>
+
+   A method exists to return a copy of an existing environment, with
+   any overridden values specified as keyword arguments to the method:
+
+  </p><pre class="programlisting">
+	env = Environment()
+	debug = env.Copy(CCFLAGS = '-g')
+	</pre></div><div class="section" title="4.2.4. Multiple construction environments"><div class="titlepage"><div><div><h3 class="title"><a name="idm139949620439216"></a>4.2.4. Multiple <code class="literal">construction environments</code></h3></div></div></div><p>
+
+   Different external objects often require different build
+   characteristics.  Multiple <code class="literal">construction environments</code> may be defined, each with
+   different values:
+
+  </p><pre class="programlisting">
+	env = Environment(CCFLAGS = '')
+	debug = Environment(CCFLAGS = '-g')
+	env.Make(target = 'hello', source = 'hello.c')
+	debug.Make(target = 'hello-debug', source = 'hello.c')
+	</pre><p>
+
+   Dictionaries of values from multiple <code class="literal">construction environments</code> may be passed to the
+   <code class="function">Environment</code> instantiation or the <code class="function">Copy</code> method, in which case the
+   last-specified dictionary value wins:
+
+  </p><pre class="programlisting">
+	env1 = Environment(CCFLAGS = '-O', LDFLAGS = '-d')
+	env2 = Environment(CCFLAGS = '-g')
+	new = Environment(env1.Dictionary(), env2.Dictionary())
+	</pre><p>
+
+   The <code class="varname">new</code> environment in the above example retains
+   <code class="literal">LDFLAGS = '-d'</code> from the <code class="varname">env1</code>
+   environment, and <code class="literal">CCFLAGS = '-g'</code> from the
+   <code class="varname">env2</code> environment.
+
+  </p></div><div class="section" title="4.2.5. Variable substitution"><div class="titlepage"><div><div><h3 class="title"><a name="idm139949620431712"></a>4.2.5. Variable substitution</h3></div></div></div><p>
+
+   Within a construction command, any variable from the <code class="literal">construction environment</code> may
+   be interpolated by prefixing the name of the construction with
+   <span class="symbol">$</span>:
+
+  </p><pre class="programlisting">
+	MyBuilder = Builder(command = "$XX $XXFLAGS -c $_INPUTS -o $target")
+
+	env.Command(targets = 'bar.out', sources = 'bar.in',
+	            command = "sed '1d' &lt; $source &gt; $target")
+	</pre><p>
+
+   Variable substitution is recursive:  the command line is expanded
+   until no more substitutions can be made.
+
+  </p><p>
+
+   Variable names following the <span class="symbol">$</span> may be enclosed in
+   braces.  This can be used to concatenate an interpolated value with an
+   alphanumeric character:
+
+  </p><pre class="programlisting">
+	VerboseBuilder = Builder(command = "$XX -${XXFLAGS}v &gt; $target")
+	</pre><p>
+
+   The variable within braces may contain a pair of parentheses
+   after a Python function name to be evaluated (for example,
+   <code class="literal">${map()}</code>).  <span class="application">SCons</span> will interpolate the return
+   value from the function (presumably a string):
+
+  </p><pre class="programlisting">
+	env = Environment(FUNC = myfunc)
+	env.Command(target = 'foo.out', source = 'foo.in',
+	            command = "${FUNC($&lt;)}")
+	</pre><p>
+
+   If a referenced variable is not defined in the <code class="literal">construction environment</code>,
+   the null string is interpolated.
+
+  </p><p>
+
+   The following special variables can also be used:
+
+  </p><div class="variablelist"><dl><dt><span class="term"><code class="literal">$targets</code></span></dt><dd><p>
+
+      All target file names.  If multiple targets are specified in an
+      array, <code class="literal">$targets</code> expands to the entire list of
+      targets, separated by a single space.
+
+    </p><p>
+
+      Individual targets from a list may be extracted by enclosing
+      the <code class="literal">targets</code> keyword in braces and using the
+      appropriate Python array index or slice:
+
+    </p><pre class="programlisting">
+	${targets[0]}     # expands to the first target
+
+	${targets[1:]}    # expands to all but the first target
+
+	${targets[1:-1]}  # expands to all but the first and last targets
+	</pre></dd><dt><span class="term"><code class="literal">$target</code></span></dt><dd><p>
+
+      A synonym for <code class="literal">${targets[0]}</code>, the first target
+      specified.
+
+     </p></dd><dt><span class="term"><code class="literal">$sources</code></span></dt><dd><p>
+
+      All input file names.  Any input file names that
+      are used anywhere else on the current command
+      line (via <code class="literal">${sources[0]}</code>,
+      <code class="literal">${sources{[1]}</code>, etc.) are removed from the
+      expanded list.
+
+     </p></dd></dl></div><p>
+
+   Any of the above special variables may be enclosed in braces and
+   followed immediately by one of the following attributes to select just
+   a portion of the expanded path name:
+
+  </p><div class="variablelist"><dl><dt><span class="term"><code class="literal">.base</code></span></dt><dd><p>
+
+      Basename: the directory plus the file name, minus any file suffix.
+
+     </p></dd><dt><span class="term"><code class="literal">.dir</code></span></dt><dd><p>
+
+      The directory in which the file lives.  This is a relative path,
+      where appropriate.
+
+     </p></dd><dt><span class="term"><code class="literal">.file</code></span></dt><dd><p>
+
+      The file name, minus any directory portion.
+
+     </p></dd><dt><span class="term"><code class="literal">.suffix</code></span></dt><dd><p>
+
+      The file name suffix (that is, the right-most dot in the file name,
+      and all characters to the right of that).
+
+     </p></dd><dt><span class="term"><code class="literal">.filebase</code></span></dt><dd><p>
+
+      The file name (no directory portion), minus any file suffix.
+
+     </p></dd><dt><span class="term"><code class="literal">.abspath</code></span></dt><dd><p>
+
+      The absolute path to the file.
+
+     </p></dd></dl></div></div><div class="footnotes"><br><hr width="100" align="left"><div class="footnote"><p><sup>[<a id="ftn.idm139949620448896" href="#idm139949620448896" class="para">1</a>] </sup>
+     It would be nice if we could avoid re-inventing the wheel here by
+     using some other Python-based tool <span class="application">Autoconf</span> replacement--like what
+     was supposed to come out of the Software Carpentry configuration
+     tool contest.  It will probably be most efficient to roll our own
+     logic initially and convert if something better does come along.
+    </p></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch04.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch04.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch04s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 4. Build Engine API </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 4.3. <code class="classname">Builder</code> Objects</td></tr></table></div></body></html>

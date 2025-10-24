@@ -1,0 +1,221 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Adding a search path to a scanner: FindPathDirs</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 2.0.1"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Writing Scanners"
+HREF="c3833.html"><LINK
+REL="PREVIOUS"
+TITLE="Writing Scanners"
+HREF="c3833.html"><LINK
+REL="NEXT"
+TITLE="Building From Code Repositories"
+HREF="c3906.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 2.0.1</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="c3833.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 22. Writing Scanners</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="c3906.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN3888"
+>22.2. Adding a search path to a scanner: <CODE
+CLASS="function"
+>FindPathDirs</CODE
+></A
+></H1
+><P
+>&#13;
+    Many scanners need to search for included files or dependencies
+    using a path variable; this is how <A
+HREF="a4878.html#cv-CPPPATH"
+><CODE
+CLASS="envar"
+>$CPPPATH</CODE
+></A
+> and
+    <A
+HREF="a4878.html#cv-LIBPATH"
+><CODE
+CLASS="envar"
+>$LIBPATH</CODE
+></A
+> work.  The path to search is passed to your
+    scanner as the <TT
+CLASS="literal"
+>path</TT
+> argument.  Path variables
+    may be lists of nodes, semicolon-separated strings, or even
+    contain SCons variables which need to be expanded.  Fortunately,
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> provides the <CODE
+CLASS="function"
+>FindPathDirs</CODE
+> function which itself returns
+    a function to expand a given path (given as a SCons construction
+    variable name) to a list of paths at the time the scanner is
+    called.  Deferring evaluation until that point allows, for
+    instance, the path to contain $TARGET references which differ for
+    each file scanned.
+
+    </P
+><P
+>&#13;
+    Using <CODE
+CLASS="function"
+>FindPathDirs</CODE
+> is quite easy.  Continuing the above example,
+    using KPATH as the construction variable with the search path
+    (analogous to <A
+HREF="a4878.html#cv-CPPPATH"
+><CODE
+CLASS="envar"
+>$CPPPATH</CODE
+></A
+>), we just modify the <CODE
+CLASS="classname"
+>Scanner</CODE
+>
+    constructor call to include a path keyword arg:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;        kscan = Scanner(function = kfile_scan,
+                        skeys = ['.k'],
+                        path=FindPathDirs('KPATH'))
+    </PRE
+><P
+>&#13;    
+    FindPathDirs returns a callable object that, when called, will
+    essentially expand the elements in env['KPATH'] and tell the
+    scanner to search in those dirs.  It will also properly add
+    related repository and variant dirs to the search list.  As a side
+    note, the returned method stores the path in an efficient way so
+    lookups are fast even when variable substitutions may be needed.
+    This is important since many files get scanned in a typical build.
+    
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="c3833.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="c3906.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Writing Scanners</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c3833.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Building From Code Repositories</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

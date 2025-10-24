@@ -1,0 +1,256 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Where is SCons Blowing Up?  the --debug=stacktrace Option</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 0.98.1"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Troubleshooting"
+HREF="c3372.html"><LINK
+REL="PREVIOUS"
+TITLE="Where is SCons Searching for Libraries?  the --debug=findlibs Option"
+HREF="x3534.html"><LINK
+REL="NEXT"
+TITLE="How is SCons Making Its Decisions?  the --taskmastertrace Option"
+HREF="x3572.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 0.98.1</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x3534.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 26. Troubleshooting</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x3572.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN3551"
+>26.6. Where is <SPAN
+CLASS="application"
+>SCons</SPAN
+> Blowing Up?  the <TT
+CLASS="literal"
+>--debug=stacktrace</TT
+> Option</A
+></H1
+><P
+>&#13;
+    In general, <SPAN
+CLASS="application"
+>SCons</SPAN
+> tries to keep its error
+    messages short and informative.
+    That means we usually try to avoid showing
+    the stack traces that are familiar
+    to experienced Python programmers,
+    since they usually contain much more
+    information than is useful to most people.
+
+    </P
+><P
+>&#13;
+    For example, the following <TT
+CLASS="filename"
+>SConstruct</TT
+> file:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;         Program('prog.c')
+    </PRE
+><P
+>&#13;
+    Generates the following error if the
+    <TT
+CLASS="filename"
+>prog.c</TT
+> file
+    does not exist:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      scons: *** Source `prog.c' not found, needed by target `prog.o'.  Stop.
+    </PRE
+><P
+>&#13;
+    In this case,
+    the error is pretty obvious.
+    But if it weren't,
+    and you wanted to try to get more information
+    about the error,
+    the <TT
+CLASS="literal"
+>--debug=stacktrace</TT
+> option
+    would show you exactly where in the <SPAN
+CLASS="application"
+>SCons</SPAN
+> source code
+    the problem occurs:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q --debug=stacktrace</KBD
+>
+      scons: *** Source `prog.c' not found, needed by target `prog.o'.  Stop.
+      scons: internal stack trace:
+        File "bootstrap/src/engine/SCons/Job.py", line 131, in start
+        File "bootstrap/src/engine/SCons/Script/Main.py", line 169, in prepare
+        File "bootstrap/src/engine/SCons/Taskmaster.py", line 169, in prepare
+        File "bootstrap/src/engine/SCons/Node/FS.py", line 2551, in prepare
+        File "bootstrap/src/engine/SCons/Node/__init__.py", line 349, in prepare
+    </PRE
+><P
+>&#13;
+    Of course, if you do need to dive into the <SPAN
+CLASS="application"
+>SCons</SPAN
+> source code,
+    we'd like to know if, or how,
+    the error messages or troubleshooting options
+    could have been improved to avoid that.
+    Not everyone has the necessary time or
+    Python skill to dive into the source code,
+    and we'd like to improve <SPAN
+CLASS="application"
+>SCons</SPAN
+>
+    for those people as well...
+
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x3534.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x3572.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Where is <SPAN
+CLASS="application"
+>SCons</SPAN
+> Searching for Libraries?  the <TT
+CLASS="literal"
+>--debug=findlibs</TT
+> Option</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c3372.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>How is <SPAN
+CLASS="application"
+>SCons</SPAN
+> Making Its Decisions?  the <TT
+CLASS="literal"
+>--taskmastertrace</TT
+> Option</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

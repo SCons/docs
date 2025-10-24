@@ -1,0 +1,848 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SCons.SConsign &#8212; SCons 4.9.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../_static/documentation_options.js?v=3cc36abc"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/SCons/SConsign';</script>
+    <link rel="index" title="Index" href="../../../genindex/" />
+    <link rel="search" title="Search" href="../../../search/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search/"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SCons 4.9.0 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../SCons/">SCons package</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Taskmaster/">SCons.Taskmaster package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Util/">SCons.Util package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/">SCons.Variables package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.compat/">SCons.compat package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.compat/">SCons.compat package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Taskmaster/">SCons.Taskmaster package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Util/">SCons.Util package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Variables/">SCons.Variables package</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for SCons.SConsign</h1><div class="highlight"><pre>
+<span></span><span class="c1"># MIT License</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright The SCons Foundation</span>
+<span class="c1">#</span>
+<span class="c1"># Permission is hereby granted, free of charge, to any person obtaining</span>
+<span class="c1"># a copy of this software and associated documentation files (the</span>
+<span class="c1"># &quot;Software&quot;), to deal in the Software without restriction, including</span>
+<span class="c1"># without limitation the rights to use, copy, modify, merge, publish,</span>
+<span class="c1"># distribute, sublicense, and/or sell copies of the Software, and to</span>
+<span class="c1"># permit persons to whom the Software is furnished to do so, subject to</span>
+<span class="c1"># the following conditions:</span>
+<span class="c1">#</span>
+<span class="c1"># The above copyright notice and this permission notice shall be included</span>
+<span class="c1"># in all copies or substantial portions of the Software.</span>
+<span class="c1">#</span>
+<span class="c1"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY</span>
+<span class="c1"># KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND</span>
+<span class="c1"># NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE</span>
+<span class="c1"># LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION</span>
+<span class="c1"># OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</span>
+<span class="c1"># WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</span>
+
+<span class="sd">&quot;&quot;&quot;Operations on signature database files (.sconsign). &quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">SCons.compat</span>  <span class="c1"># pylint: disable=wrong-import-order</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">import</span> <span class="nn">SCons.dblite</span>
+<span class="kn">import</span> <span class="nn">SCons.Warnings</span>
+<span class="kn">from</span> <span class="nn">SCons.compat</span> <span class="kn">import</span> <span class="n">PICKLE_PROTOCOL</span>
+<span class="kn">from</span> <span class="nn">SCons.Util</span> <span class="kn">import</span> <span class="n">print_time</span>
+
+
+<div class="viewcode-block" id="corrupt_dblite_warning">
+<a class="viewcode-back" href="../../../SCons/#SCons.SConsign.corrupt_dblite_warning">[docs]</a>
+<span class="k">def</span> <span class="nf">corrupt_dblite_warning</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">SCons</span><span class="o">.</span><span class="n">Warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+        <span class="n">SCons</span><span class="o">.</span><span class="n">Warnings</span><span class="o">.</span><span class="n">CorruptSConsignWarning</span><span class="p">,</span>
+        <span class="s2">&quot;Ignoring corrupt .sconsign file: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+<span class="n">SCons</span><span class="o">.</span><span class="n">dblite</span><span class="o">.</span><span class="n">IGNORE_CORRUPT_DBFILES</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">SCons</span><span class="o">.</span><span class="n">dblite</span><span class="o">.</span><span class="n">corruption_warning</span> <span class="o">=</span> <span class="n">corrupt_dblite_warning</span>
+
+<span class="c1"># XXX Get rid of the global array so this becomes re-entrant.</span>
+<span class="n">sig_files</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Info for the database SConsign implementation (now the default):</span>
+<span class="c1"># &quot;DataBase&quot; is a dictionary that maps top-level SConstruct directories</span>
+<span class="c1"># to open database handles.</span>
+<span class="c1"># &quot;DB_Module&quot; is the Python database module to create the handles.</span>
+<span class="c1"># &quot;DB_Name&quot; is the base name of the database file (minus any</span>
+<span class="c1"># extension the underlying DB module will add).</span>
+<span class="n">DataBase</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">DB_Module</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">dblite</span>
+<span class="n">DB_Name</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">DB_sync_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="current_sconsign_filename">
+<a class="viewcode-back" href="../../../SCons/#SCons.SConsign.current_sconsign_filename">[docs]</a>
+<span class="k">def</span> <span class="nf">current_sconsign_filename</span><span class="p">():</span>
+    <span class="n">hash_format</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">get_hash_format</span><span class="p">()</span>
+    <span class="n">current_hash_algorithm</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">get_current_hash_algorithm_used</span><span class="p">()</span>
+    <span class="c1"># if the user left the options defaulted AND the default algorithm set by</span>
+    <span class="c1"># SCons is md5, then set the database name to be the special default name</span>
+    <span class="c1">#</span>
+    <span class="c1"># otherwise, if it defaults to something like &#39;sha1&#39; or the user explicitly</span>
+    <span class="c1"># set &#39;md5&#39; as the hash format, set the database name to .sconsign_&lt;algorithm&gt;</span>
+    <span class="c1"># eg .sconsign_sha1, etc.</span>
+    <span class="k">if</span> <span class="n">hash_format</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">current_hash_algorithm</span> <span class="o">==</span> <span class="s1">&#39;md5&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;.sconsign&quot;</span>
+    <span class="k">return</span> <span class="s2">&quot;.sconsign_&quot;</span> <span class="o">+</span> <span class="n">current_hash_algorithm</span></div>
+
+
+<div class="viewcode-block" id="Get_DataBase">
+<a class="viewcode-back" href="../../../SCons/#SCons.SConsign.Get_DataBase">[docs]</a>
+<span class="k">def</span> <span class="nf">Get_DataBase</span><span class="p">(</span><span class="nb">dir</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">DB_Name</span>
+
+    <span class="k">if</span> <span class="n">DB_Name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">DB_Name</span> <span class="o">=</span> <span class="n">current_sconsign_filename</span><span class="p">()</span>
+
+    <span class="n">top</span> <span class="o">=</span> <span class="nb">dir</span><span class="o">.</span><span class="n">fs</span><span class="o">.</span><span class="n">Top</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="n">DB_Name</span><span class="p">)</span> <span class="ow">and</span> <span class="n">top</span><span class="o">.</span><span class="n">repositories</span><span class="p">:</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;c&quot;</span>
+        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="p">[</span><span class="n">top</span><span class="p">]</span> <span class="o">+</span> <span class="n">top</span><span class="o">.</span><span class="n">repositories</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">dir</span><span class="o">.</span><span class="n">is_under</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">DataBase</span><span class="p">[</span><span class="n">d</span><span class="p">],</span> <span class="n">mode</span>
+                <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                    <span class="n">path</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">entry_abspath</span><span class="p">(</span><span class="n">DB_Name</span><span class="p">)</span>
+                    <span class="k">try</span><span class="p">:</span> <span class="n">db</span> <span class="o">=</span> <span class="n">DataBase</span><span class="p">[</span><span class="n">d</span><span class="p">]</span> <span class="o">=</span> <span class="n">DB_Module</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+                        <span class="k">pass</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">mode</span> <span class="o">!=</span> <span class="s2">&quot;r&quot;</span><span class="p">:</span>
+                            <span class="n">DB_sync_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">db</span><span class="p">)</span>
+                        <span class="k">return</span> <span class="n">db</span><span class="p">,</span> <span class="n">mode</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;r&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">DataBase</span><span class="p">[</span><span class="n">top</span><span class="p">],</span> <span class="s2">&quot;c&quot;</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="n">DataBase</span><span class="p">[</span><span class="n">top</span><span class="p">]</span> <span class="o">=</span> <span class="n">DB_Module</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">DB_Name</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">)</span>
+        <span class="n">DB_sync_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">db</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">db</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span>
+    <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;DataBase =&quot;</span><span class="p">,</span> <span class="n">DataBase</span><span class="p">)</span>
+        <span class="k">raise</span></div>
+
+
+
+<div class="viewcode-block" id="Reset">
+<a class="viewcode-back" href="../../../SCons/#SCons.SConsign.Reset">[docs]</a>
+<span class="k">def</span> <span class="nf">Reset</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reset global state.  Used by unit tests that end up using</span>
+<span class="sd">    SConsign multiple times to get a clean slate for each test.&quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">sig_files</span><span class="p">,</span> <span class="n">DB_sync_list</span>
+    <span class="n">sig_files</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">DB_sync_list</span> <span class="o">=</span> <span class="p">[]</span></div>
+
+
+
+<span class="n">normcase</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normcase</span>
+
+
+<div class="viewcode-block" id="write">
+<a class="viewcode-back" href="../../../SCons/#SCons.SConsign.write">[docs]</a>
+<span class="k">def</span> <span class="nf">write</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">print_time</span><span class="p">():</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">sig_file</span> <span class="ow">in</span> <span class="n">sig_files</span><span class="p">:</span>
+        <span class="n">sig_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">sync</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">db</span> <span class="ow">in</span> <span class="n">DB_sync_list</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">syncmethod</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">sync</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span> <span class="c1"># Not all dbm modules have sync() methods.</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">syncmethod</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">closemethod</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">close</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span> <span class="c1"># Not all dbm modules have close() methods.</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">closemethod</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">print_time</span><span class="p">():</span>
+        <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Total SConsign sync time: </span><span class="si">%f</span><span class="s1"> seconds&#39;</span> <span class="o">%</span> <span class="n">elapsed</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="SConsignEntry">
+<a class="viewcode-back" href="../../../SCons/#SCons.SConsign.SConsignEntry">[docs]</a>
+<span class="k">class</span> <span class="nc">SConsignEntry</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Wrapper class for the generic entry in a .sconsign file.</span>
+<span class="sd">    The Node subclass populates it with attributes as it pleases.</span>
+
+<span class="sd">    XXX As coded below, we do expect a &#39;.binfo&#39; attribute to be added,</span>
+<span class="sd">    but we&#39;ll probably generalize this in the next refactorings.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;binfo&quot;</span><span class="p">,</span> <span class="s2">&quot;ninfo&quot;</span><span class="p">,</span> <span class="s2">&quot;__weakref__&quot;</span><span class="p">)</span>
+    <span class="n">current_version_id</span> <span class="o">=</span> <span class="mi">2</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Create an object attribute from the class attribute so it ends up</span>
+        <span class="c1"># in the pickled data in the .sconsign file.</span>
+        <span class="c1">#_version_id = self.current_version_id</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="SConsignEntry.convert_to_sconsign">
+<a class="viewcode-back" href="../../../SCons/#SCons.SConsign.SConsignEntry.convert_to_sconsign">[docs]</a>
+    <span class="k">def</span> <span class="nf">convert_to_sconsign</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">binfo</span><span class="o">.</span><span class="n">convert_to_sconsign</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="SConsignEntry.convert_from_sconsign">
+<a class="viewcode-back" href="../../../SCons/#SCons.SConsign.SConsignEntry.convert_from_sconsign">[docs]</a>
+    <span class="k">def</span> <span class="nf">convert_from_sconsign</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">dir</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">binfo</span><span class="o">.</span><span class="n">convert_from_sconsign</span><span class="p">(</span><span class="nb">dir</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;__dict__&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">mro</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;__slots__&#39;</span><span class="p">,</span> <span class="p">()):</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+                    <span class="n">state</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+        <span class="n">state</span><span class="p">[</span><span class="s1">&#39;_version_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_version_id</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">del</span> <span class="n">state</span><span class="p">[</span><span class="s1">&#39;__weakref__&#39;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">return</span> <span class="n">state</span>
+
+    <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">state</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;_version_id&#39;</span><span class="p">,</span> <span class="s1">&#39;__weakref__&#39;</span><span class="p">):</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="Base">
+<a class="viewcode-back" href="../../../SCons/#SCons.SConsign.Base">[docs]</a>
+<span class="k">class</span> <span class="nc">Base</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is the controlling class for the signatures for the collection of</span>
+<span class="sd">    entries associated with a specific directory.  The actual directory</span>
+<span class="sd">    association will be maintained by a subclass that is specific to</span>
+<span class="sd">    the underlying storage method.  This class provides a common set of</span>
+<span class="sd">    methods for fetching and storing the individual bits of information</span>
+<span class="sd">    that make up signature entry.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">entries</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dirty</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">to_be_merged</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="Base.get_entry">
+<a class="viewcode-back" href="../../../SCons/#SCons.SConsign.Base.get_entry">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fetch the specified entry attribute.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">[</span><span class="n">filename</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="Base.set_entry">
+<a class="viewcode-back" href="../../../SCons/#SCons.SConsign.Base.set_entry">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the entry.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">[</span><span class="n">filename</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dirty</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="Base.do_not_set_entry">
+<a class="viewcode-back" href="../../../SCons/#SCons.SConsign.Base.do_not_set_entry">[docs]</a>
+    <span class="k">def</span> <span class="nf">do_not_set_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Base.store_info">
+<a class="viewcode-back" href="../../../SCons/#SCons.SConsign.Base.store_info">[docs]</a>
+    <span class="k">def</span> <span class="nf">store_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">entry</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">get_stored_info</span><span class="p">()</span>
+        <span class="n">entry</span><span class="o">.</span><span class="n">binfo</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">get_binfo</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">to_be_merged</span><span class="p">[</span><span class="n">filename</span><span class="p">]</span> <span class="o">=</span> <span class="n">node</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dirty</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="Base.do_not_store_info">
+<a class="viewcode-back" href="../../../SCons/#SCons.SConsign.Base.do_not_store_info">[docs]</a>
+    <span class="k">def</span> <span class="nf">do_not_store_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Base.merge">
+<a class="viewcode-back" href="../../../SCons/#SCons.SConsign.Base.merge">[docs]</a>
+    <span class="k">def</span> <span class="nf">merge</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_be_merged</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">entry</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">get_stored_info</span><span class="p">()</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">ninfo</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">ninfo</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="c1"># This happens with SConf Nodes, because the configuration</span>
+                <span class="c1"># subsystem takes direct control over how the build decision</span>
+                <span class="c1"># is made and its information stored.</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ninfo</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">get_ninfo</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">entry</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">to_be_merged</span> <span class="o">=</span> <span class="p">{}</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="DB">
+<a class="viewcode-back" href="../../../SCons/#SCons.SConsign.DB">[docs]</a>
+<span class="k">class</span> <span class="nc">DB</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A Base subclass that reads and writes signature information</span>
+<span class="sd">    from a global .sconsign.db* file--the actual file suffix is</span>
+<span class="sd">    determined by the database module.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">dir</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dir</span> <span class="o">=</span> <span class="nb">dir</span>
+
+        <span class="n">db</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="n">Get_DataBase</span><span class="p">(</span><span class="nb">dir</span><span class="p">)</span>
+
+        <span class="c1"># Read using the path relative to the top of the Repository</span>
+        <span class="c1"># (self.dir.tpath) from which we&#39;re fetching the signature</span>
+        <span class="c1"># information.</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">normcase</span><span class="p">(</span><span class="nb">dir</span><span class="o">.</span><span class="n">get_tpath</span><span class="p">())</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">rawentries</span> <span class="o">=</span> <span class="n">db</span><span class="p">[</span><span class="n">path</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">entries</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">rawentries</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">entries</span> <span class="o">=</span> <span class="p">{}</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span>
+            <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+                <span class="k">raise</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">SCons</span><span class="o">.</span><span class="n">Warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Warnings</span><span class="o">.</span><span class="n">CorruptSConsignWarning</span><span class="p">,</span>
+                                    <span class="s2">&quot;Ignoring corrupt sconsign entry : </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dir</span><span class="o">.</span><span class="n">get_tpath</span><span class="p">(),</span> <span class="n">e</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">entry</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">entry</span><span class="o">.</span><span class="n">convert_from_sconsign</span><span class="p">(</span><span class="nb">dir</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;r&quot;</span><span class="p">:</span>
+            <span class="c1"># This directory is actually under a repository, which means</span>
+            <span class="c1"># likely they&#39;re reaching in directly for a dependency on</span>
+            <span class="c1"># a file there.  Don&#39;t actually set any entry info, so we</span>
+            <span class="c1"># won&#39;t try to write to that .sconsign.dblite file.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_entry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_not_set_entry</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">store_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_not_store_info</span>
+
+        <span class="n">sig_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DB.write">
+<a class="viewcode-back" href="../../../SCons/#SCons.SConsign.DB.write">[docs]</a>
+    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sync</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">dirty</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">merge</span><span class="p">()</span>
+
+        <span class="n">db</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="n">Get_DataBase</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dir</span><span class="p">)</span>
+
+        <span class="c1"># Write using the path relative to the top of the SConstruct</span>
+        <span class="c1"># directory (self.dir.path), not relative to the top of</span>
+        <span class="c1"># the Repository; we only write to our own .sconsign file,</span>
+        <span class="c1"># not to .sconsign files in Repositories.</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">normcase</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dir</span><span class="o">.</span><span class="n">get_internal_path</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">entry</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">entry</span><span class="o">.</span><span class="n">convert_to_sconsign</span><span class="p">()</span>
+        <span class="n">db</span><span class="p">[</span><span class="n">path</span><span class="p">]</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">,</span> <span class="n">PICKLE_PROTOCOL</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">sync</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">syncmethod</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">sync</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="c1"># Not all anydbm modules have sync() methods.</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">syncmethod</span><span class="p">()</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="Dir">
+<a class="viewcode-back" href="../../../SCons/#SCons.SConsign.Dir">[docs]</a>
+<span class="k">class</span> <span class="nc">Dir</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">dir</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;fp - file pointer to read entries from.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">entries</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">entries</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span>
+
+        <span class="k">if</span> <span class="nb">dir</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">entry</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">entry</span><span class="o">.</span><span class="n">convert_from_sconsign</span><span class="p">(</span><span class="nb">dir</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="DirFile">
+<a class="viewcode-back" href="../../../SCons/#SCons.SConsign.DirFile">[docs]</a>
+<span class="k">class</span> <span class="nc">DirFile</span><span class="p">(</span><span class="n">Dir</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Encapsulates reading and writing a per-directory .sconsign file.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">dir</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;dir - the directory for the file.&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dir</span> <span class="o">=</span> <span class="nb">dir</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sconsign</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">dir</span><span class="o">.</span><span class="n">get_internal_path</span><span class="p">(),</span> <span class="n">current_sconsign_filename</span><span class="p">())</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">fp</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sconsign</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+            <span class="n">fp</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="nb">dir</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+            <span class="k">raise</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">SCons</span><span class="o">.</span><span class="n">Warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Warnings</span><span class="o">.</span><span class="n">CorruptSConsignWarning</span><span class="p">,</span>
+                                <span class="s2">&quot;Ignoring corrupt .sconsign file: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">sconsign</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="n">sig_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DirFile.write">
+<a class="viewcode-back" href="../../../SCons/#SCons.SConsign.DirFile.write">[docs]</a>
+    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sync</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write the .sconsign file to disk.</span>
+
+<span class="sd">        Try to write to a temporary file first, and rename it if we</span>
+<span class="sd">        succeed.  If we can&#39;t write to the temporary file, it&#39;s</span>
+<span class="sd">        probably because the directory isn&#39;t writable (and if so,</span>
+<span class="sd">        how did we build anything in this directory, anyway?), so</span>
+<span class="sd">        try to write directly to the .sconsign file as a backup.</span>
+<span class="sd">        If we can&#39;t rename, try to copy the temporary contents back</span>
+<span class="sd">        to the .sconsign file.  Either way, always try to remove</span>
+<span class="sd">        the temporary file at the end.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">dirty</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">merge</span><span class="p">()</span>
+
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dir</span><span class="o">.</span><span class="n">get_internal_path</span><span class="p">(),</span> <span class="s1">&#39;.scons</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">())</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">temp</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span>
+            <span class="n">fname</span> <span class="o">=</span> <span class="n">temp</span>
+        <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sconsign</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span>
+                <span class="n">fname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sconsign</span>
+            <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+                <span class="k">return</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">entry</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">entry</span><span class="o">.</span><span class="n">convert_to_sconsign</span><span class="p">()</span>
+        <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">PICKLE_PROTOCOL</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">fname</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sconsign</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">mode</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sconsign</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">chmod</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sconsign</span><span class="p">,</span> <span class="mo">0o666</span><span class="p">)</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sconsign</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+                <span class="c1"># Try to carry on in the face of either OSError</span>
+                <span class="c1"># (things like permission issues) or IOError (disk</span>
+                <span class="c1"># or network issues).  If there&#39;s a really dangerous</span>
+                <span class="c1"># issue, it should get re-raised by the calls below.</span>
+                <span class="k">pass</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sconsign</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+                <span class="c1"># An OSError failure to rename may indicate something</span>
+                <span class="c1"># like the directory has no write permission, but</span>
+                <span class="c1"># the .sconsign file itself might still be writable,</span>
+                <span class="c1"># so try writing on top of it directly.  An IOError</span>
+                <span class="c1"># here, or in any of the following calls, would get</span>
+                <span class="c1"># raised, indicating something like a potentially</span>
+                <span class="c1"># serious disk or network issue.</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sconsign</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f2</span><span class="p">:</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">f2</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">chmod</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sconsign</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+            <span class="k">pass</span></div>
+</div>
+
+
+<span class="n">ForDirectory</span> <span class="o">=</span> <span class="n">DB</span>
+
+
+<div class="viewcode-block" id="File">
+<a class="viewcode-back" href="../../../SCons/#SCons.SConsign.File">[docs]</a>
+<span class="k">def</span> <span class="nf">File</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dbm_module</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Arrange for all signatures to be stored in a global .sconsign.db*</span>
+<span class="sd">    file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">ForDirectory</span><span class="p">,</span> <span class="n">DB_Name</span><span class="p">,</span> <span class="n">DB_Module</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ForDirectory</span> <span class="o">=</span> <span class="n">DirFile</span>
+        <span class="n">DB_Module</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ForDirectory</span> <span class="o">=</span> <span class="n">DB</span>
+        <span class="n">DB_Name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="k">if</span> <span class="n">dbm_module</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">DB_Module</span> <span class="o">=</span> <span class="n">dbm_module</span></div>
+
+
+<span class="c1"># Local Variables:</span>
+<span class="c1"># tab-width:4</span>
+<span class="c1"># indent-tabs-mode:nil</span>
+<span class="c1"># End:</span>
+<span class="c1"># vim: set expandtab tabstop=4 shiftwidth=4:</span>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SCons Project Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022, SCons Project.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

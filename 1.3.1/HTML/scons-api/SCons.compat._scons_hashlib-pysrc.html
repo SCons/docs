@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>SCons.compat._scons_hashlib</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="SCons-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://www.scons.org/">SCons</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="SCons-module.html">Package&nbsp;SCons</a> ::
+        <a href="SCons.compat-module.html">Package&nbsp;compat</a> ::
+        Module&nbsp;_scons_hashlib
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="SCons.compat._scons_hashlib-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="SCons.compat._scons_hashlib-module.html">Module SCons.compat._scons_hashlib</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-comment"># Copyright (c) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010 The SCons Foundation</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-comment"># Permission is hereby granted, free of charge, to any person obtaining</tt> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"><tt class="py-comment"># a copy of this software and associated documentation files (the</tt> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"><tt class="py-comment"># "Software"), to deal in the Software without restriction, including</tt> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"><tt class="py-comment"># without limitation the rights to use, copy, modify, merge, publish,</tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"><tt class="py-comment"># distribute, sublicense, and/or sell copies of the Software, and to</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"><tt class="py-comment"># permit persons to whom the Software is furnished to do so, subject to</tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"><tt class="py-comment"># the following conditions:</tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line"><tt class="py-comment"># The above copyright notice and this permission notice shall be included</tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line"><tt class="py-comment"># in all copies or substantial portions of the Software.</tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line"><tt class="py-comment"># THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY</tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line"><tt class="py-comment"># KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE</tt> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line"><tt class="py-comment"># WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND</tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line"><tt class="py-comment"># NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE</tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line"><tt class="py-comment"># LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION</tt> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line"><tt class="py-comment"># OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</tt> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line"><tt class="py-comment"># WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</tt> </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line"> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line"><tt id="link-0" class="py-name" targets="Variable SCons.CacheDir.__doc__=SCons.CacheDir-module.html#__doc__,Variable SCons.Memoize.__doc__=SCons.Memoize-module.html#__doc__,Variable SCons.PathList.__doc__=SCons.PathList-module.html#__doc__,Variable SCons.Script.Interactive.__doc__=SCons.Script.Interactive-module.html#__doc__,Variable SCons.Sig.__doc__=SCons.Sig-module.html#__doc__,Variable SCons.Taskmaster.__doc__=SCons.Taskmaster-module.html#__doc__,Variable SCons.compat.__doc__=SCons.compat-module.html#__doc__,Variable SCons.compat._scons_UserString.__doc__=SCons.compat._scons_UserString-module.html#__doc__,Variable SCons.compat._scons_hashlib.__doc__=SCons.compat._scons_hashlib-module.html#__doc__,Variable SCons.compat._scons_itertools.__doc__=SCons.compat._scons_itertools-module.html#__doc__,Variable SCons.compat.builtins.__doc__=SCons.compat.builtins-module.html#__doc__,Variable SCons.cpp.__doc__=SCons.cpp-module.html#__doc__"><a title="SCons.CacheDir.__doc__
+SCons.Memoize.__doc__
+SCons.PathList.__doc__
+SCons.Script.Interactive.__doc__
+SCons.Sig.__doc__
+SCons.Taskmaster.__doc__
+SCons.compat.__doc__
+SCons.compat._scons_UserString.__doc__
+SCons.compat._scons_hashlib.__doc__
+SCons.compat._scons_itertools.__doc__
+SCons.compat.builtins.__doc__
+SCons.cpp.__doc__" class="py-name" href="#" onclick="return doclink('link-0', '__doc__', 'link-0');">__doc__</a></tt> <tt class="py-op">=</tt> <tt class="py-docstring">"""</tt> </tt>
+<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line"><tt class="py-docstring">hashlib backwards-compatibility module for older (pre-2.5) Python versions</tt> </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line"><tt class="py-docstring">This does not not NOT (repeat, *NOT*) provide complete hashlib</tt> </tt>
+<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line"><tt class="py-docstring">functionality.  It only wraps the portions of MD5 functionality used</tt> </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line"><tt class="py-docstring">by SCons, in an interface that looks like hashlib (or enough for our</tt> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line"><tt class="py-docstring">purposes, anyway).  In fact, this module will raise an ImportError if</tt> </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line"><tt class="py-docstring">the underlying md5 module isn't available.</tt> </tt>
+<a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line"> </tt>
+<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line"><tt id="link-1" class="py-name" targets="Variable SCons.Action.__revision__=SCons.Action-module.html#__revision__,Variable SCons.Builder.__revision__=SCons.Builder-module.html#__revision__,Variable SCons.CacheDir.__revision__=SCons.CacheDir-module.html#__revision__,Variable SCons.Debug.__revision__=SCons.Debug-module.html#__revision__,Variable SCons.Defaults.__revision__=SCons.Defaults-module.html#__revision__,Variable SCons.Environment.__revision__=SCons.Environment-module.html#__revision__,Variable SCons.Errors.__revision__=SCons.Errors-module.html#__revision__,Variable SCons.Executor.__revision__=SCons.Executor-module.html#__revision__,Variable SCons.Job.__revision__=SCons.Job-module.html#__revision__,Variable SCons.Memoize.__revision__=SCons.Memoize-module.html#__revision__,Variable SCons.Node.Alias.__revision__=SCons.Node.Alias-module.html#__revision__,Variable SCons.Node.FS.__revision__=SCons.Node.FS-module.html#__revision__,Variable SCons.Node.Python.__revision__=SCons.Node.Python-module.html#__revision__,Variable SCons.Node.__revision__=SCons.Node-module.html#__revision__,Variable SCons.PathList.__revision__=SCons.PathList-module.html#__revision__,Variable SCons.SConf.__revision__=SCons.SConf-module.html#__revision__,Variable SCons.SConsign.__revision__=SCons.SConsign-module.html#__revision__,Variable SCons.Scanner.C.__revision__=SCons.Scanner.C-module.html#__revision__,Variable SCons.Scanner.D.__revision__=SCons.Scanner.D-module.html#__revision__,Variable SCons.Scanner.Dir.__revision__=SCons.Scanner.Dir-module.html#__revision__,Variable SCons.Scanner.Fortran.__revision__=SCons.Scanner.Fortran-module.html#__revision__,Variable SCons.Scanner.IDL.__revision__=SCons.Scanner.IDL-module.html#__revision__,Variable SCons.Scanner.LaTeX.__revision__=SCons.Scanner.LaTeX-module.html#__revision__,Variable SCons.Scanner.Prog.__revision__=SCons.Scanner.Prog-module.html#__revision__,Variable SCons.Scanner.RC.__revision__=SCons.Scanner.RC-module.html#__revision__,Variable SCons.Scanner.__revision__=SCons.Scanner-module.html#__revision__,Variable SCons.Script.Interactive.__revision__=SCons.Script.Interactive-module.html#__revision__,Variable SCons.Script.Main.__revision__=SCons.Script.Main-module.html#__revision__,Variable SCons.Script.SConscript'.__revision__=SCons.Script.SConscript%27-module.html#__revision__,Variable SCons.Script.__revision__=SCons.Script-module.html#__revision__,Variable SCons.Sig.__revision__=SCons.Sig-module.html#__revision__,Variable SCons.Subst.__revision__=SCons.Subst-module.html#__revision__,Variable SCons.Taskmaster.__revision__=SCons.Taskmaster-module.html#__revision__,Variable SCons.Variables.BoolVariable'.__revision__=SCons.Variables.BoolVariable%27-module.html#__revision__,Variable SCons.Variables.EnumVariable'.__revision__=SCons.Variables.EnumVariable%27-module.html#__revision__,Variable SCons.Variables.ListVariable'.__revision__=SCons.Variables.ListVariable%27-module.html#__revision__,Variable SCons.Variables.PackageVariable'.__revision__=SCons.Variables.PackageVariable%27-module.html#__revision__,Variable SCons.Variables.PathVariable'.__revision__=SCons.Variables.PathVariable%27-module.html#__revision__,Variable SCons.Variables.__revision__=SCons.Variables-module.html#__revision__,Variable SCons.Warnings.__revision__=SCons.Warnings-module.html#__revision__,Variable SCons.__revision__=SCons-module.html#__revision__,Variable SCons.compat.__revision__=SCons.compat-module.html#__revision__,Variable SCons.compat._scons_UserString.__revision__=SCons.compat._scons_UserString-module.html#__revision__,Variable SCons.compat._scons_hashlib.__revision__=SCons.compat._scons_hashlib-module.html#__revision__,Variable SCons.compat._scons_itertools.__revision__=SCons.compat._scons_itertools-module.html#__revision__,Variable SCons.compat._scons_textwrap.__revision__=SCons.compat._scons_textwrap-module.html#__revision__,Variable SCons.compat.builtins.__revision__=SCons.compat.builtins-module.html#__revision__,Variable SCons.exitfuncs.__revision__=SCons.exitfuncs-module.html#__revision__"><a title="SCons.Action.__revision__
+SCons.Builder.__revision__
+SCons.CacheDir.__revision__
+SCons.Debug.__revision__
+SCons.Defaults.__revision__
+SCons.Environment.__revision__
+SCons.Errors.__revision__
+SCons.Executor.__revision__
+SCons.Job.__revision__
+SCons.Memoize.__revision__
+SCons.Node.Alias.__revision__
+SCons.Node.FS.__revision__
+SCons.Node.Python.__revision__
+SCons.Node.__revision__
+SCons.PathList.__revision__
+SCons.SConf.__revision__
+SCons.SConsign.__revision__
+SCons.Scanner.C.__revision__
+SCons.Scanner.D.__revision__
+SCons.Scanner.Dir.__revision__
+SCons.Scanner.Fortran.__revision__
+SCons.Scanner.IDL.__revision__
+SCons.Scanner.LaTeX.__revision__
+SCons.Scanner.Prog.__revision__
+SCons.Scanner.RC.__revision__
+SCons.Scanner.__revision__
+SCons.Script.Interactive.__revision__
+SCons.Script.Main.__revision__
+SCons.Script.SConscript'.__revision__
+SCons.Script.__revision__
+SCons.Sig.__revision__
+SCons.Subst.__revision__
+SCons.Taskmaster.__revision__
+SCons.Variables.BoolVariable'.__revision__
+SCons.Variables.EnumVariable'.__revision__
+SCons.Variables.ListVariable'.__revision__
+SCons.Variables.PackageVariable'.__revision__
+SCons.Variables.PathVariable'.__revision__
+SCons.Variables.__revision__
+SCons.Warnings.__revision__
+SCons.__revision__
+SCons.compat.__revision__
+SCons.compat._scons_UserString.__revision__
+SCons.compat._scons_hashlib.__revision__
+SCons.compat._scons_itertools.__revision__
+SCons.compat._scons_textwrap.__revision__
+SCons.compat.builtins.__revision__
+SCons.exitfuncs.__revision__" class="py-name" href="#" onclick="return doclink('link-1', '__revision__', 'link-1');">__revision__</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"src/engine/SCons/compat/_scons_hashlib.py 5110 2010/07/25 16:14:38 bdeegan"</tt> </tt>
+<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line"> </tt>
+<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Variable SCons.Util.md5=SCons.Util-module.html#md5,Function SCons.compat._scons_hashlib.md5()=SCons.compat._scons_hashlib-module.html#md5,Module md5=md5-module.html"><a title="SCons.Util.md5
+SCons.compat._scons_hashlib.md5
+md5" class="py-name" href="#" onclick="return doclink('link-2', 'md5', 'link-2');">md5</a></tt> </tt>
+<a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-3" class="py-name" targets="Variable SCons.SConf.SConfBuildInfo.string=SCons.SConf.SConfBuildInfo-class.html#string,Method SCons.Script.Main.Progressor.string()=SCons.Script.Main.Progressor-class.html#string"><a title="SCons.SConf.SConfBuildInfo.string
+SCons.Script.Main.Progressor.string" class="py-name" href="#" onclick="return doclink('link-3', 'string', 'link-3');">string</a></tt> </tt>
+<a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line"> </tt>
+<a name="md5obj"></a><div id="md5obj-def"><a name="L39"></a><tt class="py-lineno">39</tt> <a class="py-toggle" href="#" id="md5obj-toggle" onclick="return toggle('md5obj');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="SCons.compat._scons_hashlib.md5obj-class.html">md5obj</a><tt class="py-op">:</tt> </tt>
+</div><div id="md5obj-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="md5obj-expanded"><a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line"> </tt>
+<a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line">    <tt class="py-name">md5_module</tt> <tt class="py-op">=</tt> <tt id="link-4" class="py-name"><a title="SCons.Util.md5
+SCons.compat._scons_hashlib.md5
+md5" class="py-name" href="#" onclick="return doclink('link-4', 'md5', 'link-2');">md5</a></tt> </tt>
+<a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line"> </tt>
+<a name="md5obj.__init__"></a><div id="md5obj.__init__-def"><a name="L43"></a><tt class="py-lineno">43</tt> <a class="py-toggle" href="#" id="md5obj.__init__-toggle" onclick="return toggle('md5obj.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.compat._scons_hashlib.md5obj-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">,</tt> <tt class="py-param">string</tt><tt class="py-op">=</tt><tt class="py-string">''</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="md5obj.__init__-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="md5obj.__init__-expanded"><a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">name</tt> <tt class="py-keyword">in</tt> <tt class="py-op">(</tt><tt class="py-string">'MD5'</tt><tt class="py-op">,</tt> <tt class="py-string">'md5'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L45"></a><tt class="py-lineno">45</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt class="py-name">ValueError</tt><tt class="py-op">,</tt> <tt class="py-string">"unsupported hash type"</tt> </tt>
+<a name="L46"></a><tt class="py-lineno">46</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">name</tt> <tt class="py-op">=</tt> <tt class="py-string">'md5'</tt> </tt>
+<a name="L47"></a><tt class="py-lineno">47</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">m</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">md5_module</tt><tt class="py-op">.</tt><tt id="link-5" class="py-name"><a title="SCons.Util.md5
+SCons.compat._scons_hashlib.md5
+md5" class="py-name" href="#" onclick="return doclink('link-5', 'md5', 'link-2');">md5</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L48"></a><tt class="py-lineno">48</tt>  <tt class="py-line"> </tt>
+<a name="md5obj.__repr__"></a><div id="md5obj.__repr__-def"><a name="L49"></a><tt class="py-lineno">49</tt> <a class="py-toggle" href="#" id="md5obj.__repr__-toggle" onclick="return toggle('md5obj.__repr__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.compat._scons_hashlib.md5obj-class.html#__repr__">__repr__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="md5obj.__repr__-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="md5obj.__repr__-expanded"><a name="L50"></a><tt class="py-lineno">50</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-string">'&lt;%s HASH object @ %#x&gt;'</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">name</tt><tt class="py-op">,</tt> <tt class="py-name">id</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L51"></a><tt class="py-lineno">51</tt>  <tt class="py-line"> </tt>
+<a name="md5obj.copy"></a><div id="md5obj.copy-def"><a name="L52"></a><tt class="py-lineno">52</tt> <a class="py-toggle" href="#" id="md5obj.copy-toggle" onclick="return toggle('md5obj.copy');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.compat._scons_hashlib.md5obj-class.html#copy">copy</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="md5obj.copy-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="md5obj.copy-expanded"><a name="L53"></a><tt class="py-lineno">53</tt>  <tt class="py-line">        <tt class="py-keyword">import</tt> <tt id="link-6" class="py-name" targets="Method SCons.Node.FS.LocalFS.copy()=SCons.Node.FS.LocalFS-class.html#copy,Method SCons.Util.OrderedDict.copy()=SCons.Util.OrderedDict-class.html#copy,Method SCons.compat._scons_hashlib.md5obj.copy()=SCons.compat._scons_hashlib.md5obj-class.html#copy,Method SCons.compat._scons_sets.BaseSet.copy()=SCons.compat._scons_sets.BaseSet-class.html#copy,Method SCons.compat._scons_sets15.Set.copy()=SCons.compat._scons_sets15.Set-class.html#copy"><a title="SCons.Node.FS.LocalFS.copy
+SCons.Util.OrderedDict.copy
+SCons.compat._scons_hashlib.md5obj.copy
+SCons.compat._scons_sets.BaseSet.copy
+SCons.compat._scons_sets15.Set.copy" class="py-name" href="#" onclick="return doclink('link-6', 'copy', 'link-6');">copy</a></tt> </tt>
+<a name="L54"></a><tt class="py-lineno">54</tt>  <tt class="py-line">        <tt id="link-7" class="py-name" targets="Variable SCons.SConf.SConfBuildInfo.result=SCons.SConf.SConfBuildInfo-class.html#result"><a title="SCons.SConf.SConfBuildInfo.result" class="py-name" href="#" onclick="return doclink('link-7', 'result', 'link-7');">result</a></tt> <tt class="py-op">=</tt> <tt id="link-8" class="py-name"><a title="SCons.Node.FS.LocalFS.copy
+SCons.Util.OrderedDict.copy
+SCons.compat._scons_hashlib.md5obj.copy
+SCons.compat._scons_sets.BaseSet.copy
+SCons.compat._scons_sets15.Set.copy" class="py-name" href="#" onclick="return doclink('link-8', 'copy', 'link-6');">copy</a></tt><tt class="py-op">.</tt><tt id="link-9" class="py-name"><a title="SCons.Node.FS.LocalFS.copy
+SCons.Util.OrderedDict.copy
+SCons.compat._scons_hashlib.md5obj.copy
+SCons.compat._scons_sets.BaseSet.copy
+SCons.compat._scons_sets15.Set.copy" class="py-name" href="#" onclick="return doclink('link-9', 'copy', 'link-6');">copy</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">)</tt> </tt>
+<a name="L55"></a><tt class="py-lineno">55</tt>  <tt class="py-line">        <tt id="link-10" class="py-name"><a title="SCons.SConf.SConfBuildInfo.result" class="py-name" href="#" onclick="return doclink('link-10', 'result', 'link-7');">result</a></tt><tt class="py-op">.</tt><tt class="py-name">m</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">m</tt><tt class="py-op">.</tt><tt id="link-11" class="py-name"><a title="SCons.Node.FS.LocalFS.copy
+SCons.Util.OrderedDict.copy
+SCons.compat._scons_hashlib.md5obj.copy
+SCons.compat._scons_sets.BaseSet.copy
+SCons.compat._scons_sets15.Set.copy" class="py-name" href="#" onclick="return doclink('link-11', 'copy', 'link-6');">copy</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L56"></a><tt class="py-lineno">56</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-12" class="py-name"><a title="SCons.SConf.SConfBuildInfo.result" class="py-name" href="#" onclick="return doclink('link-12', 'result', 'link-7');">result</a></tt> </tt>
+</div><a name="L57"></a><tt class="py-lineno">57</tt>  <tt class="py-line"> </tt>
+<a name="md5obj.digest"></a><div id="md5obj.digest-def"><a name="L58"></a><tt class="py-lineno">58</tt> <a class="py-toggle" href="#" id="md5obj.digest-toggle" onclick="return toggle('md5obj.digest');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.compat._scons_hashlib.md5obj-class.html#digest">digest</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="md5obj.digest-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="md5obj.digest-expanded"><a name="L59"></a><tt class="py-lineno">59</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">m</tt><tt class="py-op">.</tt><tt id="link-13" class="py-name" targets="Method SCons.compat._scons_hashlib.md5obj.digest()=SCons.compat._scons_hashlib.md5obj-class.html#digest"><a title="SCons.compat._scons_hashlib.md5obj.digest" class="py-name" href="#" onclick="return doclink('link-13', 'digest', 'link-13');">digest</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L60"></a><tt class="py-lineno">60</tt>  <tt class="py-line"> </tt>
+<a name="md5obj.update"></a><div id="md5obj.update-def"><a name="L61"></a><tt class="py-lineno">61</tt> <a class="py-toggle" href="#" id="md5obj.update-toggle" onclick="return toggle('md5obj.update');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.compat._scons_hashlib.md5obj-class.html#update">update</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">arg</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="md5obj.update-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="md5obj.update-expanded"><a name="L62"></a><tt class="py-lineno">62</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">m</tt><tt class="py-op">.</tt><tt id="link-14" class="py-name" targets="Method SCons.Environment.BuilderDict.update()=SCons.Environment.BuilderDict-class.html#update,Method SCons.Node.NodeInfoBase.update()=SCons.Node.NodeInfoBase-class.html#update,Method SCons.Util.OrderedDict.update()=SCons.Util.OrderedDict-class.html#update,Method SCons.compat._scons_hashlib.md5obj.update()=SCons.compat._scons_hashlib.md5obj-class.html#update,Method SCons.compat._scons_sets.Set.update()=SCons.compat._scons_sets.Set-class.html#update"><a title="SCons.Environment.BuilderDict.update
+SCons.Node.NodeInfoBase.update
+SCons.Util.OrderedDict.update
+SCons.compat._scons_hashlib.md5obj.update
+SCons.compat._scons_sets.Set.update" class="py-name" href="#" onclick="return doclink('link-14', 'update', 'link-14');">update</a></tt><tt class="py-op">(</tt><tt class="py-name">arg</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L63"></a><tt class="py-lineno">63</tt>  <tt class="py-line"> </tt>
+<a name="L64"></a><tt class="py-lineno">64</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">hasattr</tt><tt class="py-op">(</tt><tt id="link-15" class="py-name"><a title="SCons.Util.md5
+SCons.compat._scons_hashlib.md5
+md5" class="py-name" href="#" onclick="return doclink('link-15', 'md5', 'link-2');">md5</a></tt><tt class="py-op">.</tt><tt id="link-16" class="py-name"><a title="SCons.Util.md5
+SCons.compat._scons_hashlib.md5
+md5" class="py-name" href="#" onclick="return doclink('link-16', 'md5', 'link-2');">md5</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-string">'hexdigest'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L65"></a><tt class="py-lineno">65</tt>  <tt class="py-line"> </tt>
+<a name="md5obj.hexdigest"></a><div id="md5obj.hexdigest-def"><a name="L66"></a><tt class="py-lineno">66</tt> <a class="py-toggle" href="#" id="md5obj.hexdigest-toggle" onclick="return toggle('md5obj.hexdigest');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.compat._scons_hashlib.md5obj-class.html#hexdigest">hexdigest</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="md5obj.hexdigest-collapsed" style="display:none;" pad="++" indent="++++++++++++++++"></div><div id="md5obj.hexdigest-expanded"><a name="L67"></a><tt class="py-lineno">67</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">m</tt><tt class="py-op">.</tt><tt id="link-17" class="py-name" targets="Method SCons.compat._scons_hashlib.md5obj.hexdigest()=SCons.compat._scons_hashlib.md5obj-class.html#hexdigest"><a title="SCons.compat._scons_hashlib.md5obj.hexdigest" class="py-name" href="#" onclick="return doclink('link-17', 'hexdigest', 'link-17');">hexdigest</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L68"></a><tt class="py-lineno">68</tt>  <tt class="py-line"> </tt>
+<a name="L69"></a><tt class="py-lineno">69</tt>  <tt class="py-line">    <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L70"></a><tt class="py-lineno">70</tt>  <tt class="py-line"> </tt>
+<a name="L71"></a><tt class="py-lineno">71</tt>  <tt class="py-line">        <tt class="py-comment"># Objects created by the underlying md5 module have no native</tt> </tt>
+<a name="L72"></a><tt class="py-lineno">72</tt>  <tt class="py-line">        <tt class="py-comment"># hexdigest() method (*cough* 1.5.2 *cough*), so provide an</tt> </tt>
+<a name="L73"></a><tt class="py-lineno">73</tt>  <tt class="py-line">        <tt class="py-comment"># equivalent lifted from elsewhere.</tt> </tt>
+<a name="md5obj.hexdigest"></a><div id="md5obj.hexdigest-def"><a name="L74"></a><tt class="py-lineno">74</tt> <a class="py-toggle" href="#" id="md5obj.hexdigest-toggle" onclick="return toggle('md5obj.hexdigest');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.compat._scons_hashlib.md5obj-class.html#hexdigest">hexdigest</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="md5obj.hexdigest-collapsed" style="display:none;" pad="++" indent="++++++++++++++++"></div><div id="md5obj.hexdigest-expanded"><a name="L75"></a><tt class="py-lineno">75</tt>  <tt class="py-line">            <tt class="py-name">h</tt> <tt class="py-op">=</tt> <tt id="link-18" class="py-name"><a title="SCons.SConf.SConfBuildInfo.string
+SCons.Script.Main.Progressor.string" class="py-name" href="#" onclick="return doclink('link-18', 'string', 'link-3');">string</a></tt><tt class="py-op">.</tt><tt class="py-name">hexdigits</tt> </tt>
+<a name="L76"></a><tt class="py-lineno">76</tt>  <tt class="py-line">            <tt class="py-name">r</tt> <tt class="py-op">=</tt> <tt class="py-string">''</tt> </tt>
+<a name="L77"></a><tt class="py-lineno">77</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">c</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-19" class="py-name"><a title="SCons.compat._scons_hashlib.md5obj.digest" class="py-name" href="#" onclick="return doclink('link-19', 'digest', 'link-13');">digest</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L78"></a><tt class="py-lineno">78</tt>  <tt class="py-line">                <tt class="py-name">i</tt> <tt class="py-op">=</tt> <tt class="py-name">ord</tt><tt class="py-op">(</tt><tt class="py-name">c</tt><tt class="py-op">)</tt> </tt>
+<a name="L79"></a><tt class="py-lineno">79</tt>  <tt class="py-line">                <tt class="py-name">r</tt> <tt class="py-op">=</tt> <tt class="py-name">r</tt> <tt class="py-op">+</tt> <tt class="py-name">h</tt><tt class="py-op">[</tt><tt class="py-op">(</tt><tt class="py-name">i</tt> <tt class="py-op">&gt;&gt;</tt> <tt class="py-number">4</tt><tt class="py-op">)</tt> <tt class="py-op">&amp;</tt> <tt class="py-number">0xF</tt><tt class="py-op">]</tt> <tt class="py-op">+</tt> <tt class="py-name">h</tt><tt class="py-op">[</tt><tt class="py-name">i</tt> <tt class="py-op">&amp;</tt> <tt class="py-number">0xF</tt><tt class="py-op">]</tt> </tt>
+<a name="L80"></a><tt class="py-lineno">80</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">r</tt> </tt>
+</div></div><a name="L81"></a><tt class="py-lineno">81</tt>  <tt class="py-line"> </tt>
+<a name="L82"></a><tt class="py-lineno">82</tt>  <tt class="py-line"><tt class="py-name">new</tt> <tt class="py-op">=</tt> <tt id="link-20" class="py-name" targets="Class SCons.compat._scons_hashlib.md5obj=SCons.compat._scons_hashlib.md5obj-class.html"><a title="SCons.compat._scons_hashlib.md5obj" class="py-name" href="#" onclick="return doclink('link-20', 'md5obj', 'link-20');">md5obj</a></tt> </tt>
+<a name="L83"></a><tt class="py-lineno">83</tt>  <tt class="py-line"> </tt>
+<a name="md5"></a><div id="md5-def"><a name="L84"></a><tt class="py-lineno">84</tt> <a class="py-toggle" href="#" id="md5-toggle" onclick="return toggle('md5');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.compat._scons_hashlib-module.html#md5">md5</a><tt class="py-op">(</tt><tt class="py-param">string</tt><tt class="py-op">=</tt><tt class="py-string">''</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="md5-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="md5-expanded"><a name="L85"></a><tt class="py-lineno">85</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-21" class="py-name"><a title="SCons.compat._scons_hashlib.md5obj" class="py-name" href="#" onclick="return doclink('link-21', 'md5obj', 'link-20');">md5obj</a></tt><tt class="py-op">(</tt><tt class="py-string">'md5'</tt><tt class="py-op">,</tt> <tt id="link-22" class="py-name"><a title="SCons.SConf.SConfBuildInfo.string
+SCons.Script.Main.Progressor.string" class="py-name" href="#" onclick="return doclink('link-22', 'string', 'link-3');">string</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L86"></a><tt class="py-lineno">86</tt>  <tt class="py-line"> </tt>
+<a name="L87"></a><tt class="py-lineno">87</tt>  <tt class="py-line"><tt class="py-comment"># Local Variables:</tt> </tt>
+<a name="L88"></a><tt class="py-lineno">88</tt>  <tt class="py-line"><tt class="py-comment"># tab-width:4</tt> </tt>
+<a name="L89"></a><tt class="py-lineno">89</tt>  <tt class="py-line"><tt class="py-comment"># indent-tabs-mode:nil</tt> </tt>
+<a name="L90"></a><tt class="py-lineno">90</tt>  <tt class="py-line"><tt class="py-comment"># End:</tt> </tt>
+<a name="L91"></a><tt class="py-lineno">91</tt>  <tt class="py-line"><tt class="py-comment"># vim: set expandtab tabstop=4 shiftwidth=4:</tt> </tt>
+<a name="L92"></a><tt class="py-lineno">92</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="SCons-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://www.scons.org/">SCons</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sun Jul 25 16:21:51 2010
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

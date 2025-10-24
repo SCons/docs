@@ -1,0 +1,236 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Explicit Dependencies:  the Depends Function</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 2.0.0.final.0"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Dependencies"
+HREF="c824.html"><LINK
+REL="PREVIOUS"
+TITLE="Caching Implicit Dependencies"
+HREF="x1148.html"><LINK
+REL="NEXT"
+TITLE="Dependencies From External Files:  the ParseDepends
+  Function"
+HREF="x1231.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 2.0.0.final.0</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x1148.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 6. Dependencies</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x1231.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN1212"
+>6.5. Explicit Dependencies:  the <CODE
+CLASS="function"
+>Depends</CODE
+> Function</A
+></H1
+><P
+>&#13;
+    Sometimes a file depends on another file
+    that is not detected by an <SPAN
+CLASS="application"
+>SCons</SPAN
+> scanner.
+    For this situation,
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> allows you to specific explicitly that one file
+    depends on another file,
+    and must be rebuilt whenever that file changes.
+    This is specified using the <CODE
+CLASS="function"
+>Depends</CODE
+> method:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;       hello = Program('hello.c')
+       Depends(hello, 'other_file')
+    </PRE
+><PRE
+CLASS="screen"
+>&#13;       % <KBD
+CLASS="userinput"
+>scons -Q hello</KBD
+>
+       cc -c hello.c -o hello.o
+       cc -o hello hello.o
+       % <KBD
+CLASS="userinput"
+>scons -Q hello</KBD
+>
+       scons: `hello' is up to date.
+       % <KBD
+CLASS="userinput"
+>edit other_file</KBD
+>
+           [CHANGE THE CONTENTS OF other_file]
+       % <KBD
+CLASS="userinput"
+>scons -Q hello</KBD
+>
+       cc -c hello.c -o hello.o
+       cc -o hello hello.o
+    </PRE
+><P
+>&#13;
+    Note that the dependency
+    (the second argument to <CODE
+CLASS="function"
+>Depends</CODE
+>)
+    may also be a list of Node objects
+    (for example, as returned by a call to a Builder):
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;       hello = Program('hello.c')
+       goodbye = Program('goodbye.c')
+       Depends(hello, goodbye)
+    </PRE
+><P
+>&#13;
+    in which case the dependency or dependencies
+    will be built before the target(s):
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;       % <KBD
+CLASS="userinput"
+>scons -Q hello</KBD
+>
+       cc -c goodbye.c -o goodbye.o
+       cc -o goodbye goodbye.o
+       cc -c hello.c -o hello.o
+       cc -o hello hello.o
+    </PRE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x1148.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x1231.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Caching Implicit Dependencies</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c824.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Dependencies From External Files:  the <CODE
+CLASS="function"
+>ParseDepends</CODE
+>
+  Function</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

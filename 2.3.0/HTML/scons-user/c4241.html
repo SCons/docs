@@ -1,0 +1,272 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Multi-Platform Configuration (Autoconf Functionality)</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 2.3.0"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Guaranteeing local copies of files"
+HREF="x4217.html"><LINK
+REL="NEXT"
+TITLE="Checking for the Existence of Header Files"
+HREF="x4267.html"></HEAD
+><BODY
+CLASS="chapter"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 2.3.0</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x4217.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x4267.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="chapter"
+><H1
+><A
+NAME="chap-sconf"
+></A
+>Chapter 23. Multi-Platform Configuration (<SPAN
+CLASS="application"
+>Autoconf</SPAN
+> Functionality)</H1
+><P
+>&#13;
+  <SPAN
+CLASS="application"
+>SCons</SPAN
+> has integrated support for multi-platform build configuration
+  similar to that offered by GNU <SPAN
+CLASS="application"
+>Autoconf</SPAN
+>,
+  such as
+  figuring out what libraries or header files
+  are available on the local system.
+  This section describes how to use
+  this <SPAN
+CLASS="application"
+>SCons</SPAN
+> feature.
+
+  </P
+><DIV
+CLASS="note"
+><P
+></P
+><TABLE
+CLASS="note"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/note.gif"
+HSPACE="5"
+ALT="Note"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>&#13;  This chapter is still under development,
+  so not everything is explained as well as it should be.
+  See the <SPAN
+CLASS="application"
+>SCons</SPAN
+> man page for additional information.
+  </P
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN4251"
+>23.1. <TT
+CLASS="literal"
+>Configure Contexts</TT
+></A
+></H1
+><P
+>&#13;
+    The basic framework for multi-platform build configuration
+    in <SPAN
+CLASS="application"
+>SCons</SPAN
+> is to attach a <TT
+CLASS="literal"
+>configure context</TT
+> to a
+    construction environment by calling the <CODE
+CLASS="function"
+>Configure</CODE
+> function,
+    perform a number of checks for
+    libraries, functions, header files, etc.,
+    and to then call the configure context's <CODE
+CLASS="function"
+>Finish</CODE
+> method
+    to finish off the configuration:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;    env = Environment()
+    conf = Configure(env)
+    # Checks for libraries, header files, etc. go here!
+    env = conf.Finish()
+    </PRE
+><P
+>&#13;
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> provides a number of basic checks,
+    as well as a mechanism for adding your own custom checks.
+
+    </P
+><P
+>&#13;
+    Note that <SPAN
+CLASS="application"
+>SCons</SPAN
+> uses its own dependency
+    mechanism to determine when a check
+    needs to be run--that is,
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> does not run the checks
+    every time it is invoked,
+    but caches the values returned by previous checks
+    and uses the cached values unless something has changed.
+    This saves a tremendous amount
+    of developer time while working on
+    cross-platform build issues.
+
+    </P
+><P
+>&#13;
+    The next sections describe
+    the basic checks that <SPAN
+CLASS="application"
+>SCons</SPAN
+> supports,
+    as well as how to add your own custom checks.
+
+    </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x4217.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x4267.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Guaranteeing local copies of files</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Checking for the Existence of Header Files</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,302 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Builders That Modify the Target or Source Lists Using an Emitter</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 1.1.0"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Writing Your Own Builders"
+HREF="c3427.html"><LINK
+REL="PREVIOUS"
+TITLE="Builders That Create Actions Using a Generator"
+HREF="x3560.html"><LINK
+REL="NEXT"
+TITLE="Where To Put Your Custom Builders and Tools"
+HREF="x3627.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 1.1.0</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x3560.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 19. Writing Your Own Builders</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x3627.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN3603"
+>19.6. Builders That Modify the Target or Source Lists Using an <TT
+CLASS="literal"
+>Emitter</TT
+></A
+></H1
+><P
+>&#13;
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> supports the ability for a Builder to modify the
+    lists of target(s) from the specified source(s).
+    You do this by defining an <TT
+CLASS="literal"
+>emitter</TT
+> function
+    that takes as its arguments
+    the list of the targets passed to the builder,
+    the list of the sources passed to the builder,
+    and the construction environment.
+    The emitter function should return the modified
+    lists of targets that should be built
+    and sources from which the targets will be built.
+
+    </P
+><P
+>&#13;
+    For example, suppose you want to define a Builder
+    that always calls a <TT
+CLASS="filename"
+>foobuild</TT
+> program,
+    and you want to automatically add
+    a new target file named
+    <TT
+CLASS="filename"
+>new_target</TT
+>
+    and a new source file named
+    <TT
+CLASS="filename"
+>new_source</TT
+>
+    whenever it's called.
+    The <TT
+CLASS="filename"
+>SConstruct</TT
+> file might look like this:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;       def modify_targets(target, source, env):
+           target.append('new_target')
+           source.append('new_source')
+           return target, source
+       bld = Builder(action = 'foobuild $TARGETS - $SOURCES',
+                     suffix = '.foo',
+                     src_suffix = '.input',
+                     emitter = modify_targets)
+       env = Environment(BUILDERS = {'Foo' : bld})
+       env.Foo('file')
+    </PRE
+><P
+>&#13;    
+    And would yield the following output:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      foobuild file.foo new_target - file.input new_source
+    </PRE
+><P
+>&#13;
+    One very flexible thing that you can is specify
+    use a construction variable to specify
+    different emitter functions for different
+    construction variable.
+    To do this, specify a string
+    containing a construction variable
+    expansion as the emitter when you call
+    the <CODE
+CLASS="classname"
+>Builder</CODE
+> function,
+    and set that construction variable to
+    the desired emitter function
+    in different construction environments:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;        bld = Builder(action = 'my_command $SOURCES &#62; $TARGET',
+                      suffix = '.foo',
+                      src_suffix = '.input',
+                      emitter = '$MY_EMITTER')
+        def modify1(target, source, env):
+            return target, source + ['modify1.in']
+        def modify2(target, source, env):
+            return target, source + ['modify2.in']
+        env1 = Environment(BUILDERS = {'Foo' : bld},
+                           MY_EMITTER = modify1)
+        env2 = Environment(BUILDERS = {'Foo' : bld},
+                           MY_EMITTER = modify2)
+        env1.Foo('file1')
+        env2.Foo('file2')
+        import os
+        env1['ENV']['PATH'] = env2['ENV']['PATH'] + os.pathsep + os.getcwd()
+        env2['ENV']['PATH'] = env2['ENV']['PATH'] + os.pathsep + os.getcwd()
+      
+
+    </PRE
+><PRE
+CLASS="programlisting"
+>&#13;      bld = Builder(action = 'my_command $SOURCES &#62; $TARGET',
+                    suffix = '.foo',
+                    src_suffix = '.input',
+                    emitter = '$MY_EMITTER')
+      def modify1(target, source, env):
+          return target, source + ['modify1.in']
+      def modify2(target, source, env):
+          return target, source + ['modify2.in']
+      env1 = Environment(BUILDERS = {'Foo' : bld},
+                         MY_EMITTER = modify1)
+      env2 = Environment(BUILDERS = {'Foo' : bld},
+                         MY_EMITTER = modify2)
+      env1.Foo('file1')
+      env2.Foo('file2')
+      
+    </PRE
+><P
+>&#13;
+    In this example, the <TT
+CLASS="filename"
+>modify1.in</TT
+>
+    and <TT
+CLASS="filename"
+>modify2.in</TT
+> files
+    get added to the source lists
+    of the different commands:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      my_command file1.input modify1.in &#62; file1.foo
+      my_command file2.input modify2.in &#62; file2.foo
+    </PRE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x3560.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x3627.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Builders That Create Actions Using a <TT
+CLASS="literal"
+>Generator</TT
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c3427.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Where To Put Your Custom Builders and Tools</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

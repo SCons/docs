@@ -1,0 +1,24 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>8.2. Merging Options While Creating Environment: the parse_flags Parameter</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.5.0"><link rel="up" href="ch08.html" title="Chapter 8. Automatically Putting Command-line Options into their Construction Variables"><link rel="prev" href="ch08.html" title="Chapter 8. Automatically Putting Command-line Options into their Construction Variables"><link rel="next" href="ch08s03.html" title="8.3. Separating Compile Arguments into their Variables: the ParseFlags Function"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">8.2. Merging Options While Creating Environment: the <em class="parameter"><code>parse_flags</code></em> Parameter</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch08.html">Prev</a> </td><th width="60%" align="center">Chapter 8. Automatically Putting Command-line Options into their Construction Variables</th><td width="20%" align="right"> <a accesskey="n" href="ch08s03.html">Next</a></td></tr></table><hr></div><div class="section" title="8.2. Merging Options While Creating Environment: the parse_flags Parameter"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="sect-parse_flags_"></a>8.2. Merging Options While Creating Environment: the <em class="parameter"><code>parse_flags</code></em> Parameter</h2></div></div></div><p>
+
+ It is also possible to merge <span>construction variable</span> values from arguments
+ given to the <a class="link" href="apd.html#f-Environment"><code class="function">Environment</code></a> call itself.
+ If the <em class="parameter"><code>parse_flags</code></em> keyword argument
+ is given, its value is distributed to <span>construction variables</span> in the
+ new environment in the same way as
+ described for the <code class="function">MergeFlags</code> method.
+ This also works when calling <a class="link" href="apd.html#f-Clone"><code class="function">env.Clone</code></a>,
+ as well as in overrides to builder methods
+ (see <a class="xref" href="ch07s02.html#builder_overrides" title="7.2.14. Overriding Construction Variable Settings">Section 7.2.14, &#8220;Overriding Construction Variable Settings&#8221;</a>).
+
+ </p><pre class="programlisting">
+env = Environment(parse_flags="-I/opt/include -L/opt/lib -lfoo")
+for k in ('CPPPATH', 'LIBPATH', 'LIBS'):
+    print("%s:" % k, env.get(k))
+env.Program("f1.c")
+   </pre><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+CPPPATH: ['/opt/include']
+LIBPATH: ['/opt/lib']
+LIBS: ['foo']
+cc -o f1.o -c -I/opt/include f1.c
+cc -o f1 f1.o -L/opt/lib -lfoo
+</pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch08.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch08.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch08s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 8. Automatically Putting Command-line Options into their Construction Variables </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 8.3. Separating Compile Arguments into their Variables: the <code class="function">ParseFlags</code> Function</td></tr></table></div></body></html>

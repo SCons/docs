@@ -1,0 +1,64 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>20.2. Adding a search path to a Scanner: FindPathDirs</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.8.1"><link rel="up" href="ch20.html" title="Chapter 20. Extending SCons: Writing Your Own Scanners"><link rel="prev" href="ch20.html" title="Chapter 20. Extending SCons: Writing Your Own Scanners"><link rel="next" href="ch20s03.html" title="20.3. Using scanners with Builders"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">20.2. Adding a search path to a Scanner: <code class="function">FindPathDirs</code></th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch20.html">Prev</a> </td><th width="60%" align="center">Chapter 20. Extending <span class="application">SCons</span>: Writing Your Own Scanners</th><td width="20%" align="right"> <a accesskey="n" href="ch20s03.html">Next</a></td></tr></table><hr></div><div class="section" title="20.2. Adding a search path to a Scanner: FindPathDirs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="scanner-search-paths"></a>20.2. Adding a search path to a Scanner: <code class="function">FindPathDirs</code></h2></div></div></div><p>
+
+    If the build tool in question will use a path variable to search
+    for included files or other dependencies, then the <em class="glossterm">Scanner</em> will
+    need to take that path variable into account as well -
+    the same way <a class="link" href="apa.html#cv-CPPPATH"><code class="envar">$CPPPATH</code></a> is used for files processed
+    by the C Preprocessor (used for C, C++, Fortran and others).
+    Path variables may be lists of nodes or semicolon-separated strings
+    (<span class="application">SCons</span> uses a semicolon here irrespective of
+    the pathlist separator used by the native operating system),
+    and may contain <span>construction variables</span> to be expanded.
+    A Scanner can take a <em class="parameter"><code>path_function</code></em>
+    to process such a path variable;
+    the function produces a tuple of paths that is passed to the
+    scanner function as its <em class="parameter"><code>path</code></em> parameter.
+
+    </p><p>
+
+    To make this easy,
+    <span class="application">SCons</span> provides the premade  <a class="link" href="apd.html#f-FindPathDirs"><code class="function">FindPathDirs</code></a>
+    function which returns a callable to expand a given path variable
+    (given as an <span class="application">SCons</span> <span>construction variable</span> name)
+    to a tuple of paths at the time the Scanner is called.
+    Deferring evaluation until that point allows, for instance,
+    the path to contain <a class="link" href="apa.html#cv-TARGET"><code class="envar">$TARGET</code></a> references which differ for
+    each file scanned.
+
+    </p><p>
+
+    Using <code class="function">FindPathDirs</code> is easy.  Continuing the above example,
+    using <code class="envar">$KPATH</code> as the <span>construction variable</span> to hold the paths
+    (analogous to <a class="link" href="apa.html#cv-CPPPATH"><code class="envar">$CPPPATH</code></a>), we just modify the call to
+    the <a class="link" href="apd.html#f-Scanner"><code class="function">Scanner</code></a> factory function to include a
+    <em class="parameter"><code>path_function</code></em> keyword argument:
+
+    </p><pre class="programlisting">
+kscan = Scanner(
+    function=kfile_scan,
+    skeys=['.k'],
+    path_function=FindPathDirs('KPATH'),
+)
+      </pre><p>
+
+    <code class="function">FindPathDirs</code> is called when the Scanner is created,
+    and the callable object it returns is stored
+    as an attribute in the scanner.
+    When the scanner is invoked, it calls that object,
+    which processes the <code class="envar">$KPATH</code> from the
+    current <span>construction environment</span>, doing necessary expansions and,
+    if necessary, adds related repository and variant directories,
+    producing a (possibly empty) tuple of paths
+    that is passed on to the scanner function.
+    The scanner function is then responsible for using that list
+    of paths to locate the include files identified by the scan.
+    The next section will show an example of that.
+
+    </p><p>
+
+    As a side note,
+    the returned method stores the path in an efficient way so
+    lookups are fast even when variable substitutions may be needed.
+    This is important since many files get scanned in a typical build.
+
+    </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch20.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch20.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch20s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 20. Extending <span class="application">SCons</span>: Writing Your Own Scanners </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 20.3. Using scanners with Builders</td></tr></table></div></body></html>

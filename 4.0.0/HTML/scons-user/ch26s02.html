@@ -1,0 +1,67 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>26.2. How SCons Handles Java Dependencies</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.0.0"><link rel="up" href="ch26.html" title="Chapter 26. Java Builds"><link rel="prev" href="ch26.html" title="Chapter 26. Java Builds"><link rel="next" href="ch26s03.html" title="26.3. Building Java Archive (.jar) Files: the Jar Builder"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">26.2. How <span class="application">SCons</span> Handles Java Dependencies</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch26.html">Prev</a> </td><th width="60%" align="center">Chapter 26. Java Builds</th><td width="20%" align="right"> <a accesskey="n" href="ch26s03.html">Next</a></td></tr></table><hr></div><div class="section" title="26.2. How SCons Handles Java Dependencies"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idp140522969627368"></a>26.2. How <span class="application">SCons</span> Handles Java Dependencies</h2></div></div></div><p>
+
+    In addition to searching the source directory for
+    <code class="filename">.java</code> files,
+    <span class="application">SCons</span> actually runs the <code class="filename">.java</code> files
+    through a stripped-down Java parser that figures out
+    what classes are defined.
+    In other words, <span class="application">SCons</span> knows,
+    without you having to tell it,
+    what <code class="filename">.class</code> files
+    will be produced by the <span class="application">javac</span> call.
+    So our one-liner example from the preceding section:
+
+    </p><pre class="programlisting">
+Java('classes', 'src')
+      </pre><p>
+
+    Will not only tell you reliably
+    that the <code class="filename">.class</code> files
+    in the <code class="filename">classes</code> subdirectory 
+    are up-to-date:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+javac -d classes -sourcepath src src/Example1.java src/Example2.java src/Example3.java
+% <strong class="userinput"><code>scons -Q classes</code></strong>
+scons: `classes' is up to date.
+</pre><p>
+
+    But it will also remove all of the generated
+    <code class="filename">.class</code> files,
+    even for inner classes,
+    without you having to specify them manually.
+    For example, if our
+    <code class="filename">Example1.java</code>
+    and
+    <code class="filename">Example3.java</code>
+    files both define additional classes,
+    and the class defined in <code class="filename">Example2.java</code>
+    has an inner class,
+    running <strong class="userinput"><code>scons -c</code></strong>
+    will clean up all of those <code class="filename">.class</code> files
+    as well:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+javac -d classes -sourcepath src src/Example1.java src/Example2.java src/Example3.java
+% <strong class="userinput"><code>scons -Q -c classes</code></strong>
+Removed classes/Example1.class
+Removed classes/AdditionalClass1.class
+Removed classes/Example2$Inner2.class
+Removed classes/Example2.class
+Removed classes/Example3.class
+Removed classes/AdditionalClass3.class
+</pre><p>
+
+    To ensure correct handling of <code class="filename">.class</code>
+    dependencies in all cases, you need to tell <span class="application">SCons</span> which Java
+    version is being used.  This is needed because Java 1.5 changed
+    the <code class="filename">.class</code> file names for nested anonymous
+    inner classes.  Use the <code class="varname">JAVAVERSION</code> construction
+    variable to specify the version in use.  With Java 1.6, the
+    one-liner example can then be defined like this:
+
+    </p><pre class="programlisting">
+Java('classes', 'src', JAVAVERSION='1.6')
+    </pre><p>
+    See <code class="varname">JAVAVERSION</code> in the man page for more information.
+    </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch26.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch26.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch26s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 26. Java Builds </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 26.3. Building Java Archive (<code class="filename">.jar</code>) Files:  the <code class="function">Jar</code> Builder</td></tr></table></div></body></html>

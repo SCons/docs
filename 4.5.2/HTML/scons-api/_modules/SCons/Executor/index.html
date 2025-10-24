@@ -1,0 +1,962 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SCons.Executor &#8212; SCons 4.5.2 documentation</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <link rel="index" title="Index" href="../../../genindex/" />
+    <link rel="search" title="Search" href="../../../search/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">SCons 4.5.2 documentation</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../search/" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Contents:
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../SCons/">
+   SCons package
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../SCons.Node/">
+     SCons.Node package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../SCons.Platform/">
+     SCons.Platform package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../SCons.Scanner/">
+     SCons.Scanner package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../SCons.Script/">
+     SCons.Script package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../SCons.Taskmaster/">
+     SCons.Taskmaster package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../SCons.Tool/">
+     SCons.Tool package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../SCons.Variables/">
+     SCons.Variables package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../SCons.compat/">
+     SCons.compat package
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../SCons.compat/">
+   SCons.compat package
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../SCons.Node/">
+   SCons.Node package
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../SCons.Platform/">
+   SCons.Platform package
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../SCons.Scanner/">
+   SCons.Scanner package
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../SCons.Script/">
+   SCons.Script package
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../SCons.Taskmaster/">
+   SCons.Taskmaster package
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../SCons.Tool/">
+   SCons.Tool package
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../SCons.Variables/">
+   SCons.Variables package
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1></h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <h1>Source code for SCons.Executor</h1><div class="highlight"><pre>
+<span></span><span class="c1"># MIT License</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright The SCons Foundation</span>
+<span class="c1">#</span>
+<span class="c1"># Permission is hereby granted, free of charge, to any person obtaining</span>
+<span class="c1"># a copy of this software and associated documentation files (the</span>
+<span class="c1"># &quot;Software&quot;), to deal in the Software without restriction, including</span>
+<span class="c1"># without limitation the rights to use, copy, modify, merge, publish,</span>
+<span class="c1"># distribute, sublicense, and/or sell copies of the Software, and to</span>
+<span class="c1"># permit persons to whom the Software is furnished to do so, subject to</span>
+<span class="c1"># the following conditions:</span>
+<span class="c1">#</span>
+<span class="c1"># The above copyright notice and this permission notice shall be included</span>
+<span class="c1"># in all copies or substantial portions of the Software.</span>
+<span class="c1">#</span>
+<span class="c1"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY</span>
+<span class="c1"># KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND</span>
+<span class="c1"># NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE</span>
+<span class="c1"># LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION</span>
+<span class="c1"># OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</span>
+<span class="c1"># WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</span>
+
+<span class="sd">&quot;&quot;&quot;Execute actions with specific lists of target and source Nodes.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">collections</span>
+
+<span class="kn">import</span> <span class="nn">SCons.Errors</span>
+<span class="kn">import</span> <span class="nn">SCons.Memoize</span>
+<span class="kn">import</span> <span class="nn">SCons.Util</span>
+<span class="kn">from</span> <span class="nn">SCons.compat</span> <span class="kn">import</span> <span class="n">NoSlotsPyPy</span>
+<span class="kn">import</span> <span class="nn">SCons.Debug</span>
+<span class="kn">from</span> <span class="nn">SCons.Debug</span> <span class="kn">import</span> <span class="n">logInstanceCreation</span>
+
+<div class="viewcode-block" id="Batch"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Batch">[docs]</a><span class="k">class</span> <span class="nc">Batch</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remembers exact association between targets</span>
+<span class="sd">    and sources of executor.&quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;targets&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;sources&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="p">[],</span> <span class="n">sources</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">targets</span> <span class="o">=</span> <span class="n">targets</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sources</span> <span class="o">=</span> <span class="n">sources</span></div>
+
+
+
+<div class="viewcode-block" id="TSList"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.TSList">[docs]</a><span class="k">class</span> <span class="nc">TSList</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">UserList</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class that implements $TARGETS or $SOURCES expansions by wrapping</span>
+<span class="sd">    an executor Method.  This class is used in the Executor.lvars()</span>
+<span class="sd">    to delay creation of NodeList objects until they&#39;re needed.</span>
+
+<span class="sd">    Note that we subclass collections.UserList purely so that the</span>
+<span class="sd">    is_Sequence() function will identify an object of this class as</span>
+<span class="sd">    a list during variable expansion.  We&#39;re not really using any</span>
+<span class="sd">    collections.UserList methods in practice.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+        <span class="n">nl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">nl</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="n">nl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">nl</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">nl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">nl</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">nl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="n">nl</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TSObject"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.TSObject">[docs]</a><span class="k">class</span> <span class="nc">TSObject</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class that implements $TARGET or $SOURCE expansions by wrapping</span>
+<span class="sd">    an Executor method.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">n</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">n</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span></div>
+
+<div class="viewcode-block" id="rfile"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.rfile">[docs]</a><span class="k">def</span> <span class="nf">rfile</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A function to return the results of a Node&#39;s rfile() method,</span>
+<span class="sd">    if it exists, and the Node itself otherwise (if it&#39;s a Value</span>
+<span class="sd">    Node, e.g.).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">rfile</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">rfile</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">node</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">rfile</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="execute_nothing"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.execute_nothing">[docs]</a><span class="k">def</span> <span class="nf">execute_nothing</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">kw</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="execute_action_list"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.execute_action_list">[docs]</a><span class="k">def</span> <span class="nf">execute_action_list</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">kw</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Actually execute the action list.&quot;&quot;&quot;</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_build_env</span><span class="p">()</span>
+    <span class="n">kw</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_kw</span><span class="p">(</span><span class="n">kw</span><span class="p">)</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">act</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_action_list</span><span class="p">():</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">([],</span> <span class="p">[],</span> <span class="n">env</span><span class="p">)</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="n">act</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">BuildError</span><span class="p">):</span>
+            <span class="n">status</span><span class="o">.</span><span class="n">executor</span> <span class="o">=</span> <span class="n">obj</span>
+            <span class="k">raise</span> <span class="n">status</span>    <span class="c1"># TODO pylint E0702: raising int not allowed</span>
+        <span class="k">elif</span> <span class="n">status</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Error </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">status</span>
+            <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">BuildError</span><span class="p">(</span>
+                <span class="n">errstr</span><span class="o">=</span><span class="n">msg</span><span class="p">,</span>
+                <span class="n">node</span><span class="o">=</span><span class="n">obj</span><span class="o">.</span><span class="n">batches</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">targets</span><span class="p">,</span>
+                <span class="n">executor</span><span class="o">=</span><span class="n">obj</span><span class="p">,</span>
+                <span class="n">action</span><span class="o">=</span><span class="n">act</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">status</span></div>
+
+<span class="n">_do_execute_map</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span> <span class="p">:</span> <span class="n">execute_nothing</span><span class="p">,</span>
+                   <span class="mi">1</span> <span class="p">:</span> <span class="n">execute_action_list</span><span class="p">}</span>
+
+
+<div class="viewcode-block" id="execute_actions_str"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.execute_actions_str">[docs]</a><span class="k">def</span> <span class="nf">execute_actions_str</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_build_env</span><span class="p">()</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">action</span><span class="o">.</span><span class="n">genstring</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">get_all_targets</span><span class="p">(),</span>
+                                       <span class="n">obj</span><span class="o">.</span><span class="n">get_all_sources</span><span class="p">(),</span>
+                                       <span class="n">env</span><span class="p">)</span>
+                      <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_action_list</span><span class="p">()])</span></div>
+
+<div class="viewcode-block" id="execute_null_str"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.execute_null_str">[docs]</a><span class="k">def</span> <span class="nf">execute_null_str</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s1">&#39;&#39;</span></div>
+
+<span class="n">_execute_str_map</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span> <span class="p">:</span> <span class="n">execute_null_str</span><span class="p">,</span>
+                    <span class="mi">1</span> <span class="p">:</span> <span class="n">execute_actions_str</span><span class="p">}</span>
+
+
+<div class="viewcode-block" id="Executor"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor">[docs]</a><span class="k">class</span> <span class="nc">Executor</span><span class="p">(</span><span class="nb">object</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">NoSlotsPyPy</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class for controlling instances of executing an action.</span>
+
+<span class="sd">    This largely exists to hold a single association of an action,</span>
+<span class="sd">    environment, list of environment override dictionaries, targets</span>
+<span class="sd">    and sources for later processing as needed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;pre_actions&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;post_actions&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;env&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;overridelist&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;batches&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;builder_kw&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;_memo&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;lvars&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;_changed_sources_list&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;_changed_targets_list&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;_unchanged_sources_list&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;_unchanged_targets_list&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;action_list&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;_do_execute&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;_execute_str&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">overridelist</span><span class="o">=</span><span class="p">[{}],</span>
+                 <span class="n">targets</span><span class="o">=</span><span class="p">[],</span> <span class="n">sources</span><span class="o">=</span><span class="p">[],</span> <span class="n">builder_kw</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="k">if</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Debug</span><span class="o">.</span><span class="n">track_instances</span><span class="p">:</span> <span class="n">logInstanceCreation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;Executor.Executor&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_action_list</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pre_actions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">post_actions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">env</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">overridelist</span> <span class="o">=</span> <span class="n">overridelist</span>
+        <span class="k">if</span> <span class="n">targets</span> <span class="ow">or</span> <span class="n">sources</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">batches</span> <span class="o">=</span> <span class="p">[</span><span class="n">Batch</span><span class="p">(</span><span class="n">targets</span><span class="p">[:],</span> <span class="n">sources</span><span class="p">[:])]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">batches</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">builder_kw</span> <span class="o">=</span> <span class="n">builder_kw</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_do_execute</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_execute_str</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_memo</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="Executor.get_lvars"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor.get_lvars">[docs]</a>    <span class="k">def</span> <span class="nf">get_lvars</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lvars</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lvars</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;CHANGED_SOURCES&#39;</span> <span class="p">:</span> <span class="n">TSList</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_changed_sources</span><span class="p">),</span>
+                <span class="s1">&#39;CHANGED_TARGETS&#39;</span> <span class="p">:</span> <span class="n">TSList</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_changed_targets</span><span class="p">),</span>
+                <span class="s1">&#39;SOURCE&#39;</span> <span class="p">:</span> <span class="n">TSObject</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_source</span><span class="p">),</span>
+                <span class="s1">&#39;SOURCES&#39;</span> <span class="p">:</span> <span class="n">TSList</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_sources</span><span class="p">),</span>
+                <span class="s1">&#39;TARGET&#39;</span> <span class="p">:</span> <span class="n">TSObject</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_target</span><span class="p">),</span>
+                <span class="s1">&#39;TARGETS&#39;</span> <span class="p">:</span> <span class="n">TSList</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_targets</span><span class="p">),</span>
+                <span class="s1">&#39;UNCHANGED_SOURCES&#39;</span> <span class="p">:</span> <span class="n">TSList</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_unchanged_sources</span><span class="p">),</span>
+                <span class="s1">&#39;UNCHANGED_TARGETS&#39;</span> <span class="p">:</span> <span class="n">TSList</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_unchanged_targets</span><span class="p">),</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lvars</span></div>
+
+<div class="viewcode-block" id="Executor._get_changes"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor._get_changes">[docs]</a>    <span class="k">def</span> <span class="nf">_get_changes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">cs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">ct</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">us</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">ut</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">batches</span><span class="p">:</span>
+            <span class="c1"># don&#39;t add targets marked always build to unchanged lists</span>
+            <span class="c1"># add to changed list as they always need to build</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">b</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">always_build</span> <span class="ow">and</span> <span class="n">b</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">is_up_to_date</span><span class="p">():</span>
+                <span class="n">us</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">rfile</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">sources</span><span class="p">)))</span>
+                <span class="n">ut</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">targets</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cs</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">rfile</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">sources</span><span class="p">)))</span>
+                <span class="n">ct</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">targets</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_changed_sources_list</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">NodeList</span><span class="p">(</span><span class="n">cs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_changed_targets_list</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">NodeList</span><span class="p">(</span><span class="n">ct</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_unchanged_sources_list</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">NodeList</span><span class="p">(</span><span class="n">us</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_unchanged_targets_list</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">NodeList</span><span class="p">(</span><span class="n">ut</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Executor._get_changed_sources"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor._get_changed_sources">[docs]</a>    <span class="k">def</span> <span class="nf">_get_changed_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_changed_sources_list</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_changes</span><span class="p">()</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_changed_sources_list</span></div>
+
+<div class="viewcode-block" id="Executor._get_changed_targets"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor._get_changed_targets">[docs]</a>    <span class="k">def</span> <span class="nf">_get_changed_targets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_changed_targets_list</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_changes</span><span class="p">()</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_changed_targets_list</span></div>
+
+<div class="viewcode-block" id="Executor._get_source"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor._get_source">[docs]</a>    <span class="k">def</span> <span class="nf">_get_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">rfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">batches</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sources</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">get_subst_proxy</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Executor._get_sources"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor._get_sources">[docs]</a>    <span class="k">def</span> <span class="nf">_get_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">NodeList</span><span class="p">([</span><span class="n">rfile</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">get_subst_proxy</span><span class="p">()</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_sources</span><span class="p">()])</span></div>
+
+<div class="viewcode-block" id="Executor._get_target"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor._get_target">[docs]</a>    <span class="k">def</span> <span class="nf">_get_target</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">batches</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_subst_proxy</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Executor._get_targets"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor._get_targets">[docs]</a>    <span class="k">def</span> <span class="nf">_get_targets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">NodeList</span><span class="p">([</span><span class="n">n</span><span class="o">.</span><span class="n">get_subst_proxy</span><span class="p">()</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_targets</span><span class="p">()])</span></div>
+
+<div class="viewcode-block" id="Executor._get_unchanged_sources"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor._get_unchanged_sources">[docs]</a>    <span class="k">def</span> <span class="nf">_get_unchanged_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unchanged_sources_list</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_changes</span><span class="p">()</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unchanged_sources_list</span></div>
+
+<div class="viewcode-block" id="Executor._get_unchanged_targets"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor._get_unchanged_targets">[docs]</a>    <span class="k">def</span> <span class="nf">_get_unchanged_targets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unchanged_targets_list</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_changes</span><span class="p">()</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unchanged_targets_list</span></div>
+
+<div class="viewcode-block" id="Executor.get_action_targets"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor.get_action_targets">[docs]</a>    <span class="k">def</span> <span class="nf">get_action_targets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">action_list</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="n">targets_string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">action_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_targets</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">targets_string</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;$&#39;</span><span class="p">:</span>
+            <span class="n">targets_string</span> <span class="o">=</span> <span class="n">targets_string</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_lvars</span><span class="p">()[</span><span class="n">targets_string</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Executor.set_action_list"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor.set_action_list">[docs]</a>    <span class="k">def</span> <span class="nf">set_action_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_List</span><span class="p">(</span><span class="n">action</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">action</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">UserError</span><span class="p">(</span><span class="s2">&quot;Executor must have an action.&quot;</span><span class="p">)</span>
+            <span class="n">action</span> <span class="o">=</span> <span class="p">[</span><span class="n">action</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_list</span> <span class="o">=</span> <span class="n">action</span></div>
+
+<div class="viewcode-block" id="Executor.get_action_list"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor.get_action_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_action_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action_list</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_actions</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">action_list</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">post_actions</span></div>
+
+<div class="viewcode-block" id="Executor.get_all_targets"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor.get_all_targets">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_targets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns all targets for all batches of this Executor.&quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">batches</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">targets</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+<div class="viewcode-block" id="Executor.get_all_sources"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor.get_all_sources">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns all sources for all batches of this Executor.&quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">batches</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">sources</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+<div class="viewcode-block" id="Executor.get_all_children"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor.get_all_children">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_children</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns all unique children (dependencies) for all batches</span>
+<span class="sd">        of this Executor.</span>
+
+<span class="sd">        The Taskmaster can recognize when it&#39;s already evaluated a</span>
+<span class="sd">        Node, so we don&#39;t have to make this list unique for its intended</span>
+<span class="sd">        canonical use case, but we expect there to be a lot of redundancy</span>
+<span class="sd">        (long lists of batched .cc files #including the same .h files</span>
+<span class="sd">        over and over), so removing the duplicates once up front should</span>
+<span class="sd">        save the Taskmaster a lot of work.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_targets</span><span class="p">():</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">children</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">uniquer_hashables</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Executor.get_all_prerequisites"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor.get_all_prerequisites">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_prerequisites</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns all unique (order-only) prerequisites for all batches</span>
+<span class="sd">        of this Executor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_targets</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">target</span><span class="o">.</span><span class="n">prerequisites</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">prerequisites</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">uniquer_hashables</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Executor.get_action_side_effects"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor.get_action_side_effects">[docs]</a>    <span class="k">def</span> <span class="nf">get_action_side_effects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns all side effects for all batches of this</span>
+<span class="sd">        Executor used by the underlying Action.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_action_targets</span><span class="p">():</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">side_effects</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">uniquer_hashables</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Executor.get_build_env"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor.get_build_env">[docs]</a>    <span class="nd">@SCons</span><span class="o">.</span><span class="n">Memoize</span><span class="o">.</span><span class="n">CountMethodCall</span>
+    <span class="k">def</span> <span class="nf">get_build_env</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fetch or create the appropriate build Environment</span>
+<span class="sd">        for this Executor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_memo</span><span class="p">[</span><span class="s1">&#39;get_build_env&#39;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="c1"># Create the build environment instance with appropriate</span>
+        <span class="c1"># overrides.  These get evaluated against the current</span>
+        <span class="c1"># environment&#39;s construction variables so that users can</span>
+        <span class="c1"># add to existing values by referencing the variable in</span>
+        <span class="c1"># the expansion.</span>
+        <span class="n">overrides</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">odict</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">overridelist</span><span class="p">:</span>
+            <span class="n">overrides</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">odict</span><span class="p">)</span>
+
+        <span class="kn">import</span> <span class="nn">SCons.Defaults</span>
+        <span class="n">env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="ow">or</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Defaults</span><span class="o">.</span><span class="n">DefaultEnvironment</span><span class="p">()</span>
+        <span class="n">build_env</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">Override</span><span class="p">(</span><span class="n">overrides</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_memo</span><span class="p">[</span><span class="s1">&#39;get_build_env&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">build_env</span>
+
+        <span class="k">return</span> <span class="n">build_env</span></div>
+
+<div class="viewcode-block" id="Executor.get_build_scanner_path"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor.get_build_scanner_path">[docs]</a>    <span class="k">def</span> <span class="nf">get_build_scanner_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scanner</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fetch the scanner path for this executor&#39;s targets and sources.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_build_env</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">cwd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batches</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cwd</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">IndexError</span><span class="p">,</span> <span class="ne">AttributeError</span><span class="p">):</span>
+            <span class="n">cwd</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">scanner</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">cwd</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">get_all_targets</span><span class="p">(),</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">get_all_sources</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="Executor.get_kw"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor.get_kw">[docs]</a>    <span class="k">def</span> <span class="nf">get_kw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kw</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder_kw</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kw</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s1">&#39;executor&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+    <span class="c1"># use extra indirection because with new-style objects (Python 2.2</span>
+    <span class="c1"># and above) we can&#39;t override special methods, and nullify() needs</span>
+    <span class="c1"># to be able to do this.</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_do_execute_map</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_do_execute</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">kw</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Executor.cleanup"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor.cleanup">[docs]</a>    <span class="k">def</span> <span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_memo</span> <span class="o">=</span> <span class="p">{}</span></div>
+
+<div class="viewcode-block" id="Executor.add_sources"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor.add_sources">[docs]</a>    <span class="k">def</span> <span class="nf">add_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add source files to this Executor&#39;s list.  This is necessary</span>
+<span class="sd">        for &quot;multi&quot; Builders that can be called repeatedly to build up</span>
+<span class="sd">        a source file list for a given target.&quot;&quot;&quot;</span>
+        <span class="c1"># TODO(batch):  extend to multiple batches</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">batches</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># TODO(batch):  remove duplicates?</span>
+        <span class="n">sources</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">sources</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">batches</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sources</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batches</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sources</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">sources</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Executor.get_sources"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor.get_sources">[docs]</a>    <span class="k">def</span> <span class="nf">get_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">batches</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sources</span></div>
+
+<div class="viewcode-block" id="Executor.add_batch"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor.add_batch">[docs]</a>    <span class="k">def</span> <span class="nf">add_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">sources</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add pair of associated target and source to this Executor&#39;s list.</span>
+<span class="sd">        This is necessary for &quot;batch&quot; Builders that can be called repeatedly</span>
+<span class="sd">        to build up a list of matching target and source files that will be</span>
+<span class="sd">        used in order to update multiple target files at once from multiple</span>
+<span class="sd">        corresponding source files, for tools like MSVC that support it.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Batch</span><span class="p">(</span><span class="n">targets</span><span class="p">,</span> <span class="n">sources</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Executor.prepare"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor.prepare">[docs]</a>    <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Preparatory checks for whether this Executor can go ahead</span>
+<span class="sd">        and (try to) build its targets.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_sources</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">missing</span><span class="p">():</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Source `</span><span class="si">%s</span><span class="s2">&#39; not found, needed by target `</span><span class="si">%s</span><span class="s2">&#39;.&quot;</span>
+                <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">StopError</span><span class="p">(</span><span class="n">msg</span> <span class="o">%</span> <span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">batches</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span></div>
+
+<div class="viewcode-block" id="Executor.add_pre_action"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor.add_pre_action">[docs]</a>    <span class="k">def</span> <span class="nf">add_pre_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pre_actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">action</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Executor.add_post_action"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor.add_post_action">[docs]</a>    <span class="k">def</span> <span class="nf">add_post_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">post_actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">action</span><span class="p">)</span></div>
+
+    <span class="c1"># another extra indirection for new-style objects and nullify...</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_execute_str_map</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_execute_str</span><span class="p">](</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Executor.nullify"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor.nullify">[docs]</a>    <span class="k">def</span> <span class="nf">nullify</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_do_execute</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_execute_str</span> <span class="o">=</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="Executor.get_contents"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor.get_contents">[docs]</a>    <span class="nd">@SCons</span><span class="o">.</span><span class="n">Memoize</span><span class="o">.</span><span class="n">CountMethodCall</span>
+    <span class="k">def</span> <span class="nf">get_contents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fetch the signature contents.  This is the main reason this</span>
+<span class="sd">        class exists, so we can compute this once and cache it regardless</span>
+<span class="sd">        of how many target or source Nodes there are.</span>
+
+<span class="sd">        Returns bytes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_memo</span><span class="p">[</span><span class="s1">&#39;get_contents&#39;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="n">env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_build_env</span><span class="p">()</span>
+
+        <span class="n">action_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_action_list</span><span class="p">()</span>
+        <span class="n">all_targets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_targets</span><span class="p">()</span>
+        <span class="n">all_sources</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_sources</span><span class="p">()</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">action</span><span class="o">.</span><span class="n">get_contents</span><span class="p">(</span><span class="n">all_targets</span><span class="p">,</span>
+                                                                 <span class="n">all_sources</span><span class="p">,</span>
+                                                                 <span class="n">env</span><span class="p">)</span>
+                                             <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">action_list</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_memo</span><span class="p">[</span><span class="s1">&#39;get_contents&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+<div class="viewcode-block" id="Executor.get_timestamp"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor.get_timestamp">[docs]</a>    <span class="k">def</span> <span class="nf">get_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fetch a time stamp for this Executor.  We don&#39;t have one, of</span>
+<span class="sd">        course (only files do), but this is the interface used by the</span>
+<span class="sd">        timestamp module.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="Executor.scan_targets"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor.scan_targets">[docs]</a>    <span class="k">def</span> <span class="nf">scan_targets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scanner</span><span class="p">):</span>
+        <span class="c1"># TODO(batch):  scan by batches</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">scanner</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_targets</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="Executor.scan_sources"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor.scan_sources">[docs]</a>    <span class="k">def</span> <span class="nf">scan_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scanner</span><span class="p">):</span>
+        <span class="c1"># TODO(batch):  scan by batches</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">batches</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sources</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">scanner</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_sources</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="Executor.scan"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor.scan">[docs]</a>    <span class="k">def</span> <span class="nf">scan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scanner</span><span class="p">,</span> <span class="n">node_list</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Scan a list of this Executor&#39;s files (targets or sources) for</span>
+<span class="sd">        implicit dependencies and update all of the targets with them.</span>
+<span class="sd">        This essentially short-circuits an N*M scan of the sources for</span>
+<span class="sd">        each individual target, which is a hell of a lot more efficient.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_build_env</span><span class="p">()</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_build_scanner_path</span>
+        <span class="n">kw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_kw</span><span class="p">()</span>
+
+        <span class="c1"># TODO(batch):  scan by batches)</span>
+        <span class="n">deps</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">node_list</span><span class="p">:</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">disambiguate</span><span class="p">()</span>
+            <span class="n">deps</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">get_implicit_deps</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">scanner</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">kw</span><span class="p">))</span>
+
+        <span class="n">deps</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_implicit_deps</span><span class="p">())</span>
+
+        <span class="k">for</span> <span class="n">tgt</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_targets</span><span class="p">():</span>
+            <span class="n">tgt</span><span class="o">.</span><span class="n">add_to_implicit</span><span class="p">(</span><span class="n">deps</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Executor._get_unignored_sources_key"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor._get_unignored_sources_key">[docs]</a>    <span class="k">def</span> <span class="nf">_get_unignored_sources_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="p">()):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">node</span><span class="p">,)</span> <span class="o">+</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">ignore</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Executor.get_unignored_sources"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor.get_unignored_sources">[docs]</a>    <span class="nd">@SCons</span><span class="o">.</span><span class="n">Memoize</span><span class="o">.</span><span class="n">CountDictCall</span><span class="p">(</span><span class="n">_get_unignored_sources_key</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">get_unignored_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="p">()):</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">node</span><span class="p">,)</span> <span class="o">+</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">ignore</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">memo_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_memo</span><span class="p">[</span><span class="s1">&#39;get_unignored_sources&#39;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">memo_dict</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_memo</span><span class="p">[</span><span class="s1">&#39;get_unignored_sources&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">memo_dict</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">memo_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+        <span class="k">if</span> <span class="n">node</span><span class="p">:</span>
+            <span class="c1"># TODO:  better way to do this (it&#39;s a linear search,</span>
+            <span class="c1"># but it may not be critical path)?</span>
+            <span class="n">sourcelist</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">batches</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">b</span><span class="o">.</span><span class="n">targets</span><span class="p">:</span>
+                    <span class="n">sourcelist</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">sources</span>
+                    <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sourcelist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_sources</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">ignore</span><span class="p">:</span>
+            <span class="n">idict</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ignore</span><span class="p">:</span>
+                <span class="n">idict</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">sourcelist</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sourcelist</span> <span class="k">if</span> <span class="n">s</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">idict</span><span class="p">]</span>
+
+        <span class="n">memo_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">sourcelist</span>
+
+        <span class="k">return</span> <span class="n">sourcelist</span></div>
+
+<div class="viewcode-block" id="Executor.get_implicit_deps"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Executor.get_implicit_deps">[docs]</a>    <span class="k">def</span> <span class="nf">get_implicit_deps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the executor&#39;s implicit dependencies, i.e. the nodes of</span>
+<span class="sd">        the commands to be executed.&quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">build_env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_build_env</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">act</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_action_list</span><span class="p">():</span>
+            <span class="n">deps</span> <span class="o">=</span> <span class="n">act</span><span class="o">.</span><span class="n">get_implicit_deps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_all_targets</span><span class="p">(),</span>
+                                         <span class="bp">self</span><span class="o">.</span><span class="n">get_all_sources</span><span class="p">(),</span>
+                                         <span class="n">build_env</span><span class="p">)</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">deps</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div></div>
+
+
+
+<span class="n">_batch_executors</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="GetBatchExecutor"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.GetBatchExecutor">[docs]</a><span class="k">def</span> <span class="nf">GetBatchExecutor</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">_batch_executors</span><span class="p">[</span><span class="n">key</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="AddBatchExecutor"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.AddBatchExecutor">[docs]</a><span class="k">def</span> <span class="nf">AddBatchExecutor</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">executor</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_batch_executors</span>
+    <span class="n">_batch_executors</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">executor</span></div>
+
+<span class="n">nullenv</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="NullEnvironment"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.NullEnvironment">[docs]</a><span class="k">class</span> <span class="nc">NullEnvironment</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">Null</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">SCons.CacheDir</span>
+    <span class="n">_CacheDir_path</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_CacheDir</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">CacheDir</span><span class="o">.</span><span class="n">CacheDir</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+<div class="viewcode-block" id="NullEnvironment.get_CacheDir"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.NullEnvironment.get_CacheDir">[docs]</a>    <span class="k">def</span> <span class="nf">get_CacheDir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_CacheDir</span></div></div>
+
+
+<div class="viewcode-block" id="get_NullEnvironment"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.get_NullEnvironment">[docs]</a><span class="k">def</span> <span class="nf">get_NullEnvironment</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Use singleton pattern for Null Environments.&quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">nullenv</span>
+
+    <span class="k">if</span> <span class="n">nullenv</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">nullenv</span> <span class="o">=</span> <span class="n">NullEnvironment</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">nullenv</span></div>
+
+<div class="viewcode-block" id="Null"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Null">[docs]</a><span class="k">class</span> <span class="nc">Null</span><span class="p">(</span><span class="nb">object</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">NoSlotsPyPy</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A null Executor, with a null build Environment, that does</span>
+<span class="sd">    nothing when the rest of the methods call it.</span>
+
+<span class="sd">    This might be able to disappear when we refactor things to</span>
+<span class="sd">    disassociate Builders from Nodes entirely, so we&#39;re not</span>
+<span class="sd">    going to worry about unit tests for this--at least for now.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;pre_actions&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;post_actions&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;env&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;overridelist&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;batches&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;builder_kw&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;_memo&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;lvars&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;_changed_sources_list&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;_changed_targets_list&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;_unchanged_sources_list&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;_unchanged_targets_list&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;action_list&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;_do_execute&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;_execute_str&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Debug</span><span class="o">.</span><span class="n">track_instances</span><span class="p">:</span>
+            <span class="n">logInstanceCreation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;Executor.Null&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batches</span> <span class="o">=</span> <span class="p">[</span><span class="n">Batch</span><span class="p">(</span><span class="n">kw</span><span class="p">[</span><span class="s1">&#39;targets&#39;</span><span class="p">][:],</span> <span class="p">[])]</span>
+<div class="viewcode-block" id="Null.get_build_env"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Null.get_build_env">[docs]</a>    <span class="k">def</span> <span class="nf">get_build_env</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">get_NullEnvironment</span><span class="p">()</span></div>
+<div class="viewcode-block" id="Null.get_build_scanner_path"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Null.get_build_scanner_path">[docs]</a>    <span class="k">def</span> <span class="nf">get_build_scanner_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="Null.cleanup"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Null.cleanup">[docs]</a>    <span class="k">def</span> <span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+<div class="viewcode-block" id="Null.prepare"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Null.prepare">[docs]</a>    <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+<div class="viewcode-block" id="Null.get_unignored_sources"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Null.get_unignored_sources">[docs]</a>    <span class="k">def</span> <span class="nf">get_unignored_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(())</span></div>
+<div class="viewcode-block" id="Null.get_action_targets"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Null.get_action_targets">[docs]</a>    <span class="k">def</span> <span class="nf">get_action_targets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+<div class="viewcode-block" id="Null.get_action_list"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Null.get_action_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_action_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+<div class="viewcode-block" id="Null.get_all_targets"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Null.get_all_targets">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_targets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">batches</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">targets</span></div>
+<div class="viewcode-block" id="Null.get_all_sources"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Null.get_all_sources">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">batches</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sources</span></div>
+<div class="viewcode-block" id="Null.get_all_children"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Null.get_all_children">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_children</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">batches</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">children</span><span class="p">()</span></div>
+<div class="viewcode-block" id="Null.get_all_prerequisites"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Null.get_all_prerequisites">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_prerequisites</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+<div class="viewcode-block" id="Null.get_action_side_effects"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Null.get_action_side_effects">[docs]</a>    <span class="k">def</span> <span class="nf">get_action_side_effects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">0</span>
+<div class="viewcode-block" id="Null.get_contents"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Null.get_contents">[docs]</a>    <span class="k">def</span> <span class="nf">get_contents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span></div>
+<div class="viewcode-block" id="Null._morph"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Null._morph">[docs]</a>    <span class="k">def</span> <span class="nf">_morph</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Morph this Null executor to a real Executor object.&quot;&quot;&quot;</span>
+        <span class="n">batches</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batches</span>
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span> <span class="o">=</span> <span class="n">Executor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="fm">__init__</span><span class="p">([])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batches</span> <span class="o">=</span> <span class="n">batches</span></div>
+
+    <span class="c1"># The following methods require morphing this Null Executor to a</span>
+    <span class="c1"># real Executor object.</span>
+
+<div class="viewcode-block" id="Null.add_pre_action"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Null.add_pre_action">[docs]</a>    <span class="k">def</span> <span class="nf">add_pre_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_morph</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pre_action</span><span class="p">(</span><span class="n">action</span><span class="p">)</span></div>
+<div class="viewcode-block" id="Null.add_post_action"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Null.add_post_action">[docs]</a>    <span class="k">def</span> <span class="nf">add_post_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_morph</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_post_action</span><span class="p">(</span><span class="n">action</span><span class="p">)</span></div>
+<div class="viewcode-block" id="Null.set_action_list"><a class="viewcode-back" href="../../../SCons/#SCons.Executor.Null.set_action_list">[docs]</a>    <span class="k">def</span> <span class="nf">set_action_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_morph</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_action_list</span><span class="p">(</span><span class="n">action</span><span class="p">)</span></div></div>
+
+<span class="c1"># Local Variables:</span>
+<span class="c1"># tab-width:4</span>
+<span class="c1"># indent-tabs-mode:nil</span>
+<span class="c1"># End:</span>
+<span class="c1"># vim: set expandtab tabstop=4 shiftwidth=4:</span>
+</pre></div>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By SCons Project Team<br/>
+  
+      &copy; Copyright 2022, SCons Project.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

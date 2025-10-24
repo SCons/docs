@@ -1,0 +1,33 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>24.5. Building RMI Stub and Skeleton Class Files: the RMIC Builder</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.7.0"><link rel="up" href="ch24.html" title="Chapter 24. Java Builds"><link rel="prev" href="ch24s04.html" title="24.4. Building C Header and Stub Files: the JavaH Builder"><link rel="next" href="ch25.html" title="Chapter 25. Internationalization and localization with gettext"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">24.5. Building RMI Stub and Skeleton Class Files:  the <code class="function">RMIC</code> Builder</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch24s04.html">Prev</a> </td><th width="60%" align="center">Chapter 24. Java Builds</th><td width="20%" align="right"> <a accesskey="n" href="ch25.html">Next</a></td></tr></table><hr></div><div class="section" title="24.5. Building RMI Stub and Skeleton Class Files: the RMIC Builder"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id6546"></a>24.5. Building RMI Stub and Skeleton Class Files:  the <code class="function">RMIC</code> Builder</h2></div></div></div><p>
+
+    You can generate Remote Method Invocation stubs
+    by using the <a class="link" href="apb.html#b-RMIC"><code class="function">RMIC</code></a> Builder.
+    The source is a list of directories,
+    typically returned by a call to the <a class="link" href="apb.html#b-Java"><code class="function">Java</code></a> Builder,
+    and the target is an output directory
+    where the <code class="filename">_Stub.class</code>
+    and <code class="filename">_Skel.class</code> files will
+    be placed:
+
+    </p><pre class="programlisting">
+classes = Java(target='classes', source='src/pkg/sub')
+RMIC(target='outdir', source=classes)
+      </pre><p>
+
+    As it did with the <a class="link" href="apb.html#b-JavaH"><code class="function">JavaH</code></a> Builder,
+    <span class="application">SCons</span> remembers the class directory
+    and passes it as the <code class="option">-classpath</code> option
+    to <span class="application">rmic</span>:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+javac -d classes -sourcepath src/pkg/sub src/pkg/sub/Example1.java src/pkg/sub/Example2.java
+rmic -d outdir -classpath classes pkg.sub.Example1 pkg.sub.Example2
+</pre><p>
+
+    This example would generate the files
+    <code class="filename">outdir/pkg/sub/Example1_Skel.class</code>,
+    <code class="filename">outdir/pkg/sub/Example1_Stub.class</code>,
+    <code class="filename">outdir/pkg/sub/Example2_Skel.class</code> and
+    <code class="filename">outdir/pkg/sub/Example2_Stub.class</code>.
+
+    </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch24s04.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch24.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch25.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">24.4. Building C Header and Stub Files:  the <code class="function">JavaH</code> Builder </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 25. Internationalization and localization with gettext</td></tr></table></div></body></html>

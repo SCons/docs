@@ -1,0 +1,713 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SCons.Util.envs &#8212; SCons 4.9.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../../_static/documentation_options.js?v=95831eda"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/SCons/Util/envs';</script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search/"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../../">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SCons 4.9.1 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../SCons/">SCons package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Taskmaster/">SCons.Taskmaster package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Util/">SCons.Util package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Variables/">SCons.Variables package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.compat/">SCons.compat package</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.compat/">SCons.compat package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Taskmaster/">SCons.Taskmaster package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Util/">SCons.Util package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Variables/">SCons.Variables package</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for SCons.Util.envs</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: MIT</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright The SCons Foundation</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">SCons environment utility functions.</span>
+
+<span class="sd">Routines for working with environments and construction variables</span>
+<span class="sd">that don&#39;t need the specifics of the Environment class.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">types</span> <span class="kn">import</span> <span class="n">MethodType</span><span class="p">,</span> <span class="n">FunctionType</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Any</span>
+
+<span class="kn">from</span> <span class="nn">.sctypes</span> <span class="kn">import</span> <span class="n">is_List</span><span class="p">,</span> <span class="n">is_Tuple</span><span class="p">,</span> <span class="n">is_String</span>
+
+
+<div class="viewcode-block" id="PrependPath">
+<a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.envs.PrependPath">[docs]</a>
+<span class="k">def</span> <span class="nf">PrependPath</span><span class="p">(</span>
+    <span class="n">oldpath</span><span class="p">,</span>
+    <span class="n">newpath</span><span class="p">,</span>
+    <span class="n">sep</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">pathsep</span><span class="p">,</span>
+    <span class="n">delete_existing</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">canonicalize</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span> <span class="o">|</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Prepend *newpath* path elements to *oldpath*.</span>
+
+<span class="sd">    Will only add any particular path once (leaving the first one it</span>
+<span class="sd">    encounters and ignoring the rest, to preserve path order), and will</span>
+<span class="sd">    :mod:`os.path.normpath` and :mod:`os.path.normcase` all paths to help</span>
+<span class="sd">    assure this.  This can also handle the case where *oldpath*</span>
+<span class="sd">    is a list instead of a string, in which case a list will be returned</span>
+<span class="sd">    instead of a string. For example:</span>
+
+<span class="sd">    &gt;&gt;&gt; p = PrependPath(&quot;/foo/bar:/foo&quot;, &quot;/biz/boom:/foo&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; print(p)</span>
+<span class="sd">    /biz/boom:/foo:/foo/bar</span>
+
+<span class="sd">    If *delete_existing* is ``False``, then adding a path that exists will</span>
+<span class="sd">    not move it to the beginning; it will stay where it is in the list.</span>
+
+<span class="sd">    &gt;&gt;&gt; p = PrependPath(&quot;/foo/bar:/foo&quot;, &quot;/biz/boom:/foo&quot;, delete_existing=False)</span>
+<span class="sd">    &gt;&gt;&gt; print(p)</span>
+<span class="sd">    /biz/boom:/foo/bar:/foo</span>
+
+<span class="sd">    If *canonicalize* is not ``None``, it is applied to each element of</span>
+<span class="sd">    *newpath* before use.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">orig</span> <span class="o">=</span> <span class="n">oldpath</span>
+    <span class="n">is_list</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">paths</span> <span class="o">=</span> <span class="n">orig</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_List</span><span class="p">(</span><span class="n">orig</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_Tuple</span><span class="p">(</span><span class="n">orig</span><span class="p">):</span>
+        <span class="n">paths</span> <span class="o">=</span> <span class="n">paths</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">sep</span><span class="p">)</span>
+        <span class="n">is_list</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="n">is_String</span><span class="p">(</span><span class="n">newpath</span><span class="p">):</span>
+        <span class="n">newpaths</span> <span class="o">=</span> <span class="n">newpath</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">sep</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">is_List</span><span class="p">(</span><span class="n">newpath</span><span class="p">)</span> <span class="ow">or</span> <span class="n">is_Tuple</span><span class="p">(</span><span class="n">newpath</span><span class="p">):</span>
+        <span class="n">newpaths</span> <span class="o">=</span> <span class="n">newpath</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">newpaths</span> <span class="o">=</span> <span class="p">[</span><span class="n">newpath</span><span class="p">]</span>  <span class="c1"># might be a Dir</span>
+
+    <span class="k">if</span> <span class="n">canonicalize</span><span class="p">:</span>
+        <span class="n">newpaths</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">canonicalize</span><span class="p">,</span> <span class="n">newpaths</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">delete_existing</span><span class="p">:</span>
+        <span class="c1"># First uniquify the old paths, making sure to</span>
+        <span class="c1"># preserve the first instance (in Unix/Linux,</span>
+        <span class="c1"># the first one wins), and remembering them in normpaths.</span>
+        <span class="c1"># Then insert the new paths at the head of the list</span>
+        <span class="c1"># if they&#39;re not already in the normpaths list.</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">normpaths</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">normpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normcase</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">normpath</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">normpaths</span><span class="p">:</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                <span class="n">normpaths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">normpath</span><span class="p">)</span>
+        <span class="n">newpaths</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>  <span class="c1"># since we&#39;re inserting at the head</span>
+        <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">newpaths</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">normpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normcase</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">normpath</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">normpaths</span><span class="p">:</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+                <span class="n">normpaths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">normpath</span><span class="p">)</span>
+        <span class="n">paths</span> <span class="o">=</span> <span class="n">result</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">newpaths</span> <span class="o">=</span> <span class="n">newpaths</span> <span class="o">+</span> <span class="n">paths</span>  <span class="c1"># prepend new paths</span>
+
+        <span class="n">normpaths</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">paths</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># now we add them only if they are unique</span>
+        <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">newpaths</span><span class="p">:</span>
+            <span class="n">normpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normcase</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">path</span> <span class="ow">and</span> <span class="n">normpath</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">normpaths</span><span class="p">:</span>
+                <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                <span class="n">normpaths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">normpath</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">is_list</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">paths</span>
+
+    <span class="k">return</span> <span class="n">sep</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">paths</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="AppendPath">
+<a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.envs.AppendPath">[docs]</a>
+<span class="k">def</span> <span class="nf">AppendPath</span><span class="p">(</span>
+    <span class="n">oldpath</span><span class="p">,</span>
+    <span class="n">newpath</span><span class="p">,</span>
+    <span class="n">sep</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">pathsep</span><span class="p">,</span>
+    <span class="n">delete_existing</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">canonicalize</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span> <span class="o">|</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Append *newpath* path elements to *oldpath*.</span>
+
+<span class="sd">    Will only add any particular path once (leaving the last one it</span>
+<span class="sd">    encounters and ignoring the rest, to preserve path order), and will</span>
+<span class="sd">    :mod:`os.path.normpath` and :mod:`os.path.normcase` all paths to help</span>
+<span class="sd">    assure this.  This can also handle the case where *oldpath*</span>
+<span class="sd">    is a list instead of a string, in which case a list will be returned</span>
+<span class="sd">    instead of a string. For example:</span>
+
+<span class="sd">    &gt;&gt;&gt; p = AppendPath(&quot;/foo/bar:/foo&quot;, &quot;/biz/boom:/foo&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; print(p)</span>
+<span class="sd">    /foo/bar:/biz/boom:/foo</span>
+
+<span class="sd">    If *delete_existing* is ``False``, then adding a path that exists</span>
+<span class="sd">    will not move it to the end; it will stay where it is in the list.</span>
+
+<span class="sd">    &gt;&gt;&gt; p = AppendPath(&quot;/foo/bar:/foo&quot;, &quot;/biz/boom:/foo&quot;, delete_existing=False)</span>
+<span class="sd">    &gt;&gt;&gt; print(p)</span>
+<span class="sd">    /foo/bar:/foo:/biz/boom</span>
+
+<span class="sd">    If *canonicalize* is not ``None``, it is applied to each element of</span>
+<span class="sd">    *newpath* before use.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">orig</span> <span class="o">=</span> <span class="n">oldpath</span>
+    <span class="n">is_list</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">paths</span> <span class="o">=</span> <span class="n">orig</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_List</span><span class="p">(</span><span class="n">orig</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_Tuple</span><span class="p">(</span><span class="n">orig</span><span class="p">):</span>
+        <span class="n">paths</span> <span class="o">=</span> <span class="n">paths</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">sep</span><span class="p">)</span>
+        <span class="n">is_list</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="n">is_String</span><span class="p">(</span><span class="n">newpath</span><span class="p">):</span>
+        <span class="n">newpaths</span> <span class="o">=</span> <span class="n">newpath</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">sep</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">is_List</span><span class="p">(</span><span class="n">newpath</span><span class="p">)</span> <span class="ow">or</span> <span class="n">is_Tuple</span><span class="p">(</span><span class="n">newpath</span><span class="p">):</span>
+        <span class="n">newpaths</span> <span class="o">=</span> <span class="n">newpath</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">newpaths</span> <span class="o">=</span> <span class="p">[</span><span class="n">newpath</span><span class="p">]</span>  <span class="c1"># might be a Dir</span>
+
+    <span class="k">if</span> <span class="n">canonicalize</span><span class="p">:</span>
+        <span class="n">newpaths</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">canonicalize</span><span class="p">,</span> <span class="n">newpaths</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">delete_existing</span><span class="p">:</span>
+        <span class="c1"># add old paths to result, then</span>
+        <span class="c1"># add new paths if not already present</span>
+        <span class="c1"># (I thought about using a dict for normpaths for speed,</span>
+        <span class="c1"># but it&#39;s not clear hashing the strings would be faster</span>
+        <span class="c1"># than linear searching these typically short lists.)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">normpaths</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="n">normpaths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normcase</span><span class="p">(</span><span class="n">path</span><span class="p">)))</span>
+        <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">newpaths</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">normpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normcase</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">normpath</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">normpaths</span><span class="p">:</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                <span class="n">normpaths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">normpath</span><span class="p">)</span>
+        <span class="n">paths</span> <span class="o">=</span> <span class="n">result</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># start w/ new paths, add old ones if not present,</span>
+        <span class="c1"># then reverse.</span>
+        <span class="n">newpaths</span> <span class="o">=</span> <span class="n">paths</span> <span class="o">+</span> <span class="n">newpaths</span>  <span class="c1"># append new paths</span>
+        <span class="n">newpaths</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+
+        <span class="n">normpaths</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">paths</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># now we add them only if they are unique</span>
+        <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">newpaths</span><span class="p">:</span>
+            <span class="n">normpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normcase</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">path</span> <span class="ow">and</span> <span class="n">normpath</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">normpaths</span><span class="p">:</span>
+                <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                <span class="n">normpaths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">normpath</span><span class="p">)</span>
+        <span class="n">paths</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">is_list</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">paths</span>
+
+    <span class="k">return</span> <span class="n">sep</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">paths</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="AddPathIfNotExists">
+<a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.envs.AddPathIfNotExists">[docs]</a>
+<span class="k">def</span> <span class="nf">AddPathIfNotExists</span><span class="p">(</span><span class="n">env_dict</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">sep</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">pathsep</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a path element to a construction variable.</span>
+
+<span class="sd">    `key` is looked up in `env_dict`, and `path` is added to it if it</span>
+<span class="sd">    is not already present. `env_dict[key]` is assumed to be in the</span>
+<span class="sd">    format of a PATH variable: a list of paths separated by `sep` tokens.</span>
+
+<span class="sd">    &gt;&gt;&gt; env = {&#39;PATH&#39;: &#39;/bin:/usr/bin:/usr/local/bin&#39;}</span>
+<span class="sd">    &gt;&gt;&gt; AddPathIfNotExists(env, &#39;PATH&#39;, &#39;/opt/bin&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; print(env[&#39;PATH&#39;])</span>
+<span class="sd">    /opt/bin:/bin:/usr/bin:/usr/local/bin</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">is_list</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">paths</span> <span class="o">=</span> <span class="n">env_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_List</span><span class="p">(</span><span class="n">env_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]):</span>
+            <span class="n">paths</span> <span class="o">=</span> <span class="n">paths</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">sep</span><span class="p">)</span>
+            <span class="n">is_list</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normcase</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normcase</span><span class="p">,</span> <span class="n">paths</span><span class="p">)):</span>
+            <span class="n">paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">path</span><span class="p">]</span> <span class="o">+</span> <span class="n">paths</span>
+        <span class="k">if</span> <span class="n">is_list</span><span class="p">:</span>
+            <span class="n">env_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">paths</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">env_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">sep</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">paths</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="n">env_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">path</span></div>
+
+
+
+<div class="viewcode-block" id="MethodWrapper">
+<a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.envs.MethodWrapper">[docs]</a>
+<span class="k">class</span> <span class="nc">MethodWrapper</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A generic Wrapper class that associates a method with an object.</span>
+
+<span class="sd">    As part of creating this MethodWrapper object an attribute with the</span>
+<span class="sd">    specified name (by default, the name of the supplied method) is added</span>
+<span class="sd">    to the underlying object.  When that new &quot;method&quot; is called, our</span>
+<span class="sd">    :meth:`__call__` method adds the object as the first argument, simulating</span>
+<span class="sd">    the Python behavior of supplying &quot;self&quot; on method calls.</span>
+
+<span class="sd">    We hang on to the name by which the method was added to the underlying</span>
+<span class="sd">    base class so that we can provide a method to &quot;clone&quot; ourselves onto</span>
+<span class="sd">    a new underlying object being copied (without which we wouldn&#39;t need</span>
+<span class="sd">    to save that info).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object</span> <span class="o">=</span> <span class="n">obj</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="n">method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">nargs</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">,)</span> <span class="o">+</span> <span class="n">args</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">(</span><span class="o">*</span><span class="n">nargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MethodWrapper.clone">
+<a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.envs.MethodWrapper.clone">[docs]</a>
+    <span class="k">def</span> <span class="nf">clone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_object</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns an object that re-binds the underlying &quot;method&quot; to</span>
+<span class="sd">        the specified new object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">new_object</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+</div>
+
+
+
+<span class="c1"># The original idea for AddMethod() came from the</span>
+<span class="c1"># following post to the ActiveState Python Cookbook:</span>
+<span class="c1">#</span>
+<span class="c1"># ASPN: Python Cookbook : Install bound methods in an instance</span>
+<span class="c1"># https://code.activestate.com/recipes/223613</span>
+<span class="c1">#</span>
+<span class="c1"># Changed as follows:</span>
+<span class="c1"># * Switched the installmethod() &quot;object&quot; and &quot;function&quot; arguments,</span>
+<span class="c1">#   so the order reflects that the left-hand side is the thing being</span>
+<span class="c1">#   &quot;assigned to&quot; and the right-hand side is the value being assigned.</span>
+<span class="c1"># * The instance/class detection is changed a bit, as it&#39;s all</span>
+<span class="c1">#   new-style classes now with Py3.</span>
+<span class="c1"># * The by-hand construction of the function object from renamefunction()</span>
+<span class="c1">#   is not needed, the remaining bit is now used inline in AddMethod.</span>
+
+
+<div class="viewcode-block" id="AddMethod">
+<a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.envs.AddMethod">[docs]</a>
+<span class="k">def</span> <span class="nf">AddMethod</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a method to an object.</span>
+
+<span class="sd">    Adds *function* to *obj* if *obj* is a class object.</span>
+<span class="sd">    Adds *function* as a bound method if *obj* is an instance object.</span>
+<span class="sd">    If *obj* looks like an environment instance, use :class:`~SCons.Util.MethodWrapper`</span>
+<span class="sd">    to add it.  If *name* is supplied it is used as the name of *function*.</span>
+
+<span class="sd">    Although this works for any class object, the intent as a public</span>
+<span class="sd">    API is to be used on Environment, to be able to add a method to all</span>
+<span class="sd">    construction environments; it is preferred to use ``env.AddMethod``</span>
+<span class="sd">    to add to an individual environment.</span>
+
+<span class="sd">    &gt;&gt;&gt; class A:</span>
+<span class="sd">    ...    ...</span>
+
+<span class="sd">    &gt;&gt;&gt; a = A()</span>
+
+<span class="sd">    &gt;&gt;&gt; def f(self, x, y):</span>
+<span class="sd">    ...    self.z = x + y</span>
+
+<span class="sd">    &gt;&gt;&gt; AddMethod(A, f, &quot;add&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; a.add(2, 4)</span>
+<span class="sd">    &gt;&gt;&gt; print(a.z)</span>
+<span class="sd">    6</span>
+<span class="sd">    &gt;&gt;&gt; a.data = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;, &#39;e&#39;, &#39;f&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; AddMethod(a, lambda self, i: self.data[i], &quot;listIndex&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; print(a.listIndex(3))</span>
+<span class="sd">    d</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">function</span><span class="o">.</span><span class="vm">__name__</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># &quot;rename&quot;</span>
+        <span class="n">function</span> <span class="o">=</span> <span class="n">FunctionType</span><span class="p">(</span>
+            <span class="n">function</span><span class="o">.</span><span class="vm">__code__</span><span class="p">,</span> <span class="n">function</span><span class="o">.</span><span class="vm">__globals__</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">function</span><span class="o">.</span><span class="vm">__defaults__</span>
+        <span class="p">)</span>
+
+    <span class="n">method</span><span class="p">:</span> <span class="n">MethodType</span> <span class="o">|</span> <span class="n">MethodWrapper</span> <span class="o">|</span> <span class="n">Callable</span>
+
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;__class__&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">:</span>
+        <span class="c1"># obj is an instance, so it gets a bound method.</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;added_methods&quot;</span><span class="p">):</span>
+            <span class="n">method</span> <span class="o">=</span> <span class="n">MethodWrapper</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">added_methods</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">method</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">method</span> <span class="o">=</span> <span class="n">MethodType</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># obj is a class</span>
+        <span class="n">method</span> <span class="o">=</span> <span class="n">function</span>
+
+    <span class="nb">setattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">method</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># This routine is used to validate that a construction var name can be used</span>
+<span class="c1"># as a Python identifier, which we require. However, Python 3 introduced an</span>
+<span class="c1"># isidentifier() string method so there&#39;s really not any need for it now.</span>
+<span class="n">_is_valid_var_re</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[_a-zA-Z]\w*$&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="is_valid_construction_var">
+<a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.envs.is_valid_construction_var">[docs]</a>
+<span class="k">def</span> <span class="nf">is_valid_construction_var</span><span class="p">(</span><span class="n">varstr</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return True if *varstr* is a legitimate name of a construction variable.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">_is_valid_var_re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">varstr</span><span class="p">))</span></div>
+
+
+<span class="c1"># Local Variables:</span>
+<span class="c1"># tab-width:4</span>
+<span class="c1"># indent-tabs-mode:nil</span>
+<span class="c1"># End:</span>
+<span class="c1"># vim: set expandtab tabstop=4 shiftwidth=4:</span>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SCons Project Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022, SCons Project.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

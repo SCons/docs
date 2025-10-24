@@ -1,0 +1,307 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Merging Options into the Environment: the MergeFlags Function</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 1.1.0"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Controlling the Execution Environment for Issued Commands"
+HREF="x1673.html"><LINK
+REL="NEXT"
+TITLE="Separating Compile Arguments into their Variables:  the ParseFlags Function"
+HREF="c1777.html"></HEAD
+><BODY
+CLASS="chapter"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 1.1.0</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x1673.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="c1777.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="chapter"
+><H1
+><A
+NAME="chap-mergeflags"
+></A
+>Chapter 8. Merging Options into the Environment: the <CODE
+CLASS="function"
+>MergeFlags</CODE
+> Function</H1
+><P
+>&#13;
+ <SPAN
+CLASS="application"
+>SCons</SPAN
+> construction environments have a <CODE
+CLASS="function"
+>MergeFlags</CODE
+> method
+ that merges a dictionary of values into the construction environment.
+ <CODE
+CLASS="function"
+>MergeFlags</CODE
+> treats each value in the dictionary
+ as a list of options such as one might pass to a command
+ (such as a compiler or linker).
+ <CODE
+CLASS="function"
+>MergeFlags</CODE
+> will not duplicate an option
+ if it already exists in the construction environment variable.
+
+ </P
+><P
+>&#13;
+ <CODE
+CLASS="function"
+>MergeFlags</CODE
+> tries to be intelligent about merging options.
+ When merging options to any variable
+ whose name ends in <CODE
+CLASS="varname"
+>PATH</CODE
+>,
+ <CODE
+CLASS="function"
+>MergeFlags</CODE
+> keeps the leftmost occurrence of the option,
+ because in typical lists of directory paths,
+ the first occurrence "wins."
+ When merging options to any other variable name,
+ <CODE
+CLASS="function"
+>MergeFlags</CODE
+> keeps the rightmost occurrence of the option,
+ because in a list of typical command-line options,
+ the last occurrence "wins."
+
+ </P
+><PRE
+CLASS="programlisting"
+>&#13;    env = Environment()
+    env.Append(CCFLAGS = '-option -O3 -O1')
+    flags = { 'CCFLAGS' : '-whatever -O3' }
+    env.MergeFlags(flags)
+    print env['CCFLAGS']
+ </PRE
+><PRE
+CLASS="screen"
+>&#13;    % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+    ['-option', '-O1', '-whatever', '-O3']
+    scons: `.' is up to date.
+ </PRE
+><P
+>&#13;
+ Note that the default value for <A
+HREF="a4761.html#cv-CCFLAGS"
+><CODE
+CLASS="envar"
+>$CCFLAGS</CODE
+></A
+>
+ 
+ is an internal <SPAN
+CLASS="application"
+>SCons</SPAN
+> object
+ which automatically converts
+ the options we specified as a string into a list.
+
+ </P
+><PRE
+CLASS="programlisting"
+>&#13;    env = Environment()
+    env.Append(CPPPATH = ['/include', '/usr/local/include', '/usr/include'])
+    flags = { 'CPPPATH' : ['/usr/opt/include', '/usr/local/include'] }
+    env.MergeFlags(flags)
+    print env['CPPPATH']
+ </PRE
+><PRE
+CLASS="screen"
+>&#13;    % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+    ['/include', '/usr/local/include', '/usr/include', '/usr/opt/include']
+    scons: `.' is up to date.
+ </PRE
+><P
+>&#13;
+ Note that the default value for <A
+HREF="a4761.html#cv-CPPPATH"
+><CODE
+CLASS="envar"
+>$CPPPATH</CODE
+></A
+>
+ 
+ is a normal Python list,
+ so we must specify its values as a list
+ in the dictionary we pass to the <CODE
+CLASS="function"
+>MergeFlags</CODE
+> function.
+
+ </P
+><P
+>&#13;
+ If <CODE
+CLASS="function"
+>MergeFlags</CODE
+> is passed anything other than a dictionary,
+ it calls the <CODE
+CLASS="function"
+>ParseFlags</CODE
+> method to convert it into a dictionary.
+
+ </P
+><PRE
+CLASS="programlisting"
+>&#13;    env = Environment()
+    env.Append(CCFLAGS = '-option -O3 -O1')
+    env.Append(CPPPATH = ['/include', '/usr/local/include', '/usr/include'])
+    env.MergeFlags('-whatever -I/usr/opt/include -O3 -I/usr/local/include')
+    print env['CCFLAGS']
+    print env['CPPPATH']
+ </PRE
+><PRE
+CLASS="screen"
+>&#13;    % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+    ['-option', '-O1', '-whatever', '-O3']
+    ['/include', '/usr/local/include', '/usr/include', '/usr/opt/include']
+    scons: `.' is up to date.
+ </PRE
+><P
+>&#13;
+ In the combined example above,
+ <CODE
+CLASS="function"
+>ParseFlags</CODE
+> has sorted the options into their corresponding variables
+ and returned a dictionary for <CODE
+CLASS="function"
+>MergeFlags</CODE
+> to apply
+ to the construction variables
+ in the specified construction environment.
+
+ </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x1673.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="c1777.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Controlling the Execution Environment for Issued Commands</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Separating Compile Arguments into their Variables:  the <CODE
+CLASS="function"
+>ParseFlags</CODE
+> Function</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,319 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>10.3. Command-Line Targets</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 2.4.1"><link rel="up" href="ch10.html" title="Chapter 10. Controlling a Build From the Command Line"><link rel="prev" href="ch10s02.html" title="10.2. Command-Line variable=value Build Variables"><link rel="next" href="ch11.html" title="Chapter 11. Installing Files in Other Directories: the Install Builder"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">10.3. Command-Line Targets</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch10s02.html">Prev</a> </td><th width="60%" align="center">Chapter 10. Controlling a Build From the Command Line</th><td width="20%" align="right"> <a accesskey="n" href="ch11.html">Next</a></td></tr></table><hr></div><div class="section" title="10.3. Command-Line Targets"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="sect-command-line-targets"></a>10.3. Command-Line Targets</h2></div></div></div><div class="section" title="10.3.1. Fetching Command-Line Targets: the COMMAND_LINE_TARGETS Variable"><div class="titlepage"><div><div><h3 class="title"><a name="idp1371641068"></a>10.3.1. Fetching Command-Line Targets: the <code class="varname">COMMAND_LINE_TARGETS</code> Variable</h3></div></div></div><p>
+
+      <span class="application">SCons</span> supports a <code class="varname">COMMAND_LINE_TARGETS</code> variable
+      that lets you fetch the list of targets that the
+      user specified on the command line.
+      You can use the targets to manipulate the
+      build in any way you wish.
+      As a simple example,
+      suppose that you want to print a reminder
+      to the user whenever a specific program is built.
+      You can do this by checking for the
+      target in the <code class="varname">COMMAND_LINE_TARGETS</code> list:
+
+      </p><pre class="programlisting">
+if 'bar' in COMMAND_LINE_TARGETS:
+    print "Don't forget to copy `bar' to the archive!"
+Default(Program('foo.c'))
+Program('bar.c')
+        </pre><p>
+
+      Then, running <span class="application">SCons</span> with the default target
+      works as it always does,
+      but explicity specifying the <code class="filename">bar</code> target
+      on the command line generates the warning message:
+
+      </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o foo.o -c foo.c
+cc -o foo foo.o
+% <strong class="userinput"><code>scons -Q bar</code></strong>
+Don't forget to copy `bar' to the archive!
+cc -o bar.o -c bar.c
+cc -o bar bar.o
+</pre><p>
+
+      Another practical use for the <code class="varname">COMMAND_LINE_TARGETS</code> variable
+      might be to speed up a build
+      by only reading certain subsidiary <code class="filename">SConscript</code>
+      files if a specific target is requested.
+
+      </p></div><div class="section" title="10.3.2. Controlling the Default Targets: the Default Function"><div class="titlepage"><div><div><h3 class="title"><a name="idp1371646060"></a>10.3.2. Controlling the Default Targets:  the <code class="function">Default</code> Function</h3></div></div></div><p>
+
+      One of the most basic things you can control
+      is which targets <span class="application">SCons</span> will build by default--that is,
+      when there are no targets specified on the command line.
+      As mentioned previously,
+      <span class="application">SCons</span> will normally build every target
+      in or below the current directory
+      by default--that is, when you don't
+      explicitly specify one or more targets
+      on the command line.
+      Sometimes, however, you may want
+      to specify explicitly that only
+      certain programs, or programs in certain directories,
+      should be built by default.
+      You do this with the <code class="function">Default</code> function:
+
+      </p><pre class="programlisting">
+env = Environment()
+hello = env.Program('hello.c')
+env.Program('goodbye.c')
+Default(hello)
+         </pre><p>
+
+      This <code class="filename">SConstruct</code> file knows how to build two programs,
+      <code class="filename">hello</code> and <code class="filename">goodbye</code>,
+      but only builds the
+      <code class="filename">hello</code> program by default:
+
+      </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o hello.o -c hello.c
+cc -o hello hello.o
+% <strong class="userinput"><code>scons -Q</code></strong>
+scons: `hello' is up to date.
+% <strong class="userinput"><code>scons -Q goodbye</code></strong>
+cc -o goodbye.o -c goodbye.c
+cc -o goodbye goodbye.o
+</pre><p>
+
+      Note that, even when you use the <code class="function">Default</code>
+      function in your <code class="filename">SConstruct</code> file,
+      you can still explicitly specify the current directory
+      (<code class="literal">.</code>) on the command line
+      to tell <span class="application">SCons</span> to build
+      everything in (or below) the current directory:
+
+      </p><pre class="screen">% <strong class="userinput"><code>scons -Q .</code></strong>
+cc -o goodbye.o -c goodbye.c
+cc -o goodbye goodbye.o
+cc -o hello.o -c hello.c
+cc -o hello hello.o
+</pre><p>
+
+      You can also call the <code class="function">Default</code>
+      function more than once,
+      in which case each call
+      adds to the list of targets to be built by default:
+
+      </p><pre class="programlisting">
+env = Environment()
+prog1 = env.Program('prog1.c')
+Default(prog1)
+prog2 = env.Program('prog2.c')
+prog3 = env.Program('prog3.c')
+Default(prog3)
+         </pre><p>
+
+      Or you can specify more than one target
+      in a single call to the <code class="function">Default</code> function:
+
+      </p><pre class="programlisting">
+env = Environment()
+prog1 = env.Program('prog1.c')
+prog2 = env.Program('prog2.c')
+prog3 = env.Program('prog3.c')
+Default(prog1, prog3)
+      </pre><p>
+
+      Either of these last two examples
+      will build only the
+      <span class="application">prog1</span>
+      and
+      <span class="application">prog3</span>
+      programs by default:
+
+      </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o prog1.o -c prog1.c
+cc -o prog1 prog1.o
+cc -o prog3.o -c prog3.c
+cc -o prog3 prog3.o
+% <strong class="userinput"><code>scons -Q .</code></strong>
+cc -o prog2.o -c prog2.c
+cc -o prog2 prog2.o
+</pre><p>
+
+      You can list a directory as
+      an argument to <code class="function">Default</code>:
+
+      </p><pre class="programlisting">
+env = Environment()
+env.Program(['prog1/main.c', 'prog1/foo.c'])
+env.Program(['prog2/main.c', 'prog2/bar.c'])
+Default('prog1')
+         </pre><p>
+
+      In which case only the target(s) in that
+      directory will be built by default:
+
+      </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o prog1/foo.o -c prog1/foo.c
+cc -o prog1/main.o -c prog1/main.c
+cc -o prog1/main prog1/main.o prog1/foo.o
+% <strong class="userinput"><code>scons -Q</code></strong>
+scons: `prog1' is up to date.
+% <strong class="userinput"><code>scons -Q .</code></strong>
+cc -o prog2/bar.o -c prog2/bar.c
+cc -o prog2/main.o -c prog2/main.c
+cc -o prog2/main prog2/main.o prog2/bar.o
+</pre><p>
+
+      Lastly, if for some reason you don't want
+      any targets built by default,
+      you can use the Python <code class="literal">None</code>
+      variable:
+
+      </p><pre class="programlisting">
+env = Environment()
+prog1 = env.Program('prog1.c')
+prog2 = env.Program('prog2.c')
+Default(None)
+         </pre><p>
+
+      Which would produce build output like:
+
+      </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+scons: *** No targets specified and no Default() targets found.  Stop.
+Found nothing to build
+% <strong class="userinput"><code>scons -Q .</code></strong>
+cc -o prog1.o -c prog1.c
+cc -o prog1 prog1.o
+cc -o prog2.o -c prog2.c
+cc -o prog2 prog2.o
+</pre><div class="section" title="10.3.2.1. Fetching the List of Default Targets: the DEFAULT_TARGETS Variable"><div class="titlepage"><div><div><h4 class="title"><a name="idp1371661340"></a>10.3.2.1. Fetching the List of Default Targets: the <code class="varname">DEFAULT_TARGETS</code> Variable</h4></div></div></div><p>
+
+        <span class="application">SCons</span> supports a <code class="varname">DEFAULT_TARGETS</code> variable
+        that lets you get at the current list of default targets.
+        The <code class="varname">DEFAULT_TARGETS</code> variable has
+        two important differences from the <code class="varname">COMMAND_LINE_TARGETS</code> variable.
+        First, the <code class="varname">DEFAULT_TARGETS</code> variable is a list of
+        internal <span class="application">SCons</span> nodes,
+        so you need to convert the list elements to strings
+        if you want to print them or look for a specific target name.
+        Fortunately, you can do this easily
+        by using the Python <code class="function">map</code> function
+        to run the list through <code class="function">str</code>:
+
+        </p><pre class="programlisting">
+prog1 = Program('prog1.c')
+Default(prog1)
+print "DEFAULT_TARGETS is", map(str, DEFAULT_TARGETS)
+           </pre><p>
+
+        (Keep in mind that all of the manipulation of the
+        <code class="varname">DEFAULT_TARGETS</code> list takes place during the
+        first phase when <span class="application">SCons</span> is reading up the <code class="filename">SConscript</code> files,
+        which is obvious if
+        we leave off the <code class="literal">-Q</code> flag when we run <span class="application">SCons</span>:)
+
+        </p><pre class="screen">% <strong class="userinput"><code>scons</code></strong>
+scons: Reading SConscript files ...
+DEFAULT_TARGETS is ['prog1']
+scons: done reading SConscript files.
+scons: Building targets ...
+cc -o prog1.o -c prog1.c
+cc -o prog1 prog1.o
+scons: done building targets.
+</pre><p>
+
+        Second,
+        the contents of the <code class="varname">DEFAULT_TARGETS</code> list change
+        in response to calls to the <code class="function">Default</code> function,
+        as you can see from the following <code class="filename">SConstruct</code> file:
+
+        </p><pre class="programlisting">
+prog1 = Program('prog1.c')
+Default(prog1)
+print "DEFAULT_TARGETS is now", map(str, DEFAULT_TARGETS)
+prog2 = Program('prog2.c')
+Default(prog2)
+print "DEFAULT_TARGETS is now", map(str, DEFAULT_TARGETS)
+           </pre><p>
+
+        Which yields the output:
+
+        </p><pre class="screen">% <strong class="userinput"><code>scons</code></strong>
+scons: Reading SConscript files ...
+DEFAULT_TARGETS is now ['prog1']
+DEFAULT_TARGETS is now ['prog1', 'prog2']
+scons: done reading SConscript files.
+scons: Building targets ...
+cc -o prog1.o -c prog1.c
+cc -o prog1 prog1.o
+cc -o prog2.o -c prog2.c
+cc -o prog2 prog2.o
+scons: done building targets.
+</pre><p>
+
+        In practice, this simply means that you
+        need to pay attention to the order in
+        which you call the <code class="function">Default</code> function
+        and refer to the <code class="varname">DEFAULT_TARGETS</code> list,
+        to make sure that you don't examine the
+        list before you've added the default targets
+        you expect to find in it.
+
+        </p></div></div><div class="section" title="10.3.3. Fetching the List of Build Targets, Regardless of Origin: the BUILD_TARGETS Variable"><div class="titlepage"><div><div><h3 class="title"><a name="idp1371670836"></a>10.3.3. Fetching the List of Build Targets, Regardless of Origin: the <code class="varname">BUILD_TARGETS</code> Variable</h3></div></div></div><p>
+
+      We've already been introduced to the
+      <code class="varname">COMMAND_LINE_TARGETS</code> variable,
+      which contains a list of targets specified on the command line,
+      and the <code class="varname">DEFAULT_TARGETS</code> variable,
+      which contains a list of targets specified
+      via calls to the <code class="function">Default</code> method or function.
+      Sometimes, however,
+      you want a list of whatever targets
+      <span class="application">SCons</span> will try to build,
+      regardless of whether the targets came from the
+      command line or a <code class="function">Default</code> call.
+      You could code this up by hand, as follows:
+
+      </p><pre class="programlisting">
+if COMMAND_LINE_TARGETS:
+    targets = COMMAND_LINE_TARGETS
+else:
+    targets = DEFAULT_TARGETS
+      </pre><p>
+
+      <span class="application">SCons</span>, however, provides a convenient
+      <code class="varname">BUILD_TARGETS</code> variable
+      that eliminates the need for this by-hand manipulation.
+      Essentially, the <code class="varname">BUILD_TARGETS</code> variable
+      contains a list of the command-line targets,
+      if any were specified,
+      and if no command-line targets were specified,
+      it contains a list of the targets specified
+      via the <code class="function">Default</code> method or function.
+
+      </p><p>
+
+      Because <code class="varname">BUILD_TARGETS</code> may contain a list of <span class="application">SCons</span> nodes,
+      you must convert the list elements to strings
+      if you want to print them or look for a specific target name,
+      just like the <code class="varname">DEFAULT_TARGETS</code> list:
+
+      </p><pre class="programlisting">
+prog1 = Program('prog1.c')
+Program('prog2.c')
+Default(prog1)
+print "BUILD_TARGETS is", map(str, BUILD_TARGETS)
+        </pre><p>
+
+      Notice how the value of <code class="varname">BUILD_TARGETS</code>
+      changes depending on whether a target is
+      specified on the command line:
+
+      </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+BUILD_TARGETS is ['prog1']
+cc -o prog1.o -c prog1.c
+cc -o prog1 prog1.o
+% <strong class="userinput"><code>scons -Q prog2</code></strong>
+BUILD_TARGETS is ['prog2']
+cc -o prog2.o -c prog2.c
+cc -o prog2 prog2.o
+% <strong class="userinput"><code>scons -Q -c .</code></strong>
+BUILD_TARGETS is ['.']
+Removed prog1.o
+Removed prog1
+Removed prog2.o
+Removed prog2
+</pre></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch10s02.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch10.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch11.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">10.2. Command-Line <code class="varname">variable</code>=<code class="varname">value</code> Build Variables </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 11. Installing Files in Other Directories:  the <code class="function">Install</code> Builder</td></tr></table></div></body></html>

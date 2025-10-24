@@ -1,0 +1,733 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>SCons.Script.Interactive</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="SCons-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://www.scons.org/">SCons</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="SCons-module.html">Package&nbsp;SCons</a> ::
+        <a href="SCons.Script-module.html">Package&nbsp;Script</a> ::
+        Module&nbsp;Interactive
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="SCons.Script.Interactive-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="SCons.Script.Interactive-module.html">Module SCons.Script.Interactive</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-comment"># Copyright (c) 2001 - 2019 The SCons Foundation</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-comment"># Permission is hereby granted, free of charge, to any person obtaining</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-comment"># a copy of this software and associated documentation files (the</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-comment"># "Software"), to deal in the Software without restriction, including</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-comment"># without limitation the rights to use, copy, modify, merge, publish,</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-comment"># distribute, sublicense, and/or sell copies of the Software, and to</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-comment"># permit persons to whom the Software is furnished to do so, subject to</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-comment"># the following conditions:</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-comment"># The above copyright notice and this permission notice shall be included</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-comment"># in all copies or substantial portions of the Software.</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-comment"># THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-comment"># KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-comment"># WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-comment"># NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-comment"># LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-comment"># OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-comment"># WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">__future__</tt> <tt class="py-keyword">import</tt> <tt class="py-name">print_function</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt id="link-0" class="py-name" targets="Variable SCons.Action.__revision__=SCons.Action-module.html#__revision__,Variable SCons.Builder.__revision__=SCons.Builder-module.html#__revision__,Variable SCons.CacheDir.__revision__=SCons.CacheDir-module.html#__revision__,Variable SCons.Debug.__revision__=SCons.Debug-module.html#__revision__,Variable SCons.Defaults.__revision__=SCons.Defaults-module.html#__revision__,Variable SCons.Environment.__revision__=SCons.Environment-module.html#__revision__,Variable SCons.Errors.__revision__=SCons.Errors-module.html#__revision__,Variable SCons.Executor.__revision__=SCons.Executor-module.html#__revision__,Variable SCons.Job.__revision__=SCons.Job-module.html#__revision__,Variable SCons.Memoize.__revision__=SCons.Memoize-module.html#__revision__,Variable SCons.Node.Alias.__revision__=SCons.Node.Alias-module.html#__revision__,Variable SCons.Node.FS.__revision__=SCons.Node.FS-module.html#__revision__,Variable SCons.Node.Python.__revision__=SCons.Node.Python-module.html#__revision__,Variable SCons.Node.__revision__=SCons.Node-module.html#__revision__,Variable SCons.PathList.__revision__=SCons.PathList-module.html#__revision__,Variable SCons.Platform.__revision__=SCons.Platform-module.html#__revision__,Variable SCons.Platform.aix.__revision__=SCons.Platform.aix-module.html#__revision__,Variable SCons.Platform.cygwin.__revision__=SCons.Platform.cygwin-module.html#__revision__,Variable SCons.Platform.darwin.__revision__=SCons.Platform.darwin-module.html#__revision__,Variable SCons.Platform.hpux.__revision__=SCons.Platform.hpux-module.html#__revision__,Variable SCons.Platform.irix.__revision__=SCons.Platform.irix-module.html#__revision__,Variable SCons.Platform.mingw.__revision__=SCons.Platform.mingw-module.html#__revision__,Variable SCons.Platform.os2.__revision__=SCons.Platform.os2-module.html#__revision__,Variable SCons.Platform.posix.__revision__=SCons.Platform.posix-module.html#__revision__,Variable SCons.Platform.sunos.__revision__=SCons.Platform.sunos-module.html#__revision__,Variable SCons.Platform.virtualenv.__revision__=SCons.Platform.virtualenv-module.html#__revision__,Variable SCons.Platform.win32.__revision__=SCons.Platform.win32-module.html#__revision__,Variable SCons.SConf.__revision__=SCons.SConf-module.html#__revision__,Variable SCons.SConsign.__revision__=SCons.SConsign-module.html#__revision__,Variable SCons.Scanner.C.__revision__=SCons.Scanner.C-module.html#__revision__,Variable SCons.Scanner.D.__revision__=SCons.Scanner.D-module.html#__revision__,Variable SCons.Scanner.Dir.__revision__=SCons.Scanner.Dir-module.html#__revision__,Variable SCons.Scanner.Fortran.__revision__=SCons.Scanner.Fortran-module.html#__revision__,Variable SCons.Scanner.IDL.__revision__=SCons.Scanner.IDL-module.html#__revision__,Variable SCons.Scanner.LaTeX.__revision__=SCons.Scanner.LaTeX-module.html#__revision__,Variable SCons.Scanner.Prog.__revision__=SCons.Scanner.Prog-module.html#__revision__,Variable SCons.Scanner.RC.__revision__=SCons.Scanner.RC-module.html#__revision__,Variable SCons.Scanner.SWIG.__revision__=SCons.Scanner.SWIG-module.html#__revision__,Variable SCons.Scanner.__revision__=SCons.Scanner-module.html#__revision__,Variable SCons.Script.Interactive.__revision__=SCons.Script.Interactive-module.html#__revision__,Variable SCons.Script.Main.__revision__=SCons.Script.Main-module.html#__revision__,Variable SCons.Script.SConscript'.__revision__=SCons.Script.SConscript%27-module.html#__revision__,Variable SCons.Script.__revision__=SCons.Script-module.html#__revision__,Variable SCons.Subst.__revision__=SCons.Subst-module.html#__revision__,Variable SCons.Taskmaster.__revision__=SCons.Taskmaster-module.html#__revision__,Variable SCons.Variables.BoolVariable'.__revision__=SCons.Variables.BoolVariable%27-module.html#__revision__,Variable SCons.Variables.EnumVariable'.__revision__=SCons.Variables.EnumVariable%27-module.html#__revision__,Variable SCons.Variables.ListVariable'.__revision__=SCons.Variables.ListVariable%27-module.html#__revision__,Variable SCons.Variables.PackageVariable'.__revision__=SCons.Variables.PackageVariable%27-module.html#__revision__,Variable SCons.Variables.PathVariable'.__revision__=SCons.Variables.PathVariable%27-module.html#__revision__,Variable SCons.Variables.__revision__=SCons.Variables-module.html#__revision__,Variable SCons.Warnings.__revision__=SCons.Warnings-module.html#__revision__,Variable SCons.__revision__=SCons-module.html#__revision__,Variable SCons.exitfuncs.__revision__=SCons.exitfuncs-module.html#__revision__"><a title="SCons.Action.__revision__
+SCons.Builder.__revision__
+SCons.CacheDir.__revision__
+SCons.Debug.__revision__
+SCons.Defaults.__revision__
+SCons.Environment.__revision__
+SCons.Errors.__revision__
+SCons.Executor.__revision__
+SCons.Job.__revision__
+SCons.Memoize.__revision__
+SCons.Node.Alias.__revision__
+SCons.Node.FS.__revision__
+SCons.Node.Python.__revision__
+SCons.Node.__revision__
+SCons.PathList.__revision__
+SCons.Platform.__revision__
+SCons.Platform.aix.__revision__
+SCons.Platform.cygwin.__revision__
+SCons.Platform.darwin.__revision__
+SCons.Platform.hpux.__revision__
+SCons.Platform.irix.__revision__
+SCons.Platform.mingw.__revision__
+SCons.Platform.os2.__revision__
+SCons.Platform.posix.__revision__
+SCons.Platform.sunos.__revision__
+SCons.Platform.virtualenv.__revision__
+SCons.Platform.win32.__revision__
+SCons.SConf.__revision__
+SCons.SConsign.__revision__
+SCons.Scanner.C.__revision__
+SCons.Scanner.D.__revision__
+SCons.Scanner.Dir.__revision__
+SCons.Scanner.Fortran.__revision__
+SCons.Scanner.IDL.__revision__
+SCons.Scanner.LaTeX.__revision__
+SCons.Scanner.Prog.__revision__
+SCons.Scanner.RC.__revision__
+SCons.Scanner.SWIG.__revision__
+SCons.Scanner.__revision__
+SCons.Script.Interactive.__revision__
+SCons.Script.Main.__revision__
+SCons.Script.SConscript'.__revision__
+SCons.Script.__revision__
+SCons.Subst.__revision__
+SCons.Taskmaster.__revision__
+SCons.Variables.BoolVariable'.__revision__
+SCons.Variables.EnumVariable'.__revision__
+SCons.Variables.ListVariable'.__revision__
+SCons.Variables.PackageVariable'.__revision__
+SCons.Variables.PathVariable'.__revision__
+SCons.Variables.__revision__
+SCons.Warnings.__revision__
+SCons.__revision__
+SCons.exitfuncs.__revision__" class="py-name" href="#" onclick="return doclink('link-0', '__revision__', 'link-0');">__revision__</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"src/engine/SCons/Script/Interactive.py 27552f9e8d59c13c3567f2bd380b74e34ee25324 2019-01-08 02:59:02 bdbaddog"</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt id="link-1" class="py-name" targets="Variable SCons.CacheDir.__doc__=SCons.CacheDir-module.html#__doc__,Variable SCons.Memoize.__doc__=SCons.Memoize-module.html#__doc__,Variable SCons.PathList.__doc__=SCons.PathList-module.html#__doc__,Variable SCons.Script.Interactive.__doc__=SCons.Script.Interactive-module.html#__doc__,Variable SCons.Taskmaster.__doc__=SCons.Taskmaster-module.html#__doc__,Variable SCons.cpp.__doc__=SCons.cpp-module.html#__doc__"><a title="SCons.CacheDir.__doc__
+SCons.Memoize.__doc__
+SCons.PathList.__doc__
+SCons.Script.Interactive.__doc__
+SCons.Taskmaster.__doc__
+SCons.cpp.__doc__" class="py-name" href="#" onclick="return doclink('link-1', '__doc__', 'link-1');">__doc__</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"""</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-string">SCons interactive mode</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-string">"""</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"><tt class="py-comment"># TODO:</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"><tt class="py-comment"># This has the potential to grow into something with a really big life</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt class="py-comment"># of its own, which might or might not be a good thing.  Nevertheless,</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"><tt class="py-comment"># here are some enhancements that will probably be requested some day</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"><tt class="py-comment"># and are worth keeping in mind (assuming this takes off):</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"><tt class="py-comment"># </tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"><tt class="py-comment"># - A command to re-read / re-load the SConscript files.  This may</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"><tt class="py-comment">#   involve allowing people to specify command-line options (e.g. -f,</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line"><tt class="py-comment">#   -I, --no-site-dir) that affect how the SConscript files are read.</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"><tt class="py-comment"># - Additional command-line options on the "build" command.</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"><tt class="py-comment">#   Of the supported options that seemed to make sense (after a quick</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"><tt class="py-comment">#   pass through the list), the ones that seemed likely enough to be</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"><tt class="py-comment">#   used are listed in the man page and have explicit test scripts.</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"><tt class="py-comment">#   These had code changed in Script/Main.py to support them, but didn't</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"><tt class="py-comment">#   seem likely to be used regularly, so had no test scripts added:</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"><tt class="py-comment">#       build --diskcheck=*</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"><tt class="py-comment">#       build --implicit-cache=*</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"><tt class="py-comment">#       build --implicit-deps-changed=*</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line"><tt class="py-comment">#       build --implicit-deps-unchanged=*</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line"><tt class="py-comment">#   These look like they should "just work" with no changes to the</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"><tt class="py-comment">#   existing code, but like those above, look unlikely to be used and</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"><tt class="py-comment">#   therefore had no test scripts added:</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line"><tt class="py-comment">#       build --random</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"><tt class="py-comment">#   These I'm not sure about.  They might be useful for individual</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line"><tt class="py-comment">#   "build" commands, and may even work, but they seem unlikely enough</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line"><tt class="py-comment">#   that we'll wait until they're requested before spending any time on</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line"><tt class="py-comment">#   writing test scripts for them, or investigating whether they work.</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line"><tt class="py-comment">#       build -q [???  is there a useful analog to the exit status?]</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line"><tt class="py-comment">#       build --duplicate=</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line"><tt class="py-comment">#       build --profile=</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line"><tt class="py-comment">#       build --max-drift=</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line"><tt class="py-comment">#       build --warn=*</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line"><tt class="py-comment">#       build --Y</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line"><tt class="py-comment"># - Most of the SCons command-line options that the "build" command</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line"><tt class="py-comment">#   supports should be settable as default options that apply to all</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line"><tt class="py-comment">#   subsequent "build" commands.  Maybe a "set {option}" command that</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line"><tt class="py-comment">#   maps to "SetOption('{option}')".</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line"><tt class="py-comment"># - Need something in the 'help' command that prints the -h output.</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line"><tt class="py-comment"># - A command to run the configure subsystem separately (must see how</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line"><tt class="py-comment">#   this interacts with the new automake model).</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line"><tt class="py-comment"># - Command-line completion of target names; maybe even of SCons options?</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line"><tt class="py-comment">#   Completion is something that's supported by the Python cmd module,</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line"><tt class="py-comment">#   so this should be doable without too much trouble.</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line"> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">cmd</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Method SCons.Node.FS.LocalFS.copy()=SCons.Node.FS.LocalFS-class.html#copy"><a title="SCons.Node.FS.LocalFS.copy" class="py-name" href="#" onclick="return doclink('link-2', 'copy', 'link-2');">copy</a></tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">os</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">re</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">shlex</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">sys</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line"> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line"><tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">    <tt class="py-keyword">import</tt> <tt class="py-name">readline</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line"><tt class="py-keyword">except</tt> <tt class="py-name">ImportError</tt><tt class="py-op">:</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line"> </tt>
+<a name="SConsInteractiveCmd"></a><div id="SConsInteractiveCmd-def"><a name="L100"></a><tt class="py-lineno">100</tt> <a class="py-toggle" href="#" id="SConsInteractiveCmd-toggle" onclick="return toggle('SConsInteractiveCmd');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="SCons.Script.Interactive.SConsInteractiveCmd-class.html">SConsInteractiveCmd</a><tt class="py-op">(</tt><tt class="py-base-class">cmd</tt><tt class="py-op">.</tt><tt class="py-base-class">Cmd</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SConsInteractiveCmd-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="SConsInteractiveCmd-expanded"><a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">    <tt class="py-docstring">"""\</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line"><tt class="py-docstring">build [TARGETS]         Build the specified TARGETS and their dependencies. 'b' is a synonym.</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line"><tt class="py-docstring">clean [TARGETS]         Clean (remove) the specified TARGETS and their dependencies.  'c' is a synonym.</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line"><tt class="py-docstring">exit                    Exit SCons interactive mode.</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line"><tt class="py-docstring">help [COMMAND]          Prints help for the specified COMMAND.  'h' and '?' are synonyms.</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line"><tt class="py-docstring">shell [COMMANDLINE]     Execute COMMANDLINE in a subshell.  'sh' and '!' are synonyms.</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line"><tt class="py-docstring">version                 Prints SCons version information.</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line"> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">    <tt id="link-3" class="py-name" targets="Variable SCons.Script.Interactive.SConsInteractiveCmd.synonyms=SCons.Script.Interactive.SConsInteractiveCmd-class.html#synonyms"><a title="SCons.Script.Interactive.SConsInteractiveCmd.synonyms" class="py-name" href="#" onclick="return doclink('link-3', 'synonyms', 'link-3');">synonyms</a></tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">        <tt class="py-string">'b'</tt>     <tt class="py-op">:</tt> <tt class="py-string">'build'</tt><tt class="py-op">,</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">        <tt class="py-string">'c'</tt>     <tt class="py-op">:</tt> <tt class="py-string">'clean'</tt><tt class="py-op">,</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">        <tt class="py-string">'h'</tt>     <tt class="py-op">:</tt> <tt class="py-string">'help'</tt><tt class="py-op">,</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">        <tt class="py-string">'scons'</tt> <tt class="py-op">:</tt> <tt class="py-string">'build'</tt><tt class="py-op">,</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">        <tt class="py-string">'sh'</tt>    <tt class="py-op">:</tt> <tt class="py-string">'shell'</tt><tt class="py-op">,</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">    <tt class="py-op">}</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line"> </tt>
+<a name="SConsInteractiveCmd.__init__"></a><div id="SConsInteractiveCmd.__init__-def"><a name="L119"></a><tt class="py-lineno">119</tt> <a class="py-toggle" href="#" id="SConsInteractiveCmd.__init__-toggle" onclick="return toggle('SConsInteractiveCmd.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Script.Interactive.SConsInteractiveCmd-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kw</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SConsInteractiveCmd.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="SConsInteractiveCmd.__init__-expanded"><a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">        <tt class="py-name">cmd</tt><tt class="py-op">.</tt><tt class="py-name">Cmd</tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Method SCons.Action.ActionCaller.__init__()=SCons.Action.ActionCaller-class.html#__init__,Method SCons.Action.ActionFactory.__init__()=SCons.Action.ActionFactory-class.html#__init__,Method SCons.Action.CommandAction.__init__()=SCons.Action.CommandAction-class.html#__init__,Method SCons.Action.CommandGeneratorAction.__init__()=SCons.Action.CommandGeneratorAction-class.html#__init__,Method SCons.Action.FunctionAction.__init__()=SCons.Action.FunctionAction-class.html#__init__,Method SCons.Action.LazyAction.__init__()=SCons.Action.LazyAction-class.html#__init__,Method SCons.Action.ListAction.__init__()=SCons.Action.ListAction-class.html#__init__,Method SCons.Action._ActionAction.__init__()=SCons.Action._ActionAction-class.html#__init__,Method SCons.Builder.BuilderBase.__init__()=SCons.Builder.BuilderBase-class.html#__init__,Method SCons.Builder.CompositeBuilder.__init__()=SCons.Builder.CompositeBuilder-class.html#__init__,Method SCons.Builder.DictCmdGenerator.__init__()=SCons.Builder.DictCmdGenerator-class.html#__init__,Method SCons.Builder.EmitterProxy.__init__()=SCons.Builder.EmitterProxy-class.html#__init__,Method SCons.Builder.OverrideWarner.__init__()=SCons.Builder.OverrideWarner-class.html#__init__,Method SCons.CacheDir.CacheDir.__init__()=SCons.CacheDir.CacheDir-class.html#__init__,Method SCons.Defaults.NullCmdGenerator.__init__()=SCons.Defaults.NullCmdGenerator-class.html#__init__,Method SCons.Defaults.Variable_Method_Caller.__init__()=SCons.Defaults.Variable_Method_Caller-class.html#__init__,Method SCons.Environment.Base.__init__()=SCons.Environment.Base-class.html#__init__,Method SCons.Environment.BuilderDict.__init__()=SCons.Environment.BuilderDict-class.html#__init__,Method SCons.Environment.MethodWrapper.__init__()=SCons.Environment.MethodWrapper-class.html#__init__,Method SCons.Environment.OverrideEnvironment.__init__()=SCons.Environment.OverrideEnvironment-class.html#__init__,Method SCons.Environment.SubstitutionEnvironment.__init__()=SCons.Environment.SubstitutionEnvironment-class.html#__init__,Method SCons.Errors.BuildError.__init__()=SCons.Errors.BuildError-class.html#__init__,Method SCons.Errors.ExplicitExit.__init__()=SCons.Errors.ExplicitExit-class.html#__init__,Method SCons.Executor.Batch.__init__()=SCons.Executor.Batch-class.html#__init__,Method SCons.Executor.Executor.__init__()=SCons.Executor.Executor-class.html#__init__,Method SCons.Executor.Null.__init__()=SCons.Executor.Null-class.html#__init__,Method SCons.Executor.TSList.__init__()=SCons.Executor.TSList-class.html#__init__,Method SCons.Executor.TSObject.__init__()=SCons.Executor.TSObject-class.html#__init__,Method SCons.Job.InterruptState.__init__()=SCons.Job.InterruptState-class.html#__init__,Method SCons.Job.Jobs.__init__()=SCons.Job.Jobs-class.html#__init__,Method SCons.Job.Parallel.__init__()=SCons.Job.Parallel-class.html#__init__,Method SCons.Job.Serial.__init__()=SCons.Job.Serial-class.html#__init__,Method SCons.Job.ThreadPool.__init__()=SCons.Job.ThreadPool-class.html#__init__,Method SCons.Job.Worker.__init__()=SCons.Job.Worker-class.html#__init__,Method SCons.Memoize.CountDict.__init__()=SCons.Memoize.CountDict-class.html#__init__,Method SCons.Memoize.Counter.__init__()=SCons.Memoize.Counter-class.html#__init__,Method SCons.Node.Alias.Alias.__init__()=SCons.Node.Alias.Alias-class.html#__init__,Method SCons.Node.BuildInfoBase.__init__()=SCons.Node.BuildInfoBase-class.html#__init__,Method SCons.Node.DeciderNeedsNode.__init__()=SCons.Node.DeciderNeedsNode-class.html#__init__,Method SCons.Node.FS.Base.__init__()=SCons.Node.FS.Base-class.html#__init__,Method SCons.Node.FS.Dir.__init__()=SCons.Node.FS.Dir-class.html#__init__,Method SCons.Node.FS.DiskChecker.__init__()=SCons.Node.FS.DiskChecker-class.html#__init__,Method SCons.Node.FS.Entry.__init__()=SCons.Node.FS.Entry-class.html#__init__,Method SCons.Node.FS.EntryProxyAttributeError.__init__()=SCons.Node.FS.EntryProxyAttributeError-class.html#__init__,Method SCons.Node.FS.FS.__init__()=SCons.Node.FS.FS-class.html#__init__,Method SCons.Node.FS.File.__init__()=SCons.Node.FS.File-class.html#__init__,Method SCons.Node.FS.FileFinder.__init__()=SCons.Node.FS.FileFinder-class.html#__init__,Method SCons.Node.FS.RootDir.__init__()=SCons.Node.FS.RootDir-class.html#__init__,Method SCons.Node.Node.__init__()=SCons.Node.Node-class.html#__init__,Method SCons.Node.Python.Value.__init__()=SCons.Node.Python.Value-class.html#__init__,Method SCons.Node.Walker.__init__()=SCons.Node.Walker-class.html#__init__,Method SCons.PathList._PathList.__init__()=SCons.PathList._PathList-class.html#__init__,Method SCons.Platform.PlatformSpec.__init__()=SCons.Platform.PlatformSpec-class.html#__init__,Method SCons.Platform.TempFileMunge.__init__()=SCons.Platform.TempFileMunge-class.html#__init__,Method SCons.Platform.win32.ArchDefinition.__init__()=SCons.Platform.win32.ArchDefinition-class.html#__init__,Method SCons.Platform.win32._scons_file.__init__()=SCons.Platform.win32._scons_file-class.html#__init__,Method SCons.SConf.CheckContext.__init__()=SCons.SConf.CheckContext-class.html#__init__,Method SCons.SConf.ConfigureCacheError.__init__()=SCons.SConf.ConfigureCacheError-class.html#__init__,Method SCons.SConf.ConfigureDryRunError.__init__()=SCons.SConf.ConfigureDryRunError-class.html#__init__,Method SCons.SConf.SConfBase.TestWrapper.__init__()=SCons.SConf.SConfBase.TestWrapper-class.html#__init__,Method SCons.SConf.SConfBase.__init__()=SCons.SConf.SConfBase-class.html#__init__,Method SCons.SConf.SConfBuildInfo.__init__()=SCons.SConf.SConfBuildInfo-class.html#__init__,Method SCons.SConf.SConfError.__init__()=SCons.SConf.SConfError-class.html#__init__,Method SCons.SConf.Streamer.__init__()=SCons.SConf.Streamer-class.html#__init__,Method SCons.SConsign.Base.__init__()=SCons.SConsign.Base-class.html#__init__,Method SCons.SConsign.DB.__init__()=SCons.SConsign.DB-class.html#__init__,Method SCons.SConsign.Dir.__init__()=SCons.SConsign.Dir-class.html#__init__,Method SCons.SConsign.DirFile.__init__()=SCons.SConsign.DirFile-class.html#__init__,Method SCons.SConsign.SConsignEntry.__init__()=SCons.SConsign.SConsignEntry-class.html#__init__,Method SCons.Scanner.Base.__init__()=SCons.Scanner.Base-class.html#__init__,Method SCons.Scanner.C.SConsCPPScanner.__init__()=SCons.Scanner.C.SConsCPPScanner-class.html#__init__,Method SCons.Scanner.C.SConsCPPScannerWrapper.__init__()=SCons.Scanner.C.SConsCPPScannerWrapper-class.html#__init__,Method SCons.Scanner.Classic.__init__()=SCons.Scanner.Classic-class.html#__init__,Method SCons.Scanner.Current.__init__()=SCons.Scanner.Current-class.html#__init__,Method SCons.Scanner.D.D.__init__()=SCons.Scanner.D.D-class.html#__init__,Method SCons.Scanner.FindPathDirs.__init__()=SCons.Scanner.FindPathDirs-class.html#__init__,Method SCons.Scanner.Fortran.F90Scanner.__init__()=SCons.Scanner.Fortran.F90Scanner-class.html#__init__,Method SCons.Scanner.LaTeX.FindENVPathDirs.__init__()=SCons.Scanner.LaTeX.FindENVPathDirs-class.html#__init__,Method SCons.Scanner.LaTeX.LaTeX.__init__()=SCons.Scanner.LaTeX.LaTeX-class.html#__init__,Method SCons.Scanner.Selector.__init__()=SCons.Scanner.Selector-class.html#__init__,Method SCons.Script.Interactive.SConsInteractiveCmd.__init__()=SCons.Script.Interactive.SConsInteractiveCmd-class.html#__init__,Method SCons.Script.Main.Progressor.__init__()=SCons.Script.Main.Progressor-class.html#__init__,Method SCons.Script.Main.Stats.__init__()=SCons.Script.Main.Stats-class.html#__init__,Method SCons.Script.Main.TreePrinter.__init__()=SCons.Script.Main.TreePrinter-class.html#__init__,Method SCons.Script.SConscript'.DefaultEnvironmentCall.__init__()=SCons.Script.SConscript%27.DefaultEnvironmentCall-class.html#__init__,Method SCons.Script.SConscript'.Frame.__init__()=SCons.Script.SConscript%27.Frame-class.html#__init__,Method SCons.Subst.CmdStringHolder.__init__()=SCons.Subst.CmdStringHolder-class.html#__init__,Method SCons.Subst.Literal.__init__()=SCons.Subst.Literal-class.html#__init__,Method SCons.Subst.NLWrapper.__init__()=SCons.Subst.NLWrapper-class.html#__init__,Method SCons.Subst.SpecialAttrWrapper.__init__()=SCons.Subst.SpecialAttrWrapper-class.html#__init__,Method SCons.Subst.Target_or_Source.__init__()=SCons.Subst.Target_or_Source-class.html#__init__,Method SCons.Subst.Targets_or_Sources.__init__()=SCons.Subst.Targets_or_Sources-class.html#__init__,Method SCons.Taskmaster.Stats.__init__()=SCons.Taskmaster.Stats-class.html#__init__,Method SCons.Taskmaster.Task.__init__()=SCons.Taskmaster.Task-class.html#__init__,Method SCons.Taskmaster.Taskmaster.__init__()=SCons.Taskmaster.Taskmaster-class.html#__init__,Method SCons.Util.CLVar.__init__()=SCons.Util.CLVar-class.html#__init__,Method SCons.Util.Delegate.__init__()=SCons.Util.Delegate-class.html#__init__,Method SCons.Util.LogicalLines.__init__()=SCons.Util.LogicalLines-class.html#__init__,Method SCons.Util.Null.__init__()=SCons.Util.Null-class.html#__init__,Method SCons.Util.Proxy.__init__()=SCons.Util.Proxy-class.html#__init__,Method SCons.Util.Unbuffered.__init__()=SCons.Util.Unbuffered-class.html#__init__,Method SCons.Util.UniqueList.__init__()=SCons.Util.UniqueList-class.html#__init__,Method SCons.Variables.ListVariable'._ListVariable.__init__()=SCons.Variables.ListVariable%27._ListVariable-class.html#__init__,Method SCons.Variables.Variables.__init__()=SCons.Variables.Variables-class.html#__init__,Method SCons.cpp.DumbPreProcessor.__init__()=SCons.cpp.DumbPreProcessor-class.html#__init__,Method SCons.cpp.FunctionEvaluator.__init__()=SCons.cpp.FunctionEvaluator-class.html#__init__,Method SCons.cpp.PreProcessor.__init__()=SCons.cpp.PreProcessor-class.html#__init__,Method SCons.dblite.dblite.__init__()=SCons.dblite.dblite-class.html#__init__"><a title="SCons.Action.ActionCaller.__init__
+SCons.Action.ActionFactory.__init__
+SCons.Action.CommandAction.__init__
+SCons.Action.CommandGeneratorAction.__init__
+SCons.Action.FunctionAction.__init__
+SCons.Action.LazyAction.__init__
+SCons.Action.ListAction.__init__
+SCons.Action._ActionAction.__init__
+SCons.Builder.BuilderBase.__init__
+SCons.Builder.CompositeBuilder.__init__
+SCons.Builder.DictCmdGenerator.__init__
+SCons.Builder.EmitterProxy.__init__
+SCons.Builder.OverrideWarner.__init__
+SCons.CacheDir.CacheDir.__init__
+SCons.Defaults.NullCmdGenerator.__init__
+SCons.Defaults.Variable_Method_Caller.__init__
+SCons.Environment.Base.__init__
+SCons.Environment.BuilderDict.__init__
+SCons.Environment.MethodWrapper.__init__
+SCons.Environment.OverrideEnvironment.__init__
+SCons.Environment.SubstitutionEnvironment.__init__
+SCons.Errors.BuildError.__init__
+SCons.Errors.ExplicitExit.__init__
+SCons.Executor.Batch.__init__
+SCons.Executor.Executor.__init__
+SCons.Executor.Null.__init__
+SCons.Executor.TSList.__init__
+SCons.Executor.TSObject.__init__
+SCons.Job.InterruptState.__init__
+SCons.Job.Jobs.__init__
+SCons.Job.Parallel.__init__
+SCons.Job.Serial.__init__
+SCons.Job.ThreadPool.__init__
+SCons.Job.Worker.__init__
+SCons.Memoize.CountDict.__init__
+SCons.Memoize.Counter.__init__
+SCons.Node.Alias.Alias.__init__
+SCons.Node.BuildInfoBase.__init__
+SCons.Node.DeciderNeedsNode.__init__
+SCons.Node.FS.Base.__init__
+SCons.Node.FS.Dir.__init__
+SCons.Node.FS.DiskChecker.__init__
+SCons.Node.FS.Entry.__init__
+SCons.Node.FS.EntryProxyAttributeError.__init__
+SCons.Node.FS.FS.__init__
+SCons.Node.FS.File.__init__
+SCons.Node.FS.FileFinder.__init__
+SCons.Node.FS.RootDir.__init__
+SCons.Node.Node.__init__
+SCons.Node.Python.Value.__init__
+SCons.Node.Walker.__init__
+SCons.PathList._PathList.__init__
+SCons.Platform.PlatformSpec.__init__
+SCons.Platform.TempFileMunge.__init__
+SCons.Platform.win32.ArchDefinition.__init__
+SCons.Platform.win32._scons_file.__init__
+SCons.SConf.CheckContext.__init__
+SCons.SConf.ConfigureCacheError.__init__
+SCons.SConf.ConfigureDryRunError.__init__
+SCons.SConf.SConfBase.TestWrapper.__init__
+SCons.SConf.SConfBase.__init__
+SCons.SConf.SConfBuildInfo.__init__
+SCons.SConf.SConfError.__init__
+SCons.SConf.Streamer.__init__
+SCons.SConsign.Base.__init__
+SCons.SConsign.DB.__init__
+SCons.SConsign.Dir.__init__
+SCons.SConsign.DirFile.__init__
+SCons.SConsign.SConsignEntry.__init__
+SCons.Scanner.Base.__init__
+SCons.Scanner.C.SConsCPPScanner.__init__
+SCons.Scanner.C.SConsCPPScannerWrapper.__init__
+SCons.Scanner.Classic.__init__
+SCons.Scanner.Current.__init__
+SCons.Scanner.D.D.__init__
+SCons.Scanner.FindPathDirs.__init__
+SCons.Scanner.Fortran.F90Scanner.__init__
+SCons.Scanner.LaTeX.FindENVPathDirs.__init__
+SCons.Scanner.LaTeX.LaTeX.__init__
+SCons.Scanner.Selector.__init__
+SCons.Script.Interactive.SConsInteractiveCmd.__init__
+SCons.Script.Main.Progressor.__init__
+SCons.Script.Main.Stats.__init__
+SCons.Script.Main.TreePrinter.__init__
+SCons.Script.SConscript'.DefaultEnvironmentCall.__init__
+SCons.Script.SConscript'.Frame.__init__
+SCons.Subst.CmdStringHolder.__init__
+SCons.Subst.Literal.__init__
+SCons.Subst.NLWrapper.__init__
+SCons.Subst.SpecialAttrWrapper.__init__
+SCons.Subst.Target_or_Source.__init__
+SCons.Subst.Targets_or_Sources.__init__
+SCons.Taskmaster.Stats.__init__
+SCons.Taskmaster.Task.__init__
+SCons.Taskmaster.Taskmaster.__init__
+SCons.Util.CLVar.__init__
+SCons.Util.Delegate.__init__
+SCons.Util.LogicalLines.__init__
+SCons.Util.Null.__init__
+SCons.Util.Proxy.__init__
+SCons.Util.Unbuffered.__init__
+SCons.Util.UniqueList.__init__
+SCons.Variables.ListVariable'._ListVariable.__init__
+SCons.Variables.Variables.__init__
+SCons.cpp.DumbPreProcessor.__init__
+SCons.cpp.FunctionEvaluator.__init__
+SCons.cpp.PreProcessor.__init__
+SCons.dblite.dblite.__init__" class="py-name" href="#" onclick="return doclink('link-4', '__init__', 'link-4');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">)</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt id="link-5" class="py-name" targets="Method SCons.Memoize.Counter.key()=SCons.Memoize.Counter-class.html#key"><a title="SCons.Memoize.Counter.key" class="py-name" href="#" onclick="return doclink('link-5', 'key', 'link-5');">key</a></tt><tt class="py-op">,</tt> <tt class="py-name">val</tt> <tt class="py-keyword">in</tt> <tt class="py-name">kw</tt><tt class="py-op">.</tt><tt id="link-6" class="py-name" targets="Method SCons.Environment.OverrideEnvironment.items()=SCons.Environment.OverrideEnvironment-class.html#items,Method SCons.Environment.SubstitutionEnvironment.items()=SCons.Environment.SubstitutionEnvironment-class.html#items"><a title="SCons.Environment.OverrideEnvironment.items
+SCons.Environment.SubstitutionEnvironment.items" class="py-name" href="#" onclick="return doclink('link-6', 'items', 'link-6');">items</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">            <tt class="py-name">setattr</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt id="link-7" class="py-name"><a title="SCons.Memoize.Counter.key" class="py-name" href="#" onclick="return doclink('link-7', 'key', 'link-5');">key</a></tt><tt class="py-op">,</tt> <tt class="py-name">val</tt><tt class="py-op">)</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line"> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">platform</tt> <tt class="py-op">==</tt> <tt class="py-string">'win32'</tt><tt class="py-op">:</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">shell_variable</tt> <tt class="py-op">=</tt> <tt class="py-string">'COMSPEC'</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">shell_variable</tt> <tt class="py-op">=</tt> <tt class="py-string">'SHELL'</tt> </tt>
+</div><a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line"> </tt>
+<a name="SConsInteractiveCmd.default"></a><div id="SConsInteractiveCmd.default-def"><a name="L129"></a><tt class="py-lineno">129</tt> <a class="py-toggle" href="#" id="SConsInteractiveCmd.default-toggle" onclick="return toggle('SConsInteractiveCmd.default');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Script.Interactive.SConsInteractiveCmd-class.html#default">default</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">argv</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SConsInteractiveCmd.default-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="SConsInteractiveCmd.default-expanded"><a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line">        <tt class="py-keyword">print</tt><tt class="py-op">(</tt><tt class="py-string">"*** Unknown command: %s"</tt> <tt class="py-op">%</tt> <tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line"> </tt>
+<a name="SConsInteractiveCmd.onecmd"></a><div id="SConsInteractiveCmd.onecmd-def"><a name="L132"></a><tt class="py-lineno">132</tt> <a class="py-toggle" href="#" id="SConsInteractiveCmd.onecmd-toggle" onclick="return toggle('SConsInteractiveCmd.onecmd');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Script.Interactive.SConsInteractiveCmd-class.html#onecmd">onecmd</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">line</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SConsInteractiveCmd.onecmd-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="SConsInteractiveCmd.onecmd-expanded"><a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">        <tt class="py-name">line</tt> <tt class="py-op">=</tt> <tt class="py-name">line</tt><tt class="py-op">.</tt><tt class="py-name">strip</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">line</tt><tt class="py-op">:</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line">            <tt class="py-keyword">print</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">lastcmd</tt><tt class="py-op">)</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">emptyline</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">lastcmd</tt> <tt class="py-op">=</tt> <tt class="py-name">line</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">line</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> <tt class="py-op">==</tt> <tt class="py-string">'!'</tt><tt class="py-op">:</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line">            <tt class="py-name">line</tt> <tt class="py-op">=</tt> <tt class="py-string">'shell '</tt> <tt class="py-op">+</tt> <tt class="py-name">line</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">:</tt><tt class="py-op">]</tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt class="py-name">line</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> <tt class="py-op">==</tt> <tt class="py-string">'?'</tt><tt class="py-op">:</tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line">            <tt class="py-name">line</tt> <tt class="py-op">=</tt> <tt class="py-string">'help '</tt> <tt class="py-op">+</tt> <tt class="py-name">line</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">:</tt><tt class="py-op">]</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">sep</tt> <tt class="py-op">==</tt> <tt class="py-string">'\\'</tt><tt class="py-op">:</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line">            <tt class="py-name">line</tt> <tt class="py-op">=</tt> <tt class="py-name">line</tt><tt class="py-op">.</tt><tt class="py-name">replace</tt><tt class="py-op">(</tt><tt class="py-string">'\\'</tt><tt class="py-op">,</tt> <tt class="py-string">'\\\\'</tt><tt class="py-op">)</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line">        <tt class="py-name">argv</tt> <tt class="py-op">=</tt> <tt class="py-name">shlex</tt><tt class="py-op">.</tt><tt class="py-name">split</tt><tt class="py-op">(</tt><tt class="py-name">line</tt><tt class="py-op">)</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line">        <tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-8" class="py-name"><a title="SCons.Script.Interactive.SConsInteractiveCmd.synonyms" class="py-name" href="#" onclick="return doclink('link-8', 'synonyms', 'link-3');">synonyms</a></tt><tt class="py-op">.</tt><tt id="link-9" class="py-name" targets="Method SCons.Environment.OverrideEnvironment.get()=SCons.Environment.OverrideEnvironment-class.html#get,Method SCons.Environment.SubstitutionEnvironment.get()=SCons.Environment.SubstitutionEnvironment-class.html#get,Method SCons.Job.ThreadPool.get()=SCons.Job.ThreadPool-class.html#get,Method SCons.Util.Proxy.get()=SCons.Util.Proxy-class.html#get"><a title="SCons.Environment.OverrideEnvironment.get
+SCons.Environment.SubstitutionEnvironment.get
+SCons.Job.ThreadPool.get
+SCons.Util.Proxy.get" class="py-name" href="#" onclick="return doclink('link-9', 'get', 'link-9');">get</a></tt><tt class="py-op">(</tt><tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">:</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-10" class="py-name" targets="Method SCons.Script.Interactive.SConsInteractiveCmd.default()=SCons.Script.Interactive.SConsInteractiveCmd-class.html#default"><a title="SCons.Script.Interactive.SConsInteractiveCmd.default" class="py-name" href="#" onclick="return doclink('link-10', 'default', 'link-10');">default</a></tt><tt class="py-op">(</tt><tt class="py-name">line</tt><tt class="py-op">)</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line">            <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">                <tt class="py-name">func</tt> <tt class="py-op">=</tt> <tt class="py-name">getattr</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-string">'do_'</tt> <tt class="py-op">+</tt> <tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line">            <tt class="py-keyword">except</tt> <tt class="py-name">AttributeError</tt><tt class="py-op">:</tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-11" class="py-name"><a title="SCons.Script.Interactive.SConsInteractiveCmd.default" class="py-name" href="#" onclick="return doclink('link-11', 'default', 'link-10');">default</a></tt><tt class="py-op">(</tt><tt class="py-name">argv</tt><tt class="py-op">)</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">func</tt><tt class="py-op">(</tt><tt class="py-name">argv</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line"> </tt>
+<a name="SConsInteractiveCmd.do_build"></a><div id="SConsInteractiveCmd.do_build-def"><a name="L155"></a><tt class="py-lineno">155</tt> <a class="py-toggle" href="#" id="SConsInteractiveCmd.do_build-toggle" onclick="return toggle('SConsInteractiveCmd.do_build');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Script.Interactive.SConsInteractiveCmd-class.html#do_build">do_build</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">argv</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SConsInteractiveCmd.do_build-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="SConsInteractiveCmd.do_build-expanded"><a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line">        <tt class="py-docstring">"""\</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line"><tt class="py-docstring">        build [TARGETS]         Build the specified TARGETS and their</tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line"><tt class="py-docstring">                                dependencies.  'b' is a synonym.</tt> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line">        <tt class="py-keyword">import</tt> <tt id="link-12" class="py-name" targets="Package SCons=SCons-module.html"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-12', 'SCons', 'link-12');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-13" class="py-name" targets="Package SCons.Node=SCons.Node-module.html,Class SCons.Node.Node=SCons.Node.Node-class.html"><a title="SCons.Node
+SCons.Node.Node" class="py-name" href="#" onclick="return doclink('link-13', 'Node', 'link-13');">Node</a></tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line">        <tt class="py-keyword">import</tt> <tt id="link-14" class="py-name"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-14', 'SCons', 'link-12');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-15" class="py-name" targets="Module SCons.SConsign=SCons.SConsign-module.html"><a title="SCons.SConsign" class="py-name" href="#" onclick="return doclink('link-15', 'SConsign', 'link-15');">SConsign</a></tt> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line">        <tt class="py-keyword">import</tt> <tt id="link-16" class="py-name"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-16', 'SCons', 'link-12');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-17" class="py-name" targets="Package SCons.Script=SCons.Script-module.html"><a title="SCons.Script" class="py-name" href="#" onclick="return doclink('link-17', 'Script', 'link-17');">Script</a></tt><tt class="py-op">.</tt><tt id="link-18" class="py-name" targets="Module SCons.Script.Main=SCons.Script.Main-module.html"><a title="SCons.Script.Main" class="py-name" href="#" onclick="return doclink('link-18', 'Main', 'link-18');">Main</a></tt> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line"> </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line">        <tt class="py-name">options</tt> <tt class="py-op">=</tt> <tt id="link-19" class="py-name"><a title="SCons.Node.FS.LocalFS.copy" class="py-name" href="#" onclick="return doclink('link-19', 'copy', 'link-2');">copy</a></tt><tt class="py-op">.</tt><tt class="py-name">deepcopy</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">options</tt><tt class="py-op">)</tt> </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line"> </tt>
+<a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line">        <tt class="py-name">options</tt><tt class="py-op">,</tt> <tt id="link-20" class="py-name" targets="Variable SCons.Executor.Batch.targets=SCons.Executor.Batch-class.html#targets"><a title="SCons.Executor.Batch.targets" class="py-name" href="#" onclick="return doclink('link-20', 'targets', 'link-20');">targets</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">parser</tt><tt class="py-op">.</tt><tt class="py-name">parse_args</tt><tt class="py-op">(</tt><tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">:</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt id="link-21" class="py-name" targets="Variable SCons.Script.Main.FakeOptionParser.values=SCons.Script.Main.FakeOptionParser-class.html#values"><a title="SCons.Script.Main.FakeOptionParser.values" class="py-name" href="#" onclick="return doclink('link-21', 'values', 'link-21');">values</a></tt><tt class="py-op">=</tt><tt class="py-name">options</tt><tt class="py-op">)</tt> </tt>
+<a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line"> </tt>
+<a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line">        <tt id="link-22" class="py-name"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-22', 'SCons', 'link-12');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-23" class="py-name"><a title="SCons.Script" class="py-name" href="#" onclick="return doclink('link-23', 'Script', 'link-17');">Script</a></tt><tt class="py-op">.</tt><tt id="link-24" class="py-name" targets="Variable SCons.Script.COMMAND_LINE_TARGETS=SCons.Script-module.html#COMMAND_LINE_TARGETS"><a title="SCons.Script.COMMAND_LINE_TARGETS" class="py-name" href="#" onclick="return doclink('link-24', 'COMMAND_LINE_TARGETS', 'link-24');">COMMAND_LINE_TARGETS</a></tt> <tt class="py-op">=</tt> <tt id="link-25" class="py-name"><a title="SCons.Executor.Batch.targets" class="py-name" href="#" onclick="return doclink('link-25', 'targets', 'link-20');">targets</a></tt> </tt>
+<a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line"> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-26" class="py-name"><a title="SCons.Executor.Batch.targets" class="py-name" href="#" onclick="return doclink('link-26', 'targets', 'link-20');">targets</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line">            <tt id="link-27" class="py-name"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-27', 'SCons', 'link-12');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-28" class="py-name"><a title="SCons.Script" class="py-name" href="#" onclick="return doclink('link-28', 'Script', 'link-17');">Script</a></tt><tt class="py-op">.</tt><tt id="link-29" class="py-name" targets="Variable SCons.Script.BUILD_TARGETS=SCons.Script-module.html#BUILD_TARGETS"><a title="SCons.Script.BUILD_TARGETS" class="py-name" href="#" onclick="return doclink('link-29', 'BUILD_TARGETS', 'link-29');">BUILD_TARGETS</a></tt> <tt class="py-op">=</tt> <tt id="link-30" class="py-name"><a title="SCons.Executor.Batch.targets" class="py-name" href="#" onclick="return doclink('link-30', 'targets', 'link-20');">targets</a></tt> </tt>
+<a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line">            <tt class="py-comment"># If the user didn't specify any targets on the command line,</tt> </tt>
+<a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line">            <tt class="py-comment"># use the list of default targets.</tt> </tt>
+<a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line">            <tt id="link-31" class="py-name"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-31', 'SCons', 'link-12');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-32" class="py-name"><a title="SCons.Script" class="py-name" href="#" onclick="return doclink('link-32', 'Script', 'link-17');">Script</a></tt><tt class="py-op">.</tt><tt id="link-33" class="py-name"><a title="SCons.Script.BUILD_TARGETS" class="py-name" href="#" onclick="return doclink('link-33', 'BUILD_TARGETS', 'link-29');">BUILD_TARGETS</a></tt> <tt class="py-op">=</tt> <tt id="link-34" class="py-name"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-34', 'SCons', 'link-12');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-35" class="py-name"><a title="SCons.Script" class="py-name" href="#" onclick="return doclink('link-35', 'Script', 'link-17');">Script</a></tt><tt class="py-op">.</tt><tt id="link-36" class="py-name" targets="Variable SCons.Script._build_plus_default=SCons.Script-module.html#_build_plus_default"><a title="SCons.Script._build_plus_default" class="py-name" href="#" onclick="return doclink('link-36', '_build_plus_default', 'link-36');">_build_plus_default</a></tt> </tt>
+<a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line"> </tt>
+<a name="L177"></a><tt class="py-lineno">177</tt>  <tt class="py-line">        <tt class="py-name">nodes</tt> <tt class="py-op">=</tt> <tt id="link-37" class="py-name"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-37', 'SCons', 'link-12');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-38" class="py-name"><a title="SCons.Script" class="py-name" href="#" onclick="return doclink('link-38', 'Script', 'link-17');">Script</a></tt><tt class="py-op">.</tt><tt id="link-39" class="py-name"><a title="SCons.Script.Main" class="py-name" href="#" onclick="return doclink('link-39', 'Main', 'link-18');">Main</a></tt><tt class="py-op">.</tt><tt id="link-40" class="py-name" targets="Function SCons.Script.Main._build_targets()=SCons.Script.Main-module.html#_build_targets"><a title="SCons.Script.Main._build_targets" class="py-name" href="#" onclick="return doclink('link-40', '_build_targets', 'link-40');">_build_targets</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-41" class="py-name" targets="Variable SCons.Node.FS.Base.fs=SCons.Node.FS.Base-class.html#fs,Variable SCons.Node.FS.DirNodeInfo.fs=SCons.Node.FS.DirNodeInfo-class.html#fs,Variable SCons.Node.FS.FileNodeInfo.fs=SCons.Node.FS.FileNodeInfo-class.html#fs"><a title="SCons.Node.FS.Base.fs
+SCons.Node.FS.DirNodeInfo.fs
+SCons.Node.FS.FileNodeInfo.fs" class="py-name" href="#" onclick="return doclink('link-41', 'fs', 'link-41');">fs</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line">                                                 <tt class="py-name">options</tt><tt class="py-op">,</tt> </tt>
+<a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line">                                                 <tt id="link-42" class="py-name"><a title="SCons.Executor.Batch.targets" class="py-name" href="#" onclick="return doclink('link-42', 'targets', 'link-20');">targets</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line">                                                 <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">target_top</tt><tt class="py-op">)</tt> </tt>
+<a name="L181"></a><tt class="py-lineno">181</tt>  <tt class="py-line"> </tt>
+<a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">nodes</tt><tt class="py-op">:</tt> </tt>
+<a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> </tt>
+<a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line"> </tt>
+<a name="L185"></a><tt class="py-lineno">185</tt>  <tt class="py-line">        <tt class="py-comment"># Call each of the Node's alter_targets() methods, which may</tt> </tt>
+<a name="L186"></a><tt class="py-lineno">186</tt>  <tt class="py-line">        <tt class="py-comment"># provide additional targets that ended up as part of the build</tt> </tt>
+<a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line">        <tt class="py-comment"># (the canonical example being a VariantDir() when we're building</tt> </tt>
+<a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line">        <tt class="py-comment"># from a source directory) and which we therefore need their</tt> </tt>
+<a name="L189"></a><tt class="py-lineno">189</tt>  <tt class="py-line">        <tt class="py-comment"># state cleared, too.</tt> </tt>
+<a name="L190"></a><tt class="py-lineno">190</tt>  <tt class="py-line">        <tt id="link-43" class="py-name" targets="Variable SCons.cpp.x=SCons.cpp-module.html#x"><a title="SCons.cpp.x" class="py-name" href="#" onclick="return doclink('link-43', 'x', 'link-43');">x</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L191"></a><tt class="py-lineno">191</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">n</tt> <tt class="py-keyword">in</tt> <tt class="py-name">nodes</tt><tt class="py-op">:</tt> </tt>
+<a name="L192"></a><tt class="py-lineno">192</tt>  <tt class="py-line">            <tt id="link-44" class="py-name"><a title="SCons.cpp.x" class="py-name" href="#" onclick="return doclink('link-44', 'x', 'link-43');">x</a></tt><tt class="py-op">.</tt><tt id="link-45" class="py-name" targets="Method SCons.Util.UniqueList.extend()=SCons.Util.UniqueList-class.html#extend"><a title="SCons.Util.UniqueList.extend" class="py-name" href="#" onclick="return doclink('link-45', 'extend', 'link-45');">extend</a></tt><tt class="py-op">(</tt><tt class="py-name">n</tt><tt class="py-op">.</tt><tt id="link-46" class="py-name" targets="Method SCons.Node.FS.Dir.alter_targets()=SCons.Node.FS.Dir-class.html#alter_targets,Method SCons.Node.FS.File.alter_targets()=SCons.Node.FS.File-class.html#alter_targets,Method SCons.Node.Node.alter_targets()=SCons.Node.Node-class.html#alter_targets"><a title="SCons.Node.FS.Dir.alter_targets
+SCons.Node.FS.File.alter_targets
+SCons.Node.Node.alter_targets" class="py-name" href="#" onclick="return doclink('link-46', 'alter_targets', 'link-46');">alter_targets</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L193"></a><tt class="py-lineno">193</tt>  <tt class="py-line">        <tt class="py-name">nodes</tt><tt class="py-op">.</tt><tt id="link-47" class="py-name"><a title="SCons.Util.UniqueList.extend" class="py-name" href="#" onclick="return doclink('link-47', 'extend', 'link-45');">extend</a></tt><tt class="py-op">(</tt><tt id="link-48" class="py-name"><a title="SCons.cpp.x" class="py-name" href="#" onclick="return doclink('link-48', 'x', 'link-43');">x</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L194"></a><tt class="py-lineno">194</tt>  <tt class="py-line"> </tt>
+<a name="L195"></a><tt class="py-lineno">195</tt>  <tt class="py-line">        <tt class="py-comment"># Clean up so that we can perform the next build correctly.</tt> </tt>
+<a name="L196"></a><tt class="py-lineno">196</tt>  <tt class="py-line">        <tt class="py-comment">#</tt> </tt>
+<a name="L197"></a><tt class="py-lineno">197</tt>  <tt class="py-line">        <tt class="py-comment"># We do this by walking over all the children of the targets,</tt> </tt>
+<a name="L198"></a><tt class="py-lineno">198</tt>  <tt class="py-line">        <tt class="py-comment"># and clearing their state.</tt> </tt>
+<a name="L199"></a><tt class="py-lineno">199</tt>  <tt class="py-line">        <tt class="py-comment">#</tt> </tt>
+<a name="L200"></a><tt class="py-lineno">200</tt>  <tt class="py-line">        <tt class="py-comment"># We currently have to re-scan each node to find their</tt> </tt>
+<a name="L201"></a><tt class="py-lineno">201</tt>  <tt class="py-line">        <tt class="py-comment"># children, because built nodes have already been partially</tt> </tt>
+<a name="L202"></a><tt class="py-lineno">202</tt>  <tt class="py-line">        <tt class="py-comment"># cleared and don't remember their children.  (In scons</tt> </tt>
+<a name="L203"></a><tt class="py-lineno">203</tt>  <tt class="py-line">        <tt class="py-comment"># 0.96.1 and earlier, this wasn't the case, and we didn't</tt> </tt>
+<a name="L204"></a><tt class="py-lineno">204</tt>  <tt class="py-line">        <tt class="py-comment"># have to re-scan the nodes.)</tt> </tt>
+<a name="L205"></a><tt class="py-lineno">205</tt>  <tt class="py-line">        <tt class="py-comment">#</tt> </tt>
+<a name="L206"></a><tt class="py-lineno">206</tt>  <tt class="py-line">        <tt class="py-comment"># Because we have to re-scan each node, we can't clear the</tt> </tt>
+<a name="L207"></a><tt class="py-lineno">207</tt>  <tt class="py-line">        <tt class="py-comment"># nodes as we walk over them, because we may end up rescanning</tt> </tt>
+<a name="L208"></a><tt class="py-lineno">208</tt>  <tt class="py-line">        <tt class="py-comment"># a cleared node as we scan a later node.  Therefore, only</tt> </tt>
+<a name="L209"></a><tt class="py-lineno">209</tt>  <tt class="py-line">        <tt class="py-comment"># store the list of nodes that need to be cleared as we walk</tt> </tt>
+<a name="L210"></a><tt class="py-lineno">210</tt>  <tt class="py-line">        <tt class="py-comment"># the tree, and clear them in a separate pass.</tt> </tt>
+<a name="L211"></a><tt class="py-lineno">211</tt>  <tt class="py-line">        <tt class="py-comment">#</tt> </tt>
+<a name="L212"></a><tt class="py-lineno">212</tt>  <tt class="py-line">        <tt class="py-comment"># XXX: Someone more familiar with the inner workings of scons</tt> </tt>
+<a name="L213"></a><tt class="py-lineno">213</tt>  <tt class="py-line">        <tt class="py-comment"># may be able to point out a more efficient way to do this.</tt> </tt>
+<a name="L214"></a><tt class="py-lineno">214</tt>  <tt class="py-line"> </tt>
+<a name="L215"></a><tt class="py-lineno">215</tt>  <tt class="py-line">        <tt id="link-49" class="py-name"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-49', 'SCons', 'link-12');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-50" class="py-name"><a title="SCons.Script" class="py-name" href="#" onclick="return doclink('link-50', 'Script', 'link-17');">Script</a></tt><tt class="py-op">.</tt><tt id="link-51" class="py-name"><a title="SCons.Script.Main" class="py-name" href="#" onclick="return doclink('link-51', 'Main', 'link-18');">Main</a></tt><tt class="py-op">.</tt><tt id="link-52" class="py-name" targets="Variable SCons.SConf.progress_display=SCons.SConf-module.html#progress_display,Variable SCons.Script.Main.progress_display=SCons.Script.Main-module.html#progress_display"><a title="SCons.SConf.progress_display
+SCons.Script.Main.progress_display" class="py-name" href="#" onclick="return doclink('link-52', 'progress_display', 'link-52');">progress_display</a></tt><tt class="py-op">(</tt><tt class="py-string">"scons: Clearing cached node information ..."</tt><tt class="py-op">)</tt> </tt>
+<a name="L216"></a><tt class="py-lineno">216</tt>  <tt class="py-line"> </tt>
+<a name="L217"></a><tt class="py-lineno">217</tt>  <tt class="py-line">        <tt class="py-name">seen_nodes</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L218"></a><tt class="py-lineno">218</tt>  <tt class="py-line"> </tt>
+<a name="L219"></a><tt class="py-lineno">219</tt>  <tt class="py-line">        <tt class="py-keyword">def</tt> <tt class="py-def-name">get_unseen_children</tt><tt class="py-op">(</tt><tt class="py-param">node</tt><tt class="py-op">,</tt> <tt class="py-param">parent</tt><tt class="py-op">,</tt> <tt class="py-param">seen_nodes</tt><tt class="py-op">=</tt><tt class="py-name">seen_nodes</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L220"></a><tt class="py-lineno">220</tt>  <tt class="py-line">            <tt class="py-keyword">def</tt> <tt class="py-def-name">is_unseen</tt><tt class="py-op">(</tt><tt class="py-param">node</tt><tt class="py-op">,</tt> <tt class="py-param">seen_nodes</tt><tt class="py-op">=</tt><tt class="py-name">seen_nodes</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L221"></a><tt class="py-lineno">221</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">node</tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt class="py-name">seen_nodes</tt> </tt>
+</div><a name="L222"></a><tt class="py-lineno">222</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-op">[</tt><tt class="py-name">child</tt> <tt class="py-keyword">for</tt> <tt class="py-name">child</tt> <tt class="py-keyword">in</tt> <tt class="py-name">node</tt><tt class="py-op">.</tt><tt id="link-53" class="py-name" targets="Method SCons.Node.Node.children()=SCons.Node.Node-class.html#children"><a title="SCons.Node.Node.children" class="py-name" href="#" onclick="return doclink('link-53', 'children', 'link-53');">children</a></tt><tt class="py-op">(</tt><tt id="link-54" class="py-name" targets="Method SCons.Executor.Executor.scan()=SCons.Executor.Executor-class.html#scan,Method SCons.Node.Node.scan()=SCons.Node.Node-class.html#scan,Method SCons.Scanner.Classic.scan()=SCons.Scanner.Classic-class.html#scan,Method SCons.Scanner.Fortran.F90Scanner.scan()=SCons.Scanner.Fortran.F90Scanner-class.html#scan,Method SCons.Scanner.LaTeX.LaTeX.scan()=SCons.Scanner.LaTeX.LaTeX-class.html#scan,Function SCons.Scanner.Prog.scan()=SCons.Scanner.Prog-module.html#scan"><a title="SCons.Executor.Executor.scan
+SCons.Node.Node.scan
+SCons.Scanner.Classic.scan
+SCons.Scanner.Fortran.F90Scanner.scan
+SCons.Scanner.LaTeX.LaTeX.scan
+SCons.Scanner.Prog.scan" class="py-name" href="#" onclick="return doclink('link-54', 'scan', 'link-54');">scan</a></tt><tt class="py-op">=</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> <tt class="py-keyword">if</tt> <tt class="py-name">is_unseen</tt><tt class="py-op">(</tt><tt class="py-name">child</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> </tt>
+</div><a name="L223"></a><tt class="py-lineno">223</tt>  <tt class="py-line"> </tt>
+<a name="L224"></a><tt class="py-lineno">224</tt>  <tt class="py-line">        <tt class="py-keyword">def</tt> <tt class="py-def-name">add_to_seen_nodes</tt><tt class="py-op">(</tt><tt class="py-param">node</tt><tt class="py-op">,</tt> <tt class="py-param">parent</tt><tt class="py-op">,</tt> <tt class="py-param">seen_nodes</tt><tt class="py-op">=</tt><tt class="py-name">seen_nodes</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L225"></a><tt class="py-lineno">225</tt>  <tt class="py-line">            <tt class="py-name">seen_nodes</tt><tt class="py-op">[</tt><tt class="py-name">node</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-number">1</tt> </tt>
+<a name="L226"></a><tt class="py-lineno">226</tt>  <tt class="py-line"> </tt>
+<a name="L227"></a><tt class="py-lineno">227</tt>  <tt class="py-line">            <tt class="py-comment"># If this file is in a VariantDir and has a</tt> </tt>
+<a name="L228"></a><tt class="py-lineno">228</tt>  <tt class="py-line">            <tt class="py-comment"># corresponding source file in the source tree, remember the</tt> </tt>
+<a name="L229"></a><tt class="py-lineno">229</tt>  <tt class="py-line">            <tt class="py-comment"># node in the source tree, too.  This is needed in</tt> </tt>
+<a name="L230"></a><tt class="py-lineno">230</tt>  <tt class="py-line">            <tt class="py-comment"># particular to clear cached implicit dependencies on the</tt> </tt>
+<a name="L231"></a><tt class="py-lineno">231</tt>  <tt class="py-line">            <tt class="py-comment"># source file, since the scanner will scan it if the</tt> </tt>
+<a name="L232"></a><tt class="py-lineno">232</tt>  <tt class="py-line">            <tt class="py-comment"># VariantDir was created with duplicate=0.</tt> </tt>
+<a name="L233"></a><tt class="py-lineno">233</tt>  <tt class="py-line">            <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L234"></a><tt class="py-lineno">234</tt>  <tt class="py-line">                <tt class="py-name">rfile_method</tt> <tt class="py-op">=</tt> <tt class="py-name">node</tt><tt class="py-op">.</tt><tt id="link-55" class="py-name" targets="Function SCons.Executor.rfile()=SCons.Executor-module.html#rfile,Method SCons.Node.FS.Base.rfile()=SCons.Node.FS.Base-class.html#rfile,Method SCons.Node.FS.Entry.rfile()=SCons.Node.FS.Entry-class.html#rfile,Method SCons.Node.FS.File.rfile()=SCons.Node.FS.File-class.html#rfile"><a title="SCons.Executor.rfile
+SCons.Node.FS.Base.rfile
+SCons.Node.FS.Entry.rfile
+SCons.Node.FS.File.rfile" class="py-name" href="#" onclick="return doclink('link-55', 'rfile', 'link-55');">rfile</a></tt> </tt>
+<a name="L235"></a><tt class="py-lineno">235</tt>  <tt class="py-line">            <tt class="py-keyword">except</tt> <tt class="py-name">AttributeError</tt><tt class="py-op">:</tt> </tt>
+<a name="L236"></a><tt class="py-lineno">236</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> </tt>
+<a name="L237"></a><tt class="py-lineno">237</tt>  <tt class="py-line">            <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L238"></a><tt class="py-lineno">238</tt>  <tt class="py-line">                <tt id="link-56" class="py-name"><a title="SCons.Executor.rfile
+SCons.Node.FS.Base.rfile
+SCons.Node.FS.Entry.rfile
+SCons.Node.FS.File.rfile" class="py-name" href="#" onclick="return doclink('link-56', 'rfile', 'link-55');">rfile</a></tt> <tt class="py-op">=</tt> <tt class="py-name">rfile_method</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L239"></a><tt class="py-lineno">239</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt id="link-57" class="py-name"><a title="SCons.Executor.rfile
+SCons.Node.FS.Base.rfile
+SCons.Node.FS.Entry.rfile
+SCons.Node.FS.File.rfile" class="py-name" href="#" onclick="return doclink('link-57', 'rfile', 'link-55');">rfile</a></tt> <tt class="py-op">!=</tt> <tt class="py-name">node</tt><tt class="py-op">:</tt> </tt>
+<a name="L240"></a><tt class="py-lineno">240</tt>  <tt class="py-line">                <tt class="py-name">seen_nodes</tt><tt class="py-op">[</tt><tt id="link-58" class="py-name"><a title="SCons.Executor.rfile
+SCons.Node.FS.Base.rfile
+SCons.Node.FS.Entry.rfile
+SCons.Node.FS.File.rfile" class="py-name" href="#" onclick="return doclink('link-58', 'rfile', 'link-55');">rfile</a></tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-number">1</tt> </tt>
+</div><a name="L241"></a><tt class="py-lineno">241</tt>  <tt class="py-line"> </tt>
+<a name="L242"></a><tt class="py-lineno">242</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">node</tt> <tt class="py-keyword">in</tt> <tt class="py-name">nodes</tt><tt class="py-op">:</tt> </tt>
+<a name="L243"></a><tt class="py-lineno">243</tt>  <tt class="py-line">            <tt class="py-name">walker</tt> <tt class="py-op">=</tt> <tt id="link-59" class="py-name"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-59', 'SCons', 'link-12');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-60" class="py-name"><a title="SCons.Node
+SCons.Node.Node" class="py-name" href="#" onclick="return doclink('link-60', 'Node', 'link-13');">Node</a></tt><tt class="py-op">.</tt><tt id="link-61" class="py-name" targets="Class SCons.Node.Walker=SCons.Node.Walker-class.html"><a title="SCons.Node.Walker" class="py-name" href="#" onclick="return doclink('link-61', 'Walker', 'link-61');">Walker</a></tt><tt class="py-op">(</tt><tt class="py-name">node</tt><tt class="py-op">,</tt> </tt>
+<a name="L244"></a><tt class="py-lineno">244</tt>  <tt class="py-line">                                        <tt class="py-name">kids_func</tt><tt class="py-op">=</tt><tt class="py-name">get_unseen_children</tt><tt class="py-op">,</tt> </tt>
+<a name="L245"></a><tt class="py-lineno">245</tt>  <tt class="py-line">                                        <tt class="py-name">eval_func</tt><tt class="py-op">=</tt><tt class="py-name">add_to_seen_nodes</tt><tt class="py-op">)</tt> </tt>
+<a name="L246"></a><tt class="py-lineno">246</tt>  <tt class="py-line">            <tt class="py-name">n</tt> <tt class="py-op">=</tt> <tt class="py-name">walker</tt><tt class="py-op">.</tt><tt id="link-62" class="py-name" targets="Method SCons.Node.Walker.get_next()=SCons.Node.Walker-class.html#get_next"><a title="SCons.Node.Walker.get_next" class="py-name" href="#" onclick="return doclink('link-62', 'get_next', 'link-62');">get_next</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L247"></a><tt class="py-lineno">247</tt>  <tt class="py-line">            <tt class="py-keyword">while</tt> <tt class="py-name">n</tt><tt class="py-op">:</tt> </tt>
+<a name="L248"></a><tt class="py-lineno">248</tt>  <tt class="py-line">                <tt class="py-name">n</tt> <tt class="py-op">=</tt> <tt class="py-name">walker</tt><tt class="py-op">.</tt><tt id="link-63" class="py-name"><a title="SCons.Node.Walker.get_next" class="py-name" href="#" onclick="return doclink('link-63', 'get_next', 'link-62');">get_next</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L249"></a><tt class="py-lineno">249</tt>  <tt class="py-line"> </tt>
+<a name="L250"></a><tt class="py-lineno">250</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">node</tt> <tt class="py-keyword">in</tt> <tt class="py-name">list</tt><tt class="py-op">(</tt><tt class="py-name">seen_nodes</tt><tt class="py-op">.</tt><tt id="link-64" class="py-name" targets="Method SCons.Variables.Variables.keys()=SCons.Variables.Variables-class.html#keys,Method SCons.dblite.dblite.keys()=SCons.dblite.dblite-class.html#keys"><a title="SCons.Variables.Variables.keys
+SCons.dblite.dblite.keys" class="py-name" href="#" onclick="return doclink('link-64', 'keys', 'link-64');">keys</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L251"></a><tt class="py-lineno">251</tt>  <tt class="py-line">            <tt class="py-comment"># Call node.clear() to clear most of the state</tt> </tt>
+<a name="L252"></a><tt class="py-lineno">252</tt>  <tt class="py-line">            <tt class="py-name">node</tt><tt class="py-op">.</tt><tt id="link-65" class="py-name" targets="Method SCons.Node.Node.clear()=SCons.Node.Node-class.html#clear"><a title="SCons.Node.Node.clear" class="py-name" href="#" onclick="return doclink('link-65', 'clear', 'link-65');">clear</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L253"></a><tt class="py-lineno">253</tt>  <tt class="py-line">            <tt class="py-comment"># node.clear() doesn't reset node.state, so call</tt> </tt>
+<a name="L254"></a><tt class="py-lineno">254</tt>  <tt class="py-line">            <tt class="py-comment"># node.set_state() to reset it manually</tt> </tt>
+<a name="L255"></a><tt class="py-lineno">255</tt>  <tt class="py-line">            <tt class="py-name">node</tt><tt class="py-op">.</tt><tt id="link-66" class="py-name" targets="Method SCons.Node.Node.set_state()=SCons.Node.Node-class.html#set_state"><a title="SCons.Node.Node.set_state" class="py-name" href="#" onclick="return doclink('link-66', 'set_state', 'link-66');">set_state</a></tt><tt class="py-op">(</tt><tt id="link-67" class="py-name"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-67', 'SCons', 'link-12');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-68" class="py-name"><a title="SCons.Node
+SCons.Node.Node" class="py-name" href="#" onclick="return doclink('link-68', 'Node', 'link-13');">Node</a></tt><tt class="py-op">.</tt><tt id="link-69" class="py-name" targets="Variable SCons.Node.no_state=SCons.Node-module.html#no_state"><a title="SCons.Node.no_state" class="py-name" href="#" onclick="return doclink('link-69', 'no_state', 'link-69');">no_state</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L256"></a><tt class="py-lineno">256</tt>  <tt class="py-line">            <tt class="py-name">node</tt><tt class="py-op">.</tt><tt id="link-70" class="py-name" targets="Variable SCons.Node.Node.implicit=SCons.Node.Node-class.html#implicit"><a title="SCons.Node.Node.implicit" class="py-name" href="#" onclick="return doclink('link-70', 'implicit', 'link-70');">implicit</a></tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L257"></a><tt class="py-lineno">257</tt>  <tt class="py-line"> </tt>
+<a name="L258"></a><tt class="py-lineno">258</tt>  <tt class="py-line">            <tt class="py-comment"># Debug:  Uncomment to verify that all Taskmaster reference</tt> </tt>
+<a name="L259"></a><tt class="py-lineno">259</tt>  <tt class="py-line">            <tt class="py-comment"># counts have been reset to zero.</tt> </tt>
+<a name="L260"></a><tt class="py-lineno">260</tt>  <tt class="py-line">            <tt class="py-comment">#if node.ref_count != 0:</tt> </tt>
+<a name="L261"></a><tt class="py-lineno">261</tt>  <tt class="py-line">            <tt class="py-comment">#    from SCons.Debug import Trace</tt> </tt>
+<a name="L262"></a><tt class="py-lineno">262</tt>  <tt class="py-line">            <tt class="py-comment">#    Trace('node %s, ref_count %s !!!\n' % (node, node.ref_count))</tt> </tt>
+<a name="L263"></a><tt class="py-lineno">263</tt>  <tt class="py-line"> </tt>
+<a name="L264"></a><tt class="py-lineno">264</tt>  <tt class="py-line">        <tt id="link-71" class="py-name"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-71', 'SCons', 'link-12');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-72" class="py-name"><a title="SCons.SConsign" class="py-name" href="#" onclick="return doclink('link-72', 'SConsign', 'link-15');">SConsign</a></tt><tt class="py-op">.</tt><tt id="link-73" class="py-name" targets="Function SCons.SConsign.Reset()=SCons.SConsign-module.html#Reset"><a title="SCons.SConsign.Reset" class="py-name" href="#" onclick="return doclink('link-73', 'Reset', 'link-73');">Reset</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L265"></a><tt class="py-lineno">265</tt>  <tt class="py-line">        <tt id="link-74" class="py-name"><a title="SCons" class="py-name" href="#" onclick="return doclink('link-74', 'SCons', 'link-12');">SCons</a></tt><tt class="py-op">.</tt><tt id="link-75" class="py-name"><a title="SCons.Script" class="py-name" href="#" onclick="return doclink('link-75', 'Script', 'link-17');">Script</a></tt><tt class="py-op">.</tt><tt id="link-76" class="py-name"><a title="SCons.Script.Main" class="py-name" href="#" onclick="return doclink('link-76', 'Main', 'link-18');">Main</a></tt><tt class="py-op">.</tt><tt id="link-77" class="py-name"><a title="SCons.SConf.progress_display
+SCons.Script.Main.progress_display" class="py-name" href="#" onclick="return doclink('link-77', 'progress_display', 'link-52');">progress_display</a></tt><tt class="py-op">(</tt><tt class="py-string">"scons: done clearing node information."</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L266"></a><tt class="py-lineno">266</tt>  <tt class="py-line"> </tt>
+<a name="SConsInteractiveCmd.do_clean"></a><div id="SConsInteractiveCmd.do_clean-def"><a name="L267"></a><tt class="py-lineno">267</tt> <a class="py-toggle" href="#" id="SConsInteractiveCmd.do_clean-toggle" onclick="return toggle('SConsInteractiveCmd.do_clean');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Script.Interactive.SConsInteractiveCmd-class.html#do_clean">do_clean</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">argv</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SConsInteractiveCmd.do_clean-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="SConsInteractiveCmd.do_clean-expanded"><a name="L268"></a><tt class="py-lineno">268</tt>  <tt class="py-line">        <tt class="py-docstring">"""\</tt> </tt>
+<a name="L269"></a><tt class="py-lineno">269</tt>  <tt class="py-line"><tt class="py-docstring">        clean [TARGETS]         Clean (remove) the specified TARGETS</tt> </tt>
+<a name="L270"></a><tt class="py-lineno">270</tt>  <tt class="py-line"><tt class="py-docstring">                                and their dependencies.  'c' is a synonym.</tt> </tt>
+<a name="L271"></a><tt class="py-lineno">271</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L272"></a><tt class="py-lineno">272</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-78" class="py-name" targets="Method SCons.Script.Interactive.SConsInteractiveCmd.do_build()=SCons.Script.Interactive.SConsInteractiveCmd-class.html#do_build"><a title="SCons.Script.Interactive.SConsInteractiveCmd.do_build" class="py-name" href="#" onclick="return doclink('link-78', 'do_build', 'link-78');">do_build</a></tt><tt class="py-op">(</tt><tt class="py-op">[</tt><tt class="py-string">'build'</tt><tt class="py-op">,</tt> <tt class="py-string">'--clean'</tt><tt class="py-op">]</tt> <tt class="py-op">+</tt> <tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">:</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L273"></a><tt class="py-lineno">273</tt>  <tt class="py-line"> </tt>
+<a name="SConsInteractiveCmd.do_EOF"></a><div id="SConsInteractiveCmd.do_EOF-def"><a name="L274"></a><tt class="py-lineno">274</tt> <a class="py-toggle" href="#" id="SConsInteractiveCmd.do_EOF-toggle" onclick="return toggle('SConsInteractiveCmd.do_EOF');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Script.Interactive.SConsInteractiveCmd-class.html#do_EOF">do_EOF</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">argv</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SConsInteractiveCmd.do_EOF-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="SConsInteractiveCmd.do_EOF-expanded"><a name="L275"></a><tt class="py-lineno">275</tt>  <tt class="py-line">        <tt class="py-keyword">print</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L276"></a><tt class="py-lineno">276</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-79" class="py-name" targets="Method SCons.Script.Interactive.SConsInteractiveCmd.do_exit()=SCons.Script.Interactive.SConsInteractiveCmd-class.html#do_exit"><a title="SCons.Script.Interactive.SConsInteractiveCmd.do_exit" class="py-name" href="#" onclick="return doclink('link-79', 'do_exit', 'link-79');">do_exit</a></tt><tt class="py-op">(</tt><tt class="py-name">argv</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L277"></a><tt class="py-lineno">277</tt>  <tt class="py-line"> </tt>
+<a name="SConsInteractiveCmd._do_one_help"></a><div id="SConsInteractiveCmd._do_one_help-def"><a name="L278"></a><tt class="py-lineno">278</tt> <a class="py-toggle" href="#" id="SConsInteractiveCmd._do_one_help-toggle" onclick="return toggle('SConsInteractiveCmd._do_one_help');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Script.Interactive.SConsInteractiveCmd-class.html#_do_one_help">_do_one_help</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">arg</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SConsInteractiveCmd._do_one_help-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="SConsInteractiveCmd._do_one_help-expanded"><a name="L279"></a><tt class="py-lineno">279</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L280"></a><tt class="py-lineno">280</tt>  <tt class="py-line">            <tt class="py-comment"># If help_&lt;arg&gt;() exists, then call it.</tt> </tt>
+<a name="L281"></a><tt class="py-lineno">281</tt>  <tt class="py-line">            <tt class="py-name">func</tt> <tt class="py-op">=</tt> <tt class="py-name">getattr</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-string">'help_'</tt> <tt class="py-op">+</tt> <tt class="py-name">arg</tt><tt class="py-op">)</tt> </tt>
+<a name="L282"></a><tt class="py-lineno">282</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt> <tt class="py-name">AttributeError</tt><tt class="py-op">:</tt> </tt>
+<a name="L283"></a><tt class="py-lineno">283</tt>  <tt class="py-line">            <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L284"></a><tt class="py-lineno">284</tt>  <tt class="py-line">                <tt class="py-name">func</tt> <tt class="py-op">=</tt> <tt class="py-name">getattr</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-string">'do_'</tt> <tt class="py-op">+</tt> <tt class="py-name">arg</tt><tt class="py-op">)</tt> </tt>
+<a name="L285"></a><tt class="py-lineno">285</tt>  <tt class="py-line">            <tt class="py-keyword">except</tt> <tt class="py-name">AttributeError</tt><tt class="py-op">:</tt> </tt>
+<a name="L286"></a><tt class="py-lineno">286</tt>  <tt class="py-line">                <tt class="py-name">doc</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L287"></a><tt class="py-lineno">287</tt>  <tt class="py-line">            <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L288"></a><tt class="py-lineno">288</tt>  <tt class="py-line">                <tt class="py-name">doc</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-80" class="py-name" targets="Method SCons.Script.Interactive.SConsInteractiveCmd._doc_to_help()=SCons.Script.Interactive.SConsInteractiveCmd-class.html#_doc_to_help"><a title="SCons.Script.Interactive.SConsInteractiveCmd._doc_to_help" class="py-name" href="#" onclick="return doclink('link-80', '_doc_to_help', 'link-80');">_doc_to_help</a></tt><tt class="py-op">(</tt><tt class="py-name">func</tt><tt class="py-op">)</tt> </tt>
+<a name="L289"></a><tt class="py-lineno">289</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">doc</tt><tt class="py-op">:</tt> </tt>
+<a name="L290"></a><tt class="py-lineno">290</tt>  <tt class="py-line">                <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">stdout</tt><tt class="py-op">.</tt><tt id="link-81" class="py-name" targets="Method SCons.Node.Python.Value.write()=SCons.Node.Python.Value-class.html#write,Method SCons.SConf.Streamer.write()=SCons.SConf.Streamer-class.html#write,Method SCons.SConsign.DB.write()=SCons.SConsign.DB-class.html#write,Method SCons.SConsign.DirFile.write()=SCons.SConsign.DirFile-class.html#write,Function SCons.SConsign.write()=SCons.SConsign-module.html#write,Method SCons.Script.Main.Progressor.write()=SCons.Script.Main.Progressor-class.html#write,Method SCons.Util.Unbuffered.write()=SCons.Util.Unbuffered-class.html#write"><a title="SCons.Node.Python.Value.write
+SCons.SConf.Streamer.write
+SCons.SConsign.DB.write
+SCons.SConsign.DirFile.write
+SCons.SConsign.write
+SCons.Script.Main.Progressor.write
+SCons.Util.Unbuffered.write" class="py-name" href="#" onclick="return doclink('link-81', 'write', 'link-81');">write</a></tt><tt class="py-op">(</tt><tt class="py-name">doc</tt> <tt class="py-op">+</tt> <tt class="py-string">'\n'</tt><tt class="py-op">)</tt> </tt>
+<a name="L291"></a><tt class="py-lineno">291</tt>  <tt class="py-line">                <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">stdout</tt><tt class="py-op">.</tt><tt id="link-82" class="py-name" targets="Method SCons.SConf.Streamer.flush()=SCons.SConf.Streamer-class.html#flush"><a title="SCons.SConf.Streamer.flush" class="py-name" href="#" onclick="return doclink('link-82', 'flush', 'link-82');">flush</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L292"></a><tt class="py-lineno">292</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L293"></a><tt class="py-lineno">293</tt>  <tt class="py-line">            <tt class="py-name">doc</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">strip_initial_spaces</tt><tt class="py-op">(</tt><tt class="py-name">func</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L294"></a><tt class="py-lineno">294</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">doc</tt><tt class="py-op">:</tt> </tt>
+<a name="L295"></a><tt class="py-lineno">295</tt>  <tt class="py-line">                <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">stdout</tt><tt class="py-op">.</tt><tt id="link-83" class="py-name"><a title="SCons.Node.Python.Value.write
+SCons.SConf.Streamer.write
+SCons.SConsign.DB.write
+SCons.SConsign.DirFile.write
+SCons.SConsign.write
+SCons.Script.Main.Progressor.write
+SCons.Util.Unbuffered.write" class="py-name" href="#" onclick="return doclink('link-83', 'write', 'link-81');">write</a></tt><tt class="py-op">(</tt><tt class="py-name">doc</tt> <tt class="py-op">+</tt> <tt class="py-string">'\n'</tt><tt class="py-op">)</tt> </tt>
+<a name="L296"></a><tt class="py-lineno">296</tt>  <tt class="py-line">                <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">stdout</tt><tt class="py-op">.</tt><tt id="link-84" class="py-name"><a title="SCons.SConf.Streamer.flush" class="py-name" href="#" onclick="return doclink('link-84', 'flush', 'link-82');">flush</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L297"></a><tt class="py-lineno">297</tt>  <tt class="py-line"> </tt>
+<a name="SConsInteractiveCmd._doc_to_help"></a><div id="SConsInteractiveCmd._doc_to_help-def"><a name="L298"></a><tt class="py-lineno">298</tt> <a class="py-toggle" href="#" id="SConsInteractiveCmd._doc_to_help-toggle" onclick="return toggle('SConsInteractiveCmd._doc_to_help');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Script.Interactive.SConsInteractiveCmd-class.html#_doc_to_help">_doc_to_help</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">obj</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SConsInteractiveCmd._doc_to_help-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="SConsInteractiveCmd._doc_to_help-expanded"><a name="L299"></a><tt class="py-lineno">299</tt>  <tt class="py-line">        <tt class="py-name">doc</tt> <tt class="py-op">=</tt> <tt class="py-name">obj</tt><tt class="py-op">.</tt><tt id="link-85" class="py-name"><a title="SCons.CacheDir.__doc__
+SCons.Memoize.__doc__
+SCons.PathList.__doc__
+SCons.Script.Interactive.__doc__
+SCons.Taskmaster.__doc__
+SCons.cpp.__doc__" class="py-name" href="#" onclick="return doclink('link-85', '__doc__', 'link-1');">__doc__</a></tt> </tt>
+<a name="L300"></a><tt class="py-lineno">300</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">doc</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L301"></a><tt class="py-lineno">301</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-string">''</tt> </tt>
+<a name="L302"></a><tt class="py-lineno">302</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-86" class="py-name" targets="Method SCons.Script.Interactive.SConsInteractiveCmd._strip_initial_spaces()=SCons.Script.Interactive.SConsInteractiveCmd-class.html#_strip_initial_spaces"><a title="SCons.Script.Interactive.SConsInteractiveCmd._strip_initial_spaces" class="py-name" href="#" onclick="return doclink('link-86', '_strip_initial_spaces', 'link-86');">_strip_initial_spaces</a></tt><tt class="py-op">(</tt><tt class="py-name">doc</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L303"></a><tt class="py-lineno">303</tt>  <tt class="py-line"> </tt>
+<a name="SConsInteractiveCmd._strip_initial_spaces"></a><div id="SConsInteractiveCmd._strip_initial_spaces-def"><a name="L304"></a><tt class="py-lineno">304</tt> <a class="py-toggle" href="#" id="SConsInteractiveCmd._strip_initial_spaces-toggle" onclick="return toggle('SConsInteractiveCmd._strip_initial_spaces');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Script.Interactive.SConsInteractiveCmd-class.html#_strip_initial_spaces">_strip_initial_spaces</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">s</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SConsInteractiveCmd._strip_initial_spaces-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="SConsInteractiveCmd._strip_initial_spaces-expanded"><a name="L305"></a><tt class="py-lineno">305</tt>  <tt class="py-line">        <tt class="py-name">lines</tt> <tt class="py-op">=</tt> <tt id="link-87" class="py-name" targets="Variable SCons.Platform.win32.s=SCons.Platform.win32-module.html#s"><a title="SCons.Platform.win32.s" class="py-name" href="#" onclick="return doclink('link-87', 's', 'link-87');">s</a></tt><tt class="py-op">.</tt><tt class="py-name">split</tt><tt class="py-op">(</tt><tt class="py-string">'\n'</tt><tt class="py-op">)</tt> </tt>
+<a name="L306"></a><tt class="py-lineno">306</tt>  <tt class="py-line">        <tt class="py-name">spaces</tt> <tt class="py-op">=</tt> <tt class="py-name">re</tt><tt class="py-op">.</tt><tt class="py-name">match</tt><tt class="py-op">(</tt><tt class="py-string">' *'</tt><tt class="py-op">,</tt> <tt class="py-name">lines</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">group</tt><tt class="py-op">(</tt><tt class="py-number">0</tt><tt class="py-op">)</tt> </tt>
+<a name="L307"></a><tt class="py-lineno">307</tt>  <tt class="py-line">        <tt class="py-keyword">def</tt> <tt class="py-def-name">strip_spaces</tt><tt class="py-op">(</tt><tt class="py-param">l</tt><tt class="py-op">,</tt> <tt class="py-param">spaces</tt><tt class="py-op">=</tt><tt class="py-name">spaces</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L308"></a><tt class="py-lineno">308</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">l</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">spaces</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> <tt class="py-op">==</tt> <tt class="py-name">spaces</tt><tt class="py-op">:</tt> </tt>
+<a name="L309"></a><tt class="py-lineno">309</tt>  <tt class="py-line">                <tt class="py-name">l</tt> <tt class="py-op">=</tt> <tt class="py-name">l</tt><tt class="py-op">[</tt><tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">spaces</tt><tt class="py-op">)</tt><tt class="py-op">:</tt><tt class="py-op">]</tt> </tt>
+<a name="L310"></a><tt class="py-lineno">310</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">l</tt> </tt>
+</div><a name="L311"></a><tt class="py-lineno">311</tt>  <tt class="py-line">        <tt class="py-name">lines</tt> <tt class="py-op">=</tt> <tt class="py-name">list</tt><tt class="py-op">(</tt><tt class="py-name">map</tt><tt class="py-op">(</tt><tt class="py-name">strip_spaces</tt><tt class="py-op">,</tt> <tt class="py-name">lines</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L312"></a><tt class="py-lineno">312</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-string">'\n'</tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt class="py-name">lines</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L313"></a><tt class="py-lineno">313</tt>  <tt class="py-line"> </tt>
+<a name="SConsInteractiveCmd.do_exit"></a><div id="SConsInteractiveCmd.do_exit-def"><a name="L314"></a><tt class="py-lineno">314</tt> <a class="py-toggle" href="#" id="SConsInteractiveCmd.do_exit-toggle" onclick="return toggle('SConsInteractiveCmd.do_exit');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Script.Interactive.SConsInteractiveCmd-class.html#do_exit">do_exit</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">argv</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SConsInteractiveCmd.do_exit-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="SConsInteractiveCmd.do_exit-expanded"><a name="L315"></a><tt class="py-lineno">315</tt>  <tt class="py-line">        <tt class="py-docstring">"""\</tt> </tt>
+<a name="L316"></a><tt class="py-lineno">316</tt>  <tt class="py-line"><tt class="py-docstring">        exit                    Exit SCons interactive mode.</tt> </tt>
+<a name="L317"></a><tt class="py-lineno">317</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L318"></a><tt class="py-lineno">318</tt>  <tt class="py-line">        <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">exit</tt><tt class="py-op">(</tt><tt class="py-number">0</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L319"></a><tt class="py-lineno">319</tt>  <tt class="py-line"> </tt>
+<a name="SConsInteractiveCmd.do_help"></a><div id="SConsInteractiveCmd.do_help-def"><a name="L320"></a><tt class="py-lineno">320</tt> <a class="py-toggle" href="#" id="SConsInteractiveCmd.do_help-toggle" onclick="return toggle('SConsInteractiveCmd.do_help');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Script.Interactive.SConsInteractiveCmd-class.html#do_help">do_help</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">argv</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SConsInteractiveCmd.do_help-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="SConsInteractiveCmd.do_help-expanded"><a name="L321"></a><tt class="py-lineno">321</tt>  <tt class="py-line">        <tt class="py-docstring">"""\</tt> </tt>
+<a name="L322"></a><tt class="py-lineno">322</tt>  <tt class="py-line"><tt class="py-docstring">        help [COMMAND]          Prints help for the specified COMMAND.  'h'</tt> </tt>
+<a name="L323"></a><tt class="py-lineno">323</tt>  <tt class="py-line"><tt class="py-docstring">                                and '?' are synonyms.</tt> </tt>
+<a name="L324"></a><tt class="py-lineno">324</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L325"></a><tt class="py-lineno">325</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">:</tt><tt class="py-op">]</tt><tt class="py-op">:</tt> </tt>
+<a name="L326"></a><tt class="py-lineno">326</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">arg</tt> <tt class="py-keyword">in</tt> <tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">:</tt><tt class="py-op">]</tt><tt class="py-op">:</tt> </tt>
+<a name="L327"></a><tt class="py-lineno">327</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-88" class="py-name" targets="Method SCons.Script.Interactive.SConsInteractiveCmd._do_one_help()=SCons.Script.Interactive.SConsInteractiveCmd-class.html#_do_one_help"><a title="SCons.Script.Interactive.SConsInteractiveCmd._do_one_help" class="py-name" href="#" onclick="return doclink('link-88', '_do_one_help', 'link-88');">_do_one_help</a></tt><tt class="py-op">(</tt><tt class="py-name">arg</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L328"></a><tt class="py-lineno">328</tt>  <tt class="py-line">                    <tt class="py-keyword">break</tt> </tt>
+<a name="L329"></a><tt class="py-lineno">329</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L330"></a><tt class="py-lineno">330</tt>  <tt class="py-line">            <tt class="py-comment"># If bare 'help' is called, print this class's doc</tt> </tt>
+<a name="L331"></a><tt class="py-lineno">331</tt>  <tt class="py-line">            <tt class="py-comment"># string (if it has one).</tt> </tt>
+<a name="L332"></a><tt class="py-lineno">332</tt>  <tt class="py-line">            <tt class="py-name">doc</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-89" class="py-name"><a title="SCons.Script.Interactive.SConsInteractiveCmd._doc_to_help" class="py-name" href="#" onclick="return doclink('link-89', '_doc_to_help', 'link-80');">_doc_to_help</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__class__</tt><tt class="py-op">)</tt> </tt>
+<a name="L333"></a><tt class="py-lineno">333</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">doc</tt><tt class="py-op">:</tt> </tt>
+<a name="L334"></a><tt class="py-lineno">334</tt>  <tt class="py-line">                <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">stdout</tt><tt class="py-op">.</tt><tt id="link-90" class="py-name"><a title="SCons.Node.Python.Value.write
+SCons.SConf.Streamer.write
+SCons.SConsign.DB.write
+SCons.SConsign.DirFile.write
+SCons.SConsign.write
+SCons.Script.Main.Progressor.write
+SCons.Util.Unbuffered.write" class="py-name" href="#" onclick="return doclink('link-90', 'write', 'link-81');">write</a></tt><tt class="py-op">(</tt><tt class="py-name">doc</tt> <tt class="py-op">+</tt> <tt class="py-string">'\n'</tt><tt class="py-op">)</tt> </tt>
+<a name="L335"></a><tt class="py-lineno">335</tt>  <tt class="py-line">                <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">stdout</tt><tt class="py-op">.</tt><tt id="link-91" class="py-name"><a title="SCons.SConf.Streamer.flush" class="py-name" href="#" onclick="return doclink('link-91', 'flush', 'link-82');">flush</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L336"></a><tt class="py-lineno">336</tt>  <tt class="py-line"> </tt>
+<a name="SConsInteractiveCmd.do_shell"></a><div id="SConsInteractiveCmd.do_shell-def"><a name="L337"></a><tt class="py-lineno">337</tt> <a class="py-toggle" href="#" id="SConsInteractiveCmd.do_shell-toggle" onclick="return toggle('SConsInteractiveCmd.do_shell');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Script.Interactive.SConsInteractiveCmd-class.html#do_shell">do_shell</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">argv</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SConsInteractiveCmd.do_shell-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="SConsInteractiveCmd.do_shell-expanded"><a name="L338"></a><tt class="py-lineno">338</tt>  <tt class="py-line">        <tt class="py-docstring">"""\</tt> </tt>
+<a name="L339"></a><tt class="py-lineno">339</tt>  <tt class="py-line"><tt class="py-docstring">        shell [COMMANDLINE]     Execute COMMANDLINE in a subshell.  'sh' and</tt> </tt>
+<a name="L340"></a><tt class="py-lineno">340</tt>  <tt class="py-line"><tt class="py-docstring">                                '!' are synonyms.</tt> </tt>
+<a name="L341"></a><tt class="py-lineno">341</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L342"></a><tt class="py-lineno">342</tt>  <tt class="py-line">        <tt class="py-keyword">import</tt> <tt class="py-name">subprocess</tt> </tt>
+<a name="L343"></a><tt class="py-lineno">343</tt>  <tt class="py-line">        <tt class="py-name">argv</tt> <tt class="py-op">=</tt> <tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">:</tt><tt class="py-op">]</tt> </tt>
+<a name="L344"></a><tt class="py-lineno">344</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">argv</tt><tt class="py-op">:</tt> </tt>
+<a name="L345"></a><tt class="py-lineno">345</tt>  <tt class="py-line">            <tt class="py-name">argv</tt> <tt class="py-op">=</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">environ</tt><tt class="py-op">[</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">shell_variable</tt><tt class="py-op">]</tt> </tt>
+<a name="L346"></a><tt class="py-lineno">346</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L347"></a><tt class="py-lineno">347</tt>  <tt class="py-line">            <tt class="py-comment"># Per "[Python-Dev] subprocess insufficiently platform-independent?"</tt> </tt>
+<a name="L348"></a><tt class="py-lineno">348</tt>  <tt class="py-line">            <tt class="py-comment"># http://mail.python.org/pipermail/python-dev/2008-August/081979.html "+</tt> </tt>
+<a name="L349"></a><tt class="py-lineno">349</tt>  <tt class="py-line">            <tt class="py-comment"># Doing the right thing with an argument list currently</tt> </tt>
+<a name="L350"></a><tt class="py-lineno">350</tt>  <tt class="py-line">            <tt class="py-comment"># requires different shell= values on Windows and Linux.</tt> </tt>
+<a name="L351"></a><tt class="py-lineno">351</tt>  <tt class="py-line">            <tt class="py-name">p</tt> <tt class="py-op">=</tt> <tt class="py-name">subprocess</tt><tt class="py-op">.</tt><tt class="py-name">Popen</tt><tt class="py-op">(</tt><tt class="py-name">argv</tt><tt class="py-op">,</tt> <tt class="py-name">shell</tt><tt class="py-op">=</tt><tt class="py-op">(</tt><tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">platform</tt><tt class="py-op">==</tt><tt class="py-string">'win32'</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L352"></a><tt class="py-lineno">352</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt> <tt id="link-92" class="py-name" targets="Class SCons.Errors.EnvironmentError=SCons.Errors.EnvironmentError-class.html"><a title="SCons.Errors.EnvironmentError" class="py-name" href="#" onclick="return doclink('link-92', 'EnvironmentError', 'link-92');">EnvironmentError</a></tt> <tt class="py-keyword">as</tt> <tt id="link-93" class="py-name" targets="Variable SCons.cpp.e=SCons.cpp-module.html#e"><a title="SCons.cpp.e" class="py-name" href="#" onclick="return doclink('link-93', 'e', 'link-93');">e</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L353"></a><tt class="py-lineno">353</tt>  <tt class="py-line">            <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">stderr</tt><tt class="py-op">.</tt><tt id="link-94" class="py-name"><a title="SCons.Node.Python.Value.write
+SCons.SConf.Streamer.write
+SCons.SConsign.DB.write
+SCons.SConsign.DirFile.write
+SCons.SConsign.write
+SCons.Script.Main.Progressor.write
+SCons.Util.Unbuffered.write" class="py-name" href="#" onclick="return doclink('link-94', 'write', 'link-81');">write</a></tt><tt class="py-op">(</tt><tt class="py-string">'scons: %s: %s\n'</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt id="link-95" class="py-name"><a title="SCons.cpp.e" class="py-name" href="#" onclick="return doclink('link-95', 'e', 'link-93');">e</a></tt><tt class="py-op">.</tt><tt class="py-name">strerror</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L354"></a><tt class="py-lineno">354</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L355"></a><tt class="py-lineno">355</tt>  <tt class="py-line">            <tt class="py-name">p</tt><tt class="py-op">.</tt><tt class="py-name">wait</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L356"></a><tt class="py-lineno">356</tt>  <tt class="py-line"> </tt>
+<a name="SConsInteractiveCmd.do_version"></a><div id="SConsInteractiveCmd.do_version-def"><a name="L357"></a><tt class="py-lineno">357</tt> <a class="py-toggle" href="#" id="SConsInteractiveCmd.do_version-toggle" onclick="return toggle('SConsInteractiveCmd.do_version');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Script.Interactive.SConsInteractiveCmd-class.html#do_version">do_version</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">argv</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SConsInteractiveCmd.do_version-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="SConsInteractiveCmd.do_version-expanded"><a name="L358"></a><tt class="py-lineno">358</tt>  <tt class="py-line">        <tt class="py-docstring">"""\</tt> </tt>
+<a name="L359"></a><tt class="py-lineno">359</tt>  <tt class="py-line"><tt class="py-docstring">        version                 Prints SCons version information.</tt> </tt>
+<a name="L360"></a><tt class="py-lineno">360</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L361"></a><tt class="py-lineno">361</tt>  <tt class="py-line">        <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">stdout</tt><tt class="py-op">.</tt><tt id="link-96" class="py-name"><a title="SCons.Node.Python.Value.write
+SCons.SConf.Streamer.write
+SCons.SConsign.DB.write
+SCons.SConsign.DirFile.write
+SCons.SConsign.write
+SCons.Script.Main.Progressor.write
+SCons.Util.Unbuffered.write" class="py-name" href="#" onclick="return doclink('link-96', 'write', 'link-81');">write</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">parser</tt><tt class="py-op">.</tt><tt class="py-name">version</tt> <tt class="py-op">+</tt> <tt class="py-string">'\n'</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L362"></a><tt class="py-lineno">362</tt>  <tt class="py-line"> </tt>
+<a name="interact"></a><div id="interact-def"><a name="L363"></a><tt class="py-lineno">363</tt> <a class="py-toggle" href="#" id="interact-toggle" onclick="return toggle('interact');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="SCons.Script.Interactive-module.html#interact">interact</a><tt class="py-op">(</tt><tt class="py-param">fs</tt><tt class="py-op">,</tt> <tt class="py-param">parser</tt><tt class="py-op">,</tt> <tt class="py-param">options</tt><tt class="py-op">,</tt> <tt class="py-param">targets</tt><tt class="py-op">,</tt> <tt class="py-param">target_top</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="interact-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="interact-expanded"><a name="L364"></a><tt class="py-lineno">364</tt>  <tt class="py-line">    <tt class="py-name">c</tt> <tt class="py-op">=</tt> <tt id="link-97" class="py-name" targets="Class SCons.Script.Interactive.SConsInteractiveCmd=SCons.Script.Interactive.SConsInteractiveCmd-class.html"><a title="SCons.Script.Interactive.SConsInteractiveCmd" class="py-name" href="#" onclick="return doclink('link-97', 'SConsInteractiveCmd', 'link-97');">SConsInteractiveCmd</a></tt><tt class="py-op">(</tt><tt class="py-name">prompt</tt> <tt class="py-op">=</tt> <tt class="py-string">'scons&gt;&gt;&gt; '</tt><tt class="py-op">,</tt> </tt>
+<a name="L365"></a><tt class="py-lineno">365</tt>  <tt class="py-line">                            <tt id="link-98" class="py-name"><a title="SCons.Node.FS.Base.fs
+SCons.Node.FS.DirNodeInfo.fs
+SCons.Node.FS.FileNodeInfo.fs" class="py-name" href="#" onclick="return doclink('link-98', 'fs', 'link-41');">fs</a></tt> <tt class="py-op">=</tt> <tt id="link-99" class="py-name"><a title="SCons.Node.FS.Base.fs
+SCons.Node.FS.DirNodeInfo.fs
+SCons.Node.FS.FileNodeInfo.fs" class="py-name" href="#" onclick="return doclink('link-99', 'fs', 'link-41');">fs</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L366"></a><tt class="py-lineno">366</tt>  <tt class="py-line">                            <tt class="py-name">parser</tt> <tt class="py-op">=</tt> <tt class="py-name">parser</tt><tt class="py-op">,</tt> </tt>
+<a name="L367"></a><tt class="py-lineno">367</tt>  <tt class="py-line">                            <tt class="py-name">options</tt> <tt class="py-op">=</tt> <tt class="py-name">options</tt><tt class="py-op">,</tt> </tt>
+<a name="L368"></a><tt class="py-lineno">368</tt>  <tt class="py-line">                            <tt id="link-100" class="py-name"><a title="SCons.Executor.Batch.targets" class="py-name" href="#" onclick="return doclink('link-100', 'targets', 'link-20');">targets</a></tt> <tt class="py-op">=</tt> <tt id="link-101" class="py-name"><a title="SCons.Executor.Batch.targets" class="py-name" href="#" onclick="return doclink('link-101', 'targets', 'link-20');">targets</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L369"></a><tt class="py-lineno">369</tt>  <tt class="py-line">                            <tt class="py-name">target_top</tt> <tt class="py-op">=</tt> <tt class="py-name">target_top</tt><tt class="py-op">)</tt> </tt>
+<a name="L370"></a><tt class="py-lineno">370</tt>  <tt class="py-line">    <tt class="py-name">c</tt><tt class="py-op">.</tt><tt class="py-name">cmdloop</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L371"></a><tt class="py-lineno">371</tt>  <tt class="py-line"> </tt>
+<a name="L372"></a><tt class="py-lineno">372</tt>  <tt class="py-line"><tt class="py-comment"># Local Variables:</tt> </tt>
+<a name="L373"></a><tt class="py-lineno">373</tt>  <tt class="py-line"><tt class="py-comment"># tab-width:4</tt> </tt>
+<a name="L374"></a><tt class="py-lineno">374</tt>  <tt class="py-line"><tt class="py-comment"># indent-tabs-mode:nil</tt> </tt>
+<a name="L375"></a><tt class="py-lineno">375</tt>  <tt class="py-line"><tt class="py-comment"># End:</tt> </tt>
+<a name="L376"></a><tt class="py-lineno">376</tt>  <tt class="py-line"><tt class="py-comment"># vim: set expandtab tabstop=4 shiftwidth=4:</tt> </tt>
+<a name="L377"></a><tt class="py-lineno">377</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="SCons-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://www.scons.org/">SCons</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Mon Jan  7 19:03:36 2019
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

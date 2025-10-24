@@ -1,0 +1,257 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>14.5. Sharing Environments (and Other Variables) Between SConscript Files</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.5.1"><link rel="up" href="ch14.html" title="Chapter 14. Hierarchical Builds"><link rel="prev" href="ch14s04.html" title="14.4. Absolute Path Names"><link rel="next" href="ch15.html" title="Chapter 15. Separating Source and Build Trees: Variant Directories"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">14.5. Sharing Environments (and Other Variables) Between <code class="filename">SConscript</code> Files</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch14s04.html">Prev</a> </td><th width="60%" align="center">Chapter 14. Hierarchical Builds</th><td width="20%" align="right"> <a accesskey="n" href="ch15.html">Next</a></td></tr></table><hr></div><div class="section" title="14.5. Sharing Environments (and Other Variables) Between SConscript Files"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="sect-sconscript-sharing"></a>14.5. Sharing Environments (and Other Variables) Between <code class="filename">SConscript</code> Files</h2></div></div></div><p>
+
+    In the previous example,
+    each of the subsidiary <code class="filename">SConscript</code> files
+    created its own construction environment
+    by calling <a class="link" href="apd.html#f-Environment"><code class="function">Environment</code></a> separately.
+    This obviously works fine,
+    but if each program must be built
+    with the same construction variables,
+    it's cumbersome and error-prone to initialize
+    separate construction environments
+    in the same way over and over in each subsidiary
+    <code class="filename">SConscript</code> file.
+
+    </p><p>
+
+    <span class="application">SCons</span> supports the ability to <em class="firstterm">export</em> variables
+    from an <code class="filename">SConscript</code> file
+    so they can be <em class="firstterm">imported</em> by other
+    <code class="filename">SConscript</code> files, thus allowing you to share common initialized
+    values throughout your build hierarchy.
+
+    </p><div class="section" title="14.5.1. Exporting Variables"><div class="titlepage"><div><div><h3 class="title"><a name="sect-sconscript-export"></a>14.5.1. Exporting Variables</h3></div></div></div><p>
+
+      There are two ways to export a variable
+      from an <code class="filename">SConscript</code> file.
+      The first way is to call the <a class="link" href="apd.html#f-Export"><code class="function">Export</code></a> function.
+      <code class="function">Export</code> is pretty flexible - in the simplest form,
+      you pass it a string that represents the name of
+      the variable, and <code class="function">Export</code> stores that with its value:
+
+      </p><pre class="programlisting">
+env = Environment()
+Export('env')
+      </pre><p>
+
+      You may export more than one variable name at a time:
+
+      </p><pre class="programlisting">
+env = Environment()
+debug = ARGUMENTS['debug']
+Export('env', 'debug')
+      </pre><p>
+
+      Because a Python identifier cannot contain spaces,
+      <code class="function">Export</code> assumes a string containing spaces is is a
+      shortcut for multiple variable names to export and
+      splits it up for you:
+
+      </p><pre class="programlisting">
+env = Environment()
+debug = ARGUMENTS['debug']
+Export('env debug')
+      </pre><p>
+
+      You can also pass <code class="function">Export</code> a dictionary of values.
+      This form allows the opportunity to export a variable
+      from the current scope under a different name -
+      in this example, the value of <code class="varname">foo</code>
+      is exported under the name <code class="literal">"bar"</code>:
+
+      </p><pre class="programlisting">
+env = Environment()
+foo = "FOO"
+args = {"env": env, "bar": foo}
+Export(args)
+      </pre><p>
+
+      </p><p>
+
+      <code class="function">Export</code> will also accept arguments in keyword style.
+      This form adds the ability to create exported variables
+      that have not actually been set locally in the SConscript file.
+      When used this way, the key is the intended variable name,
+      not a string representation as with the other forms:
+
+      </p><pre class="programlisting">
+Export(MODE="DEBUG", TARGET="arm")
+      </pre><p>
+
+      The styles can be mixed, though Python function calling
+      syntax requires all non-keyword arguments to precede any
+      keyword arguments in the call.
+
+      </p><p>
+
+      The <code class="function">Export</code> function adds the variables to a global
+      location from which other <code class="filename">SConscript</code> files can import.
+      Calls to <code class="function">Export</code> are cumulative. When you call <code class="function">Export</code>
+      you are actually updating a Python dictionary, so it
+      is fine to export a variable you have already exported,
+      but when doing so, the previous value is lost.
+
+      </p><p>
+
+      The other way to export is you can specify a list of
+      variables as a second argument
+      to the <a class="link" href="apd.html#f-SConscript"><code class="function">SConscript</code></a> function call:
+
+      </p><pre class="programlisting">
+SConscript('src/SConscript', 'env')
+      </pre><p>
+
+      Or (preferably, for readability) using the <code class="varname">exports</code> keyword argument:
+
+      </p><pre class="programlisting">
+SConscript('src/SConscript', exports='env')
+      </pre><p>
+
+      These calls export the specified variables
+      to only the listed <code class="filename">SConscript</code> file(s).
+      You may specify more than one
+      <code class="filename">SConscript</code> file in a list:
+
+      </p><pre class="programlisting">
+SConscript(['src1/SConscript', 'src2/SConscript'], exports='env')
+      </pre><p>
+
+      This is functionally equivalent to
+      calling the <code class="filename">SConscript</code> function
+      multiple times with the same <code class="varname">exports</code> argument,
+      one per <code class="filename">SConscript</code> file.
+
+      </p></div><div class="section" title="14.5.2. Importing Variables"><div class="titlepage"><div><div><h3 class="title"><a name="sect-sconscript-import"></a>14.5.2. Importing Variables</h3></div></div></div><p>
+
+      Once a variable has been exported from a calling
+      <code class="filename">SConscript</code> file,
+      it may be used in other <code class="filename">SConscript</code> files
+      by calling the <a class="link" href="apd.html#f-Import"><code class="function">Import</code></a> function:
+
+      </p><pre class="programlisting">
+Import('env')
+env.Program('prog', ['prog.c'])
+      </pre><p>
+
+      The <code class="function">Import</code> call makes the previously defined <code class="varname">env</code>
+      variable available to the <code class="filename">SConscript</code> file.
+      Assuming <code class="varname">env</code> is a <span>construction environment</span>,
+      after import it can be used to build programs, libraries, etc.
+      The use case of passing around a <span>construction environment</span> is extremely common
+      in larger <span class="command"><strong>scons</strong></span> builds.
+
+      </p><p>
+
+      Like the <code class="function">Export</code> function,
+      the <code class="function">Import</code> function can be called
+      with multiple variable names:
+
+      </p><pre class="programlisting">
+Import('env', 'debug')
+env = env.Clone(DEBUG=debug)
+env.Program('prog', ['prog.c'])
+      </pre><p>
+
+      In this example, we pull in the common <span>construction environment</span>
+      <code class="varname">env</code>, and
+      use the value of the <code class="varname">debug</code>
+      variable to make a modified copy by passing
+      that to a <a class="link" href="apd.html#f-Clone"><code class="function">Clone</code></a> call.
+
+      </p><p>
+
+      The <code class="function">Import</code> function will (like <code class="function">Export</code>)
+      split a string containing white-space
+      into separate variable names:
+
+      </p><pre class="programlisting">
+Import('env debug')
+env = env.Clone(DEBUG=debug)
+env.Program('prog', ['prog.c'])
+      </pre><p>
+
+      <code class="function">Import</code> prefers a local definition to a global one,
+      so that if there is a global export of <code class="varname">foo</code>,
+      <span class="emphasis"><em>and</em></span> the calling SConscript has
+      exported <code class="varname">foo</code> to this SConscript,
+      the import will find the <code class="varname">foo</code>
+      exported to this SConscript.
+
+      </p><p>
+
+      Lastly, as a special case,
+      you may import all of the variables that
+      have been exported by supplying an asterisk
+      to the <code class="function">Import</code> function:
+
+      </p><pre class="programlisting">
+Import('*')
+env = env.Clone(DEBUG=debug)
+env.Program('prog', ['prog.c'])
+      </pre><p>
+
+      If you're dealing with a lot of <code class="filename">SConscript</code> files,
+      this can be a lot simpler than keeping
+      arbitrary lists of imported variables up to date in each file.
+
+      </p></div><div class="section" title="14.5.3. Returning Values From an SConscript File"><div class="titlepage"><div><div><h3 class="title"><a name="sect-sconscript-return"></a>14.5.3. Returning Values From an <code class="filename">SConscript</code> File</h3></div></div></div><p>
+
+      Sometimes, you would like to be able to
+      use information from a subsidiary
+      <code class="filename">SConscript</code> file in some way.
+      For example,
+      suppose that you want to create one
+      library from object files built by
+      several subsidiary <code class="filename">SConscript</code> files.
+      You can do this by using the <a class="link" href="apd.html#f-Return"><code class="function">Return</code></a>
+      function to return values
+      from the subsidiary <code class="filename">SConscript</code> files
+      to the calling file. Like <code class="function">Import</code> and <code class="function">Export</code>,
+      <code class="function">Return</code> takes a string representation of the variable
+      name, not the variable name itself.
+
+      </p><p>
+
+      If, for example, we have two subdirectories
+      <code class="filename">foo</code> and <code class="filename">bar</code>
+      that should each contribute an object
+      file to a library,
+      what we'd like to be able to do is
+      collect the object files
+      from the subsidiary <code class="filename">SConscript</code> calls
+      like this:
+
+      </p><pre class="programlisting">
+env = Environment()
+Export('env')
+objs = []
+for subdir in ['foo', 'bar']:
+    o = SConscript('%s/SConscript' % subdir)
+    objs.append(o)
+env.Library('prog', objs)
+        </pre><p>
+
+      We can do this by using the <code class="function">Return</code>
+      function in the
+      <code class="filename">foo/SConscript</code> file like this:
+
+      </p><pre class="programlisting">
+Import('env')
+obj = env.Object('foo.c')
+Return('obj')
+        
+</pre><p>
+
+      (The corresponding
+      <code class="filename">bar/SConscript</code>
+      file should be pretty obvious.)
+      Then when we run <span class="application">SCons</span>,
+      the object files from the subsidiary subdirectories
+      are all correctly archived in the desired library:
+
+      </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o bar/bar.o -c bar/bar.c
+cc -o foo/foo.o -c foo/foo.c
+ar rc libprog.a foo/foo.o bar/bar.o
+ranlib libprog.a
+</pre></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch14s04.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch14.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch15.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">14.4. Absolute Path Names </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 15. Separating Source and Build Trees: Variant Directories</td></tr></table></div></body></html>

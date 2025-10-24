@@ -1,0 +1,61 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>12.7. Executing an action immediately: the Execute Function</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 2.5.1"><link rel="up" href="ch12.html" title="Chapter 12. Platform-Independent File System Manipulation"><link rel="prev" href="ch12s06.html" title="12.6. Changing File or Directory Permissions: The Chmod Factory"><link rel="next" href="ch13.html" title="Chapter 13. Controlling Removal of Targets"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">12.7. Executing an action immediately:  the <code class="function">Execute</code> Function</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch12s06.html">Prev</a> </td><th width="60%" align="center">Chapter 12. Platform-Independent File System Manipulation</th><td width="20%" align="right"> <a accesskey="n" href="ch13.html">Next</a></td></tr></table><hr></div><div class="section" title="12.7. Executing an action immediately: the Execute Function"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idm139837655852944"></a>12.7. Executing an action immediately:  the <code class="function">Execute</code> Function</h2></div></div></div><p>
+
+    We've been showing you how to use <code class="classname">Action</code> factories
+    in the <code class="function">Command</code> function.
+    You can also execute an <code class="classname">Action</code> returned by a factory
+    (or actually, any <code class="classname">Action</code>)
+    at the time the <code class="filename">SConscript</code> file is read
+    by using the <code class="function">Execute</code> function.
+    For example, if we need to make sure that
+    a directory exists before we build any targets,
+
+    </p><pre class="programlisting">
+Execute(Mkdir('/tmp/my_temp_directory'))
+      </pre><p>
+
+    Notice that this will
+    create the directory while
+    the <code class="filename">SConscript</code> file is being read:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons</code></strong>
+scons: Reading SConscript files ...
+Mkdir("/tmp/my_temp_directory")
+scons: done reading SConscript files.
+scons: Building targets ...
+scons: `.' is up to date.
+scons: done building targets.
+</pre><p>
+
+    If you're familiar with Python,
+    you may wonder why you would want to use this
+    instead of just calling the native Python
+    <code class="function">os.mkdir()</code> function.
+    The advantage here is that the <code class="function">Mkdir</code>
+    action will behave appropriately if the user
+    specifies the <span class="application">SCons</span> <code class="option">-n</code> or
+    <code class="option">-q</code> options--that is,
+    it will print the action but not actually
+    make the directory when <code class="option">-n</code> is specified,
+    or make the directory but not print the action
+    when <code class="option">-q</code> is specified.
+
+    </p><p>
+
+    The <code class="function">Execute</code> function returns the exit status
+    or return value of the underlying action being executed.
+    It will also print an error message if the action
+    fails and returns a non-zero value.
+    <span class="application">SCons</span> will <span class="emphasis"><em>not</em></span>, however,
+    actually stop the build if the action fails.
+    If you want the build to stop
+    in response to a failure in an action called by <code class="function">Execute</code>,
+    you must do so by explicitly
+    checking the return value
+    and calling the <code class="function">Exit</code> function
+    (or a Python equivalent):
+
+    </p><pre class="programlisting">
+if Execute(Mkdir('/tmp/my_temp_directory')):
+    # A problem occurred while making the temp directory.
+    Exit(1)
+    </pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch12s06.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch12.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch13.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">12.6. Changing File or Directory Permissions:  The <code class="function">Chmod</code> Factory </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 13. Controlling Removal of Targets</td></tr></table></div></body></html>

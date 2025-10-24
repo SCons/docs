@@ -1,0 +1,87 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>26.5. Handling Nested Lists: the Flatten Function</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.4.0"><link rel="up" href="ch26.html" title="Chapter 26. Miscellaneous Functionality"><link rel="prev" href="ch26s04.html" title="26.4. Searching for Files: the FindFile Function"><link rel="next" href="ch26s06.html" title="26.6. Finding the Invocation Directory: the GetLaunchDir Function"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">26.5. Handling Nested Lists:  the <code class="function">Flatten</code> Function</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch26s04.html">Prev</a> </td><th width="60%" align="center">Chapter 26. Miscellaneous Functionality</th><td width="20%" align="right"> <a accesskey="n" href="ch26s06.html">Next</a></td></tr></table><hr></div><div class="section" title="26.5. Handling Nested Lists: the Flatten Function"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idp105548826788304"></a>26.5. Handling Nested Lists:  the <code class="function">Flatten</code> Function</h2></div></div></div><p>
+
+    <span class="application">SCons</span> supports a <code class="function">Flatten</code> function
+    which takes an input Python sequence
+    (list or tuple)
+    and returns a flattened list
+    containing just the individual elements of
+    the sequence.
+    This can be handy when trying to examine
+    a list composed of the lists
+    returned by calls to various Builders.
+    For example, you might collect
+    object files built in different ways
+    into one call to the <code class="function">Program</code> Builder
+    by just enclosing them in a list, as follows:
+
+    </p><pre class="programlisting">
+objects = [
+    Object('prog1.c'),
+    Object('prog2.c', CCFLAGS='-DFOO'),
+]
+Program(objects)
+      </pre><p>
+
+    Because the Builder calls in <span class="application">SCons</span>
+    flatten their input lists,
+    this works just fine to build the program:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o prog1.o -c prog1.c
+cc -o prog2.o -c -DFOO prog2.c
+cc -o prog1 prog1.o prog2.o
+</pre><p>
+
+    But if you were debugging your build
+    and wanted to print the absolute path
+    of each object file in the
+    <code class="varname">objects</code> list,
+    you might try the following simple approach,
+    trying to print each Node's
+    <code class="literal">abspath</code>
+    attribute:
+
+    </p><pre class="programlisting">
+objects = [
+    Object('prog1.c'),
+    Object('prog2.c', CCFLAGS='-DFOO'),
+]
+Program(objects)
+
+for object_file in objects:
+    print(object_file.abspath)
+      </pre><p>
+
+    This does not work as expected
+    because each call to <code class="function">str</code>
+    is operating an embedded list returned by
+    each <code class="function">Object</code> call,
+    not on the underlying Nodes within those lists:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+AttributeError: 'NodeList' object has no attribute 'abspath':
+  File "/home/my/project/SConstruct", line 8:
+    print(object_file.abspath)
+</pre><p>
+
+    The solution is to use the <code class="function">Flatten</code> function
+    so that you can pass each Node to
+    the <code class="function">str</code> separately:
+
+    </p><pre class="programlisting">
+objects = [
+    Object('prog1.c'),
+    Object('prog2.c', CCFLAGS='-DFOO'),
+]
+Program(objects)
+
+for object_file in Flatten(objects):
+    print(object_file.abspath)
+      </pre><pre class="screen">
+% <strong class="userinput"><code>scons -Q</code></strong>
+/home/me/project/prog1.o
+/home/me/project/prog2.o
+cc -o prog1.o -c prog1.c
+cc -o prog2.o -c -DFOO prog2.c
+cc -o prog1 prog1.o prog2.o
+    </pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch26s04.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch26.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch26s06.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">26.4. Searching for Files:  the <code class="function">FindFile</code> Function </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 26.6. Finding the Invocation Directory:  the <code class="function">GetLaunchDir</code> Function</td></tr></table></div></body></html>

@@ -1,0 +1,59 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>28.6. Where is SCons Blowing Up? the --debug=stacktrace Option</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.9.0"><link rel="up" href="ch28.html" title="Chapter 28. Troubleshooting"><link rel="prev" href="ch28s05.html" title="28.5. Where is SCons Searching for Libraries? the --debug=findlibs Option"><link rel="next" href="ch28s07.html" title="28.7. How is SCons Making Its Decisions? the --taskmastertrace Option"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">28.6. Where is <span class="application">SCons</span> Blowing Up?  the <code class="option">--debug=stacktrace</code> Option</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch28s05.html">Prev</a> </td><th width="60%" align="center">Chapter 28. Troubleshooting</th><td width="20%" align="right"> <a accesskey="n" href="ch28s07.html">Next</a></td></tr></table><hr></div><div class="section" title="28.6. Where is SCons Blowing Up? the --debug=stacktrace Option"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id7336"></a>28.6. Where is <span class="application">SCons</span> Blowing Up?  the <code class="option">--debug=stacktrace</code> Option</h2></div></div></div><p>
+
+    In general, <span class="application">SCons</span> tries to keep its error
+    messages short and informative.
+    That means we usually try to avoid showing
+    the stack traces that are familiar
+    to experienced Python programmers,
+    since they usually contain much more
+    information than is useful to most people.
+
+    </p><p>
+
+    For example, the following <code class="filename">SConstruct</code> file:
+
+    </p><pre class="programlisting">
+Program('prog.c')
+      </pre><p>
+
+    Generates the following error if the
+    <code class="filename">prog.c</code> file
+    does not exist:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+scons: *** [prog.o] Source `prog.c' not found, needed by target `prog.o'.
+</pre><p>
+
+    In this case,
+    the error is pretty obvious.
+    But if it weren't,
+    and you wanted to try to get more information
+    about the error,
+    the <code class="option">--debug=stacktrace</code> option
+    would show you exactly where in the <span class="application">SCons</span> source code
+    the problem occurs:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q --debug=stacktrace</code></strong>
+scons: *** [prog.o] Source `prog.c' not found, needed by target `prog.o'.
+scons: internal stack trace:
+  File "SCons/Taskmaster/Job.py", line 670, in _work
+    task.prepare()
+  File "SCons/Script/Main.py", line 209, in prepare
+    return SCons.Taskmaster.OutOfDateTask.prepare(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "SCons/Taskmaster/__init__.py", line 195, in prepare
+    executor.prepare()
+  File "SCons/Executor.py", line 420, in prepare
+    raise SCons.Errors.StopError(msg % (s, self.batches[0].targets[0]))
+</pre><p>
+
+    Of course, if you do need to dive into the <span class="application">SCons</span> source code,
+    we'd like to know if, or how,
+    the error messages or troubleshooting options
+    could have been improved to avoid that.
+    Not everyone has the necessary time or
+    Python skill to dive into the source code,
+    and we'd like to improve <span class="application">SCons</span>
+    for those people as well...
+
+    </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch28s05.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch28.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch28s07.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">28.5. Where is <span class="application">SCons</span> Searching for Libraries?  the <code class="option">--debug=findlibs</code> Option </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 28.7. How is <span class="application">SCons</span> Making Its Decisions?  the <code class="option">--taskmastertrace</code> Option</td></tr></table></div></body></html>

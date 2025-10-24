@@ -1,0 +1,52 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>2.4. Cleaning Up After a Build</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 3.1.0"><link rel="up" href="ch02.html" title="Chapter 2. Simple Builds"><link rel="prev" href="ch02s03.html" title="2.3. Simple Java Builds"><link rel="next" href="ch02s05.html" title="2.5. The SConstruct File"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">2.4. Cleaning Up After a Build</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02s03.html">Prev</a> </td><th width="60%" align="center">Chapter 2. Simple Builds</th><td width="20%" align="right"> <a accesskey="n" href="ch02s05.html">Next</a></td></tr></table><hr></div><div class="section" title="2.4. Cleaning Up After a Build"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idm311"></a>2.4. Cleaning Up After a Build</h2></div></div></div><p>
+
+   When using <span class="application">SCons</span>, it is unnecessary to add special
+   commands or target names to clean up after a build.
+   Instead, you simply use the
+   <code class="literal">-c</code> or <code class="literal">--clean</code>
+   option when you invoke <span class="application">SCons</span>,
+   and <span class="application">SCons</span> removes the appropriate built files.
+   So if we build our example above
+   and then invoke <code class="literal">scons -c</code>
+   afterwards, the output on POSIX looks like:
+
+   </p><pre class="screen">% <strong class="userinput"><code>scons</code></strong>
+scons: Reading SConscript files ...
+scons: done reading SConscript files.
+scons: Building targets ...
+cc -o hello.o -c hello.c
+cc -o hello hello.o
+scons: done building targets.
+% <strong class="userinput"><code>scons -c</code></strong>
+scons: Reading SConscript files ...
+scons: done reading SConscript files.
+scons: Cleaning targets ...
+Removed hello.o
+Removed hello
+scons: done cleaning targets.
+</pre><p>
+
+   And the output on Windows looks like:
+
+   </p><pre class="screen">C:\&gt;<strong class="userinput"><code>scons</code></strong>
+scons: Reading SConscript files ...
+scons: done reading SConscript files.
+scons: Building targets ...
+cl /Fohello.obj /c hello.c /nologo
+link /nologo /OUT:hello.exe hello.obj
+embedManifestExeCheck(target, source, env)
+scons: done building targets.
+C:\&gt;<strong class="userinput"><code>scons -c</code></strong>
+scons: Reading SConscript files ...
+scons: done reading SConscript files.
+scons: Cleaning targets ...
+Removed hello.obj
+Removed hello.exe
+scons: done cleaning targets.
+</pre><p>
+
+   Notice that <span class="application">SCons</span> changes its output to tell you that it
+   is <code class="literal">Cleaning targets ...</code> and
+   <code class="literal">done cleaning targets.</code>
+
+   </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch02s03.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch02.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch02s05.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">2.3. Simple Java Builds </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 2.5. The <code class="filename">SConstruct</code> File</td></tr></table></div></body></html>

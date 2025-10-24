@@ -1,0 +1,78 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>3.5. Making Lists of Files Easier to Read</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 2.3.4"><link rel="up" href="ch03.html" title="Chapter 3. Less Simple Things to Do With Builds"><link rel="prev" href="ch03s04.html" title="3.4. Specifying Single Files Vs. Lists of Files"><link rel="next" href="ch03s06.html" title="3.6. Keyword Arguments"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">3.5. Making Lists of Files Easier to Read</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch03s04.html">Prev</a> </td><th width="60%" align="center">Chapter 3. Less Simple Things to Do With Builds</th><td width="20%" align="right"> <a accesskey="n" href="ch03s06.html">Next</a></td></tr></table><hr></div><div class="section" title="3.5. Making Lists of Files Easier to Read"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idp181320"></a>3.5. Making Lists of Files Easier to Read</h2></div></div></div><p>
+
+    One drawback to the use of a Python list
+    for source files is that 
+    each file name must be enclosed in quotes
+    (either single quotes or double quotes).
+    This can get cumbersome and difficult to read
+    when the list of file names is long.
+    Fortunately, <span class="application">SCons</span> and Python provide a number of ways
+    to make sure that
+    the <code class="filename">SConstruct</code> file stays easy to read.
+
+    </p><p>
+
+    To make long lists of file names
+    easier to deal with, <span class="application">SCons</span> provides a
+    <code class="function">Split</code> function
+    that takes a quoted list of file names,
+    with the names separated by spaces or other white-space characters,
+    and turns it into a list of separate file names.
+    Using the <code class="function">Split</code> function turns the
+    previous example into:
+
+    </p><pre class="programlisting">
+Program('program', Split('main.c file1.c file2.c'))
+    </pre><p>
+
+    (If you're already familiar with Python,
+    you'll have realized that this is similar to the
+    <code class="function">split()</code> method
+    in the Python standard <code class="function">string</code> module.
+    Unlike the <code class="function">split()</code> member function of strings,
+    however, the <code class="function">Split</code> function
+    does not require a string as input
+    and will wrap up a single non-string object in a list,
+    or return its argument untouched if it's already a list.
+    This comes in handy as a way to make sure
+    arbitrary values can be passed to <span class="application">SCons</span> functions
+    without having to check the type of the variable by hand.)
+
+    </p><p>
+
+    Putting the call to the <code class="function">Split</code> function
+    inside the <code class="function">Program</code> call
+    can also be a little unwieldy.
+    A more readable alternative is to
+    assign the output from the <code class="function">Split</code> call
+    to a variable name,
+    and then use the variable when calling the
+    <code class="function">Program</code> function:
+
+    </p><pre class="programlisting">
+src_files = Split('main.c file1.c file2.c')
+Program('program', src_files)
+    </pre><p>
+
+    Lastly, the <code class="function">Split</code> function
+    doesn't care how much white space separates
+    the file names in the quoted string.
+    This allows you to create lists of file
+    names that span multiple lines,
+    which often makes for easier editing:
+
+    </p><pre class="programlisting">
+src_files = Split("""main.c
+                     file1.c
+                     file2.c""")
+Program('program', src_files)
+    </pre><p>
+
+    (Note in this example that we used
+    the Python "triple-quote" syntax,
+    which allows a string to contain
+    multiple lines.
+    The three quotes can be either
+    single or double quotes.)
+
+    </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch03s04.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch03.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch03s06.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">3.4. Specifying Single Files Vs. Lists of Files </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 3.6. Keyword Arguments</td></tr></table></div></body></html>

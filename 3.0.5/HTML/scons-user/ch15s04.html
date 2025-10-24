@@ -1,0 +1,55 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>15.4. The VariantDir Function</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 3.0.5"><link rel="up" href="ch15.html" title="Chapter 15. Separating Source and Build Directories"><link rel="prev" href="ch15s03.html" title="15.3. Telling SCons to Not Duplicate Source Files in the Variant Directory Tree"><link rel="next" href="ch15s05.html" title="15.5. Using VariantDir With an SConscript File"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">15.4. The <code class="function">VariantDir</code> Function</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch15s03.html">Prev</a> </td><th width="60%" align="center">Chapter 15. Separating Source and Build Directories</th><td width="20%" align="right"> <a accesskey="n" href="ch15s05.html">Next</a></td></tr></table><hr></div><div class="section" title="15.4. The VariantDir Function"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idm3466"></a>15.4. The <code class="function">VariantDir</code> Function</h2></div></div></div><p>
+
+    Use the <code class="function">VariantDir</code> function to establish that target
+    files should be built in a separate directory
+    from the source files:
+
+    </p><pre class="programlisting">
+VariantDir('build', 'src')
+env = Environment()
+env.Program('build/hello.c')
+      </pre><p>
+
+    Note that when you're not using
+    an <code class="filename">SConscript</code> file in the <code class="filename">src</code> subdirectory,
+    you must actually specify that
+    the program must be built from
+    the <code class="filename">build/hello.c</code>
+    file that <span class="application">SCons</span> will duplicate in the
+    <code class="filename">build</code> subdirectory.
+
+    </p><p>
+
+    When using the <code class="function">VariantDir</code> function directly,
+    <span class="application">SCons</span> still duplicates the source files
+    in the variant directory by default:
+
+    </p><pre class="screen">% <strong class="userinput"><code>ls src</code></strong>
+hello.c
+% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o build/hello.o -c build/hello.c
+cc -o build/hello build/hello.o
+% <strong class="userinput"><code>ls build</code></strong>
+hello  hello.c  hello.o
+</pre><p>
+
+    You can specify the same <code class="literal">duplicate=0</code> argument
+    that you can specify for an <code class="filename">SConscript</code> call:
+
+    </p><pre class="programlisting">
+VariantDir('build', 'src', duplicate=0)
+env = Environment()
+env.Program('build/hello.c')
+      </pre><p>
+
+    In which case <span class="application">SCons</span>
+    will disable duplication of the source files:
+
+    </p><pre class="screen">% <strong class="userinput"><code>ls src</code></strong>
+hello.c
+% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o build/hello.o -c src/hello.c
+cc -o build/hello build/hello.o
+% <strong class="userinput"><code>ls build</code></strong>
+hello  hello.o
+</pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch15s03.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch15.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch15s05.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">15.3. Telling <span class="application">SCons</span> to Not Duplicate Source Files in the Variant Directory Tree </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 15.5. Using <code class="function">VariantDir</code> With an <code class="filename">SConscript</code> File</td></tr></table></div></body></html>

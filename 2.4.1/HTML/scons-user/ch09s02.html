@@ -1,0 +1,106 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>9.2. Controlling How SCons Prints Build Commands: the $*COMSTR Variables</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 2.4.1"><link rel="up" href="ch09.html" title="Chapter 9. Controlling Build Output"><link rel="prev" href="ch09.html" title="Chapter 9. Controlling Build Output"><link rel="next" href="ch09s03.html" title="9.3. Providing Build Progress Output: the Progress Function"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">9.2. Controlling How <span class="application">SCons</span> Prints Build Commands:  the <code class="envar">$*COMSTR</code> Variables</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch09.html">Prev</a> </td><th width="60%" align="center">Chapter 9. Controlling Build Output</th><td width="20%" align="right"> <a accesskey="n" href="ch09s03.html">Next</a></td></tr></table><hr></div><div class="section" title="9.2. Controlling How SCons Prints Build Commands: the $*COMSTR Variables"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idp1371415324"></a>9.2. Controlling How <span class="application">SCons</span> Prints Build Commands:  the <code class="envar">$*COMSTR</code> Variables</h2></div></div></div><p>
+
+    Sometimes the commands executed
+    to compile object files or link programs
+    (or build other targets)
+    can get very long,
+    long enough to make it difficult for users
+    to distinguish error messages or
+    other important build output
+    from the commands themselves.
+    All of the default <code class="envar">$*COM</code> variables
+    that specify the command lines
+    used to build various types of target files
+    have a corresponding <code class="envar">$*COMSTR</code> variable
+    that can be set to an alternative
+    string that will be displayed
+    when the target is built.
+
+    </p><p>
+
+    For example, suppose you want to
+    have <span class="application">SCons</span> display a
+    <code class="literal">"Compiling"</code>
+    message whenever it's compiling an object file,
+    and a
+    <code class="literal">"Linking"</code>
+    when it's linking an executable.
+    You could write a <code class="filename">SConstruct</code> file
+    that looks like:
+
+    </p><pre class="programlisting">
+env = Environment(CCCOMSTR = "Compiling $TARGET",
+                  LINKCOMSTR = "Linking $TARGET")
+env.Program('foo.c')
+       </pre><p>
+
+    Which would then yield the output:
+
+    </p><pre class="screen">
+% <strong class="userinput"><code>scons -Q</code></strong>
+Compiling foo.o
+Linking foo
+    </pre><p>
+
+    <span class="application">SCons</span> performs complete variable substitution
+    on <code class="envar">$*COMSTR</code> variables,
+    so they have access to all of the
+    standard variables like <code class="envar">$TARGET</code> <code class="envar">$SOURCES</code>, etc.,
+    as well as any construction variables
+    that happen to be configured in
+    the construction environment
+    used to build a specific target.
+
+    </p><p>
+
+    Of course, sometimes it's still important to
+    be able to see the exact command
+    that <span class="application">SCons</span> will execute to build a target.
+    For example, you may simply need to verify
+    that <span class="application">SCons</span> is configured to supply
+    the right options to the compiler,
+    or a developer may want to
+    cut-and-paste a compile command
+    to add a few options
+    for a custom test.
+
+    </p><p>
+
+    One common way to give users
+    control over whether or not
+    <span class="application">SCons</span> should print the actual command line
+    or a short, configured summary
+    is to add support for a
+    <code class="varname">VERBOSE</code>
+    command-line variable to your <code class="filename">SConstruct</code> file.
+    A simple configuration for this might look like:
+
+    </p><pre class="programlisting">
+env = Environment()
+if ARGUMENTS.get('VERBOSE') != "1':
+    env['CCCOMSTR'] = "Compiling $TARGET"
+    env['LINKCOMSTR'] = "Linking $TARGET"
+env.Program('foo.c')
+       </pre><p>
+
+
+    By only setting the appropriate
+    <code class="envar">$*COMSTR</code> variables
+    if the user specifies
+    <code class="literal">VERBOSE=1</code>
+    on the command line,
+    the user has control
+    over how <span class="application">SCons</span>
+    displays these particular command lines:
+
+    </p><pre class="screen">
+% <strong class="userinput"><code>scons -Q</code></strong>
+Compiling foo.o
+Linking foo
+% <strong class="userinput"><code>scons -Q -c</code></strong>
+Removed foo.o
+Removed foo
+% <strong class="userinput"><code>scons -Q VERBOSE=1</code></strong>
+cc -o foo.o -c foo.c
+cc -o foo foo.o
+    </pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch09.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch09.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch09s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 9. Controlling Build Output </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 9.3. Providing Build Progress Output:  the <code class="function">Progress</code> Function</td></tr></table></div></body></html>

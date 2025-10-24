@@ -1,0 +1,98 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Chapter 12. Platform-Independent File System Manipulation</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.5.1"><link rel="up" href="index.html" title="SCons 4.5.1"><link rel="prev" href="ch11s04.html" title="11.4. Installing a Shared Library"><link rel="next" href="ch12s02.html" title="12.2. Deleting Files or Directories: The Delete Factory"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 12. Platform-Independent File System Manipulation</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch11s04.html">Prev</a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="ch12s02.html">Next</a></td></tr></table><hr></div><div class="chapter" title="Chapter 12. Platform-Independent File System Manipulation"><div class="titlepage"><div><div><h2 class="title"><a name="chap-factories"></a>Chapter 12. Platform-Independent File System Manipulation</h2></div></div></div><p>
+
+  <span class="application">SCons</span> provides a number of platform-independent functions,
+  called <code class="literal">factories</code>,
+  that perform common file system manipulations
+  like copying, moving or deleting files and directories,
+  or making directories.
+  These functions are <code class="literal">factories</code>
+  because they don't perform the action
+  at the time they're called,
+  they each return an <code class="classname">Action</code> object
+  that can be executed at the appropriate time.
+
+  </p><div class="section" title="12.1. Copying Files or Directories: The Copy Factory"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idp105549164304840"></a>12.1. Copying Files or Directories:  The <code class="function">Copy</code> Factory</h2></div></div></div><p>
+
+    Suppose you want to arrange to make a copy of a file,
+    and don't have a suitable pre-existing builder.
+    <sup>[<a name="idp105549164306248" href="#ftn.idp105549164306248" class="footnote">3</a>]</sup>
+    One way would be to use the <code class="function">Copy</code> action factory
+    in conjunction with the <code class="function">Command</code> builder:
+
+    </p><pre class="programlisting">
+Command("file.out", "file.in", Copy("$TARGET", "$SOURCE"))
+      </pre><p>
+
+    Notice that the action returned by the <code class="function">Copy</code> factory
+    will expand the <a class="link" href="apa.html#cv-TARGET"><code class="envar">$TARGET</code></a> and <a class="link" href="apa.html#cv-SOURCE"><code class="envar">$SOURCE</code></a> strings
+    at the time <code class="filename">file.out</code> is built,
+    and that the order of the arguments
+    is the same as that of a builder itself--that is,
+    target first, followed by source:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+Copy("file.out", "file.in")
+</pre><p>
+
+    You can, of course, name a file explicitly
+    instead of using <code class="envar">$TARGET</code> or <code class="envar">$SOURCE</code>:
+
+    </p><pre class="programlisting">
+Command("file.out", [], Copy("$TARGET", "file.in"))
+      </pre><p>
+
+    Which executes as:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+Copy("file.out", "file.in")
+</pre><p>
+
+    The usefulness of the <code class="function">Copy</code> factory
+    becomes more apparent when
+    you use it in a list of actions
+    passed to the <code class="function">Command</code> builder.
+    For example, suppose you needed to run a
+    file through a utility that only modifies files in-place,
+    and can't "pipe" input to output.
+    One solution is to copy the source file
+    to a temporary file name,
+    run the utility,
+    and then copy the modified temporary file to the target,
+    which the <code class="function">Copy</code> factory makes extremely easy:
+
+    </p><pre class="programlisting">
+Command(
+    "file.out",
+    "file.in",
+    action=[
+        Copy("tempfile", "$SOURCE"),
+        "modify tempfile",
+        Copy("$TARGET", "tempfile"),
+    ],
+)
+      </pre><p>
+
+    The output then looks like:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+Copy("tempfile", "file.in")
+modify tempfile
+Copy("file.out", "tempfile")
+</pre><p>
+    The <code class="function">Copy</code> factory has a third optional argument which controls
+    how symlinks are copied.
+    </p><p>
+    </p><pre class="programlisting">
+# Symbolic link shallow copied as a new symbolic link:
+Command("LinkIn", "LinkOut", Copy("$TARGET", "$SOURCE", symlinks=True))
+
+# Symbolic link target copied as a file or directory:
+Command("LinkIn", "FileOrDirectoryOut", Copy("$TARGET", "$SOURCE", symlinks=False))
+      </pre></div><div class="footnotes"><br><hr width="100" align="left"><div class="footnote"><p><sup>[<a id="ftn.idp105549164306248" href="#idp105549164306248" class="para">3</a>] </sup>
+    Unfortunately, in the early days of SCons design,
+    we used the name <code class="function">Copy</code> for the function that
+    returns a copy of the environment,
+    otherwise that would be the logical choice for
+    a Builder that copies a file or directory tree
+    to a target location.
+    </p></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch11s04.html">Prev</a> </td><td width="20%" align="center"> </td><td width="40%" align="right"> <a accesskey="n" href="ch12s02.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">11.4. Installing a Shared Library </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 12.2. Deleting Files or Directories:  The <code class="function">Delete</code> Factory</td></tr></table></div></body></html>

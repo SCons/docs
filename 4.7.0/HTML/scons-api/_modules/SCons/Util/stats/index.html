@@ -1,0 +1,568 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SCons.Util.stats &#8212; SCons 4.7.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/sphinx-book-theme.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/scripts/sphinx-book-theme.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/SCons/Util/stats';</script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search/"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../../">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SCons 4.7.0 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../SCons/">SCons package</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Taskmaster/">SCons.Taskmaster package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Util/">SCons.Util package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Variables/">SCons.Variables package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.compat/">SCons.compat package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.compat/">SCons.compat package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Taskmaster/">SCons.Taskmaster package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Util/">SCons.Util package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Variables/">SCons.Variables package</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for SCons.Util.stats</h1><div class="highlight"><pre>
+<span></span><span class="c1"># MIT License</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright The SCons Foundation</span>
+<span class="c1">#</span>
+<span class="c1"># Permission is hereby granted, free of charge, to any person obtaining</span>
+<span class="c1"># a copy of this software and associated documentation files (the</span>
+<span class="c1"># &quot;Software&quot;), to deal in the Software without restriction, including</span>
+<span class="c1"># without limitation the rights to use, copy, modify, merge, publish,</span>
+<span class="c1"># distribute, sublicense, and/or sell copies of the Software, and to</span>
+<span class="c1"># permit persons to whom the Software is furnished to do so, subject to</span>
+<span class="c1"># the following conditions:</span>
+<span class="c1">#</span>
+<span class="c1"># The above copyright notice and this permission notice shall be included</span>
+<span class="c1"># in all copies or substantial portions of the Software.</span>
+<span class="c1">#</span>
+<span class="c1"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY</span>
+<span class="c1"># KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND</span>
+<span class="c1"># NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE</span>
+<span class="c1"># LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION</span>
+<span class="c1"># OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</span>
+<span class="c1"># WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">SCons statistics routines.</span>
+
+<span class="sd">This package provides a way to gather various statistics during an SCons</span>
+<span class="sd">run and dump that info in several formats</span>
+
+<span class="sd">Additionally, it probably makes sense to do stderr/stdout output of</span>
+<span class="sd">those statistics here as well</span>
+
+<span class="sd">There are basically two types of stats:</span>
+
+<span class="sd">1. Timer (start/stop/time) for specific event.  These events can be</span>
+<span class="sd">   hierarchical. So you can record the children events of some parent.</span>
+<span class="sd">   Think program compile could contain the total Program builder time,</span>
+<span class="sd">   which could include linking, and stripping the executable</span>
+
+<span class="sd">2. Counter. Counting the number of events and/or objects created. This</span>
+<span class="sd">   would likely only be reported at the end of a given SCons run,</span>
+<span class="sd">   though it might be useful to query during a run.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span>
+
+<span class="kn">import</span> <span class="nn">platform</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="kn">import</span> <span class="nn">SCons.Debug</span>
+
+<span class="n">all_stats</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">ENABLE_JSON</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">JSON_OUTPUT_FILE</span> <span class="o">=</span> <span class="s1">&#39;scons_stats.json&#39;</span>
+
+<div class="viewcode-block" id="add_stat_type"><a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.stats.add_stat_type">[docs]</a><span class="k">def</span> <span class="nf">add_stat_type</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">stat_object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a statistic type to the global collection&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">all_stats</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">UserWarning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Stat type </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> already exists&#39;</span><span class="p">)</span>
+    <span class="n">all_stats</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">stat_object</span></div>
+
+
+<div class="viewcode-block" id="Stats"><a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.stats.Stats">[docs]</a><span class="k">class</span> <span class="nc">Stats</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stats</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">append</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_nothing</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_stats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_nothing</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enabled</span> <span class="o">=</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="Stats.do_append"><a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.stats.Stats.do_append">[docs]</a>    <span class="k">def</span> <span class="nf">do_append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="Stats.do_print"><a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.stats.Stats.do_print">[docs]</a>    <span class="k">def</span> <span class="nf">do_print</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="Stats.enable"><a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.stats.Stats.enable">[docs]</a>    <span class="k">def</span> <span class="nf">enable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outfp</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outfp</span> <span class="o">=</span> <span class="n">outfp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">append</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_append</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_stats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_print</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enabled</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="Stats.do_nothing"><a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.stats.Stats.do_nothing">[docs]</a>    <span class="k">def</span> <span class="nf">do_nothing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">pass</span></div></div>
+
+
+<div class="viewcode-block" id="CountStats"><a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.stats.CountStats">[docs]</a><span class="k">class</span> <span class="nc">CountStats</span><span class="p">(</span><span class="n">Stats</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stats_table</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="CountStats.do_append"><a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.stats.CountStats.do_append">[docs]</a>    <span class="k">def</span> <span class="nf">do_append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Debug</span><span class="o">.</span><span class="n">fetchLoggedInstances</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="CountStats.do_print"><a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.stats.CountStats.do_print">[docs]</a>    <span class="k">def</span> <span class="nf">do_print</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stats_table</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="p">[</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">s</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">stats_table</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">stats_table</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outfp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Object counts:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">pre</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;   &quot;</span><span class="p">]</span>
+        <span class="n">post</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;   </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">]</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">)</span>
+        <span class="n">fmt1</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pre</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39; </span><span class="si">%7s</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">l</span> <span class="o">+</span> <span class="n">post</span><span class="p">)</span>
+        <span class="n">fmt2</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pre</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39; </span><span class="si">%7d</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">l</span> <span class="o">+</span> <span class="n">post</span><span class="p">)</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">[:</span><span class="n">l</span><span class="p">]</span>
+        <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;Class&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outfp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">fmt1</span> <span class="o">%</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outfp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">fmt1</span> <span class="o">%</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stats_table</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats_table</span><span class="p">[</span><span class="n">k</span><span class="p">][:</span><span class="n">l</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">k</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">outfp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">fmt2</span> <span class="o">%</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">r</span><span class="p">))</span></div></div>
+
+
+<div class="viewcode-block" id="MemStats"><a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.stats.MemStats">[docs]</a><span class="k">class</span> <span class="nc">MemStats</span><span class="p">(</span><span class="n">Stats</span><span class="p">):</span>
+<div class="viewcode-block" id="MemStats.do_append"><a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.stats.MemStats.do_append">[docs]</a>    <span class="k">def</span> <span class="nf">do_append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Debug</span><span class="o">.</span><span class="n">memory</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="MemStats.do_print"><a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.stats.MemStats.do_print">[docs]</a>    <span class="k">def</span> <span class="nf">do_print</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">fmt</span> <span class="o">=</span> <span class="s1">&#39;Memory </span><span class="si">%-32s</span><span class="s1"> </span><span class="si">%12d</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">stats</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">outfp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">stats</span><span class="p">))</span></div></div>
+
+
+<div class="viewcode-block" id="TimeStats"><a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.stats.TimeStats">[docs]</a><span class="k">class</span> <span class="nc">TimeStats</span><span class="p">(</span><span class="n">Stats</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">totals</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">commands</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># we get order from insertion order, and can address individual via dict</span>
+
+<div class="viewcode-block" id="TimeStats.total_times"><a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.stats.TimeStats.total_times">[docs]</a>    <span class="k">def</span> <span class="nf">total_times</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">build_time</span><span class="p">,</span> <span class="n">sconscript_time</span><span class="p">,</span> <span class="n">scons_exec_time</span><span class="p">,</span> <span class="n">command_exec_time</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">totals</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;build_time&#39;</span><span class="p">:</span> <span class="n">build_time</span><span class="p">,</span>
+            <span class="s1">&#39;sconscript_time&#39;</span><span class="p">:</span> <span class="n">sconscript_time</span><span class="p">,</span>
+            <span class="s1">&#39;scons_exec_time&#39;</span><span class="p">:</span> <span class="n">scons_exec_time</span><span class="p">,</span>
+            <span class="s1">&#39;command_exec_time&#39;</span><span class="p">:</span> <span class="n">command_exec_time</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="TimeStats.add_command"><a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.stats.TimeStats.add_command">[docs]</a>    <span class="k">def</span> <span class="nf">add_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">finish_time</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">command</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">commands</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Duplicate command </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">command</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">commands</span><span class="p">[</span><span class="n">command</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="n">start_time</span><span class="p">,</span>
+                                  <span class="s1">&#39;end&#39;</span> <span class="p">:</span> <span class="n">finish_time</span><span class="p">,</span>
+                                  <span class="s1">&#39;duration&#39;</span><span class="p">:</span> <span class="n">finish_time</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">}</span></div></div>
+
+
+<span class="n">count_stats</span> <span class="o">=</span> <span class="n">CountStats</span><span class="p">()</span>
+<span class="n">memory_stats</span> <span class="o">=</span> <span class="n">MemStats</span><span class="p">()</span>
+<span class="n">time_stats</span> <span class="o">=</span> <span class="n">TimeStats</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="write_scons_stats_file"><a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.stats.write_scons_stats_file">[docs]</a><span class="k">def</span> <span class="nf">write_scons_stats_file</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Actually write the JSON file with debug information.</span>
+<span class="sd">    Depending which of : count, time, action-timestamps,memory their information will be written.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Have to import where used to avoid import loop</span>
+    <span class="kn">from</span> <span class="nn">SCons.Script</span> <span class="kn">import</span> <span class="p">(</span>  <span class="c1"># pylint: disable=import-outside-toplevel</span>
+        <span class="n">BUILD_TARGETS</span><span class="p">,</span>
+        <span class="n">COMMAND_LINE_TARGETS</span><span class="p">,</span>
+        <span class="n">ARGUMENTS</span><span class="p">,</span>
+        <span class="n">ARGLIST</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="c1"># print(f&quot;DUMPING JSON FILE: {JSON_OUTPUT_FILE}&quot;)</span>
+    <span class="n">json_structure</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">count_stats</span><span class="o">.</span><span class="n">enabled</span><span class="p">:</span>
+        <span class="n">json_structure</span><span class="p">[</span><span class="s1">&#39;Object counts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">oc</span> <span class="o">=</span> <span class="n">json_structure</span><span class="p">[</span><span class="s1">&#39;Object counts&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">count_stats</span><span class="o">.</span><span class="n">stats_table</span><span class="p">:</span>
+            <span class="n">oc</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">l</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">count_stats</span><span class="o">.</span><span class="n">labels</span><span class="p">,</span> <span class="n">count_stats</span><span class="o">.</span><span class="n">stats_table</span><span class="p">[</span><span class="n">c</span><span class="p">]):</span>
+                <span class="n">oc</span><span class="p">[</span><span class="n">c</span><span class="p">][</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">l</span><span class="p">)]</span> <span class="o">=</span> <span class="n">v</span>
+
+    <span class="k">if</span> <span class="n">memory_stats</span><span class="o">.</span><span class="n">enabled</span><span class="p">:</span>
+        <span class="n">json_structure</span><span class="p">[</span><span class="s1">&#39;Memory&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">m</span> <span class="o">=</span> <span class="n">json_structure</span><span class="p">[</span><span class="s1">&#39;Memory&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">stats</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">memory_stats</span><span class="o">.</span><span class="n">labels</span><span class="p">,</span> <span class="n">memory_stats</span><span class="o">.</span><span class="n">stats</span><span class="p">):</span>
+            <span class="n">m</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">stats</span>
+
+    <span class="k">if</span> <span class="n">time_stats</span><span class="o">.</span><span class="n">enabled</span><span class="p">:</span>
+        <span class="n">json_structure</span><span class="p">[</span><span class="s1">&#39;Time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Commands&#39;</span><span class="p">:</span> <span class="n">time_stats</span><span class="o">.</span><span class="n">commands</span><span class="p">,</span>
+                                  <span class="s1">&#39;Totals&#39;</span><span class="p">:</span> <span class="n">time_stats</span><span class="o">.</span><span class="n">totals</span><span class="p">}</span>
+
+    <span class="c1"># Now add information about this build to the JSON file</span>
+    <span class="n">json_structure</span><span class="p">[</span><span class="s1">&#39;Build_Info&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;BUILD_TARGETS&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">BUILD_TARGETS</span><span class="p">],</span>
+        <span class="s1">&#39;ARGUMENTS&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">ARGUMENTS</span><span class="p">],</span>
+        <span class="s1">&#39;ARGLIST&#39;</span> <span class="p">:</span> <span class="p">[</span> <span class="nb">str</span><span class="p">(</span><span class="n">al</span><span class="p">)</span> <span class="k">for</span> <span class="n">al</span> <span class="ow">in</span> <span class="n">ARGLIST</span><span class="p">],</span>
+        <span class="s1">&#39;COMMAND_LINE_TARGETS&#39;</span> <span class="p">:</span> <span class="p">[</span> <span class="nb">str</span><span class="p">(</span><span class="n">clt</span><span class="p">)</span> <span class="k">for</span> <span class="n">clt</span> <span class="ow">in</span> <span class="n">COMMAND_LINE_TARGETS</span><span class="p">],</span>
+        <span class="s1">&#39;ARGV&#39;</span> <span class="p">:</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">,</span>
+        <span class="s1">&#39;TIME&#39;</span> <span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
+        <span class="s1">&#39;HOST&#39;</span> <span class="p">:</span> <span class="n">platform</span><span class="o">.</span><span class="n">node</span><span class="p">(),</span>
+        <span class="s1">&#39;PYTHON_VERSION&#39;</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;major&#39;</span> <span class="p">:</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">major</span><span class="p">,</span>
+            <span class="s1">&#39;minor&#39;</span> <span class="p">:</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">minor</span><span class="p">,</span>
+            <span class="s1">&#39;micro&#39;</span> <span class="p">:</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">micro</span><span class="p">,</span>
+            <span class="s1">&#39;releaselevel&#39;</span> <span class="p">:</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">releaselevel</span><span class="p">,</span>
+            <span class="s1">&#39;serial&#39;</span> <span class="p">:</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">serial</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">JSON_OUTPUT_FILE</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">sf</span><span class="p">:</span>
+        <span class="n">sf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">json_structure</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span></div>
+
+
+<span class="c1"># Local Variables:</span>
+<span class="c1"># tab-width:4</span>
+<span class="c1"># indent-tabs-mode:nil</span>
+<span class="c1"># End:</span>
+<span class="c1"># vim: set expandtab tabstop=4 shiftwidth=4:</span>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SCons Project Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022, SCons Project.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Explicitly Terminating SCons While Reading SConscript Files:  the Exit Function</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 2.1.0"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Miscellaneous Functionality"
+HREF="c4547.html"><LINK
+REL="PREVIOUS"
+TITLE="Verifying the SCons Version:  the EnsureSConsVersion Function"
+HREF="x4567.html"><LINK
+REL="NEXT"
+TITLE="Searching for Files:  the FindFile Function"
+HREF="x4611.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 2.1.0</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x4567.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 26. Miscellaneous Functionality</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x4611.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN4587"
+>26.3. Explicitly Terminating <SPAN
+CLASS="application"
+>SCons</SPAN
+> While Reading <TT
+CLASS="filename"
+>SConscript</TT
+> Files:  the <CODE
+CLASS="function"
+>Exit</CODE
+> Function</A
+></H1
+><P
+>&#13;
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> supports an <CODE
+CLASS="function"
+>Exit</CODE
+> function
+    which can be used to terminate <SPAN
+CLASS="application"
+>SCons</SPAN
+>
+    while reading the <TT
+CLASS="filename"
+>SConscript</TT
+> files,
+    usually because you've detected a condition
+    under which it doesn't make sense to proceed:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;      if ARGUMENTS.get('FUTURE'):
+          print "The FUTURE option is not supported yet!"
+          Exit(2)
+      env = Environment()
+      env.Program('hello.c')
+    </PRE
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q FUTURE=1</KBD
+>
+      The FUTURE option is not supported yet!
+      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      cc -o hello.o -c hello.c
+      cc -o hello hello.o
+    </PRE
+><P
+>&#13;
+    The <CODE
+CLASS="function"
+>Exit</CODE
+> function takes as an argument
+    the (numeric) exit status that you want <SPAN
+CLASS="application"
+>SCons</SPAN
+> to exit with.
+    If you don't specify a value,
+    the default is to exit with <TT
+CLASS="literal"
+>0</TT
+>,
+    which indicates successful execution.
+
+    </P
+><P
+>&#13;
+    Note that the <CODE
+CLASS="function"
+>Exit</CODE
+> function
+    is equivalent to calling the Python
+    <CODE
+CLASS="function"
+>sys.exit</CODE
+> function
+    (which the it actually calls),
+    but because <CODE
+CLASS="function"
+>Exit</CODE
+> is a <SPAN
+CLASS="application"
+>SCons</SPAN
+> function,
+    you don't have to import the Python
+    <TT
+CLASS="literal"
+>sys</TT
+> module to use it.
+
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x4567.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x4611.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Verifying the SCons Version:  the <CODE
+CLASS="function"
+>EnsureSConsVersion</CODE
+> Function</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c4547.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Searching for Files:  the <CODE
+CLASS="function"
+>FindFile</CODE
+> Function</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

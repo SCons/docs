@@ -1,0 +1,32 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>11.3. Installing Multiple Files Under Different Names</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 2.3.4"><link rel="up" href="ch11.html" title="Chapter 11. Installing Files in Other Directories: the Install Builder"><link rel="prev" href="ch11s02.html" title="11.2. Installing a File Under a Different Name"><link rel="next" href="ch12.html" title="Chapter 12. Platform-Independent File System Manipulation"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">11.3. Installing Multiple Files Under Different Names</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch11s02.html">Prev</a> </td><th width="60%" align="center">Chapter 11. Installing Files in Other Directories:  the <code class="function">Install</code> Builder</th><td width="20%" align="right"> <a accesskey="n" href="ch12.html">Next</a></td></tr></table><hr></div><div class="section" title="11.3. Installing Multiple Files Under Different Names"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idp3096696"></a>11.3. Installing Multiple Files Under Different Names</h2></div></div></div><p>
+
+    Lastly, if you have multiple files that all
+    need to be installed with different file names,
+    you can either call the <code class="function">InstallAs</code> function
+    multiple times, or as a shorthand,
+    you can supply same-length lists
+    for both the target and source arguments:
+
+    </p><pre class="programlisting">
+env = Environment()
+hello = env.Program('hello.c')
+goodbye = env.Program('goodbye.c')
+env.InstallAs(['/usr/bin/hello-new',
+               '/usr/bin/goodbye-new'],
+               [hello, goodbye])
+env.Alias('install', '/usr/bin')
+      </pre><p>
+
+    In this case, the <code class="function">InstallAs</code> function
+    loops through both lists simultaneously,
+    and copies each source file into its corresponding
+    target file name:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q install</code></strong>
+cc -o goodbye.o -c goodbye.c
+cc -o goodbye goodbye.o
+Install file: "goodbye" as "/usr/bin/goodbye-new"
+cc -o hello.o -c hello.c
+cc -o hello hello.o
+Install file: "hello" as "/usr/bin/hello-new"
+</pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch11s02.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch11.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch12.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">11.2. Installing a File Under a Different Name </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 12. Platform-Independent File System Manipulation</td></tr></table></div></body></html>

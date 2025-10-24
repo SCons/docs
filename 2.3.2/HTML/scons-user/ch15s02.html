@@ -1,0 +1,63 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>15.2. Why SCons Duplicates Source Files in a Variant Directory Tree</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 2.3.2"><link rel="up" href="ch15.html" title="Chapter 15. Separating Source and Build Directories"><link rel="prev" href="ch15.html" title="Chapter 15. Separating Source and Build Directories"><link rel="next" href="ch15s03.html" title="15.3. Telling SCons to Not Duplicate Source Files in the Variant Directory Tree"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">15.2. Why <span class="application">SCons</span> Duplicates Source Files in a Variant Directory Tree</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch15.html">Prev</a> </td><th width="60%" align="center">Chapter 15. Separating Source and Build Directories</th><td width="20%" align="right"> <a accesskey="n" href="ch15s03.html">Next</a></td></tr></table><hr></div><div class="section" title="15.2. Why SCons Duplicates Source Files in a Variant Directory Tree"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idm20583528"></a>15.2. Why <span class="application">SCons</span> Duplicates Source Files in a Variant Directory Tree</h2></div></div></div><p>
+
+    <span class="application">SCons</span> duplicates source files in variant directory trees
+    because it's the most straightforward way to guarantee a correct build
+    <span class="emphasis"><em>regardless of include-file directory paths,
+    relative references between files,
+    or tool support for putting files in different locations</em></span>,
+    and the <span class="application">SCons</span> philosophy is to, by default,
+    guarantee a correct build in all cases.
+
+    </p><p>
+
+    The most direct reason to duplicate source files
+    in variant directories
+    is simply that some tools (mostly older versions)
+    are written to only build their output files
+    in the same directory as the source files.
+    In this case, the choices are either
+    to build the output file in the source directory
+    and move it to the variant directory,
+    or to duplicate the source files in the variant directory.
+
+    </p><p>
+
+    Additionally,
+    relative references between files
+    can cause problems if we don't
+    just duplicate the hierarchy of source files
+    in the variant directory.
+    You can see this at work in
+    use of the C preprocessor <code class="literal">#include</code>
+    mechanism with double quotes, not angle brackets:
+
+    </p><pre class="programlisting">
+#include "file.h"
+    </pre><p>
+
+    The <span class="emphasis"><em>de facto</em></span> standard behavior
+    for most C compilers in this case
+    is to first look in the same directory
+    as the source file that contains the <code class="literal">#include</code> line,
+    then to look in the directories in the preprocessor search path.
+    Add to this that the <span class="application">SCons</span> implementation of
+    support for code repositories
+    (described below)
+    means not all of the files
+    will be found in the same directory hierarchy,
+    and the simplest way to make sure
+    that the right include file is found
+    is to duplicate the source files into the variant directory,
+    which provides a correct build
+    regardless of the original location(s) of the source files.
+
+    </p><p>
+
+    Although source-file duplication guarantees a correct build
+    even in these end-cases,
+    it <span class="emphasis"><em>can</em></span> usually be safely disabled.
+    The next section describes
+    how you can disable the duplication of source files
+    in the variant directory.
+
+    </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch15.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch15.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch15s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 15. Separating Source and Build Directories </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 15.3. Telling <span class="application">SCons</span> to Not Duplicate Source Files in the Variant Directory Tree</td></tr></table></div></body></html>

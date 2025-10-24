@@ -1,0 +1,45 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>6. Making the SCons Output Less Verbose</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 2.3.1"><link rel="up" href="ch02.html" title="Chapter 2. Simple Builds"><link rel="prev" href="ch02s05.html" title="5. The SConstruct File"><link rel="next" href="ch03.html" title="Chapter 3. Less Simple Things to Do With Builds"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">6. Making the <span class="application">SCons</span> Output Less Verbose</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02s05.html">Prev</a> </td><th width="60%" align="center">Chapter 2. Simple Builds</th><td width="20%" align="right"> <a accesskey="n" href="ch03.html">Next</a></td></tr></table><hr></div><div class="section" title="6. Making the SCons Output Less Verbose"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idm1880352"></a>6. Making the <span class="application">SCons</span> Output Less Verbose</h2></div></div></div><p>
+
+   You've already seen how <span class="application">SCons</span> prints
+   some messages about what it's doing,
+   surrounding the actual commands used to build the software:
+
+   </p><pre class="screen">C:\&gt;<strong class="userinput"><code>scons</code></strong>
+scons: Reading SConscript files ...
+scons: done reading SConscript files.
+scons: Building targets ...
+cl /Fohello.obj /c hello.c /nologo
+link /nologo /OUT:hello.exe hello.obj
+embedManifestExeCheck(target, source, env)
+scons: done building targets.
+</pre><p>
+
+   These messages emphasize the
+   order in which <span class="application">SCons</span> does its work:
+   all of the configuration files
+   (generically referred to as <code class="filename">SConscript</code> files)
+   are read and executed first,
+   and only then are the target files built.
+   Among other benefits, these messages help to distinguish between
+   errors that occur while the configuration files are read,
+   and errors that occur while targets are being built.
+
+   </p><p>
+
+   One drawback, of course, is that these messages clutter the output.
+   Fortunately, they're easily disabled by using
+   the <code class="literal">-Q</code> option when invoking <span class="application">SCons</span>:
+
+   </p><pre class="screen">C:\&gt;<strong class="userinput"><code>scons -Q</code></strong>
+cl /Fohello.obj /c hello.c /nologo
+link /nologo /OUT:hello.exe hello.obj
+embedManifestExeCheck(target, source, env)
+</pre><p>
+
+   Because we want this User's Guide to focus
+   on what <span class="application">SCons</span> is actually doing,
+   we're going to use the <code class="literal">-Q</code> option
+   to remove these messages from the
+   output of all the remaining examples in this Guide.
+
+   </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch02s05.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch02.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">5. The <code class="filename">SConstruct</code> File </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 3. Less Simple Things to Do With Builds</td></tr></table></div></body></html>

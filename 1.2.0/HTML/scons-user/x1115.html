@@ -1,0 +1,460 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Caching Implicit Dependencies</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 1.2.0"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Dependencies"
+HREF="c792.html"><LINK
+REL="PREVIOUS"
+TITLE="Implicit Dependencies:  The $CPPPATH Construction Variable"
+HREF="x1056.html"><LINK
+REL="NEXT"
+TITLE="Explicit Dependencies:  the Depends Function"
+HREF="x1179.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 1.2.0</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x1056.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 6. Dependencies</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x1179.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN1115"
+>6.4. Caching Implicit Dependencies</A
+></H1
+><P
+>&#13;
+    Scanning each file for <TT
+CLASS="literal"
+>#include</TT
+> lines
+    does take some extra processing time.
+    When you're doing a full build of a large system,
+    the scanning time is usually a very small percentage
+    of the overall time spent on the build.
+    You're most likely to notice the scanning time,
+    however, when you <SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>rebuild</I
+></SPAN
+>
+    all or part of a large system:
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> will likely take some extra time to "think about"
+    what must be built before it issues the
+    first build command
+    (or decides that everything is up to date
+    and nothing must be rebuilt).
+
+ 
+
+    </P
+><P
+>&#13;
+    In practice, having <SPAN
+CLASS="application"
+>SCons</SPAN
+> scan files saves time
+    relative to the amount of potential time
+    lost to tracking down subtle problems
+    introduced by incorrect dependencies.
+    Nevertheless, the "waiting time"
+    while <SPAN
+CLASS="application"
+>SCons</SPAN
+> scans files can annoy
+    individual developers waiting for their builds to finish.
+    Consequently, <SPAN
+CLASS="application"
+>SCons</SPAN
+> lets you cache
+    the implicit dependencies
+    that its scanners find,
+    for use by later builds.
+    You can do this by specifying the
+    <TT
+CLASS="literal"
+>--implicit-cache</TT
+> option on the command line:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;       % <KBD
+CLASS="userinput"
+>scons -Q --implicit-cache hello</KBD
+>
+       cc -o hello.o -c hello.c
+       cc -o hello hello.o
+       % <KBD
+CLASS="userinput"
+>scons -Q hello</KBD
+>
+       scons: `hello' is up to date.
+    </PRE
+><P
+>&#13;
+    If you don't want to specify <TT
+CLASS="literal"
+>--implicit-cache</TT
+>
+    on the command line each time,
+    you can make it the default behavior for your build
+    by setting the <TT
+CLASS="literal"
+>implicit_cache</TT
+> option
+    in an <TT
+CLASS="filename"
+>SConscript</TT
+> file:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;       SetOption('implicit_cache', 1)
+    </PRE
+><P
+>&#13;
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> does not cache implicit dependencies like this by default
+    because the <TT
+CLASS="literal"
+>--implicit-cache</TT
+> causes <SPAN
+CLASS="application"
+>SCons</SPAN
+> to simply use the implicit
+    dependencies stored during the last run, without any checking
+    for whether or not those dependencies are still correct.
+    Specifically, this means <TT
+CLASS="literal"
+>--implicit-cache</TT
+> instructs <SPAN
+CLASS="application"
+>SCons</SPAN
+>
+    to <SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>not</I
+></SPAN
+> rebuild "correctly" in the
+    following cases:
+
+
+    </P
+><P
+></P
+><UL
+><LI
+><P
+>&#13;
+        When <TT
+CLASS="literal"
+>--implicit-cache</TT
+> is used, <SPAN
+CLASS="application"
+>SCons</SPAN
+> will ignore any changes that
+        may have been made to search paths
+        (like <CODE
+CLASS="envar"
+>$CPPPATH</CODE
+> or <CODE
+CLASS="envar"
+>$LIBPATH</CODE
+>,).
+        This can lead to <SPAN
+CLASS="application"
+>SCons</SPAN
+> not rebuilding a file if a change to
+        <CODE
+CLASS="envar"
+>$CPPPATH</CODE
+> would normally cause a different, same-named file from
+        a different directory to be used.
+
+        </P
+></LI
+><LI
+><P
+>&#13;
+        When <TT
+CLASS="literal"
+>--implicit-cache</TT
+> is used, <SPAN
+CLASS="application"
+>SCons</SPAN
+> will not detect if a
+        same-named file has been added to a directory that is earlier in
+        the search path than the directory in which the file was found
+        last time.
+
+        </P
+></LI
+></UL
+><DIV
+CLASS="section"
+><H2
+CLASS="section"
+><A
+NAME="AEN1154"
+>6.4.1. The <TT
+CLASS="literal"
+>--implicit-deps-changed</TT
+> Option</A
+></H2
+><P
+>&#13;
+      When using cached implicit dependencies,
+      sometimes you want to "start fresh"
+      and have <SPAN
+CLASS="application"
+>SCons</SPAN
+> re-scan the files
+      for which it previously cached the dependencies.
+      For example,
+      if you have recently installed a new version of
+      external code that you use for compilation,
+      the external header files will have changed
+      and the previously-cached implicit dependencies
+      will be out of date.
+      You can update them by
+      running <SPAN
+CLASS="application"
+>SCons</SPAN
+> with the <TT
+CLASS="literal"
+>--implicit-deps-changed</TT
+> option:
+
+      </P
+><PRE
+CLASS="screen"
+>&#13;         % <KBD
+CLASS="userinput"
+>scons -Q --implicit-deps-changed hello</KBD
+>
+         cc -o hello.o -c hello.c
+         cc -o hello hello.o
+         % <KBD
+CLASS="userinput"
+>scons -Q hello</KBD
+>
+         scons: `hello' is up to date.
+      </PRE
+><P
+>&#13;
+      In this case, <SPAN
+CLASS="application"
+>SCons</SPAN
+> will re-scan all of the implicit dependencies
+      and cache updated copies of the information.
+
+      </P
+></DIV
+><DIV
+CLASS="section"
+><H2
+CLASS="section"
+><A
+NAME="AEN1166"
+>6.4.2. The <TT
+CLASS="literal"
+>--implicit-deps-unchanged</TT
+> Option</A
+></H2
+><P
+>&#13;
+      By default when caching dependencies,
+      <SPAN
+CLASS="application"
+>SCons</SPAN
+> notices when a file has been modified
+      and re-scans the file for any updated
+      implicit dependency information.
+      Sometimes, however, you may want
+      to force <SPAN
+CLASS="application"
+>SCons</SPAN
+> to use the cached implicit dependencies,
+      even if the source files changed.
+      This can speed up a build for example,
+      when you have changed your source files
+      but know that you haven't changed
+      any <TT
+CLASS="literal"
+>#include</TT
+> lines.
+      In this case,
+      you can use the <TT
+CLASS="literal"
+>--implicit-deps-unchanged</TT
+> option:
+
+      </P
+><PRE
+CLASS="screen"
+>&#13;         % <KBD
+CLASS="userinput"
+>scons -Q --implicit-deps-unchanged hello</KBD
+>
+         cc -o hello.o -c hello.c
+         cc -o hello hello.o
+         % <KBD
+CLASS="userinput"
+>scons -Q hello</KBD
+>
+         scons: `hello' is up to date.
+      </PRE
+><P
+>&#13;
+      In this case,
+      <SPAN
+CLASS="application"
+>SCons</SPAN
+> will assume that the cached implicit
+      dependencies are correct and
+      will not bother to re-scan changed files.
+      For typical builds after small,
+      incremental changes to source files,
+      the savings may not be very big,
+      but sometimes every bit of
+      improved performance counts.
+
+      </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x1056.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x1179.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Implicit Dependencies:  The <CODE
+CLASS="envar"
+>$CPPPATH</CODE
+> Construction Variable</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c792.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Explicit Dependencies:  the <CODE
+CLASS="function"
+>Depends</CODE
+> Function</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

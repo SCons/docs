@@ -1,0 +1,638 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>SCons.SConf.SConfBase</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="SCons-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://www.scons.org/">SCons</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="SCons-module.html">Package&nbsp;SCons</a> ::
+        <a href="SCons.SConf-module.html">Module&nbsp;SConf</a> ::
+        Class&nbsp;SConfBase
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="SCons.SConf.SConfBase-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class SConfBase</h1><p class="nomargin-top"><span class="codelink"><a href="SCons.SConf-pysrc.html#SConfBase">source&nbsp;code</a></span></p>
+<pre class="base-tree">
+object --+
+         |
+        <strong class="uidshort">SConfBase</strong>
+</pre>
+
+<hr />
+This is simply a class to represent a configure context. After
+creating a SConf object, you can call any tests. After finished with your
+tests, be sure to call the Finish() method, which returns the modified
+environment.
+Some words about caching: In most cases, it is not necessary to cache
+Test results explicitly. Instead, we use the scons dependency checking
+mechanism. For example, if one wants to compile a test program
+(SConf.TryLink), the compiler is only called, if the program dependencies
+have changed. However, if the program could not be compiled in a former
+SConf run, we need to explicitly cache this error.
+
+<!-- ==================== NESTED CLASSES ==================== -->
+<a name="section-NestedClasses"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Nested Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-NestedClasses"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="SCons.SConf.SConfBase.TestWrapper-class.html" class="summary-name">TestWrapper</a><br />
+      A wrapper around Tests (to ensure sanity)
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="SCons.SConf.SConfBase-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">env</span>,
+        <span class="summary-sig-arg">custom_tests</span>=<span class="summary-sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>,
+        <span class="summary-sig-arg">conf_dir</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">$CONFIGUREDIR</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">log_file</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">$CONFIGURELOG</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">config_h</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">_depth</span>=<span class="summary-sig-default">0</span>)</span><br />
+      Constructor. Pass additional tests in the custom_tests-dictionary,
+e.g. custom_tests={'CheckPrivate':MyPrivateTest}, where MyPrivateTest
+defines a custom test.
+Note also the conf_dir and log_file arguments (you may want to
+build tests in the VariantDir, not in the SourceDir)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.SConf-pysrc.html#SConfBase.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="Finish"></a><span class="summary-sig-name">Finish</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Call this method after finished with your tests:
+env = sconf.Finish()</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.SConf-pysrc.html#SConfBase.Finish">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="SCons.SConf.SConfBase-class.html#Define" class="summary-sig-name">Define</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>,
+        <span class="summary-sig-arg">value</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">comment</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Define a pre processor symbol name, with the optional given value in the
+current config header.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.SConf-pysrc.html#SConfBase.Define">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="BuildNodes"></a><span class="summary-sig-name">BuildNodes</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">nodes</span>)</span><br />
+      Tries to build the given nodes immediately. Returns 1 on success,
+0 on error.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.SConf-pysrc.html#SConfBase.BuildNodes">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="SCons.SConf.SConfBase-class.html#pspawn_wrapper" class="summary-sig-name">pspawn_wrapper</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">sh</span>,
+        <span class="summary-sig-arg">escape</span>,
+        <span class="summary-sig-arg">cmd</span>,
+        <span class="summary-sig-arg">args</span>,
+        <span class="summary-sig-arg">env</span>)</span><br />
+      Wrapper function for handling piped spawns.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.SConf-pysrc.html#SConfBase.pspawn_wrapper">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="TryBuild"></a><span class="summary-sig-name">TryBuild</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">builder</span>,
+        <span class="summary-sig-arg">text</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">extension</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>)</span><br />
+      Low level TryBuild implementation. Normally you don't need to
+call that - you can use TryCompile / TryLink / TryRun instead</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.SConf-pysrc.html#SConfBase.TryBuild">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="TryAction"></a><span class="summary-sig-name">TryAction</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">action</span>,
+        <span class="summary-sig-arg">text</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">extension</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>)</span><br />
+      Tries to execute the given action with optional source file
+contents &lt;text&gt; and optional source file extension &lt;extension&gt;,
+Returns the status (0 : failed, 1 : ok) and the contents of the
+output file.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.SConf-pysrc.html#SConfBase.TryAction">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="TryCompile"></a><span class="summary-sig-name">TryCompile</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">text</span>,
+        <span class="summary-sig-arg">extension</span>)</span><br />
+      Compiles the program given in text to an env.Object, using extension
+as file extension (e.g. '.c'). Returns 1, if compilation was
+successful, 0 otherwise. The target is saved in self.lastTarget (for
+further processing).</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.SConf-pysrc.html#SConfBase.TryCompile">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="TryLink"></a><span class="summary-sig-name">TryLink</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">text</span>,
+        <span class="summary-sig-arg">extension</span>)</span><br />
+      Compiles the program given in text to an executable env.Program,
+using extension as file extension (e.g. '.c'). Returns 1, if
+compilation was successful, 0 otherwise. The target is saved in
+self.lastTarget (for further processing).</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.SConf-pysrc.html#SConfBase.TryLink">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="TryRun"></a><span class="summary-sig-name">TryRun</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">text</span>,
+        <span class="summary-sig-arg">extension</span>)</span><br />
+      Compiles and runs the program given in text, using extension
+as file extension (e.g. '.c'). Returns (1, outputStr) on success,
+(0, '') otherwise. The target (a file containing the program's stdout)
+is saved in self.lastTarget (for further processing).</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.SConf-pysrc.html#SConfBase.TryRun">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="AddTest"></a><span class="summary-sig-name">AddTest</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">test_name</span>,
+        <span class="summary-sig-arg">test_instance</span>)</span><br />
+      Adds test_class to this SConf instance. It can be called with
+self.test_name(...)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.SConf-pysrc.html#SConfBase.AddTest">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="AddTests"></a><span class="summary-sig-name">AddTests</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">tests</span>)</span><br />
+      Adds all the tests given in the tests dictionary to this SConf
+instance</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.SConf-pysrc.html#SConfBase.AddTests">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_createDir"></a><span class="summary-sig-name">_createDir</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">node</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.SConf-pysrc.html#SConfBase._createDir">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_startup"></a><span class="summary-sig-name">_startup</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Private method. Set up logstream, and set the environment
+variables necessary for a piped build</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.SConf-pysrc.html#SConfBase._startup">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_shutdown"></a><span class="summary-sig-name">_shutdown</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Private method. Reset to non-piped spawn</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.SConf-pysrc.html#SConfBase._shutdown">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">env</span>,
+        <span class="sig-arg">custom_tests</span>=<span class="sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>,
+        <span class="sig-arg">conf_dir</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">$CONFIGUREDIR</code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">log_file</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">$CONFIGURELOG</code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">config_h</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">_depth</span>=<span class="sig-default">0</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="SCons.SConf-pysrc.html#SConfBase.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Constructor. Pass additional tests in the custom_tests-dictionary,
+e.g. custom_tests={'CheckPrivate':MyPrivateTest}, where MyPrivateTest
+defines a custom test.
+Note also the conf_dir and log_file arguments (you may want to
+build tests in the VariantDir, not in the SourceDir)
+  <dl class="fields">
+    <dt>Overrides:
+        object.__init__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="Define"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">Define</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">name</span>,
+        <span class="sig-arg">value</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">comment</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="SCons.SConf-pysrc.html#SConfBase.Define">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Define a pre processor symbol name, with the optional given value in the
+current config header.</p>
+<p>If value is None (default), then #define name is written. If value is not
+none, then #define name value is written.</p>
+<p>comment is a string which will be put as a C comment in the header, to explain the meaning of the value
+(appropriate C comments will be added automatically).</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="pspawn_wrapper"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">pspawn_wrapper</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">sh</span>,
+        <span class="sig-arg">escape</span>,
+        <span class="sig-arg">cmd</span>,
+        <span class="sig-arg">args</span>,
+        <span class="sig-arg">env</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="SCons.SConf-pysrc.html#SConfBase.pspawn_wrapper">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Wrapper function for handling piped spawns.</p>
+<p>This looks to the calling interface (in Action.py) like a &quot;normal&quot;
+spawn, but associates the call with the PSPAWN variable from
+the construction environment and with the streams to which we
+want the output logged.  This gets slid into the construction
+environment as the SPAWN variable so Action.py doesn't have to
+know or care whether it's spawning a piped command or not.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="SCons-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://www.scons.org/">SCons</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1
+    on Sun Jul 21 02:32:24 2019
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

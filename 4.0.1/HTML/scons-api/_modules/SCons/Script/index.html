@@ -1,0 +1,725 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>SCons.Script &mdash; SCons 4.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex/" />
+    <link rel="search" title="Search" href="../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../" class="icon icon-home"> SCons
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                4.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons/">SCons package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.Variables/">SCons.Variables package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons.compat/">SCons.compat package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Action">SCons.Action module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Builder">SCons.Builder module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.CacheDir">SCons.CacheDir module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Conftest">SCons.Conftest module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Debug">SCons.Debug module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Defaults">SCons.Defaults module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Environment">SCons.Environment module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Errors">SCons.Errors module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Executor">SCons.Executor module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Job">SCons.Job module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Memoize">SCons.Memoize module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.PathList">SCons.PathList module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.SConf">SCons.SConf module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.SConsign">SCons.SConsign module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Subst">SCons.Subst module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Taskmaster">SCons.Taskmaster module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../SCons/#generic-taskmaster-module-for-the-scons-build-engine">Generic Taskmaster module for the SCons build engine.</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Util">SCons.Util module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.Warnings">SCons.Warnings module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.cpp">SCons.cpp module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.dblite">SCons.dblite module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons/#module-SCons.exitfuncs">SCons.exitfuncs module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.compat/">SCons.compat package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.compat/#module-SCons.compat">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Node/">SCons.Node package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#module-SCons.Node.Alias">SCons.Node.Alias module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#module-SCons.Node.FS">SCons.Node.FS module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#module-SCons.Node.Python">SCons.Node.Python module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/#module-SCons.Node">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Platform/">SCons.Platform package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.aix">SCons.Platform.aix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.cygwin">SCons.Platform.cygwin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.darwin">SCons.Platform.darwin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.hpux">SCons.Platform.hpux module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.irix">SCons.Platform.irix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.mingw">SCons.Platform.mingw module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.os2">SCons.Platform.os2 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.posix">SCons.Platform.posix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.sunos">SCons.Platform.sunos module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.virtualenv">SCons.Platform.virtualenv module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform.win32">SCons.Platform.win32 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/#module-SCons.Platform">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Scanner/">SCons.Scanner package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.C">SCons.Scanner.C module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.D">SCons.Scanner.D module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.Dir">SCons.Scanner.Dir module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.Fortran">SCons.Scanner.Fortran module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.IDL">SCons.Scanner.IDL module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.LaTeX">SCons.Scanner.LaTeX module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.Prog">SCons.Scanner.Prog module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.RC">SCons.Scanner.RC module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner.SWIG">SCons.Scanner.SWIG module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/#module-SCons.Scanner">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Script/">SCons.Script package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script.Interactive">SCons.Script.Interactive module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script.Main">SCons.Script.Main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script.SConsOptions">SCons.Script.SConsOptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script.SConscript">SCons.Script.SConscript module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/#module-SCons.Script">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Tool/">SCons.Tool package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Tool/#module-SCons.Tool">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Variables/">SCons.Variables package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.BoolVariable">SCons.Variables.BoolVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.EnumVariable">SCons.Variables.EnumVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.ListVariable">SCons.Variables.ListVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.PackageVariable">SCons.Variables.PackageVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables.PathVariable">SCons.Variables.PathVariable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/#module-SCons.Variables">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../">SCons</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../">Docs</a> &raquo;</li>
+        
+          <li><a href="../../">Module code</a> &raquo;</li>
+        
+      <li>SCons.Script</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for SCons.Script</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;SCons.Script</span>
+
+<span class="sd">This file implements the main() function used by the scons script.</span>
+
+<span class="sd">Architecturally, this *is* the scons script, and will likely only be</span>
+<span class="sd">called from the external &quot;scons&quot; wrapper.  Consequently, anything here</span>
+<span class="sd">should not be, or be considered, part of the build engine.  If it&#39;s</span>
+<span class="sd">something that we expect other software to want to use, it should go in</span>
+<span class="sd">some other module.  If it&#39;s specific to the &quot;scons&quot; script invocation,</span>
+<span class="sd">it goes here.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1">#</span>
+<span class="c1"># __COPYRIGHT__</span>
+<span class="c1">#</span>
+<span class="c1"># Permission is hereby granted, free of charge, to any person obtaining</span>
+<span class="c1"># a copy of this software and associated documentation files (the</span>
+<span class="c1"># &quot;Software&quot;), to deal in the Software without restriction, including</span>
+<span class="c1"># without limitation the rights to use, copy, modify, merge, publish,</span>
+<span class="c1"># distribute, sublicense, and/or sell copies of the Software, and to</span>
+<span class="c1"># permit persons to whom the Software is furnished to do so, subject to</span>
+<span class="c1"># the following conditions:</span>
+<span class="c1">#</span>
+<span class="c1"># The above copyright notice and this permission notice shall be included</span>
+<span class="c1"># in all copies or substantial portions of the Software.</span>
+<span class="c1">#</span>
+<span class="c1"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY</span>
+<span class="c1"># KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND</span>
+<span class="c1"># NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE</span>
+<span class="c1"># LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION</span>
+<span class="c1"># OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</span>
+<span class="c1"># WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</span>
+<span class="c1">#</span>
+
+<span class="n">__revision__</span> <span class="o">=</span> <span class="s2">&quot;__FILE__ __REVISION__ __DATE__ __DEVELOPER__&quot;</span>
+
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+<span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">StringIO</span> <span class="kn">import</span> <span class="n">StringIO</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="c1"># Special chicken-and-egg handling of the &quot;--debug=memoizer&quot; flag:</span>
+<span class="c1">#</span>
+<span class="c1"># SCons.Memoize contains a metaclass implementation that affects how</span>
+<span class="c1"># the other classes are instantiated.  The Memoizer may add shim methods</span>
+<span class="c1"># to classes that have methods that cache computed values in order to</span>
+<span class="c1"># count and report the hits and misses.</span>
+<span class="c1">#</span>
+<span class="c1"># If we wait to enable the Memoization until after we&#39;ve parsed the</span>
+<span class="c1"># command line options normally, it will be too late, because the Memoizer</span>
+<span class="c1"># will have already analyzed the classes that it&#39;s Memoizing and decided</span>
+<span class="c1"># to not add the shims.  So we use a special-case, up-front check for</span>
+<span class="c1"># the &quot;--debug=memoizer&quot; flag and enable Memoizer before we import any</span>
+<span class="c1"># of the other modules that use it.</span>
+
+<span class="n">_args</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;SCONSFLAGS&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+<span class="k">if</span> <span class="s2">&quot;--debug=memoizer&quot;</span> <span class="ow">in</span> <span class="n">_args</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">SCons.Memoize</span>
+    <span class="kn">import</span> <span class="nn">SCons.Warnings</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">SCons</span><span class="o">.</span><span class="n">Memoize</span><span class="o">.</span><span class="n">EnableMemoization</span><span class="p">()</span>
+    <span class="k">except</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Warnings</span><span class="o">.</span><span class="n">Warning</span><span class="p">:</span>
+        <span class="c1"># Some warning was thrown.  Arrange for it to be displayed</span>
+        <span class="c1"># or not after warnings are configured.</span>
+        <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">Main</span>
+        <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">tb</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()</span>
+        <span class="n">Main</span><span class="o">.</span><span class="n">delayed_warnings</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">))</span>
+<span class="k">del</span> <span class="n">_args</span>
+
+<span class="kn">import</span> <span class="nn">SCons.Action</span>
+<span class="kn">import</span> <span class="nn">SCons.Builder</span>
+<span class="kn">import</span> <span class="nn">SCons.Environment</span>
+<span class="kn">import</span> <span class="nn">SCons.Node.FS</span>
+<span class="kn">import</span> <span class="nn">SCons.Platform</span>
+<span class="kn">import</span> <span class="nn">SCons.Platform.virtualenv</span>
+<span class="kn">import</span> <span class="nn">SCons.Scanner</span>
+<span class="kn">import</span> <span class="nn">SCons.SConf</span>
+<span class="kn">import</span> <span class="nn">SCons.Subst</span>
+<span class="kn">import</span> <span class="nn">SCons.Tool</span>
+<span class="kn">import</span> <span class="nn">SCons.Util</span>
+<span class="kn">import</span> <span class="nn">SCons.Variables</span>
+<span class="kn">import</span> <span class="nn">SCons.Defaults</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">Main</span>
+
+<span class="n">main</span>                    <span class="o">=</span> <span class="n">Main</span><span class="o">.</span><span class="n">main</span>
+
+<span class="c1"># The following are global class definitions and variables that used to</span>
+<span class="c1"># live directly in this module back before 0.96.90, when it contained</span>
+<span class="c1"># a lot of code.  Some SConscript files in widely-distributed packages</span>
+<span class="c1"># (Blender is the specific example) actually reached into SCons.Script</span>
+<span class="c1"># directly to use some of these.  Rather than break those SConscript</span>
+<span class="c1"># files, we&#39;re going to propagate these names into the SCons.Script</span>
+<span class="c1"># namespace here.</span>
+<span class="c1">#</span>
+<span class="c1"># Some of these are commented out because it&#39;s *really* unlikely anyone</span>
+<span class="c1"># used them, but we&#39;re going to leave the comment here to try to make</span>
+<span class="c1"># it obvious what to do if the situation arises.</span>
+<span class="n">BuildTask</span>               <span class="o">=</span> <span class="n">Main</span><span class="o">.</span><span class="n">BuildTask</span>
+<span class="n">CleanTask</span>               <span class="o">=</span> <span class="n">Main</span><span class="o">.</span><span class="n">CleanTask</span>
+<span class="n">QuestionTask</span>            <span class="o">=</span> <span class="n">Main</span><span class="o">.</span><span class="n">QuestionTask</span>
+<span class="c1">#PrintHelp               = Main.PrintHelp</span>
+<span class="c1">#SConscriptSettableOptions = Main.SConscriptSettableOptions</span>
+
+<span class="n">AddOption</span>               <span class="o">=</span> <span class="n">Main</span><span class="o">.</span><span class="n">AddOption</span>
+<span class="n">PrintHelp</span>               <span class="o">=</span> <span class="n">Main</span><span class="o">.</span><span class="n">PrintHelp</span>
+<span class="n">GetOption</span>               <span class="o">=</span> <span class="n">Main</span><span class="o">.</span><span class="n">GetOption</span>
+<span class="n">SetOption</span>               <span class="o">=</span> <span class="n">Main</span><span class="o">.</span><span class="n">SetOption</span>
+<span class="n">Progress</span>                <span class="o">=</span> <span class="n">Main</span><span class="o">.</span><span class="n">Progress</span>
+<span class="n">GetBuildFailures</span>        <span class="o">=</span> <span class="n">Main</span><span class="o">.</span><span class="n">GetBuildFailures</span>
+
+<span class="c1">#keep_going_on_error     = Main.keep_going_on_error</span>
+<span class="c1">#print_dtree             = Main.print_dtree</span>
+<span class="c1">#print_explanations      = Main.print_explanations</span>
+<span class="c1">#print_includes          = Main.print_includes</span>
+<span class="c1">#print_objects           = Main.print_objects</span>
+<span class="c1">#print_time              = Main.print_time</span>
+<span class="c1">#print_tree              = Main.print_tree</span>
+<span class="c1">#memory_stats            = Main.memory_stats</span>
+<span class="c1">#ignore_errors           = Main.ignore_errors</span>
+<span class="c1">#sconscript_time         = Main.sconscript_time</span>
+<span class="c1">#command_time            = Main.command_time</span>
+<span class="c1">#exit_status             = Main.exit_status</span>
+<span class="c1">#profiling               = Main.profiling</span>
+<span class="c1">#repositories            = Main.repositories</span>
+
+<span class="c1">#</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">SConscript</span>
+<span class="n">_SConscript</span> <span class="o">=</span> <span class="n">SConscript</span>
+
+<span class="n">call_stack</span>              <span class="o">=</span> <span class="n">_SConscript</span><span class="o">.</span><span class="n">call_stack</span>
+
+<span class="c1">#</span>
+<span class="n">Action</span>                  <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Action</span><span class="o">.</span><span class="n">Action</span>
+<span class="n">AddMethod</span>               <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">AddMethod</span>
+<span class="n">AllowSubstExceptions</span>    <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Subst</span><span class="o">.</span><span class="n">SetAllowableExceptions</span>
+<span class="n">Builder</span>                 <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Builder</span><span class="o">.</span><span class="n">Builder</span>
+<span class="n">Configure</span>               <span class="o">=</span> <span class="n">_SConscript</span><span class="o">.</span><span class="n">Configure</span>
+<span class="n">Environment</span>             <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Environment</span><span class="o">.</span><span class="n">Environment</span>
+<span class="c1">#OptParser               = SCons.SConsOptions.OptParser</span>
+<span class="n">FindPathDirs</span>            <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Scanner</span><span class="o">.</span><span class="n">FindPathDirs</span>
+<span class="n">Platform</span>                <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Platform</span><span class="o">.</span><span class="n">Platform</span>
+<span class="n">Virtualenv</span>              <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Platform</span><span class="o">.</span><span class="n">virtualenv</span><span class="o">.</span><span class="n">Virtualenv</span>
+<span class="n">Return</span>                  <span class="o">=</span> <span class="n">_SConscript</span><span class="o">.</span><span class="n">Return</span>
+<span class="n">Scanner</span>                 <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Scanner</span><span class="o">.</span><span class="n">Base</span>
+<span class="n">Tool</span>                    <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Tool</span><span class="o">.</span><span class="n">Tool</span>
+<span class="n">WhereIs</span>                 <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">WhereIs</span>
+
+<span class="c1">#</span>
+<span class="n">BoolVariable</span>            <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Variables</span><span class="o">.</span><span class="n">BoolVariable</span>
+<span class="n">EnumVariable</span>            <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Variables</span><span class="o">.</span><span class="n">EnumVariable</span>
+<span class="n">ListVariable</span>            <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Variables</span><span class="o">.</span><span class="n">ListVariable</span>
+<span class="n">PackageVariable</span>         <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Variables</span><span class="o">.</span><span class="n">PackageVariable</span>
+<span class="n">PathVariable</span>            <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Variables</span><span class="o">.</span><span class="n">PathVariable</span>
+
+
+<span class="c1"># Action factories.</span>
+<span class="n">Chmod</span>                   <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Defaults</span><span class="o">.</span><span class="n">Chmod</span>
+<span class="n">Copy</span>                    <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Defaults</span><span class="o">.</span><span class="n">Copy</span>
+<span class="n">Delete</span>                  <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Defaults</span><span class="o">.</span><span class="n">Delete</span>
+<span class="n">Mkdir</span>                   <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Defaults</span><span class="o">.</span><span class="n">Mkdir</span>
+<span class="n">Move</span>                    <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Defaults</span><span class="o">.</span><span class="n">Move</span>
+<span class="n">Touch</span>                   <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Defaults</span><span class="o">.</span><span class="n">Touch</span>
+
+<span class="c1"># Pre-made, public scanners.</span>
+<span class="n">CScanner</span>                <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Tool</span><span class="o">.</span><span class="n">CScanner</span>
+<span class="n">DScanner</span>                <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Tool</span><span class="o">.</span><span class="n">DScanner</span>
+<span class="n">DirScanner</span>              <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Defaults</span><span class="o">.</span><span class="n">DirScanner</span>
+<span class="n">ProgramScanner</span>          <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Tool</span><span class="o">.</span><span class="n">ProgramScanner</span>
+<span class="n">SourceFileScanner</span>       <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Tool</span><span class="o">.</span><span class="n">SourceFileScanner</span>
+
+<span class="c1"># Functions we might still convert to Environment methods.</span>
+<span class="n">CScan</span>                   <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Defaults</span><span class="o">.</span><span class="n">CScan</span>
+<span class="n">DefaultEnvironment</span>      <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Defaults</span><span class="o">.</span><span class="n">DefaultEnvironment</span>
+
+<span class="c1"># Other variables we provide.</span>
+<div class="viewcode-block" id="TargetList"><a class="viewcode-back" href="../../../SCons.Script/#SCons.Script.TargetList">[docs]</a><span class="k">class</span> <span class="nc">TargetList</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">UserList</span><span class="p">):</span>
+<div class="viewcode-block" id="TargetList._do_nothing"><a class="viewcode-back" href="../../../SCons.Script/#SCons.Script.TargetList._do_nothing">[docs]</a>    <span class="k">def</span> <span class="nf">_do_nothing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+<div class="viewcode-block" id="TargetList._add_Default"><a class="viewcode-back" href="../../../SCons.Script/#SCons.Script.TargetList._add_Default">[docs]</a>    <span class="k">def</span> <span class="nf">_add_Default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span></div>
+<div class="viewcode-block" id="TargetList._clear"><a class="viewcode-back" href="../../../SCons.Script/#SCons.Script.TargetList._clear">[docs]</a>    <span class="k">def</span> <span class="nf">_clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="p">[:]</span></div></div>
+
+<span class="n">ARGUMENTS</span>               <span class="o">=</span> <span class="p">{}</span>
+<span class="n">ARGLIST</span>                 <span class="o">=</span> <span class="p">[]</span>
+<span class="n">BUILD_TARGETS</span>           <span class="o">=</span> <span class="n">TargetList</span><span class="p">()</span>
+<span class="n">COMMAND_LINE_TARGETS</span>    <span class="o">=</span> <span class="p">[]</span>
+<span class="n">DEFAULT_TARGETS</span>         <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># BUILD_TARGETS can be modified in the SConscript files.  If so, we</span>
+<span class="c1"># want to treat the modified BUILD_TARGETS list as if they specified</span>
+<span class="c1"># targets on the command line.  To do that, though, we need to know if</span>
+<span class="c1"># BUILD_TARGETS was modified through &quot;official&quot; APIs or by hand.  We do</span>
+<span class="c1"># this by updating two lists in parallel, the documented BUILD_TARGETS</span>
+<span class="c1"># list, above, and this internal _build_plus_default targets list which</span>
+<span class="c1"># should only have &quot;official&quot; API changes.  Then Script/Main.py can</span>
+<span class="c1"># compare these two afterwards to figure out if the user added their</span>
+<span class="c1"># own targets to BUILD_TARGETS.</span>
+<span class="n">_build_plus_default</span> <span class="o">=</span> <span class="n">TargetList</span><span class="p">()</span>
+
+<div class="viewcode-block" id="_Add_Arguments"><a class="viewcode-back" href="../../../SCons.Script/#SCons.Script._Add_Arguments">[docs]</a><span class="k">def</span> <span class="nf">_Add_Arguments</span><span class="p">(</span><span class="n">alist</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">alist</span><span class="p">:</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">arg</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">ARGUMENTS</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span>
+        <span class="n">ARGLIST</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="_Add_Targets"><a class="viewcode-back" href="../../../SCons.Script/#SCons.Script._Add_Targets">[docs]</a><span class="k">def</span> <span class="nf">_Add_Targets</span><span class="p">(</span><span class="n">tlist</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">tlist</span><span class="p">:</span>
+        <span class="n">COMMAND_LINE_TARGETS</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">tlist</span><span class="p">)</span>
+        <span class="n">BUILD_TARGETS</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">tlist</span><span class="p">)</span>
+        <span class="n">BUILD_TARGETS</span><span class="o">.</span><span class="n">_add_Default</span> <span class="o">=</span> <span class="n">BUILD_TARGETS</span><span class="o">.</span><span class="n">_do_nothing</span>
+        <span class="n">BUILD_TARGETS</span><span class="o">.</span><span class="n">_clear</span> <span class="o">=</span> <span class="n">BUILD_TARGETS</span><span class="o">.</span><span class="n">_do_nothing</span>
+        <span class="n">_build_plus_default</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">tlist</span><span class="p">)</span>
+        <span class="n">_build_plus_default</span><span class="o">.</span><span class="n">_add_Default</span> <span class="o">=</span> <span class="n">_build_plus_default</span><span class="o">.</span><span class="n">_do_nothing</span>
+        <span class="n">_build_plus_default</span><span class="o">.</span><span class="n">_clear</span> <span class="o">=</span> <span class="n">_build_plus_default</span><span class="o">.</span><span class="n">_do_nothing</span></div>
+
+<div class="viewcode-block" id="_Set_Default_Targets_Has_Been_Called"><a class="viewcode-back" href="../../../SCons.Script/#SCons.Script._Set_Default_Targets_Has_Been_Called">[docs]</a><span class="k">def</span> <span class="nf">_Set_Default_Targets_Has_Been_Called</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">DEFAULT_TARGETS</span></div>
+
+<div class="viewcode-block" id="_Set_Default_Targets_Has_Not_Been_Called"><a class="viewcode-back" href="../../../SCons.Script/#SCons.Script._Set_Default_Targets_Has_Not_Been_Called">[docs]</a><span class="k">def</span> <span class="nf">_Set_Default_Targets_Has_Not_Been_Called</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">[</span><span class="n">fs</span><span class="o">.</span><span class="n">Dir</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">d</span></div>
+
+<span class="n">_Get_Default_Targets</span> <span class="o">=</span> <span class="n">_Set_Default_Targets_Has_Not_Been_Called</span>
+
+<div class="viewcode-block" id="_Set_Default_Targets"><a class="viewcode-back" href="../../../SCons.Script/#SCons.Script._Set_Default_Targets">[docs]</a><span class="k">def</span> <span class="nf">_Set_Default_Targets</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">tlist</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">DEFAULT_TARGETS</span>
+    <span class="k">global</span> <span class="n">_Get_Default_Targets</span>
+    <span class="n">_Get_Default_Targets</span> <span class="o">=</span> <span class="n">_Set_Default_Targets_Has_Been_Called</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tlist</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">t</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Delete the elements from the list in-place, don&#39;t</span>
+            <span class="c1"># reassign an empty list to DEFAULT_TARGETS, so that the</span>
+            <span class="c1"># variables will still point to the same object we point to.</span>
+            <span class="k">del</span> <span class="n">DEFAULT_TARGETS</span><span class="p">[:]</span>
+            <span class="n">BUILD_TARGETS</span><span class="o">.</span><span class="n">_clear</span><span class="p">()</span>
+            <span class="n">_build_plus_default</span><span class="o">.</span><span class="n">_clear</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">Node</span><span class="p">):</span>
+            <span class="n">DEFAULT_TARGETS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+            <span class="n">BUILD_TARGETS</span><span class="o">.</span><span class="n">_add_Default</span><span class="p">([</span><span class="n">t</span><span class="p">])</span>
+            <span class="n">_build_plus_default</span><span class="o">.</span><span class="n">_add_Default</span><span class="p">([</span><span class="n">t</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">nodes</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">arg2nodes</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">fs</span><span class="o">.</span><span class="n">Entry</span><span class="p">)</span>
+            <span class="n">DEFAULT_TARGETS</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
+            <span class="n">BUILD_TARGETS</span><span class="o">.</span><span class="n">_add_Default</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
+            <span class="n">_build_plus_default</span><span class="o">.</span><span class="n">_add_Default</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span></div>
+
+<span class="c1">#</span>
+<span class="n">help_text</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="HelpFunction"><a class="viewcode-back" href="../../../SCons.Script/#SCons.Script.HelpFunction">[docs]</a><span class="k">def</span> <span class="nf">HelpFunction</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">help_text</span>
+    <span class="k">if</span> <span class="n">help_text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">append</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
+            <span class="n">PrintHelp</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>  
+            <span class="n">help_text</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">help_text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="n">help_text</span><span class="o">=</span> <span class="n">help_text</span> <span class="o">+</span> <span class="n">text</span></div>
+
+
+<span class="c1">#</span>
+<span class="c1"># Will be non-zero if we are reading an SConscript file.</span>
+<span class="n">sconscript_reading</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="n">_no_missing_sconscript</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">_warn_missing_sconscript_deprecated</span> <span class="o">=</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="set_missing_sconscript_error"><a class="viewcode-back" href="../../../SCons.Script/#SCons.Script.set_missing_sconscript_error">[docs]</a><span class="k">def</span> <span class="nf">set_missing_sconscript_error</span><span class="p">(</span><span class="n">flag</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Set behavior on missing file in SConscript() call. Returns previous value&quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">_no_missing_sconscript</span>
+    <span class="n">old</span> <span class="o">=</span> <span class="n">_no_missing_sconscript</span>
+    <span class="n">_no_missing_sconscript</span> <span class="o">=</span> <span class="n">flag</span>
+    <span class="k">return</span> <span class="n">old</span></div>
+
+
+<div class="viewcode-block" id="Variables"><a class="viewcode-back" href="../../../SCons.Script/#SCons.Script.Variables">[docs]</a><span class="k">def</span> <span class="nf">Variables</span><span class="p">(</span><span class="n">files</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">ARGUMENTS</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Variables</span><span class="o">.</span><span class="n">Variables</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></div>
+
+
+<span class="c1"># The list of global functions to add to the SConscript name space</span>
+<span class="c1"># that end up calling corresponding methods or Builders in the</span>
+<span class="c1"># DefaultEnvironment().</span>
+<span class="n">GlobalDefaultEnvironmentFunctions</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># Methods from the SConsEnvironment class, above.</span>
+    <span class="s1">&#39;Default&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;EnsurePythonVersion&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;EnsureSConsVersion&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Exit&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Export&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;GetLaunchDir&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Help&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Import&#39;</span><span class="p">,</span>
+    <span class="c1">#&#39;SConscript&#39;, is handled separately, below.</span>
+    <span class="s1">&#39;SConscriptChdir&#39;</span><span class="p">,</span>
+
+    <span class="c1"># Methods from the Environment.Base class.</span>
+    <span class="s1">&#39;AddPostAction&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;AddPreAction&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Alias&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;AlwaysBuild&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;CacheDir&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Clean&#39;</span><span class="p">,</span>
+    <span class="c1">#The Command() method is handled separately, below.</span>
+    <span class="s1">&#39;Decider&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Depends&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Dir&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;NoClean&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;NoCache&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Entry&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Execute&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;File&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;FindFile&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;FindInstalledFiles&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;FindSourceFiles&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Flatten&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;GetBuildPath&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Glob&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Ignore&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Install&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;InstallAs&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;InstallVersionedLib&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Literal&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Local&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ParseDepends&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Precious&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;PyPackageDir&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Repository&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Requires&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;SConsignFile&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;SideEffect&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Split&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Tag&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Value&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;VariantDir&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">GlobalDefaultBuilders</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># Supported builders.</span>
+    <span class="s1">&#39;CFile&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;CXXFile&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;DVI&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Jar&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Java&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;JavaH&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Library&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;LoadableModule&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;M4&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;MSVSProject&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Object&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;PCH&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;PDF&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;PostScript&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Program&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;RES&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;RMIC&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;SharedLibrary&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;SharedObject&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;StaticLibrary&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;StaticObject&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Substfile&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Tar&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Textfile&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;TypeLibrary&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Zip&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Package&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">GlobalDefaultEnvironmentFunctions</span> <span class="o">+</span> <span class="n">GlobalDefaultBuilders</span><span class="p">:</span>
+    <span class="n">exec</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> = _SConscript.DefaultEnvironmentCall(</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">name</span><span class="p">)))</span>
+<span class="k">del</span> <span class="n">name</span>
+
+<span class="c1"># There are a handful of variables that used to live in the</span>
+<span class="c1"># Script/SConscript.py module that some SConscript files out there were</span>
+<span class="c1"># accessing directly as SCons.Script.SConscript.*.  The problem is that</span>
+<span class="c1"># &quot;SConscript&quot; in this namespace is no longer a module, it&#39;s a global</span>
+<span class="c1"># function call--or more precisely, an object that implements a global</span>
+<span class="c1"># function call through the default Environment.  Nevertheless, we can</span>
+<span class="c1"># maintain backwards compatibility for SConscripts that were reaching in</span>
+<span class="c1"># this way by hanging some attributes off the &quot;SConscript&quot; object here.</span>
+<span class="n">SConscript</span> <span class="o">=</span> <span class="n">_SConscript</span><span class="o">.</span><span class="n">DefaultEnvironmentCall</span><span class="p">(</span><span class="s1">&#39;SConscript&#39;</span><span class="p">)</span>
+
+<span class="c1"># Make SConscript look enough like the module it used to be so</span>
+<span class="c1"># that pychecker doesn&#39;t barf.</span>
+<span class="n">SConscript</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="s1">&#39;SConscript&#39;</span>
+
+<span class="n">SConscript</span><span class="o">.</span><span class="n">Arguments</span> <span class="o">=</span> <span class="n">ARGUMENTS</span>
+<span class="n">SConscript</span><span class="o">.</span><span class="n">ArgList</span> <span class="o">=</span> <span class="n">ARGLIST</span>
+<span class="n">SConscript</span><span class="o">.</span><span class="n">BuildTargets</span> <span class="o">=</span> <span class="n">BUILD_TARGETS</span>
+<span class="n">SConscript</span><span class="o">.</span><span class="n">CommandLineTargets</span> <span class="o">=</span> <span class="n">COMMAND_LINE_TARGETS</span>
+<span class="n">SConscript</span><span class="o">.</span><span class="n">DefaultTargets</span> <span class="o">=</span> <span class="n">DEFAULT_TARGETS</span>
+
+<span class="c1"># The global Command() function must be handled differently than the</span>
+<span class="c1"># global functions for other construction environment methods because</span>
+<span class="c1"># we want people to be able to use Actions that must expand $TARGET</span>
+<span class="c1"># and $SOURCE later, when (and if) the Action is invoked to build</span>
+<span class="c1"># the target(s).  We do this with the subst=1 argument, which creates</span>
+<span class="c1"># a DefaultEnvironmentCall instance that wraps up a normal default</span>
+<span class="c1"># construction environment that performs variable substitution, not a</span>
+<span class="c1"># proxy that doesn&#39;t.</span>
+<span class="c1">#</span>
+<span class="c1"># There&#39;s a flaw here, though, because any other $-variables on a command</span>
+<span class="c1"># line will *also* be expanded, each to a null string, but that should</span>
+<span class="c1"># only be a problem in the unusual case where someone was passing a &#39;$&#39;</span>
+<span class="c1"># on a command line and *expected* the $ to get through to the shell</span>
+<span class="c1"># because they were calling Command() and not env.Command()...  This is</span>
+<span class="c1"># unlikely enough that we&#39;re going to leave this as is and cross that</span>
+<span class="c1"># bridge if someone actually comes to it.</span>
+<span class="n">Command</span> <span class="o">=</span> <span class="n">_SConscript</span><span class="o">.</span><span class="n">DefaultEnvironmentCall</span><span class="p">(</span><span class="s1">&#39;Command&#39;</span><span class="p">,</span> <span class="n">subst</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Local Variables:</span>
+<span class="c1"># tab-width:4</span>
+<span class="c1"># indent-tabs-mode:nil</span>
+<span class="c1"># End:</span>
+<span class="c1"># vim: set expandtab tabstop=4 shiftwidth=4:</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, SCons Project
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

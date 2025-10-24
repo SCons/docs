@@ -1,0 +1,69 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Chapter 19. Not Writing a Builder: the Command Builder</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 2.3.2"><link rel="up" href="index.html" title="SCons 2.3.2"><link rel="prev" href="ch18s07.html" title="18.7. Where To Put Your Custom Builders and Tools"><link rel="next" href="ch20.html" title="Chapter 20. Pseudo-Builders: the AddMethod function"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 19. Not Writing a Builder:  the <code class="function">Command</code> Builder</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch18s07.html">Prev</a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="ch20.html">Next</a></td></tr></table><hr></div><div class="chapter" title="Chapter 19. Not Writing a Builder: the Command Builder"><div class="titlepage"><div><div><h2 class="title"><a name="chap-builders-commands"></a>Chapter 19. Not Writing a Builder:  the <code class="function">Command</code> Builder</h2></div></div></div><p>
+
+  Creating a <code class="classname">Builder</code> and attaching it to a <code class="literal">construction environment</code>
+  allows for a lot of flexibility when you
+  want to re-use actions
+  to build multiple files of the same type.
+  This can, however, be cumbersome
+  if you only need to execute one specific command
+  to build a single file (or group of files).
+  For these situations, <span class="application">SCons</span> supports a
+  <code class="function">Command</code> <code class="classname">Builder</code> that arranges
+  for a specific action to be executed
+  to build a specific file or files.
+  This looks a lot like the other builders
+  (like <a class="link" href="apb.html#b-Program"><code class="function">Program</code></a>, <a class="link" href="apb.html#b-Object"><code class="function">Object</code></a>, etc.),
+  but takes as an additional argument
+  the command to be executed to build the file:
+
+  </p><pre class="programlisting">
+env = Environment()
+env.Command('foo.out', 'foo.in', "sed 's/x/y/' &lt; $SOURCE &gt; $TARGET")
+     </pre><p>
+
+  When executed,
+  <span class="application">SCons</span> runs the specified command,
+  substituting <a class="link" href="apa.html#cv-SOURCE"><code class="envar">$SOURCE</code></a> and <a class="link" href="apa.html#cv-TARGET"><code class="envar">$TARGET</code></a>
+  as expected:
+
+  </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+sed 's/x/y/' &lt; foo.in &gt; foo.out
+</pre><p>
+
+  This is often more convenient than
+  creating a <code class="classname">Builder</code> object
+  and adding it to the <a class="link" href="apa.html#cv-BUILDERS"><code class="envar">$BUILDERS</code></a> variable
+  of a <code class="literal">construction environment</code>
+
+  </p><p>
+
+  Note that the action you specify to the
+  <code class="function">Command</code> <code class="classname">Builder</code> can be any legal <span class="application">SCons</span> <code class="classname">Action</code>,
+  such as a Python function:
+
+  </p><pre class="programlisting">
+env = Environment()
+def build(target, source, env):
+    # Whatever it takes to build
+    return None
+env.Command('foo.out', 'foo.in', build)
+     </pre><p>
+
+  Which executes as follows:
+
+  </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+build(["foo.out"], ["foo.in"])
+</pre><p>
+
+  Note that <a class="link" href="apa.html#cv-SOURCE"><code class="envar">$SOURCE</code></a> and <a class="link" href="apa.html#cv-TARGET"><code class="envar">$TARGET</code></a> are expanded 
+  in the source and target as well as of SCons 1.1,
+  so you can write:
+
+  </p><pre class="programlisting">
+env.Command('${SOURCE.basename}.out', 'foo.in', build)
+     </pre><p>
+
+  which does the same thing as the previous example, but allows you
+  to avoid repeating yourself.
+
+  </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch18s07.html">Prev</a> </td><td width="20%" align="center"> </td><td width="40%" align="right"> <a accesskey="n" href="ch20.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">18.7. Where To Put Your Custom Builders and Tools </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 20. Pseudo-Builders:  the AddMethod function</td></tr></table></div></body></html>

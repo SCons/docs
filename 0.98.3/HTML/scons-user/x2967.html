@@ -1,0 +1,254 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Guaranteeing local copies of files</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 0.98.3"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Building From Code Repositories"
+HREF="c2791.html"><LINK
+REL="PREVIOUS"
+TITLE="Finding derived files in repositories"
+HREF="x2938.html"><LINK
+REL="NEXT"
+TITLE="Multi-Platform Configuration (Autoconf Functionality)"
+HREF="c2991.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 0.98.3</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x2938.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 21. Building From Code Repositories</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="c2991.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN2967"
+>21.6. Guaranteeing local copies of files</A
+></H1
+><P
+>&#13;
+    If the repository tree contains the complete results of a build,
+    and we try to build from the repository
+    without any files in our local tree,
+    something moderately surprising happens:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>mkdir $HOME/build2</KBD
+>
+      % <KBD
+CLASS="userinput"
+>cd $HOME/build2</KBD
+>
+      % <KBD
+CLASS="userinput"
+>scons -Q -Y /usr/all/repository hello</KBD
+>
+      scons: `hello' is up-to-date.
+    </PRE
+><P
+>&#13;
+    Why does <SPAN
+CLASS="application"
+>SCons</SPAN
+> say that the <SPAN
+CLASS="application"
+>hello</SPAN
+> program
+    is up-to-date when there is no <SPAN
+CLASS="application"
+>hello</SPAN
+> program
+    in the local build directory?
+    Because the repository (not the local directory)
+    contains the up-to-date <SPAN
+CLASS="application"
+>hello</SPAN
+> program,
+    and <SPAN
+CLASS="application"
+>SCons</SPAN
+> correctly determines that nothing
+    needs to be done to rebuild that
+    up-to-date copy of the file.
+
+    </P
+><P
+>&#13;
+    There are, however, many times when you want to ensure that a
+    local copy of a file always exists.
+    A packaging or testing script, for example,
+    may assume that certain generated files exist locally.
+    To tell <SPAN
+CLASS="application"
+>SCons</SPAN
+> to make a copy of any up-to-date repository
+    file in the local build directory,
+    use the <CODE
+CLASS="function"
+>Local</CODE
+> function:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;       env = Environment()
+       hello = env.Program('hello.c')
+       Local(hello)
+    </PRE
+><P
+>&#13;
+    If we then run the same command,
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> will make a local copy of the program
+    from the repository copy,
+    and tell you that it is doing so:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Y /usr/all/repository hello</KBD
+>
+      Local copy of hello from /usr/all/repository/hello
+      scons: `hello' is up-to-date.
+    </PRE
+><P
+>&#13;
+    (Notice that, because the act of making the local copy
+    is not considered a "build" of the <SPAN
+CLASS="application"
+>hello</SPAN
+> file,
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> still reports that it is up-to-date.)
+
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x2938.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="c2991.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Finding derived files in repositories</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c2791.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Multi-Platform Configuration (<SPAN
+CLASS="application"
+>Autoconf</SPAN
+> Functionality)</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

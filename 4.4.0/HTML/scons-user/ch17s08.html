@@ -1,0 +1,128 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>17.8. Where To Put Your Custom Builders and Tools</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.4.0"><link rel="up" href="ch17.html" title="Chapter 17. Extending SCons: Writing Your Own Builders"><link rel="prev" href="ch17s07.html" title="17.7. Modifying a Builder by adding an Emitter"><link rel="next" href="ch18.html" title="Chapter 18. Not Writing a Builder: the Command Builder"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">17.8. Where To Put Your Custom Builders and Tools</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch17s07.html">Prev</a> </td><th width="60%" align="center">Chapter 17. Extending <span class="application">SCons</span>: Writing Your Own Builders</th><td width="20%" align="right"> <a accesskey="n" href="ch18.html">Next</a></td></tr></table><hr></div><div class="section" title="17.8. Where To Put Your Custom Builders and Tools"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idp105548825855184"></a>17.8. Where To Put Your Custom Builders and Tools</h2></div></div></div><p>
+
+    The <code class="filename">site_scons</code> directories give you a place to
+    put <span class="application">Python</span> modules and packages that you can import into your
+    <code class="filename">SConscript</code> files (at the top level)
+    add-on tools that can integrate into <span class="application">SCons</span>
+    (in a <code class="filename">site_tools</code> subdirectory),
+    and a <code class="filename">site_scons/site_init.py</code> file that
+    gets read before any <code class="filename">SConstruct</code> or <code class="filename">SConscript</code> file,
+    allowing you to change <span class="application">SCons</span>'s default behavior.
+
+    </p><p>
+
+    Each system type (Windows, Mac, Linux, etc.) searches a canonical
+    set of directories for <code class="filename">site_scons</code>;
+    see the man page for details.
+    The top-level SConstruct's <code class="filename">site_scons</code> dir
+    (that is, the one in the project) is always searched last,
+    and its dir is placed first in the tool path so it overrides all
+    others.
+
+    </p><p>
+
+    If you get a tool from somewhere (the <span class="application">SCons</span> wiki or a third party,
+    for instance) and you'd like to use it in your project, a
+    <code class="filename">site_scons</code> dir is the simplest place to put it.
+    Tools come in two flavors; either a <span class="application">Python</span> function that operates on
+    an <code class="function">Environment</code> or a <span class="application">Python</span> module or package  containing two functions,
+    <code class="function">exists()</code> and <code class="function">generate()</code>.
+
+    </p><p>
+
+    A single-function Tool can just be included in your
+    <code class="filename">site_scons/site_init.py</code> file where it will be
+    parsed and made available for use.  For instance, you could have a
+    <code class="filename">site_scons/site_init.py</code> file like this:
+
+    </p><pre class="programlisting">
+def TOOL_ADD_HEADER(env):
+    """A Tool to add a header from $HEADER to the source file"""
+    add_header = Builder(
+        action=['echo "$HEADER" &gt; $TARGET', 'cat $SOURCE &gt;&gt; $TARGET']
+    )
+    env.Append(BUILDERS={'AddHeader': add_header})
+    env['HEADER'] = ''  # set default value
+      </pre><p>
+
+    and a <code class="filename">SConstruct</code> like this:
+
+    </p><pre class="programlisting">
+# Use TOOL_ADD_HEADER from site_scons/site_init.py
+env=Environment(tools=['default', TOOL_ADD_HEADER], HEADER="=====")
+env.AddHeader('tgt', 'src')
+    </pre><p>
+
+      The <code class="function">TOOL_ADD_HEADER</code> tool method will be
+      called to add the <code class="function">AddHeader</code> tool to the
+      environment.
+
+    </p><p>
+      A more full-fledged tool with
+      <code class="function">exists()</code> and <code class="function">generate()</code>
+      methods can be installed either as a module in the file
+      <code class="filename">site_scons/site_tools/toolname.py</code> or as a
+      package in the
+      directory <code class="filename">site_scons/site_tools/toolname</code>.  In
+      the case of using a package, the <code class="function">exists()</code>
+      and <code class="function">generate()</code> are in the
+      file <code class="filename">site_scons/site_tools/toolname/__init__.py</code>.
+      (In all the above case <code class="filename">toolname</code> is replaced
+      by the name of the tool.)
+      Since <code class="filename">site_scons/site_tools</code> is automatically
+      added to the head of the tool search path, any tool found there
+      will be available to all environments.  Furthermore, a tool found
+      there will override a built-in tool of the same name, so if you
+      need to change the behavior of a built-in
+      tool, <code class="filename">site_scons</code> gives you the hook you need.
+    </p><p>
+      Many people have a collection of utility <span class="application">Python</span> functions they'd like
+      to include in their <code class="filename">SConscript</code> files: just put them in
+      <code class="filename">site_scons/my_utils.py</code>
+      or any valid <span class="application">Python</span> module name of your
+      choice.  For instance you can do something like this in
+      <code class="filename">site_scons/my_utils.py</code> to add
+      <code class="function">build_id</code> and <code class="function">MakeWorkDir</code>
+      functions:
+    </p><pre class="programlisting">
+from SCons.Script import *  # for Execute and Mkdir
+
+def build_id():
+    """Return a build ID (stub version)"""
+    return "100"
+
+def MakeWorkDir(workdir):
+    """Create the specified dir immediately"""
+    Execute(Mkdir(workdir))
+      </pre><p>
+      And then in your <code class="filename">SConscript</code> or any sub-<code class="filename">SConscript</code> anywhere in
+      your build, you can import <code class="filename">my_utils</code> and use it:
+    </p><pre class="programlisting">
+import my_utils
+print("build_id=" + my_utils.build_id())
+my_utils.MakeWorkDir('/tmp/work')
+    </pre><p>
+      You can put this collection in its own module in a
+      <code class="filename">site_scons</code> and import it as in the example,
+      or you can include it in
+      <code class="filename">site_scons/site_init.py</code>,
+      which is automatically imported (unless you disable site directories).
+      Note that in order to refer to objects in the SCons namespace
+      such as <code class="function">Environment</code> or <code class="function">Mkdir</code> or <code class="function">Execute</code> in any file other
+      than a <code class="filename">SConstruct</code> or <code class="filename">SConscript</code> you always need to do
+    </p><pre class="programlisting">
+from SCons.Script import *
+    </pre><p>
+      This is true of modules in <code class="filename">site_scons</code> such as
+      <code class="filename">site_scons/site_init.py</code> as well.
+    </p><p>
+      You can use any of the user- or machine-wide site directories such as
+      <code class="filename">~/.scons/site_scons</code> instead of
+      <code class="filename">./site_scons</code>, or use the
+      <code class="option">--site-dir</code> option to point to your own directory.
+      <code class="filename">site_init.py</code> and
+      <code class="filename">site_tools</code> will be located under that directory.
+      To avoid using a <code class="filename">site_scons</code> directory at all,
+      even if it exists, use the <code class="option">--no-site-dir</code>
+      option.
+    </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch17s07.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch17.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch18.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">17.7. Modifying a Builder by adding an Emitter </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 18. Not Writing a Builder:  the <code class="function">Command</code> Builder</td></tr></table></div></body></html>

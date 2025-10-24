@@ -1,0 +1,242 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>The AlwaysBuild Function</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 1.0.1"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Dependencies"
+HREF="c792.html"><LINK
+REL="PREVIOUS"
+TITLE="Order-Only Dependencies:  the Requires Function"
+HREF="x1261.html"><LINK
+REL="NEXT"
+TITLE="Environments"
+HREF="c1333.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 1.0.1</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x1261.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 6. Dependencies</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="c1333.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN1312"
+>6.9. The <CODE
+CLASS="function"
+>AlwaysBuild</CODE
+> Function</A
+></H1
+><P
+>&#13;
+    How <SPAN
+CLASS="application"
+>SCons</SPAN
+> handles dependencies can also be affected
+    by the <CODE
+CLASS="function"
+>AlwaysBuild</CODE
+> method.
+    When a file is passed to the <CODE
+CLASS="function"
+>AlwaysBuild</CODE
+> method,
+    like so:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;      hello = Program('hello.c')
+      AlwaysBuild(hello)
+    </PRE
+><P
+>&#13;
+    Then the specified target file (<SPAN
+CLASS="application"
+>hello</SPAN
+> in our example)
+    will always be considered out-of-date and
+    rebuilt whenever that target file is evaluated
+    while walking the dependency graph:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      cc -o hello.o -c hello.c
+      cc -o hello hello.o
+      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      cc -o hello hello.o
+    </PRE
+><P
+>&#13;
+    The <CODE
+CLASS="function"
+>AlwaysBuild</CODE
+> function has a somewhat misleading name,
+    because it does not actually mean the target file will
+    be rebuilt every single time <SPAN
+CLASS="application"
+>SCons</SPAN
+> is invoked.
+    Instead, it means that the target will, in fact,
+    be rebuilt whenever the target file is encountered
+    while evaluating the targets specified on
+    the command line (and their dependencies).
+    So specifying some other target on the command line,
+    a target that does <SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>not</I
+></SPAN
+>
+    itself depend on the <CODE
+CLASS="function"
+>AlwaysBuild</CODE
+> target,
+    will still be rebuilt only if it's out-of-date
+    with respect to its dependencies:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      cc -o hello.o -c hello.c
+      cc -o hello hello.o
+      % <KBD
+CLASS="userinput"
+>scons -Q hello.o</KBD
+>
+      scons: `hello.o' is up to date.
+    </PRE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x1261.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="c1333.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Order-Only Dependencies:  the <CODE
+CLASS="function"
+>Requires</CODE
+> Function</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c792.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Environments</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

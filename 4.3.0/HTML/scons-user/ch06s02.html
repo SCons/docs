@@ -1,0 +1,104 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>6.2. Implicit Dependencies: The $CPPPATH Construction Variable</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.3.0"><link rel="up" href="ch06.html" title="Chapter 6. Dependencies"><link rel="prev" href="ch06.html" title="Chapter 6. Dependencies"><link rel="next" href="ch06s03.html" title="6.3. Caching Implicit Dependencies"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">6.2. Implicit Dependencies:  The <code class="envar">$CPPPATH</code> Construction Variable</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch06.html">Prev</a> </td><th width="60%" align="center">Chapter 6. Dependencies</th><td width="20%" align="right"> <a accesskey="n" href="ch06s03.html">Next</a></td></tr></table><hr></div><div class="section" title="6.2. Implicit Dependencies: The $CPPPATH Construction Variable"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idm46358243221456"></a>6.2. Implicit Dependencies:  The <code class="envar">$CPPPATH</code> Construction Variable</h2></div></div></div><p>
+
+    Now suppose that our "Hello, World!" program
+    actually has an <code class="literal">#include</code> line
+    to include the <code class="filename">hello.h</code> file in the compilation:
+
+    </p><pre class="programlisting">
+#include &lt;hello.h&gt;
+int
+main()
+{
+    printf("Hello, %s!\n", string);
+}
+      </pre><p>
+
+    And, for completeness, the <code class="filename">hello.h</code> file looks like this:
+
+    </p><pre class="programlisting">
+#define string    "world"
+      
+</pre><p>
+
+    In this case, we want <span class="application">SCons</span> to recognize that,
+    if the contents of the <code class="filename">hello.h</code> file change,
+    the <code class="filename">hello</code> program must be recompiled.
+    To do this, we need to modify the
+    <code class="filename">SConstruct</code> file like so:
+
+    </p><pre class="programlisting">
+Program('hello.c', CPPPATH = '.')
+      
+</pre><p>
+
+    The <a class="link" href="apa.html#cv-CPPPATH"><code class="envar">$CPPPATH</code></a> value
+    tells <span class="application">SCons</span> to look in the current directory
+    (<code class="literal">'.'</code>)
+    for any files included by C source files
+    (<code class="filename">.c</code> or <code class="filename">.h</code> files).
+    With this assignment in the <code class="filename">SConstruct</code> file:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q hello</code></strong>
+cc -o hello.o -c -I. hello.c
+cc -o hello hello.o
+% <strong class="userinput"><code>scons -Q hello</code></strong>
+scons: `hello' is up to date.
+%     [CHANGE THE CONTENTS OF hello.h]
+% <strong class="userinput"><code>scons -Q hello</code></strong>
+cc -o hello.o -c -I. hello.c
+cc -o hello hello.o
+</pre><p>
+
+    First, notice that <span class="application">SCons</span>
+    added the <code class="literal">-I.</code> argument
+    from the <code class="envar">$CPPPATH</code> variable
+    so that the compilation would find the
+    <code class="filename">hello.h</code> file in the local directory.
+
+    </p><p>
+
+    Second, realize that <span class="application">SCons</span> knows that the <code class="filename">hello</code>
+    program must be rebuilt
+    because it scans the contents of
+    the <code class="filename">hello.c</code> file
+    for the <code class="literal">#include</code> lines that indicate
+    another file is being included in the compilation.
+    <span class="application">SCons</span> records these as
+    <span class="emphasis"><em>implicit dependencies</em></span>
+    of the target file,
+    Consequently,
+    when the <code class="filename">hello.h</code> file changes,
+    <span class="application">SCons</span> realizes that the <code class="filename">hello.c</code> file includes it,
+    and rebuilds the resulting <code class="filename">hello</code> program
+    that depends on both the <code class="filename">hello.c</code> and <code class="filename">hello.h</code> files.
+
+    </p><p>
+
+    Like the <a class="link" href="apa.html#cv-LIBPATH"><code class="envar">$LIBPATH</code></a> variable,
+    the <code class="envar">$CPPPATH</code> variable
+    may be a list of directories,
+    or a string separated by
+    the system-specific path separation character
+    (':' on POSIX/Linux, ';' on Windows).
+    Either way, <span class="application">SCons</span> creates the
+    right command-line options
+    so that the following example:
+
+    </p><pre class="programlisting">
+Program('hello.c', CPPPATH = ['include', '/home/project/inc'])
+      </pre><p>
+
+    Will look like this on POSIX or Linux:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q hello</code></strong>
+cc -o hello.o -c -Iinclude -I/home/project/inc hello.c
+cc -o hello hello.o
+</pre><p>
+
+    And like this on Windows:
+
+    </p><pre class="screen">C:\&gt;<strong class="userinput"><code>scons -Q hello.exe</code></strong>
+cl /Fohello.obj /c hello.c /nologo /Iinclude /I\home\project\inc
+link /nologo /OUT:hello.exe hello.obj
+embedManifestExeCheck(target, source, env)
+</pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch06.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch06.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch06s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 6. Dependencies </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 6.3. Caching Implicit Dependencies</td></tr></table></div></body></html>

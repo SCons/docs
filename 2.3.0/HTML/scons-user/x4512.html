@@ -1,0 +1,303 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>How SCons Handles Java Dependencies</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 2.3.0"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Java Builds"
+HREF="c4483.html"><LINK
+REL="PREVIOUS"
+TITLE="Java Builds"
+HREF="c4483.html"><LINK
+REL="NEXT"
+TITLE="Building Java Archive (.jar) Files:  the Jar Builder"
+HREF="x4547.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 2.3.0</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="c4483.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 26. Java Builds</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x4547.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN4512"
+>26.2. How <SPAN
+CLASS="application"
+>SCons</SPAN
+> Handles Java Dependencies</A
+></H1
+><P
+>&#13;
+    In addition to searching the source directory for
+    <TT
+CLASS="filename"
+>.java</TT
+> files,
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> actually runs the <TT
+CLASS="filename"
+>.java</TT
+> files
+    through a stripped-down Java parser that figures out
+    what classes are defined.
+    In other words, <SPAN
+CLASS="application"
+>SCons</SPAN
+> knows,
+    without you having to tell it,
+    what <TT
+CLASS="filename"
+>.class</TT
+> files
+    will be produced by the <SPAN
+CLASS="application"
+>javac</SPAN
+> call.
+    So our one-liner example from the preceding section:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;      Java('classes', 'src')
+    </PRE
+><P
+>&#13;
+    Will not only tell you reliably
+    that the <TT
+CLASS="filename"
+>.class</TT
+> files
+    in the <TT
+CLASS="filename"
+>classes</TT
+> subdirectory 
+    are up-to-date:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      javac -d classes -sourcepath src src/Example1.java src/Example2.java src/Example3.java
+      % <KBD
+CLASS="userinput"
+>scons -Q classes</KBD
+>
+      scons: `classes' is up to date.
+    </PRE
+><P
+>&#13;
+    But it will also remove all of the generated
+    <TT
+CLASS="filename"
+>.class</TT
+> files,
+    even for inner classes,
+    without you having to specify them manually.
+    For example, if our
+    <TT
+CLASS="filename"
+>Example1.java</TT
+>
+    and
+    <TT
+CLASS="filename"
+>Example3.java</TT
+>
+    files both define additional classes,
+    and the class defined in <TT
+CLASS="filename"
+>Example2.java</TT
+>
+    has an inner class,
+    running <KBD
+CLASS="userinput"
+>scons -c</KBD
+>
+    will clean up all of those <TT
+CLASS="filename"
+>.class</TT
+> files
+    as well:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      javac -d classes -sourcepath src src/Example1.java src/Example2.java src/Example3.java
+      % <KBD
+CLASS="userinput"
+>scons -Q -c classes</KBD
+>
+      Removed classes/Example1.class
+      Removed classes/AdditionalClass1.class
+      Removed classes/Example2$Inner2.class
+      Removed classes/Example2.class
+      Removed classes/Example3.class
+      Removed classes/AdditionalClass3.class
+    </PRE
+><P
+>&#13;
+    To ensure correct handling of <TT
+CLASS="filename"
+>.class</TT
+>
+    dependencies in all cases, you need to tell <SPAN
+CLASS="application"
+>SCons</SPAN
+> which Java
+    version is being used.  This is needed because Java 1.5 changed
+    the <TT
+CLASS="filename"
+>.class</TT
+> file names for nested anonymous
+    inner classes.  Use the <CODE
+CLASS="varname"
+>JAVAVERSION</CODE
+> construction
+    variable to specify the version in use.  With Java 1.6, the
+    one-liner example can then be defined like this:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;      Java('classes', 'src', JAVAVERSION='1.6')
+    </PRE
+><P
+>&#13;    See <CODE
+CLASS="varname"
+>JAVAVERSION</CODE
+> in the man page for more information.
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="c4483.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x4547.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Java Builds</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c4483.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Building Java Archive (<TT
+CLASS="filename"
+>.jar</TT
+>) Files:  the <CODE
+CLASS="function"
+>Jar</CODE
+> Builder</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

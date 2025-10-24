@@ -1,0 +1,398 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>28.3. What Dependencies Does SCons Know About? the --tree Option</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.5.1"><link rel="up" href="ch28.html" title="Chapter 28. Troubleshooting"><link rel="prev" href="ch28s02.html" title="28.2. What's in That Construction Environment? the Dump Method"><link rel="next" href="ch28s04.html" title="28.4. How is SCons Constructing the Command Lines It Executes? the --debug=presub Option"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">28.3. What Dependencies Does <span class="application">SCons</span> Know About?  the <code class="option">--tree</code> Option</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch28s02.html">Prev</a> </td><th width="60%" align="center">Chapter 28. Troubleshooting</th><td width="20%" align="right"> <a accesskey="n" href="ch28s04.html">Next</a></td></tr></table><hr></div><div class="section" title="28.3. What Dependencies Does SCons Know About? the --tree Option"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idp105549165432008"></a>28.3. What Dependencies Does <span class="application">SCons</span> Know About?  the <code class="option">--tree</code> Option</h2></div></div></div><p>
+
+    Sometimes the best way to try to figure out what
+    <span class="application">SCons</span> is doing is simply to take a look at the
+    dependency graph that it constructs
+    based on your <code class="filename">SConscript</code> files.
+    The <code class="option">--tree</code> option
+    will display all or part of the
+    <span class="application">SCons</span> dependency graph in an
+    "ASCII art" graphical format
+    that shows the dependency hierarchy.
+
+    </p><p>
+
+    For example, given the following input <code class="filename">SConstruct</code> file:
+
+    </p><pre class="programlisting">
+env = Environment(CPPPATH = ['.'])
+env.Program('prog', ['f1.c', 'f2.c', 'f3.c'])
+      </pre><p>
+
+    Running <span class="application">SCons</span> with the <code class="option">--tree=all</code>
+    option yields:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q --tree=all</code></strong>
+cc -o f1.o -c -I. f1.c
+cc -o f2.o -c -I. f2.c
+cc -o f3.o -c -I. f3.c
+cc -o prog f1.o f2.o f3.o
++-.
+  +-SConstruct
+  +-f1.c
+  +-f1.o
+  | +-f1.c
+  | +-inc.h
+  +-f2.c
+  +-f2.o
+  | +-f2.c
+  | +-inc.h
+  +-f3.c
+  +-f3.o
+  | +-f3.c
+  | +-inc.h
+  +-inc.h
+  +-prog
+    +-f1.o
+    | +-f1.c
+    | +-inc.h
+    +-f2.o
+    | +-f2.c
+    | +-inc.h
+    +-f3.o
+      +-f3.c
+      +-inc.h
+</pre><p>
+
+    The tree will also be printed when the
+    <code class="option">-n</code> (no execute) option is used,
+    which allows you to examine the dependency graph
+    for a configuration without actually
+    rebuilding anything in the tree.
+
+    </p><p>
+
+    By default <span class="application">SCons</span> uses "ASCII art" to draw the tree. It is
+    possible to use line-drawing characters (Unicode calls these
+    Box Drawing) to make a nicer display. To do this, add the
+    <code class="option">linedraw</code> qualifier:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q --tree=all,linedraw</code></strong>
+cc -o f1.o -c -I. f1.c
+cc -o f2.o -c -I. f2.c
+cc -o f3.o -c -I. f3.c
+cc -o prog f1.o f2.o f3.o
+&#9492;&#9472;&#9516;.
+  &#9500;&#9472;SConstruct
+  &#9500;&#9472;f1.c
+  &#9500;&#9472;&#9516;f1.o
+  &#9474; &#9500;&#9472;f1.c
+  &#9474; &#9492;&#9472;inc.h
+  &#9500;&#9472;f2.c
+  &#9500;&#9472;&#9516;f2.o
+  &#9474; &#9500;&#9472;f2.c
+  &#9474; &#9492;&#9472;inc.h
+  &#9500;&#9472;f3.c
+  &#9500;&#9472;&#9516;f3.o
+  &#9474; &#9500;&#9472;f3.c
+  &#9474; &#9492;&#9472;inc.h
+  &#9500;&#9472;inc.h
+  &#9492;&#9472;&#9516;prog
+    &#9500;&#9472;&#9516;f1.o
+    &#9474; &#9500;&#9472;f1.c
+    &#9474; &#9492;&#9472;inc.h
+    &#9500;&#9472;&#9516;f2.o
+    &#9474; &#9500;&#9472;f2.c
+    &#9474; &#9492;&#9472;inc.h
+    &#9492;&#9472;&#9516;f3.o
+      &#9500;&#9472;f3.c
+      &#9492;&#9472;inc.h
+</pre><p>
+
+    The <code class="option">--tree</code> option only prints
+    the dependency graph for the specified targets
+    (or the default target(s) if none are specified on the command line).
+    So if you specify a target like <code class="filename">f2.o</code>
+    on the command line,
+    the <code class="option">--tree</code> option will only
+    print the dependency graph for that file:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q --tree=all f2.o</code></strong>
+cc -o f2.o -c -I. f2.c
++-f2.o
+  +-f2.c
+  +-inc.h
+</pre><p>
+
+    This is, of course, useful for
+    restricting the output from a very large
+    build configuration to just a
+    portion in which you're interested.
+    Multiple targets are fine,
+    in which case a tree will be printed
+    for each specified target:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q --tree=all f1.o f3.o</code></strong>
+cc -o f1.o -c -I. f1.c
++-f1.o
+  +-f1.c
+  +-inc.h
+cc -o f3.o -c -I. f3.c
++-f3.o
+  +-f3.c
+  +-inc.h
+</pre><p>
+
+    The <em class="parameter"><code>status</code></em> argument may be used
+    to tell <span class="application">SCons</span> to print status information about
+    each file in the dependency graph:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q --tree=status</code></strong>
+cc -o f1.o -c -I. f1.c
+cc -o f2.o -c -I. f2.c
+cc -o f3.o -c -I. f3.c
+cc -o prog f1.o f2.o f3.o
+ E         = exists
+  R        = exists in repository only
+   b       = implicit builder
+   B       = explicit builder
+    S      = side effect
+     P     = precious
+      A    = always build
+       C   = current
+        N  = no clean
+         H = no cache
+
+[E b      ]+-.
+[E     C  ]  +-SConstruct
+[E     C  ]  +-f1.c
+[E B   C  ]  +-f1.o
+[E     C  ]  | +-f1.c
+[E     C  ]  | +-inc.h
+[E     C  ]  +-f2.c
+[E B   C  ]  +-f2.o
+[E     C  ]  | +-f2.c
+[E     C  ]  | +-inc.h
+[E     C  ]  +-f3.c
+[E B   C  ]  +-f3.o
+[E     C  ]  | +-f3.c
+[E     C  ]  | +-inc.h
+[E     C  ]  +-inc.h
+[E B   C  ]  +-prog
+[E B   C  ]    +-f1.o
+[E     C  ]    | +-f1.c
+[E     C  ]    | +-inc.h
+[E B   C  ]    +-f2.o
+[E     C  ]    | +-f2.c
+[E     C  ]    | +-inc.h
+[E B   C  ]    +-f3.o
+[E     C  ]      +-f3.c
+[E     C  ]      +-inc.h
+</pre><p>
+
+    Note that <code class="option">--tree=all,status</code> is equivalent;
+    the <em class="parameter"><code>all</code></em>
+    is assumed if only <em class="parameter"><code>status</code></em> is present.
+    As an alternative to <em class="parameter"><code>all</code></em>,
+    you can specify <code class="option">--tree=derived</code>
+    to have <span class="application">SCons</span> only print derived targets
+    in the tree output,
+    skipping source files
+    (like <code class="filename">.c</code> and <code class="filename">.h</code> files):
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q --tree=derived</code></strong>
+cc -o f1.o -c -I. f1.c
+cc -o f2.o -c -I. f2.c
+cc -o f3.o -c -I. f3.c
+cc -o prog f1.o f2.o f3.o
++-.
+  +-f1.o
+  +-f2.o
+  +-f3.o
+  +-prog
+    +-f1.o
+    +-f2.o
+    +-f3.o
+</pre><p>
+
+    You can use the <em class="parameter"><code>status</code></em>
+    modifier with <em class="parameter"><code>derived</code></em> as well:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q --tree=derived,status</code></strong>
+cc -o f1.o -c -I. f1.c
+cc -o f2.o -c -I. f2.c
+cc -o f3.o -c -I. f3.c
+cc -o prog f1.o f2.o f3.o
+ E         = exists
+  R        = exists in repository only
+   b       = implicit builder
+   B       = explicit builder
+    S      = side effect
+     P     = precious
+      A    = always build
+       C   = current
+        N  = no clean
+         H = no cache
+
+[E b      ]+-.
+[E B   C  ]  +-f1.o
+[E B   C  ]  +-f2.o
+[E B   C  ]  +-f3.o
+[E B   C  ]  +-prog
+[E B   C  ]    +-f1.o
+[E B   C  ]    +-f2.o
+[E B   C  ]    +-f3.o
+</pre><p>
+
+    Note that the order of the <code class="option">--tree=</code>
+    arguments doesn't matter;
+    <code class="option">--tree=status,derived</code> is
+    completely equivalent.
+
+    </p><p>
+
+    The default behavior of the <code class="option">--tree</code> option
+    is to repeat all of the dependencies each time the library dependency
+    (or any other dependency file) is encountered in the tree.
+    If certain target files share other target files,
+    such as two programs that use the same library:
+
+    </p><pre class="programlisting">
+env = Environment(CPPPATH = ['.'],
+                  LIBS = ['foo'],
+                  LIBPATH = ['.'])
+env.Library('foo', ['f1.c', 'f2.c', 'f3.c'])
+env.Program('prog1.c')
+env.Program('prog2.c')
+      </pre><p>
+
+    Then there can be a <span class="emphasis"><em>lot</em></span> of repetition in the
+    <code class="option">--tree=</code> output:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q --tree=all</code></strong>
+cc -o f1.o -c -I. f1.c
+cc -o f2.o -c -I. f2.c
+cc -o f3.o -c -I. f3.c
+ar rc libfoo.a f1.o f2.o f3.o
+ranlib libfoo.a
+cc -o prog1.o -c -I. prog1.c
+cc -o prog1 prog1.o -L. -lfoo
+cc -o prog2.o -c -I. prog2.c
+cc -o prog2 prog2.o -L. -lfoo
++-.
+  +-SConstruct
+  +-f1.c
+  +-f1.o
+  | +-f1.c
+  | +-inc.h
+  +-f2.c
+  +-f2.o
+  | +-f2.c
+  | +-inc.h
+  +-f3.c
+  +-f3.o
+  | +-f3.c
+  | +-inc.h
+  +-inc.h
+  +-libfoo.a
+  | +-f1.o
+  | | +-f1.c
+  | | +-inc.h
+  | +-f2.o
+  | | +-f2.c
+  | | +-inc.h
+  | +-f3.o
+  |   +-f3.c
+  |   +-inc.h
+  +-prog1
+  | +-prog1.o
+  | | +-prog1.c
+  | | +-inc.h
+  | +-libfoo.a
+  |   +-f1.o
+  |   | +-f1.c
+  |   | +-inc.h
+  |   +-f2.o
+  |   | +-f2.c
+  |   | +-inc.h
+  |   +-f3.o
+  |     +-f3.c
+  |     +-inc.h
+  +-prog1.c
+  +-prog1.o
+  | +-prog1.c
+  | +-inc.h
+  +-prog2
+  | +-prog2.o
+  | | +-prog2.c
+  | | +-inc.h
+  | +-libfoo.a
+  |   +-f1.o
+  |   | +-f1.c
+  |   | +-inc.h
+  |   +-f2.o
+  |   | +-f2.c
+  |   | +-inc.h
+  |   +-f3.o
+  |     +-f3.c
+  |     +-inc.h
+  +-prog2.c
+  +-prog2.o
+    +-prog2.c
+    +-inc.h
+</pre><p>
+
+    In a large configuration with many internal libraries
+    and include files,
+    this can very quickly lead to huge output trees.
+    To help make this more manageable,
+    a <em class="parameter"><code>prune</code></em> modifier may
+    be added to the option list,
+    in which case <span class="application">SCons</span>
+    will print the name of a target that has
+    already been visited during the tree-printing
+    in square brackets (<code class="literal">[]</code>)
+    as an indication that the dependencies
+    of the target file may be found
+    by looking farther up the tree:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q --tree=prune</code></strong>
+cc -o f1.o -c -I. f1.c
+cc -o f2.o -c -I. f2.c
+cc -o f3.o -c -I. f3.c
+ar rc libfoo.a f1.o f2.o f3.o
+ranlib libfoo.a
+cc -o prog1.o -c -I. prog1.c
+cc -o prog1 prog1.o -L. -lfoo
+cc -o prog2.o -c -I. prog2.c
+cc -o prog2 prog2.o -L. -lfoo
++-.
+  +-SConstruct
+  +-f1.c
+  +-f1.o
+  | +-f1.c
+  | +-inc.h
+  +-f2.c
+  +-f2.o
+  | +-f2.c
+  | +-inc.h
+  +-f3.c
+  +-f3.o
+  | +-f3.c
+  | +-inc.h
+  +-inc.h
+  +-libfoo.a
+  | +-[f1.o]
+  | +-[f2.o]
+  | +-[f3.o]
+  +-prog1
+  | +-prog1.o
+  | | +-prog1.c
+  | | +-inc.h
+  | +-[libfoo.a]
+  +-prog1.c
+  +-[prog1.o]
+  +-prog2
+  | +-prog2.o
+  | | +-prog2.c
+  | | +-inc.h
+  | +-[libfoo.a]
+  +-prog2.c
+  +-[prog2.o]
+</pre><p>
+
+    Like the <em class="parameter"><code>status</code></em> keyword,
+    the <em class="parameter"><code>prune</code></em> argument by itself
+    is equivalent to <code class="option">--tree=all,prune</code>.
+
+    </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch28s02.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch28.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch28s04.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">28.2. What's in That Construction Environment?  the <code class="function">Dump</code> Method </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 28.4. How is <span class="application">SCons</span> Constructing the Command Lines It Executes?  the <code class="option">--debug=presub</code> Option</td></tr></table></div></body></html>

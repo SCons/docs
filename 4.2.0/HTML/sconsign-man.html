@@ -1,0 +1,285 @@
+<html>
+  <head>
+    <title>SCONSIGN</title>
+    <link rel="stylesheet" type="text/css" href="scons.css"/>
+    <meta name="generator" content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+  </head>
+  <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+    <div class="refentry" title="SCONSIGN">
+      <a name="sconsign1"/>
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <a name="name"/>
+        <h2>Name</h2>
+        <p>sconsign — print SCons signature file information</p>
+      </div>
+      <div class="refsynopsisdiv" title="Synopsis">
+        <a name="synopsis"/>
+        <h2>Synopsis</h2>
+        <div class="cmdsynopsis">
+          <p><code class="command">sconsign</code>  [<em class="replaceable"><code>options</code></em>...] [<em class="replaceable"><code>file</code></em>...]</p>
+        </div>
+      </div>
+      <div class="refsect1" title="DESCRIPTION">
+        <a name="description"/>
+        <h2>DESCRIPTION</h2>
+        <p>
+Displays the contents of one or more
+<em class="firstterm">sconsign files</em>,
+the signature database files
+used by the <span class="application">SCons</span> build tool.
+</p>
+        <p>By default,
+<span class="command"><strong>sconsign</strong></span>
+dumps the entire contents of the
+sconsign file(s).
+Without options,
+individual dependency entries are printed in the following format:</p>
+        <pre class="screen">
+depfile: signature timestamp length
+        implicit_dependency_1: content_signature timestamp length
+        implicit_dependency_2: content_signature timestamp length
+        ...
+        action_signature [action string]
+</pre>
+        <p><span class="bold"><strong>None</strong></span>
+is printed in place of any missing timestamp,
+ <em class="firstterm">content signature</em>
+(<span class="bold"><strong>csig</strong></span>)
+or
+<em class="firstterm">build action signature</em>
+values for any entry
+or any of its dependencies.
+If the entry has no implicit dependencies,
+or no build action,
+those lines are omitted.</p>
+        <p>By default,
+<span class="command"><strong>sconsign</strong></span>
+assumes that any
+<em class="replaceable"><code>file</code></em>
+arguments that end with a
+<code class="filename">.dblite</code>
+suffix contains
+signature entries for
+more than one directory
+(that is,
+was specified by the
+<strong class="function"><code>SConsignFile</code></strong>
+function).
+Any
+<em class="replaceable"><code>file</code></em>
+argument that has no suffix
+is assumed to be an old-style
+sconsign file containing the signature entries
+for a single directory.
+If neither of those is true,
+<span class="command"><strong>sconsign</strong></span>
+attempts to guess the format.
+If that does not work,
+an explicit format
+may be specified using the
+<code class="option">-f</code>
+or
+<code class="option">--format=</code>
+options.
+</p>
+        <p>
+If there are no
+<em class="replaceable"><code>file</code></em>
+arguments, the name
+<code class="filename">.sconsign.dblite</code>
+is assumed by default.
+</p>
+      </div>
+      <div class="refsect1" title="OPTIONS">
+        <a name="options"/>
+        <h2>OPTIONS</h2>
+        <p>Various options control what information is printed
+and the format:</p>
+        <div class="variablelist">
+          <dl>
+            <dt>
+              <span class="term">
+    <code class="option">-a</code>,
+    <code class="option">--act</code>,
+    <code class="option">--action</code>
+  </span>
+            </dt>
+            <dd>
+              <p>Prints only the build action information
+for all entries or the specified entries.</p>
+            </dd>
+            <dt>
+              <span class="term">
+    <code class="option">-c</code>,
+    <code class="option">--csig</code>
+  </span>
+            </dt>
+            <dd>
+              <p>Prints only the content signature (csig) information
+for all entries or the specified entries.</p>
+            </dd>
+            <dt>
+              <span class="term">
+    <code class="option">-d <em class="replaceable"><code>DIRECTORY</code></em></code>,
+    <code class="option">--dir=<em class="replaceable"><code>DIRECTORY</code></em></code>
+  </span>
+            </dt>
+            <dd>
+              <p>When the signatures are being
+read from a
+<code class="filename">.dblite</code>
+file, or the
+<code class="option">-f dblite</code>
+or
+<code class="option">--format=dblite</code>
+options are used,
+prints information about
+only the signatures
+for entries in the specified
+<em class="replaceable"><code>DIRECTORY</code></em>.</p>
+            </dd>
+            <dt>
+              <span class="term">
+    <code class="option">-e <em class="replaceable"><code>ENTRY</code></em></code>,
+    <code class="option">--entry=<em class="replaceable"><code>ENTRY</code></em></code>
+  </span>
+            </dt>
+            <dd>
+              <p>Prints information about only the specified
+<em class="replaceable"><code>ENTRY</code></em>.
+Multiple <code class="option">-e</code> options may be used,
+in which case information about each
+<em class="replaceable"><code>ENTRY</code></em>
+is printed in the order in which the
+options are specified on the command line.</p>
+            </dd>
+            <dt>
+              <span class="term">
+    <code class="option">-f <em class="replaceable"><code>FORMAT</code></em></code>,
+    <code class="option">--format=<em class="replaceable"><code>FORMAT</code></em></code>
+  </span>
+            </dt>
+            <dd>
+              <p>The file(s) to be printed
+are in the specified
+<em class="replaceable"><code>FORMAT</code></em>.
+Legal values are
+<span class="bold"><strong>dblite</strong></span>
+(the SCons.dblite format used by default,
+as well as when the
+<strong class="function"><code>SConsignFile</code></strong>
+function is called, except when a filename argument
+of <code class="constant">None</code> is given)
+and
+<span class="bold"><strong>sconsign</strong></span>
+(the format used for an individual
+<code class="filename">.sconsign</code>
+file in each directory).</p>
+            </dd>
+            <dt>
+              <span class="term">
+    <code class="option">-h</code>,
+    <code class="option">--help</code>
+  </span>
+            </dt>
+            <dd>
+              <p>Prints a help message and exits.</p>
+            </dd>
+            <dt>
+              <span class="term">
+    <code class="option">-i</code>,
+    <code class="option">--implicit</code>
+  </span>
+            </dt>
+            <dd>
+              <p>Prints the list of cached implicit dependencies
+for all entries or for the specified entries.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="option">--raw</code>
+              </span>
+            </dt>
+            <dd>
+              <p>Prints a pretty-printed representation
+of the raw Python dictionary that holds
+build information about individual entries
+(both the entry itself and its implicit dependencies).
+An entry's build action is still printed in its usual format.</p>
+            </dd>
+            <dt>
+              <span class="term">
+    <code class="option">-r</code>,
+    <code class="option">--readable</code>
+  </span>
+            </dt>
+            <dd>
+              <p>Prints timestamps in a human-readable string,
+enclosed in single quotes.</p>
+            </dd>
+            <dt>
+              <span class="term">
+    <code class="option">-t</code>,
+    <code class="option">--timestamp</code>
+  </span>
+            </dt>
+            <dd>
+              <p>Prints the timestamp information
+for all entries or the specified entries.</p>
+            </dd>
+            <dt>
+              <span class="term">
+    <code class="option">-v</code>,
+    <code class="option">--verbose</code>
+  </span>
+            </dt>
+            <dd>
+              <p>Prints labels identifying each field being printed.</p>
+            </dd>
+          </dl>
+        </div>
+      </div>
+      <div class="refsect1" title="ENVIRONMENT">
+        <a name="environment"/>
+        <h2>ENVIRONMENT</h2>
+        <div class="variablelist">
+          <dl>
+            <dt>
+              <span class="term">
+                <code class="envar">SCONS_LIB_DIR</code>
+              </span>
+            </dt>
+            <dd>
+              <p>Specifies the directory that contains the SCons Python module directory
+(e.g.
+<code class="filename">/home/aroach/scons-src/SCons</code>).
+</p>
+            </dd>
+          </dl>
+        </div>
+      </div>
+      <div class="refsect1" title="SEE ALSO">
+        <a name="see_also"/>
+        <h2>SEE ALSO</h2>
+        <p>
+<span class="command"><strong>scons</strong></span>,
+the SCons User Guide at
+<a class="ulink" href="https://scons.org/doc/production/HTML/scons-user.html" target="_top">https://scons.org/doc/production/HTML/scons-user.html</a>,
+the SCons source code
+<a class="ulink" href="https://github.com/SCons/scons" target="_top">
+on GitHub</a>.
+</p>
+      </div>
+      <div class="refsect1" title="AUTHORS">
+        <a name="authors"/>
+        <h2>AUTHORS</h2>
+        <p>Originally: Steven Knight <code class="email">&lt;<a class="email" href="mailto:knight@baldmt.com">knight@baldmt.com</a>&gt;</code>
+  and Anthony Roach <code class="email">&lt;<a class="email" href="mailto:aroach@electriceyeball.com">aroach@electriceyeball.com</a>&gt;</code>.</p>
+        <p>
+Since 2010: The SCons Development Team <code class="email">&lt;<a class="email" href="mailto:scons-dev@scons.org">scons-dev@scons.org</a>&gt;</code>.
+</p>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,1066 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Dependencies</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 0.98.5"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Using a Node's File Name as a String"
+HREF="x766.html"><LINK
+REL="NEXT"
+TITLE="Older Functions for Deciding When an Input File Has Changed"
+HREF="x958.html"></HEAD
+><BODY
+CLASS="chapter"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 0.98.5</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x766.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x958.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="chapter"
+><H1
+><A
+NAME="chap-depends"
+></A
+>Chapter 6. Dependencies</H1
+><P
+>&#13;
+  So far we've seen how <SPAN
+CLASS="application"
+>SCons</SPAN
+> handles one-time builds.
+  But one of the main functions of a build tool like <SPAN
+CLASS="application"
+>SCons</SPAN
+>
+  is to rebuild only the necessary things
+  when source files change--or, put another way,
+  <SPAN
+CLASS="application"
+>SCons</SPAN
+> should <SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>not</I
+></SPAN
+>
+  waste time rebuilding things that have already been built.
+  You can see this at work simply by re-invoking <SPAN
+CLASS="application"
+>SCons</SPAN
+>
+  after building our simple <SPAN
+CLASS="application"
+>hello</SPAN
+> example:
+
+  </P
+><PRE
+CLASS="screen"
+>&#13;     % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+     cc -o hello.o -c hello.c
+     cc -o hello hello.o
+     % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+     scons: `.' is up to date.
+  </PRE
+><P
+>&#13;
+  The second time it is executed,
+  <SPAN
+CLASS="application"
+>SCons</SPAN
+> realizes that the <SPAN
+CLASS="application"
+>hello</SPAN
+> program
+  is up-to-date with respect to the current <TT
+CLASS="filename"
+>hello.c</TT
+> source file,
+  and avoids rebuilding it.
+  You can see this more clearly by naming
+  the <SPAN
+CLASS="application"
+>hello</SPAN
+> program explicitly on the command line:
+
+  </P
+><PRE
+CLASS="screen"
+>&#13;     % <KBD
+CLASS="userinput"
+>scons -Q hello</KBD
+>
+     cc -o hello.o -c hello.c
+     cc -o hello hello.o
+     % <KBD
+CLASS="userinput"
+>scons -Q hello</KBD
+>
+     scons: `hello' is up to date.
+  </PRE
+><P
+>&#13;
+  Note that <SPAN
+CLASS="application"
+>SCons</SPAN
+> reports <TT
+CLASS="literal"
+>"...is up to date"</TT
+>
+  only for target files named explicitly on the command line,
+  to avoid cluttering the output.
+
+  </P
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN802"
+>6.1. Deciding When an Input File Has Changed:  the <CODE
+CLASS="function"
+>Decider</CODE
+> Function</A
+></H1
+><P
+>&#13;
+    Another aspect of avoiding unnecessary rebuilds
+    is the fundamental build tool behavior
+    of <SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>rebuilding</I
+></SPAN
+>
+    things when an input file changes,
+    so that the built software is up to date.
+    By default,
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> keeps track of this through an
+    MD5 <TT
+CLASS="literal"
+>signature</TT
+>, or checksum, of the contents of each file,
+    although you can easily configure
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> to use the
+    modification times (or time stamps)
+    instead.
+    You can even specify your own Python function
+    for deciding if an input file has changed.
+
+    </P
+><DIV
+CLASS="section"
+><H2
+CLASS="section"
+><A
+NAME="AEN810"
+>6.1.1. Using MD5 Signatures to Decide if a File Has Changed</A
+></H2
+><P
+>&#13;
+      By default,
+      <SPAN
+CLASS="application"
+>SCons</SPAN
+> keeps track of whether a file has changed
+      based on an MD5 checksum of the file's contents,
+      not the file's modification time.
+      This means that you may be surprised by the
+      default <SPAN
+CLASS="application"
+>SCons</SPAN
+> behavior if you are used to the
+      <SPAN
+CLASS="application"
+>Make</SPAN
+> convention of forcing
+      a rebuild by updating the file's modification time
+      (using the <SPAN
+CLASS="application"
+>touch</SPAN
+> command, for example):
+
+      </P
+><PRE
+CLASS="screen"
+>&#13;         % <KBD
+CLASS="userinput"
+>scons -Q hello</KBD
+>
+         cc -o hello.o -c hello.c
+         cc -o hello hello.o
+         % <KBD
+CLASS="userinput"
+>touch hello.c</KBD
+>
+         % <KBD
+CLASS="userinput"
+>scons -Q hello</KBD
+>
+         scons: `hello' is up to date.
+      </PRE
+><P
+>&#13;
+      Even though the file's modification time has changed,
+      <SPAN
+CLASS="application"
+>SCons</SPAN
+> realizes that the contents of the
+      <TT
+CLASS="filename"
+>hello.c</TT
+> file have <SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>not</I
+></SPAN
+> changed,
+      and therefore that the <SPAN
+CLASS="application"
+>hello</SPAN
+> program
+      need not be rebuilt.
+      This avoids unnecessary rebuilds when,
+      for example, someone rewrites the
+      contents of a file without making a change.
+      But if the contents of the file really do change,
+      then <SPAN
+CLASS="application"
+>SCons</SPAN
+> detects the change
+      and rebuilds the program as required:
+
+      </P
+><PRE
+CLASS="screen"
+>&#13;         % <KBD
+CLASS="userinput"
+>scons -Q hello</KBD
+>
+         cc -o hello.o -c hello.c
+         cc -o hello hello.o
+         % <KBD
+CLASS="userinput"
+>edit hello.c</KBD
+>
+             [CHANGE THE CONTENTS OF hello.c]
+         % <KBD
+CLASS="userinput"
+>scons -Q hello</KBD
+>
+         cc -o hello.o -c hello.c
+         cc -o hello hello.o
+      </PRE
+><P
+>&#13;
+      Note that you can, if you wish,
+      specify this default behavior
+      (MD5 signatures) explicitly
+      using the <CODE
+CLASS="function"
+>Decider</CODE
+> function as follows:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;        Program('hello.c')
+        Decider('MD5')
+      </PRE
+><P
+>&#13;
+      You can also use the string <TT
+CLASS="literal"
+>'content'</TT
+>
+      as a synonym for <TT
+CLASS="literal"
+>'MD5'</TT
+>
+      when calling the <CODE
+CLASS="function"
+>Decider</CODE
+> function.
+
+      </P
+><DIV
+CLASS="section"
+><H3
+CLASS="section"
+><A
+NAME="AEN838"
+>6.1.1.1. Ramifications of Using MD5 Signatures</A
+></H3
+><P
+>&#13;
+        Using MD5 Signatures to decide if an input file has changed
+        has one surprising benefit:
+        if a source file has been changed
+        in such a way that the contents of the
+        rebuilt target file(s)
+        will be exactly the same as the last time
+        the file was built,
+        then any "downstream" target files
+        that depend on the rebuilt-but-not-changed target
+        file actually need not be rebuilt.
+
+        </P
+><P
+>&#13;
+        So if, for example,
+        a user were to only change a comment in a <TT
+CLASS="filename"
+>hello.c</TT
+> file,
+        then the rebuilt <TT
+CLASS="filename"
+>hello.o</TT
+> file
+        would be exactly the same as the one previously built
+        (assuming the compiler doesn't put any build-specific
+        information in the object file).
+        <SPAN
+CLASS="application"
+>SCons</SPAN
+> would then realize that it would not
+        need to rebuild the <SPAN
+CLASS="application"
+>hello</SPAN
+> program as follows:
+
+        </P
+><PRE
+CLASS="screen"
+>&#13;           % <KBD
+CLASS="userinput"
+>scons -Q hello</KBD
+>
+           cc -o hello.o -c hello.c
+           cc -o hello hello.o
+           % <KBD
+CLASS="userinput"
+>edit hello.c</KBD
+>
+             [CHANGE A COMMENT IN hello.c]
+           % <KBD
+CLASS="userinput"
+>scons -Q hello</KBD
+>
+           cc -o hello.o -c hello.c
+           scons: `hello' is up to date.
+        </PRE
+><P
+>&#13;
+        In essence, <SPAN
+CLASS="application"
+>SCons</SPAN
+>
+        "short-circuits" any dependent builds
+        when it realizes that a target file
+        has been rebuilt to exactly the same file as the last build.
+        This does take some extra processing time
+        to read the contents of the target (<TT
+CLASS="filename"
+>hello.o</TT
+>) file,
+        but often saves time when the rebuild that was avoided
+        would have been time-consuming and expensive.
+
+        </P
+></DIV
+></DIV
+><DIV
+CLASS="section"
+><H2
+CLASS="section"
+><A
+NAME="AEN853"
+>6.1.2. Using Time Stamps to Decide If a File Has Changed</A
+></H2
+><P
+>&#13;
+      If you prefer, you can
+      configure <SPAN
+CLASS="application"
+>SCons</SPAN
+> to use the modification time
+      of a file, not the file contents,
+      when deciding if a target needs to be rebuilt.
+      <SPAN
+CLASS="application"
+>SCons</SPAN
+> gives you two ways to use time stamps
+      to decide if an input file has changed
+      since the last time a target has been built.
+
+      </P
+><P
+>&#13;
+      The most familiar way to use time stamps
+      is the way <SPAN
+CLASS="application"
+>Make</SPAN
+> does:
+      that is, have <SPAN
+CLASS="application"
+>SCons</SPAN
+> decide
+      and target must be rebuilt if
+      if a source file's modification time is
+      <SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>newer</I
+></SPAN
+>
+      than the target file.
+      To do this, call the <CODE
+CLASS="function"
+>Decider</CODE
+>
+      function as follows:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;        Program('hello.c')
+        Decider('timestamp-newer')
+      </PRE
+><P
+>&#13;
+      This makes <SPAN
+CLASS="application"
+>SCons</SPAN
+> act like <SPAN
+CLASS="application"
+>Make</SPAN
+>
+      when a file's modification time is updated
+      (using the <SPAN
+CLASS="application"
+>touch</SPAN
+> command, for example):
+
+      </P
+><PRE
+CLASS="screen"
+>&#13;         % <KBD
+CLASS="userinput"
+>scons -Q hello</KBD
+>
+         cc -o hello.o -c hello.c
+         cc -o hello hello.o
+         % <KBD
+CLASS="userinput"
+>touch hello.c</KBD
+>
+         % <KBD
+CLASS="userinput"
+>scons -Q hello</KBD
+>
+         cc -o hello.o -c hello.c
+         cc -o hello hello.o
+      </PRE
+><P
+>&#13;
+      And, in fact, because this behavior is the same
+      as the behavior of <SPAN
+CLASS="application"
+>Make</SPAN
+>,
+      you can also use the string <TT
+CLASS="literal"
+>'make'</TT
+>
+      as a synonym for <TT
+CLASS="literal"
+>'timestamp-newer'</TT
+>
+      when calling the <CODE
+CLASS="function"
+>Decider</CODE
+> function:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;        Program('hello.c')
+        Decider('make')
+      </PRE
+><P
+>&#13;
+      One drawback to using times stamps exactly like <SPAN
+CLASS="application"
+>Make</SPAN
+>
+      is that if an input file's modification time suddenly
+      becomes <SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>older</I
+></SPAN
+> than a target file,
+      the target file will not be rebuilt.
+      This can happen if an old copy of a source file is restored
+      from a backup archive, for example.
+      The contents of the restored file will likely be different
+      than they were the last time a dependent target was built,
+      but the target won't be rebuilt
+      because the modification time of the source file
+      is not newer than the target.
+
+      </P
+><P
+>&#13;
+      Because <SPAN
+CLASS="application"
+>SCons</SPAN
+> actually stores information
+      about the source files' time stamps whenever a target is built,
+      it can handle this situation by checking for
+      an exact match of the source file time stamp,
+      instead of just whether or not the source file
+      is newer than the target file.
+      To do this, specify the argument
+      <TT
+CLASS="literal"
+>'timestamp-match'</TT
+>
+      when calling the <CODE
+CLASS="function"
+>Decider</CODE
+> function:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;        Program('hello.c')
+        Decider('timestamp-match')
+      </PRE
+><P
+>&#13;
+      When configured this way,
+      <SPAN
+CLASS="application"
+>SCons</SPAN
+> will rebuild a target whenever
+      a source file's modification time has changed.
+      So if we use the <TT
+CLASS="literal"
+>touch -t</TT
+>
+      option to change the modification time of
+      <TT
+CLASS="filename"
+>hello.c</TT
+> to an old date (January 1, 1989),
+      <SPAN
+CLASS="application"
+>SCons</SPAN
+> will still rebuild the target file:
+
+      </P
+><PRE
+CLASS="screen"
+>&#13;         % <KBD
+CLASS="userinput"
+>scons -Q hello</KBD
+>
+         cc -o hello.o -c hello.c
+         cc -o hello hello.o
+         % <KBD
+CLASS="userinput"
+>touch -t 198901010000 hello.c</KBD
+>
+         % <KBD
+CLASS="userinput"
+>scons -Q hello</KBD
+>
+         cc -o hello.o -c hello.c
+         scons: `hello' is up to date.
+      </PRE
+><P
+>&#13;
+      In general, the only reason to prefer
+      <TT
+CLASS="literal"
+>timestamp-newer</TT
+>
+      instead of
+      <TT
+CLASS="literal"
+>timestamp-match</TT
+>,
+      would be if you have some specific reason
+      to require this <SPAN
+CLASS="application"
+>Make</SPAN
+>-like behavior of 
+      not rebuilding a target when an otherwise-modified
+      source file is older.
+
+      </P
+></DIV
+><DIV
+CLASS="section"
+><H2
+CLASS="section"
+><A
+NAME="AEN899"
+>6.1.3. Deciding If a File Has Changed Using Both MD Signatures and Time Stamps</A
+></H2
+><P
+>&#13;
+      As a performance enhancement,
+      <SPAN
+CLASS="application"
+>SCons</SPAN
+> provides a way to use
+      MD5 checksums of file contents
+      but to only read the contents
+      whenever the file's timestamp has changed.
+      To do this, call the <CODE
+CLASS="function"
+>Decider</CODE
+>
+      function with <TT
+CLASS="literal"
+>'MD5-timestamp'</TT
+>
+      argument as follows:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;        Program('hello.c')
+        Decider('MD5-timestamp')
+      </PRE
+><P
+>&#13;
+      So configured, <SPAN
+CLASS="application"
+>SCons</SPAN
+> will still behave like
+      it does when using <TT
+CLASS="literal"
+>Decider('MD5')</TT
+>:
+
+      </P
+><PRE
+CLASS="screen"
+>&#13;         % <KBD
+CLASS="userinput"
+>scons -Q hello</KBD
+>
+         cc -o hello.o -c hello.c
+         cc -o hello hello.o
+         % <KBD
+CLASS="userinput"
+>touch hello.c</KBD
+>
+         % <KBD
+CLASS="userinput"
+>scons -Q hello</KBD
+>
+         scons: `hello' is up to date.
+         % <KBD
+CLASS="userinput"
+>edit hello.c</KBD
+>
+             [CHANGE THE CONTENTS OF hello.c]
+         % <KBD
+CLASS="userinput"
+>scons -Q hello</KBD
+>
+         scons: `hello' is up to date.
+      </PRE
+><P
+>&#13;
+      However, the second call to <SPAN
+CLASS="application"
+>SCons</SPAN
+> in the above output,
+      when the build is up-to-date,
+      will have been performed by simply looking at the
+      modification time of the <TT
+CLASS="filename"
+>hello.c</TT
+> file,
+      not by opening it and performing
+      an MD5 checksum calcuation on its contents.
+      This can significantly speed up many up-to-date builds.
+
+      </P
+><P
+>&#13;
+      The only drawback to using
+      <TT
+CLASS="literal"
+>Decider('MD5-timestamp')</TT
+>
+      is that <SPAN
+CLASS="application"
+>SCons</SPAN
+> will <SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>not</I
+></SPAN
+>
+      rebuild a target file if a source file was modified
+      within one second of the last time <SPAN
+CLASS="application"
+>SCons</SPAN
+> built the file.
+      While most developers are programming,
+      this isn't a problem in practice,
+      since it's unlikely that someone will have built
+      and then thought quickly enought to make a substantive
+      change to a source file within one second.
+      Certain build scripts or
+      continuous integration tools may, however,
+      rely on the ability to applying changes to files
+      automatically and then rebuild as quickly as possible,
+      in which case use of
+      <TT
+CLASS="literal"
+>Decider('MD5-timestamp')</TT
+>
+      may not be appropriate.
+
+      </P
+></DIV
+><DIV
+CLASS="section"
+><H2
+CLASS="section"
+><A
+NAME="AEN924"
+>6.1.4. Writing Your Own Custom <CODE
+CLASS="function"
+>Decider</CODE
+> Function</A
+></H2
+><P
+>&#13;
+      The different string values that we've passed to
+      the <CODE
+CLASS="function"
+>Decider</CODE
+> function are essentially used by <SPAN
+CLASS="application"
+>SCons</SPAN
+>
+      to pick one of several specific internal functions
+      that implement various ways of deciding if a dependency
+      (usually a source file)
+      has changed since a target file has been built.
+      As it turns out,
+      you can also supply your own function
+      to decide if a dependency has changed.
+
+      </P
+><P
+>&#13;
+      For example, suppose we have an input file
+      that contains a lot of data,
+      in some specific regular format,
+      that is used to rebuild a lot of different target files,
+      but each target file really only depends on
+      one particular section of the input file.
+      We'd like to have each target file depend on
+      only its section of the input file.
+      However, since the input file may contain a lot of data,
+      we only want to open the input file if its timestamp has changed.
+      This could done with a custom
+      <CODE
+CLASS="function"
+>Decider</CODE
+> function that might look something like this:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;        Program('hello.c')
+        def decide_if_changed(dependency, target, prev_ni):
+            if self.get_timestamp() != prev_ni.timestamp:
+                dep = str(dependency)
+                tgt = str(target)
+                if specific_part_of_file_has_changed(dep, tgt):
+                    return True
+            return False
+        Decider(decide_if_changed)
+      </PRE
+><P
+>&#13;
+      Note that in the function definition,
+      the <TT
+CLASS="literal"
+>dependency</TT
+>
+      (input file) is the first argument,
+      and then the <TT
+CLASS="literal"
+>target</TT
+>.
+      Both of these are passed to the functions as
+      SCons <CODE
+CLASS="classname"
+>Node</CODE
+> objects,
+      which we convert to strings using the Python
+      <CODE
+CLASS="function"
+>str()</CODE
+>.
+      The third argument, <TT
+CLASS="literal"
+>prev_ni</TT
+>,
+      is an object that holds the
+      signature or timestamp information
+      that was recorded about the dependency
+      the last time the target was built.
+
+      </P
+><P
+>&#13;
+      Note that ignoring some of the arguments
+      in your custom <CODE
+CLASS="function"
+>Decider</CODE
+> function
+      is a perfectly normal thing to do,
+      if they don't impact the way you want to
+      decide if the dependency file has changed.
+
+      </P
+></DIV
+><DIV
+CLASS="section"
+><H2
+CLASS="section"
+><A
+NAME="AEN941"
+>6.1.5. Mixing Different Ways of Deciding If a File Has Changed</A
+></H2
+><P
+>&#13;
+      The previous examples have all demonstrated calling
+      the global <CODE
+CLASS="function"
+>Decider</CODE
+> function
+      to configure all dependency decisions that <SPAN
+CLASS="application"
+>SCons</SPAN
+> makes.
+      Sometimes, however, you want to be able to configure
+      different decision-making for different targets.
+      When that's necessary, you can use the
+      <CODE
+CLASS="function"
+>env.Decider</CODE
+>
+      method to affect only the configuration
+      decisions for targets built with a
+      specific construction environment.
+
+      </P
+><P
+>&#13;
+      For example, if we arbitrarily want to build
+      one program using MD5 checkums
+      and another use file modification times
+      from the same source
+      we might configure it this way:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;        env1 = Environment(CPPPATH = ['.'])
+        env2 = env1.Clone()
+        env2.Decider('timestamp-match')
+        env1.Program('prog-MD5', 'program1.c')
+        env2.Program('prog-timestamp', 'program2.c')
+      </PRE
+><P
+>&#13;
+      If both of the programs include the same
+      <TT
+CLASS="filename"
+>inc.h</TT
+> file,
+      then updating the modification time of
+      <TT
+CLASS="filename"
+>inc.h</TT
+>
+      (using the <SPAN
+CLASS="application"
+>touch</SPAN
+> command)
+      will cause only <TT
+CLASS="filename"
+>prog-timestamp</TT
+>
+      to be rebuilt:
+
+      </P
+><PRE
+CLASS="screen"
+>&#13;         % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+         cc -o program1.o -c -I. program1.c
+         cc -o prog-MD5 program1.o
+         cc -o program2.o -c -I. program2.c
+         cc -o prog-timestamp program2.o
+         % <KBD
+CLASS="userinput"
+>touch inc.h</KBD
+>
+         % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+         cc -o program2.o -c -I. program2.c
+         cc -o prog-timestamp program2.o
+      </PRE
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x766.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x958.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Using a <CODE
+CLASS="classname"
+>Node</CODE
+>'s File Name as a String</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Older Functions for Deciding When an Input File Has Changed</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

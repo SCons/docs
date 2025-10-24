@@ -1,0 +1,553 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Sharing Environments (and Other Variables) Between SConscript Files</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 2.3.0"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Hierarchical Builds"
+HREF="c3186.html"><LINK
+REL="PREVIOUS"
+TITLE="Absolute Path Names"
+HREF="x3266.html"><LINK
+REL="NEXT"
+TITLE="Separating Source and Build Directories"
+HREF="c3361.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 2.3.0</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x3266.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 14. Hierarchical Builds</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="c3361.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN3276"
+>14.5. Sharing Environments (and Other Variables) Between <TT
+CLASS="filename"
+>SConscript</TT
+> Files</A
+></H1
+><P
+>&#13;
+    In the previous example,
+    each of the subsidiary <TT
+CLASS="filename"
+>SConscript</TT
+> files
+    created its own construction environment
+    by calling <CODE
+CLASS="function"
+>Environment</CODE
+> separately.
+    This obviously works fine,
+    but if each program must be built
+    with the same construction variables,
+    it's cumbersome and error-prone to initialize
+    separate construction environments
+    in the same way over and over in each subsidiary
+    <TT
+CLASS="filename"
+>SConscript</TT
+> file.
+
+    </P
+><P
+>&#13;
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> supports the ability to <SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>export</I
+></SPAN
+> variables
+    from a parent <TT
+CLASS="filename"
+>SConscript</TT
+> file
+    to its subsidiary <TT
+CLASS="filename"
+>SConscript</TT
+> files,
+    which allows you to share common initialized
+    values throughout your build hierarchy.
+
+    </P
+><DIV
+CLASS="section"
+><H2
+CLASS="section"
+><A
+NAME="AEN3288"
+>14.5.1. Exporting Variables</A
+></H2
+><P
+>&#13;
+      There are two ways to export a variable,
+      such as a construction environment,
+      from an <TT
+CLASS="filename"
+>SConscript</TT
+> file,
+      so that it may be used by other <TT
+CLASS="filename"
+>SConscript</TT
+> files.
+      First, you can call the <CODE
+CLASS="function"
+>Export</CODE
+>
+      function with a list of variables,
+      or a string of white-space separated variable names.
+      Each call to <CODE
+CLASS="function"
+>Export</CODE
+> adds one
+      or more variables to a global list
+      of variables that are available for import
+      by other <TT
+CLASS="filename"
+>SConscript</TT
+> files.
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;        env = Environment()
+        Export('env')
+      </PRE
+><P
+>&#13;
+      You may export more than one variable name at a time:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;        env = Environment()
+        debug = ARGUMENTS['debug']
+        Export('env', 'debug')
+      </PRE
+><P
+>&#13;
+      Because white space is not legal in Python variable names,
+      the <CODE
+CLASS="function"
+>Export</CODE
+> function will even automatically split
+      a string into separate names for you:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;        Export('env debug')
+      </PRE
+><P
+>&#13;
+      Second, you can specify a list of
+      variables to export as a second argument
+      to the <TT
+CLASS="filename"
+>SConscript</TT
+> function call:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;        SConscript('src/SConscript', 'env')
+      </PRE
+><P
+>&#13;
+      Or as the <CODE
+CLASS="varname"
+>exports</CODE
+> keyword argument:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;        SConscript('src/SConscript', exports='env')
+      </PRE
+><P
+>&#13;
+      These calls export the specified variables
+      to only the listed <TT
+CLASS="filename"
+>SConscript</TT
+> files.
+      You may, however, specify more than one
+      <TT
+CLASS="filename"
+>SConscript</TT
+> file in a list:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;        SConscript(['src1/SConscript',
+                    'src2/SConscript'], exports='env')
+      </PRE
+><P
+>&#13;
+      This is functionally equivalent to
+      calling the <TT
+CLASS="filename"
+>SConscript</TT
+> function
+      multiple times with the same <CODE
+CLASS="varname"
+>exports</CODE
+> argument,
+      one per <TT
+CLASS="filename"
+>SConscript</TT
+> file.
+
+      </P
+></DIV
+><DIV
+CLASS="section"
+><H2
+CLASS="section"
+><A
+NAME="AEN3316"
+>14.5.2. Importing Variables</A
+></H2
+><P
+>&#13;
+      Once a variable has been exported from a calling
+      <TT
+CLASS="filename"
+>SConscript</TT
+> file,
+      it may be used in other <TT
+CLASS="filename"
+>SConscript</TT
+> files
+      by calling the <CODE
+CLASS="function"
+>Import</CODE
+> function:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;        Import('env')
+        env.Program('prog', ['prog.c'])
+      </PRE
+><P
+>&#13;
+      The <CODE
+CLASS="function"
+>Import</CODE
+> call makes the <TT
+CLASS="literal"
+>env</TT
+> construction
+      environment available to the <TT
+CLASS="filename"
+>SConscript</TT
+> file,
+      after which the variable can be used to build
+      programs, libraries, etc.
+
+      </P
+><P
+>&#13;
+      Like the <CODE
+CLASS="function"
+>Export</CODE
+> function,
+      the <CODE
+CLASS="function"
+>Import</CODE
+> function can be used
+      with multiple variable names:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;        Import('env', 'debug')
+        env = env.Clone(DEBUG = debug)
+        env.Program('prog', ['prog.c'])
+      </PRE
+><P
+>&#13;
+      And the <CODE
+CLASS="function"
+>Import</CODE
+> function will similarly
+      split a string along white-space
+      into separate variable names:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;        Import('env debug')
+        env = env.Clone(DEBUG = debug)
+        env.Program('prog', ['prog.c'])
+      </PRE
+><P
+>&#13;
+      Lastly, as a special case,
+      you may import all of the variables that
+      have been exported by supplying an asterisk
+      to the <CODE
+CLASS="function"
+>Import</CODE
+> function:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;        Import('*')
+        env = env.Clone(DEBUG = debug)
+        env.Program('prog', ['prog.c'])
+      </PRE
+><P
+>&#13;
+      If you're dealing with a lot of <TT
+CLASS="filename"
+>SConscript</TT
+> files,
+      this can be a lot simpler than keeping
+      arbitrary lists of imported variables in each file.
+
+      </P
+></DIV
+><DIV
+CLASS="section"
+><H2
+CLASS="section"
+><A
+NAME="AEN3339"
+>14.5.3. Returning Values From an <TT
+CLASS="filename"
+>SConscript</TT
+> File</A
+></H2
+><P
+>&#13;
+      Sometimes, you would like to be able to
+      use information from a subsidiary
+      <TT
+CLASS="filename"
+>SConscript</TT
+> file in some way.
+      For example,
+      suppose that you want to create one
+      library from source files
+      scattered throughout a number
+      of subsidiary <TT
+CLASS="filename"
+>SConscript</TT
+> files.
+      You can do this by using the <CODE
+CLASS="function"
+>Return</CODE
+>
+      function to return values
+      from the subsidiary <TT
+CLASS="filename"
+>SConscript</TT
+> files
+      to the calling file.
+
+      </P
+><P
+>&#13;
+      If, for example, we have two subdirectories
+      <TT
+CLASS="filename"
+>foo</TT
+> and <TT
+CLASS="filename"
+>bar</TT
+>
+      that should each contribute a source
+      file to a Library,
+      what we'd like to be able to do is
+      collect the object files
+      from the subsidiary <TT
+CLASS="filename"
+>SConscript</TT
+> calls
+      like this:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;          env = Environment()
+          Export('env')
+          objs = []
+          for subdir in ['foo', 'bar']:
+              o = SConscript('%s/SConscript' % subdir)
+              objs.append(o)
+          env.Library('prog', objs)
+      </PRE
+><P
+>&#13;
+      We can do this by using the <CODE
+CLASS="function"
+>Return</CODE
+>
+      function in the
+      <TT
+CLASS="literal"
+>foo/SConscript</TT
+> file like this:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;          Import('env')
+          obj = env.Object('foo.c')
+          Return('obj')
+        </PRE
+><P
+>&#13;
+      (The corresponding
+      <TT
+CLASS="literal"
+>bar/SConscript</TT
+>
+      file should be pretty obvious.)
+      Then when we run <SPAN
+CLASS="application"
+>SCons</SPAN
+>,
+      the object files from the subsidiary subdirectories
+      are all correctly archived in the desired library:
+
+      </P
+><PRE
+CLASS="screen"
+>&#13;        % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+        cc -o bar/bar.o -c bar/bar.c
+        cc -o foo/foo.o -c foo/foo.c
+        ar rc libprog.a foo/foo.o bar/bar.o
+        ranlib libprog.a
+      </PRE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x3266.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="c3361.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Absolute Path Names</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c3186.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Separating Source and Build Directories</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

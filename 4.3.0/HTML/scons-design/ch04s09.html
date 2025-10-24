@@ -1,0 +1,34 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>4.9. Variant builds</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.3.0"><link rel="up" href="ch04.html" title="Chapter 4. Build Engine API"><link rel="prev" href="ch04s08.html" title="4.8. Separate source and build trees"><link rel="next" href="ch04s10.html" title="4.10. Code repositories"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">4.9. Variant builds</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s08.html">Prev</a> </td><th width="60%" align="center">Chapter 4. Build Engine API</th><td width="20%" align="right"> <a accesskey="n" href="ch04s10.html">Next</a></td></tr></table><hr></div><div class="section" title="4.9. Variant builds"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="sect-variant"></a>4.9. Variant builds</h2></div></div></div><p>
+
+  The <code class="function">Link</code> method may be used in conjunction with multiple
+  <span>construction environments</span> to support variant builds.  The following
+  <code class="filename">SConstruct</code> and <code class="filename">SConscript</code> files would build separate debug and
+  production versions of the same program side-by-side:
+
+ </p><pre class="programlisting">
+	% cat SConstruct
+	env = Environment()
+	env.Link('build/debug', 'src')
+	env.Link('build/production', 'src')
+	flags = '-g'
+	SConscript('build/debug/SConscript', Export(env))
+	flags = '-O'
+	SConscript('build/production/SConscript', Export(env))
+	% cat src/SConscript
+	env = Environment(CCFLAGS = flags)
+	env.Program('hello', 'hello.c')
+	</pre><p>
+
+  The following example would build the appropriate program for the current
+  compilation platform, without having to clean any directories of object
+  or executable files for other architectures:
+
+ </p><pre class="programlisting">
+	% cat SConstruct
+	build_platform = os.path.join('build', sys.platform)
+	Link(build_platform, 'src')
+	SConscript(os.path.join(build_platform, 'SConscript'))
+	% cat src/SConscript
+	env = Environment
+	env.Program('hello', 'hello.c')
+	</pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch04s08.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch04.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch04s10.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">4.8. Separate source and build trees </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 4.10. Code repositories</td></tr></table></div></body></html>

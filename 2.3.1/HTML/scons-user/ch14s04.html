@@ -1,0 +1,27 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>4. Absolute Path Names</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 2.3.1"><link rel="up" href="ch14.html" title="Chapter 14. Hierarchical Builds"><link rel="prev" href="ch14s03.html" title="3. Top-Level Path Names in Subsidiary SConscript Files"><link rel="next" href="ch14s05.html" title="5. Sharing Environments (and Other Variables) Between SConscript Files"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">4. Absolute Path Names</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch14s03.html">Prev</a> </td><th width="60%" align="center">Chapter 14. Hierarchical Builds</th><td width="20%" align="right"> <a accesskey="n" href="ch14s05.html">Next</a></td></tr></table><hr></div><div class="section" title="4. Absolute Path Names"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idp16019864"></a>4. Absolute Path Names</h2></div></div></div><p>
+
+    Of course, you can always specify
+    an absolute path name for a file--for example:
+
+    </p><pre class="programlisting">
+env = Environment()
+env.Program('prog', ['main.c', '/usr/joe/lib/foo1.c', 'foo2.c'])
+       </pre><p>
+
+    Which, when executed, would yield:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o src/prog/foo2.o -c src/prog/foo2.c
+cc -o src/prog/main.o -c src/prog/main.c
+cc -o /usr/joe/lib/foo1.o -c /usr/joe/lib/foo1.c
+cc -o src/prog/prog src/prog/main.o /usr/joe/lib/foo1.o src/prog/foo2.o
+</pre><p>
+
+    (As was the case with top-relative path names,
+    notice that the <code class="literal">/usr/joe/lib/foo1.o</code> object file
+    is built in the same directory as its source file.
+    See <a class="xref" href="ch15.html" title="Chapter 15. Separating Source and Build Directories">Chapter 15, <i>Separating Source and Build Directories</i></a>, below,
+    for information about
+    how to build the object file in a different subdirectory.)
+
+    </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch14s03.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch14.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch14s05.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">3. Top-Level Path Names in Subsidiary <code class="filename">SConscript</code> Files </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 5. Sharing Environments (and Other Variables) Between <code class="filename">SConscript</code> Files</td></tr></table></div></body></html>

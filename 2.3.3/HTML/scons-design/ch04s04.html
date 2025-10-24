@@ -1,0 +1,85 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>4.4. Dependencies</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 2.3.3"><link rel="up" href="ch04.html" title="Chapter 4. Build Engine API"><link rel="prev" href="ch04s03.html" title="4.3. Builder Objects"><link rel="next" href="ch04s05.html" title="4.5. Scanner Objects"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">4.4. Dependencies</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s03.html">Prev</a> </td><th width="60%" align="center">Chapter 4. Build Engine API</th><td width="20%" align="right"> <a accesskey="n" href="ch04s05.html">Next</a></td></tr></table><hr></div><div class="section" title="4.4. Dependencies"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="sect-deps"></a>4.4. Dependencies</h2></div></div></div><div class="section" title="4.4.1. Automatic dependencies"><div class="titlepage"><div><div><h3 class="title"><a name="idp146424"></a>4.4.1. Automatic dependencies</h3></div></div></div><p>
+
+   By default, <span class="application">SCons</span> assumes that a target file has <code class="literal">automatic
+   dependencies</code> on the:
+
+  </p><div class="blockquote"><blockquote class="blockquote"><table border="0" summary="Simple list" class="simplelist"><tr><td>tool used to build the target file</td></tr><tr><td>contents of the input files</td></tr><tr><td>command line used to build the target file</td></tr></table></blockquote></div><p>
+
+   If any of these changes, the target file will be rebuilt.
+
+  </p></div><div class="section" title="4.4.2. Implicit dependencies"><div class="titlepage"><div><div><h3 class="title"><a name="idp148896"></a>4.4.2. Implicit dependencies</h3></div></div></div><p>
+
+   Additionally, <span class="application">SCons</span> can scan the contents of files for
+   <code class="literal">implicit dependencies</code> on other files.  For
+   example, <span class="application">SCons</span> will scan the contents of a <code class="filename">.c</code>
+   file and determine that any object created from it is
+   dependent on any <code class="filename">.h</code> files specified via
+   <code class="literal">#include</code>.  <span class="application">SCons</span>, therefore, "does the right
+   thing" without needing to have these dependencies listed explicitly:
+
+  </p><pre class="programlisting">
+	% cat Construct
+	env = Environment()
+	env.Program('hello', 'hello.c')
+	% cat hello.c
+	#include "hello_string.h"
+	main()
+	{
+	        printf("%s\n", STRING);
+	}
+	% cat &gt; hello_string.h
+	#define STRING  "Hello, world!\n"
+	% scons .
+	gcc -c hello.c -o hello.o
+	gcc -o hello hello.c
+	% ./hello
+	Hello, world!
+	% cat &gt; hello_string.h
+	#define STRING  "Hello, world, hello!\n"
+	% scons .
+	gcc -c hello.c -o hello.o
+	gcc -o hello hello.c
+	% ./hello
+	Hello, world, hello!
+	%
+	</pre></div><div class="section" title="4.4.3. Ignoring dependencies"><div class="titlepage"><div><div><h3 class="title"><a name="idp152568"></a>4.4.3. Ignoring dependencies</h3></div></div></div><p>
+
+   Undesirable <code class="literal">automatic dependencies</code> or
+   <code class="literal">implicit dependencies</code> may be ignored:
+
+  </p><pre class="programlisting">
+	env.Program(target = 'bar', source = 'bar.c')
+	env.Ignore('bar', '/usr/bin/gcc', 'version.h')
+	</pre><p>
+
+   In the above example, the <code class="filename">bar</code> program will not
+   be rebuilt if the <code class="filename">/usr/bin/gcc</code> compiler or the
+   <code class="filename">version.h</code> file change.
+
+  </p></div><div class="section" title="4.4.4. Explicit dependencies"><div class="titlepage"><div><div><h3 class="title"><a name="idp154944"></a>4.4.4. Explicit dependencies</h3></div></div></div><p>
+
+   Dependencies that are unknown to <span class="application">SCons</span> may be specified explicitly
+   in an <span class="application">SCons</span> configuration file:
+
+  </p><pre class="programlisting">
+	env.Dependency(target = 'output1', dependency = 'input_1 input_2')
+	env.Dependency(target = 'output2', dependency = ['input_1', 'input_2'])
+	env.Dependency(target = 'output3', dependency = ['white space input'])
+
+	env.Dependency(target = 'output_a output_b', dependency = 'input_3')
+	env.Dependency(target = ['output_c', 'output_d'], dependency = 'input_4')
+	env.Dependency(target = ['white space output'], dependency = 'input_5')
+	</pre><p>
+
+   Just like the <code class="literal">target</code> keyword argument, the
+   <code class="literal">dependency</code> keyword argument may be specified as a
+   string of white-space separated file names, or as an array.
+
+  </p><p>
+
+   A dependency on an <span class="application">SCons</span> configuration file itself may be specified
+   explicitly to force a rebuild whenever the configuration file changes:
+
+  </p><pre class="programlisting">
+	env.Dependency(target = 'archive.tar.gz', dependency = 'SConstruct')
+	</pre></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch04s03.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch04.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch04s05.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">4.3. <code class="classname">Builder</code> Objects </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 4.5. <code class="classname">Scanner</code> Objects</td></tr></table></div></body></html>

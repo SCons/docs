@@ -1,0 +1,339 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Controlling How SCons Prints Build Commands:  the $*COMSTR Variables</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 1.3.0"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Controlling Build Output"
+HREF="c1870.html"><LINK
+REL="PREVIOUS"
+TITLE="Controlling Build Output"
+HREF="c1870.html"><LINK
+REL="NEXT"
+TITLE="Providing Build Progress Output:  the Progress Function"
+HREF="x1949.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 1.3.0</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="c1870.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 11. Controlling Build Output</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x1949.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN1912"
+>11.2. Controlling How <SPAN
+CLASS="application"
+>SCons</SPAN
+> Prints Build Commands:  the <CODE
+CLASS="envar"
+>$*COMSTR</CODE
+> Variables</A
+></H1
+><P
+>&#13;
+    Sometimes the commands executed
+    to compile object files or link programs
+    (or build other targets)
+    can get very long,
+    long enough to make it difficult for users
+    to distinguish error messages or
+    other important build output
+    from the commands themselves.
+    All of the default <CODE
+CLASS="envar"
+>$*COM</CODE
+> variables
+    that specify the command lines
+    used to build various types of target files
+    have a corresponding <CODE
+CLASS="envar"
+>$*COMSTR</CODE
+> variable
+    that can be set to an alternative
+    string that will be displayed
+    when the target is built.
+
+    </P
+><P
+>&#13;
+    For example, suppose you want to
+    have <SPAN
+CLASS="application"
+>SCons</SPAN
+> display a
+    <TT
+CLASS="literal"
+>"Compiling"</TT
+>
+    message whenever it's compiling an object file,
+    and a
+    <TT
+CLASS="literal"
+>"Linking"</TT
+>
+    when it's linking an executable.
+    You could write a <TT
+CLASS="filename"
+>SConstruct</TT
+> file
+    that looks like:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;       env = Environment(CCCOMSTR = "Compiling $TARGET",
+                         LINKCOMSTR = "Linking $TARGET")
+       env.Program('foo.c')
+    </PRE
+><P
+>&#13;
+    Which would then yield the output:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;       % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+       Compiling foo.o
+       Linking foo
+    </PRE
+><P
+>&#13;
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> performs complete variable substitution
+    on <CODE
+CLASS="envar"
+>$*COMSTR</CODE
+> variables,
+    so they have access to all of the
+    standard variables like <CODE
+CLASS="envar"
+>$TARGET</CODE
+> <CODE
+CLASS="envar"
+>$SOURCES</CODE
+>, etc.,
+    as well as any construction variables
+    that happen to be configured in
+    the construction environment
+    used to build a specific target.
+
+    </P
+><P
+>&#13;
+    Of course, sometimes it's still important to
+    be able to see the exact command
+    that <SPAN
+CLASS="application"
+>SCons</SPAN
+> will execute to build a target.
+    For example, you may simply need to verify
+    that <SPAN
+CLASS="application"
+>SCons</SPAN
+> is configured to supply
+    the right options to the compiler,
+    or a developer may want to
+    cut-and-paste a compile command
+    to add a few options
+    for a custom test.
+
+    </P
+><P
+>&#13;
+    One common way to give users
+    control over whether or not
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> should print the actual command line
+    or a short, configured summary
+    is to add support for a
+    <CODE
+CLASS="varname"
+>VERBOSE</CODE
+>
+    command-line variable to your <TT
+CLASS="filename"
+>SConstruct</TT
+> file.
+    A simple configuration for this might look like:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;       env = Environment()
+       if ARGUMENTS.get('VERBOSE') != "1':
+           env['CCCOMSTR'] = "Compiling $TARGET"
+           env['LINKCOMSTR'] = "Linking $TARGET"
+       env.Program('foo.c')
+    </PRE
+><P
+>&#13;
+
+    By only setting the appropriate
+    <CODE
+CLASS="envar"
+>$*COMSTR</CODE
+> variables
+    if the user specifies
+    <TT
+CLASS="literal"
+>VERBOSE=1</TT
+>
+    on the command line,
+    the user has control
+    over how <SPAN
+CLASS="application"
+>SCons</SPAN
+>
+    displays these particular command lines:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;       % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+       Compiling foo.o
+       Linking foo
+       % <KBD
+CLASS="userinput"
+>scons -Q -c</KBD
+>
+       Removed foo.o
+       Removed foo
+       % <KBD
+CLASS="userinput"
+>scons -Q VERBOSE=1</KBD
+>
+       cc -o foo.o -c foo.c
+       cc -o foo foo.o
+    </PRE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="c1870.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x1949.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Controlling Build Output</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c1870.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Providing Build Progress Output:  the <CODE
+CLASS="function"
+>Progress</CODE
+> Function</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

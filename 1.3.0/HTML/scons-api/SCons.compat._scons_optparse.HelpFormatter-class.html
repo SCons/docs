@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>SCons.compat._scons_optparse.HelpFormatter</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="SCons-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://www.scons.org/">SCons</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="SCons-module.html">Package&nbsp;SCons</a> ::
+        <a href="SCons.compat-module.html">Package&nbsp;compat</a> ::
+        <a href="SCons.compat._scons_optparse-module.html">Module&nbsp;_scons_optparse</a> ::
+        Class&nbsp;HelpFormatter
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="SCons.compat._scons_optparse.HelpFormatter-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class HelpFormatter</h1><span class="codelink"><a href="SCons.compat._scons_optparse-pysrc.html#HelpFormatter">source&nbsp;code</a></span><br /><br />
+<dl><dt>Known Subclasses:</dt>
+<dd>
+    <a href="SCons.compat._scons_optparse.IndentedHelpFormatter-class.html">IndentedHelpFormatter</a>,
+    <a href="SCons.compat._scons_optparse.TitledHelpFormatter-class.html">TitledHelpFormatter</a>
+</dd></dl>
+
+<hr />
+<pre class="literalblock">
+
+Abstract base class for formatting option help.  OptionParser
+instances should use one of the HelpFormatter subclasses for
+formatting help; by default IndentedHelpFormatter is used.
+
+Instance attributes:
+  parser : OptionParser
+    the controlling OptionParser instance
+  indent_increment : int
+    the number of columns to indent per nesting level
+  max_help_position : int
+    the maximum starting column for option help text
+  help_position : int
+    the calculated starting column for option help text;
+    initially the same as the maximum
+  width : int
+    total number of columns for output (pass None to constructor for
+    this value to be taken from the $COLUMNS environment variable)
+  level : int
+    current indentation level
+  current_indent : int
+    current indentation level (in columns)
+  help_width : int
+    number of columns available for option help text (calculated)
+  default_tag : str
+    text to replace with each option's default value, &quot;%default&quot;
+    by default.  Set to false value to disable default value expansion.
+  option_strings : { Option : str }
+    maps Option instances to the snippet of help text explaining
+    the syntax of that option, e.g. &quot;-h, --help&quot; or
+    &quot;-fFILE, --file=FILE&quot;
+  _short_opt_fmt : str
+    format string controlling how short options with values are
+    printed in help text.  Must be either &quot;%s%s&quot; (&quot;-fFILE&quot;) or
+    &quot;%s %s&quot; (&quot;-f FILE&quot;), because those are the two syntaxes that
+    Optik supports.
+  _long_opt_fmt : str
+    similar but for long options; must be either &quot;%s %s&quot; (&quot;--file FILE&quot;)
+    or &quot;%s=%s&quot; (&quot;--file=FILE&quot;).
+
+</pre><br /><br />
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__init__"></a><span class="summary-sig-name">__init__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">indent_increment</span>,
+        <span class="summary-sig-arg">max_help_position</span>,
+        <span class="summary-sig-arg">width</span>,
+        <span class="summary-sig-arg">short_first</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.compat._scons_optparse-pysrc.html#HelpFormatter.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="set_parser"></a><span class="summary-sig-name">set_parser</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">parser</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.compat._scons_optparse-pysrc.html#HelpFormatter.set_parser">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="set_short_opt_delimiter"></a><span class="summary-sig-name">set_short_opt_delimiter</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">delim</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.compat._scons_optparse-pysrc.html#HelpFormatter.set_short_opt_delimiter">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="set_long_opt_delimiter"></a><span class="summary-sig-name">set_long_opt_delimiter</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">delim</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.compat._scons_optparse-pysrc.html#HelpFormatter.set_long_opt_delimiter">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="indent"></a><span class="summary-sig-name">indent</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.compat._scons_optparse-pysrc.html#HelpFormatter.indent">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="dedent"></a><span class="summary-sig-name">dedent</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.compat._scons_optparse-pysrc.html#HelpFormatter.dedent">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="format_usage"></a><span class="summary-sig-name">format_usage</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">usage</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.compat._scons_optparse-pysrc.html#HelpFormatter.format_usage">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="format_heading"></a><span class="summary-sig-name">format_heading</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">heading</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.compat._scons_optparse-pysrc.html#HelpFormatter.format_heading">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_format_text"></a><span class="summary-sig-name">_format_text</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">text</span>)</span><br />
+      Format a paragraph of free-form text for inclusion in the
+help output at the current indentation level.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.compat._scons_optparse-pysrc.html#HelpFormatter._format_text">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="format_description"></a><span class="summary-sig-name">format_description</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">description</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.compat._scons_optparse-pysrc.html#HelpFormatter.format_description">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="format_epilog"></a><span class="summary-sig-name">format_epilog</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">epilog</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.compat._scons_optparse-pysrc.html#HelpFormatter.format_epilog">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="expand_default"></a><span class="summary-sig-name">expand_default</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">option</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.compat._scons_optparse-pysrc.html#HelpFormatter.expand_default">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="format_option"></a><span class="summary-sig-name">format_option</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">option</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.compat._scons_optparse-pysrc.html#HelpFormatter.format_option">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="store_option_strings"></a><span class="summary-sig-name">store_option_strings</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">parser</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.compat._scons_optparse-pysrc.html#HelpFormatter.store_option_strings">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="format_option_strings"></a><span class="summary-sig-name">format_option_strings</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">option</span>)</span><br />
+      Return a comma-separated list of option strings &amp; metavariables.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.compat._scons_optparse-pysrc.html#HelpFormatter.format_option_strings">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NO_DEFAULT_VALUE"></a><span class="summary-name">NO_DEFAULT_VALUE</span> = <code title="'none'"><code class="variable-quote">'</code><code class="variable-string">none</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="SCons-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://www.scons.org/">SCons</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0beta1 on Wed Mar 24 03:16:03 2010
+    </td>
+    <td align="right" class="footer">
+      <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie()
+  // -->
+</script>
+  
+</body>
+</html>

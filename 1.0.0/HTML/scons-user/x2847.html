@@ -1,0 +1,194 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Installing Multiple Files Under Different Names</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 1.0.0"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Installing Files in Other Directories:  the Install Builder"
+HREF="c2805.html"><LINK
+REL="PREVIOUS"
+TITLE="Installing a File Under a Different Name"
+HREF="x2836.html"><LINK
+REL="NEXT"
+TITLE="Platform-Independent File System Manipulation"
+HREF="c2856.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 1.0.0</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x2836.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 13. Installing Files in Other Directories:  the <CODE
+CLASS="function"
+>Install</CODE
+> Builder</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="c2856.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN2847"
+>13.3. Installing Multiple Files Under Different Names</A
+></H1
+><P
+>&#13;
+    Lastly, if you have multiple files that all
+    need to be installed with different file names,
+    you can either call the <CODE
+CLASS="function"
+>InstallAs</CODE
+> function
+    multiple times, or as a shorthand,
+    you can supply same-length lists
+    for both the target and source arguments:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;       env = Environment()
+       hello = env.Program('hello.c')
+       goodbye = env.Program('goodbye.c')
+       env.InstallAs(['/usr/bin/hello-new',
+                      '/usr/bin/goodbye-new'],
+                     [hello, goodbye])
+       env.Alias('install', '/usr/bin')
+    </PRE
+><P
+>&#13;
+    In this case, the <CODE
+CLASS="function"
+>InstallAs</CODE
+> function
+    loops through both lists simultaneously,
+    and copies each source file into its corresponding
+    target file name:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;       % <KBD
+CLASS="userinput"
+>scons -Q install</KBD
+>
+       cc -o goodbye.o -c goodbye.c
+       cc -o goodbye goodbye.o
+       Install file: "goodbye" as "/usr/bin/goodbye-new"
+       cc -o hello.o -c hello.c
+       cc -o hello hello.o
+       Install file: "hello" as "/usr/bin/hello-new"
+    </PRE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x2836.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="c2856.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Installing a File Under a Different Name</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c2805.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Platform-Independent File System Manipulation</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

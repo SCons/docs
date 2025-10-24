@@ -1,0 +1,54 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>5.2. Explicitly Creating File and Directory Nodes</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 2.3.2"><link rel="up" href="ch05.html" title="Chapter 5. Node Objects"><link rel="prev" href="ch05.html" title="Chapter 5. Node Objects"><link rel="next" href="ch05s03.html" title="5.3. Printing Node File Names"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.2. Explicitly Creating File and Directory Nodes</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05.html">Prev</a> </td><th width="60%" align="center">Chapter 5. Node Objects</th><td width="20%" align="right"> <a accesskey="n" href="ch05s03.html">Next</a></td></tr></table><hr></div><div class="section" title="5.2. Explicitly Creating File and Directory Nodes"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idp812704"></a>5.2. Explicitly Creating File and Directory Nodes</h2></div></div></div><p>
+
+    It's worth mentioning here that
+    <span class="application">SCons</span> maintains a clear distinction
+    between Nodes that represent files
+    and Nodes that represent directories.
+    <span class="application">SCons</span> supports <code class="function">File</code> and <code class="function">Dir</code>
+    functions that, respectively,
+    return a file or directory Node:
+
+    </p><pre class="programlisting">
+hello_c = File('hello.c')
+Program(hello_c)
+
+classes = Dir('classes')
+Java(classes, 'src')
+      </pre><p>
+
+    Normally, you don't need to call
+    <code class="function">File</code> or <code class="function">Dir</code> directly,
+    because calling a builder method automatically
+    treats strings as the names of files or directories,
+    and translates them into
+    the Node objects for you.
+    The <code class="function">File</code> and <code class="function">Dir</code> functions can come in handy
+    in situations where you need to explicitly
+    instruct <span class="application">SCons</span> about the type of Node being
+    passed to a builder or other function,
+    or unambiguously refer to a specific
+    file in a directory tree.
+    
+
+    </p><p>
+
+    There are also times when you may need to
+    refer to an entry in a file system
+    without knowing in advance
+    whether it's a file or a directory.
+    For those situations,
+    <span class="application">SCons</span> also supports an <code class="function">Entry</code> function,
+    which returns a Node
+    that can represent either a file or a directory.
+
+    </p><pre class="programlisting">
+xyzzy = Entry('xyzzy')
+    </pre><p>
+
+    The returned <code class="literal">xyzzy</code> Node
+    will be turned into a file or directory Node
+    the first time it is used by a builder method
+    or other function that
+    requires one vs. the other.
+
+    </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch05s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 5. Node Objects </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 5.3. Printing <code class="classname">Node</code> File Names</td></tr></table></div></body></html>

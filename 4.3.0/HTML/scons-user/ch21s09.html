@@ -1,0 +1,37 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>21.9. Not Configuring When Cleaning Targets</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.3.0"><link rel="up" href="ch21.html" title="Chapter 21. Multi-Platform Configuration (Autoconf Functionality)"><link rel="prev" href="ch21s08.html" title="21.8. Extending SCons: Adding Your Own Custom Checks"><link rel="next" href="ch22.html" title="Chapter 22. Caching Built Files"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">21.9. Not Configuring When Cleaning Targets</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch21s08.html">Prev</a> </td><th width="60%" align="center">Chapter 21. Multi-Platform Configuration (<span class="application">Autoconf</span> Functionality)</th><td width="20%" align="right"> <a accesskey="n" href="ch22.html">Next</a></td></tr></table><hr></div><div class="section" title="21.9. Not Configuring When Cleaning Targets"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idm46358238394592"></a>21.9. Not Configuring When Cleaning Targets</h2></div></div></div><p>
+
+    Using multi-platform configuration
+    as described in the previous sections
+    will run the configuration commands
+    even when invoking
+    <strong class="userinput"><code>scons -c</code></strong>
+    to clean targets:
+
+    </p><pre class="screen">
+% <strong class="userinput"><code>scons -Q -c</code></strong>
+Checking for MyLibrary... yes
+Removed foo.o
+Removed foo
+    </pre><p>
+
+    Although running the platform checks
+    when removing targets doesn't hurt anything,
+    it's usually unnecessary.
+    You can avoid this by using the
+    <code class="function">GetOption</code> method to
+    check whether the <code class="option">-c</code> (clean)
+    option has been invoked on the command line:
+
+    </p><pre class="programlisting">
+env = Environment()
+if not env.GetOption('clean'):
+    conf = Configure(env, custom_tests={'CheckMyLibrary': CheckMyLibrary})
+    if not conf.CheckMyLibrary():
+        print('MyLibrary is not installed!')
+        Exit(1)
+    env = conf.Finish()
+    </pre><pre class="screen">
+% <strong class="userinput"><code>scons -Q -c</code></strong>
+Removed foo.o
+Removed foo
+    </pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch21s08.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch21.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch22.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">21.8. Extending <span class="application">SCons</span>: Adding Your Own Custom Checks </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 22. Caching Built Files</td></tr></table></div></body></html>

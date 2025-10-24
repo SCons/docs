@@ -1,0 +1,222 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Checking for the Availability of a Library</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 0.98.2"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Multi-Platform Configuration (Autoconf Functionality)"
+HREF="c2991.html"><LINK
+REL="PREVIOUS"
+TITLE="Checking for the Availability of a Function"
+HREF="x3026.html"><LINK
+REL="NEXT"
+TITLE="Checking for the Availability of a typedef"
+HREF="x3046.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 0.98.2</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x3026.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 22. Multi-Platform Configuration (<SPAN
+CLASS="application"
+>Autoconf</SPAN
+> Functionality)</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x3046.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN3031"
+>22.4. Checking for the Availability of a Library</A
+></H1
+><P
+>&#13;
+    Check for the availability of a library
+    using the <CODE
+CLASS="function"
+>CheckLib</CODE
+> method.
+    You only specify the basename of the library,
+    you don't need to add a <TT
+CLASS="literal"
+>lib</TT
+>
+    prefix or a <TT
+CLASS="literal"
+>.a</TT
+> or <TT
+CLASS="literal"
+>.lib</TT
+> suffix:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;    env = Environment()
+    conf = Configure(env)
+    if not conf.CheckLib('m'):
+        print 'Did not find libm.a or m.lib, exiting!'
+        Exit(1)
+    env = conf.Finish()
+    </PRE
+><P
+>&#13;
+    Because the ability to use a library successfully
+    often depends on having access to a header file
+    that describes the library's interface,
+    you can check for a library
+    <SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>and</I
+></SPAN
+> a header file
+    at the same time by using the
+    <CODE
+CLASS="function"
+>CheckLibWithHeader</CODE
+> method:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;    env = Environment()
+    conf = Configure(env)
+    if not conf.CheckLibWithHeader('m', 'math.h'):
+        print 'Did not find libm.a or m.lib, exiting!'
+        Exit(1)
+    env = conf.Finish()
+    </PRE
+><P
+>&#13;
+    This is essentially shorthand for
+    separate calls to the <CODE
+CLASS="function"
+>CheckHeader</CODE
+> and <CODE
+CLASS="function"
+>CheckLib</CODE
+>
+    functions.
+
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x3026.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x3046.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Checking for the Availability of a Function</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c2991.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Checking for the Availability of a <TT
+CLASS="literal"
+>typedef</TT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

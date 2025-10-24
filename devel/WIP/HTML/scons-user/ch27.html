@@ -1,0 +1,184 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Chapter 27. Using SCons with other build tools</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.4.1"><link rel="up" href="index.html" title="SCons 4.4.1"><link rel="prev" href="ch26s08.html" title="26.8. Virtual environments (virtualenvs)"><link rel="next" href="ch27s02.html" title="27.2. Ninja Build Generator"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 27. Using SCons with other build tools</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch26s08.html">Prev</a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="ch27s02.html">Next</a></td></tr></table><hr></div><div class="chapter" title="Chapter 27. Using SCons with other build tools"><div class="titlepage"><div><div><h2 class="title"><a name="chap-external"></a>Chapter 27. Using SCons with other build tools</h2></div></div></div><p>
+
+        Sometimes a project needs to interact with other projects
+        in various ways. For example, many open source projects
+        make use of components from other open source projects,
+        and want to use those in their released form, not recode
+        their builds into <span class="application">SCons</span>. As another example, sometimes
+        the flexibility and power of <span class="application">SCons</span> is useful for managing the
+        overall project, but developers might like faster incremental
+        builds when making small changes by using a different tool.
+
+    </p><p>
+
+        This chapter shows some techniques for interacting with other
+        projects and tools effectively from within <span class="application">SCons</span>.
+
+    </p><div class="section" title="27.1. Creating a Compilation Database"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idp105548884215376"></a>27.1. Creating a Compilation Database</h2></div></div></div><p>
+
+            Tooling to perform analysis and modification
+            of source code often needs to know not only the source code
+            itself, but also how it will be compiled, as the compilation line
+            affects the behavior of macros, includes, etc. <span class="application">SCons</span> has a
+            record of this information once it has run, in the form of
+            Actions associated with the sources, and can emit this information
+            so tools can use it.
+
+        </p><p>
+
+            The Clang project has defined a <em class="firstterm">JSON Compilation Database</em>.
+            This database is in common use as input into Clang tools
+            and many IDEs and editors as well.
+            See
+            <a class="ulink" href="https://clang.llvm.org/docs/JSONCompilationDatabase.html" target="_top">
+                <em class="citetitle">JSON Compilation Database Format Specification</em>
+            </a>
+            for complete information. <span class="application">SCons</span> can emit a
+            compilation database in this format
+            by enabling the <a class="link" href="apc.html#t-compilation_db"><code class="literal">compilation_db</code></a> tool
+            and calling the <a class="link" href="apb.html#b-CompilationDatabase"><code class="function">CompilationDatabase</code></a> builder
+            (<span class="emphasis"><em>available since <span class="command"><strong>scons</strong></span> 4.0</em></span>).
+
+        </p><p>
+
+            The compilation database can be populated with
+            source and output files either with paths relative
+            to the top of the build, or using absolute paths.
+            This is controlled by
+            <code class="envar">COMPILATIONDB_USE_ABSPATH=(True|False)</code>
+            which defaults to <code class="constant">False</code>.
+            The entries in this file can be filtered by using
+
+            <code class="envar">COMPILATIONDB_PATH_FILTER='pattern'</code>
+            where the filter pattern is a string following the <span class="application">Python</span>
+            <a class="ulink" href="https://docs.python.org/3/library/fnmatch.html" target="_top">
+                <code class="systemitem">fnmatch</code>
+            </a>
+            syntax.
+            This filtering can be used for outputting different
+            build variants to different compilation database files.
+
+        </p><p>
+
+            The following example illustrates generating a compilation
+            database containing absolute paths:
+
+        </p><pre class="programlisting">
+env = Environment(COMPILATIONDB_USE_ABSPATH=True)
+env.Tool('compilation_db')
+env.CompilationDatabase()
+env.Program('hello.c')
+            </pre><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+Building compilation database compile_commands.json
+cc -o hello.o -c hello.c
+cc -o hello hello.o
+</pre><p>
+            <code class="filename">compile_commands.json</code>
+            contains:
+        </p><pre class="programlisting">
+[
+    {
+        "command": "gcc -o hello.o -c hello.c",
+        "directory": "/home/user/sandbox",
+        "file": "/home/user/sandbox/hello.c",
+        "output": "/home/user/sandbox/hello.o"
+    }
+]
+        </pre><p>
+
+            Notice that the generated database contains only an entry for
+            the <code class="filename">hello.c/hello.o</code> pairing,
+            and nothing for the generation of the final executable
+            <code class="filename">hello</code>
+            - the transformation of
+            <code class="filename">hello.o</code>
+            to
+            <code class="filename">hello</code>
+            does not have any information that affects interpretation
+            of the source code,
+            so it is not interesting to the compilation database.
+
+        </p><p>
+
+            Although it can be a little surprising at first glance,
+            a compilation database target is, like any other target,
+            subject to <span class="command"><strong>scons</strong></span> target selection rules.
+            This means if you set a default target (that does not
+            include the compilation database), or use command-line
+            targets, it might not be selected for building.
+            This can actually be an advantage, since you don't
+            necessarily want to regenerate the compilation database
+            every build.
+            The following example
+            shows selecting relative paths (the default)
+            for output and source,
+            and also giving a non-default name to the database.
+            In order to be able to generate the database separately from building,
+            an alias is set referring to the database,
+            which can then be used as a target - here we are only
+            building the compilation database target, not the code.
+
+        </p><pre class="programlisting">
+env = Environment()
+env.Tool('compilation_db')
+cdb = env.CompilationDatabase('compile_database.json')
+Alias('cdb', cdb)
+env.Program('test_main.c')
+            </pre><pre class="screen">% <strong class="userinput"><code>scons -Q cdb</code></strong>
+Building compilation database compile_database.json
+</pre><p>
+            <code class="filename">compile_database.json</code> contains:
+        </p><pre class="programlisting">
+[
+    {
+        "command": "gcc -o test_main.o -c test_main.c",
+        "directory": "/home/user/sandbox",
+        "file": "test_main.c",
+        "output": "test_main.o"
+    }
+]
+        </pre><p>
+            The following (incomplete) example shows using filtering
+            to separate build variants.
+            In the case of using variants,
+            you want different compilation databases for each,
+            since the build parameters differ, so the code analysis
+            needs to see the correct build lines for the 32-bit build
+            and 64-bit build hinted at here.
+            For simplicity of presentation,
+            the example omits the setup details of the variant directories:
+        </p><pre class="programlisting">
+env = Environment()
+env.Tool("compilation_db")
+
+env1 = env.Clone()
+env1["COMPILATIONDB_PATH_FILTER"] = "build/linux32/*"
+env1.CompilationDatabase("compile_commands-linux32.json")
+
+env2 = env.Clone()
+env2["COMPILATIONDB_PATH_FILTER"] = "build/linux64/*"
+env2.CompilationDatabase('compile_commands-linux64.json')
+        </pre><p>
+            <code class="filename">compile_commands-linux32.json</code>
+            contains:
+        </p><pre class="programlisting">
+[
+    {
+        "command": "gcc -o hello.o -c hello.c",
+        "directory": "/home/mats/github/scons/exp/compdb",
+        "file": "hello.c",
+        "output": "hello.o"
+    }
+]
+        </pre><p>
+            <code class="filename">compile_commands-linux64.json</code> contains:
+        </p><pre class="programlisting">
+[
+    {
+        "command": "gcc -m64 -o build/linux64/test_main.o -c test_main.c",
+        "directory": "/home/user/sandbox",
+        "file": "test_main.c",
+        "output": "build/linux64/test_main.o"
+    }
+]
+        </pre></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch26s08.html">Prev</a> </td><td width="20%" align="center"> </td><td width="40%" align="right"> <a accesskey="n" href="ch27s02.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">26.8. Virtual environments (virtualenvs) </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 27.2. Ninja Build Generator</td></tr></table></div></body></html>

@@ -1,0 +1,46 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>5.3. Printing Node File Names</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 2.3.5"><link rel="up" href="ch05.html" title="Chapter 5. Node Objects"><link rel="prev" href="ch05s02.html" title="5.2. Explicitly Creating File and Directory Nodes"><link rel="next" href="ch05s04.html" title="5.4. Using a Node's File Name as a String"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.3. Printing <code class="classname">Node</code> File Names</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05s02.html">Prev</a> </td><th width="60%" align="center">Chapter 5. Node Objects</th><td width="20%" align="right"> <a accesskey="n" href="ch05s04.html">Next</a></td></tr></table><hr></div><div class="section" title="5.3. Printing Node File Names"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idp1426574932"></a>5.3. Printing <code class="classname">Node</code> File Names</h2></div></div></div><p>
+
+    One of the most common things you can do
+    with a Node is use it to print the
+    file name that the node represents.
+    Keep in mind, though, that because the object
+    returned by a builder call
+    is a <span class="emphasis"><em>list</em></span> of Nodes,
+    you must use Python subscripts
+    to fetch individual Nodes from the list.
+    For example, the following <code class="filename">SConstruct</code> file:
+
+    </p><pre class="programlisting">
+object_list = Object('hello.c')
+program_list = Program(object_list)
+print "The object file is:", object_list[0]
+print "The program file is:", program_list[0]
+      </pre><p>
+
+    Would print the following file names on a POSIX system:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+The object file is: hello.o
+The program file is: hello
+cc -o hello.o -c hello.c
+cc -o hello hello.o
+</pre><p>
+
+    And the following file names on a Windows system:
+
+    </p><pre class="screen">C:\&gt;<strong class="userinput"><code>scons -Q</code></strong>
+The object file is: hello.obj
+The program file is: hello.exe
+cl /Fohello.obj /c hello.c /nologo
+link /nologo /OUT:hello.exe hello.obj
+embedManifestExeCheck(target, source, env)
+</pre><p>
+
+    Note that in the above example,
+    the <code class="literal">object_list[0]</code>
+    extracts an actual Node <span class="emphasis"><em>object</em></span>
+    from the list,
+    and the Python <code class="literal">print</code> statement
+    converts the object to a string for printing.
+
+    </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05s02.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch05s04.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">5.2. Explicitly Creating File and Directory Nodes </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 5.4. Using a <code class="classname">Node</code>'s File Name as a String</td></tr></table></div></body></html>

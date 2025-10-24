@@ -1,0 +1,638 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SCons.Variables &#8212; SCons 4.5.0 documentation</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <link rel="index" title="Index" href="../../../genindex/" />
+    <link rel="search" title="Search" href="../../../search/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">SCons 4.5.0 documentation</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../search/" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Contents:
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../SCons/">
+   SCons package
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../SCons.Node/">
+     SCons.Node package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../SCons.Platform/">
+     SCons.Platform package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../SCons.Scanner/">
+     SCons.Scanner package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../SCons.Script/">
+     SCons.Script package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../SCons.Taskmaster/">
+     SCons.Taskmaster package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../SCons.Tool/">
+     SCons.Tool package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../SCons.Variables/">
+     SCons.Variables package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../SCons.compat/">
+     SCons.compat package
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../SCons.compat/">
+   SCons.compat package
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../SCons.Node/">
+   SCons.Node package
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../SCons.Platform/">
+   SCons.Platform package
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../SCons.Scanner/">
+   SCons.Scanner package
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../SCons.Script/">
+   SCons.Script package
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../SCons.Taskmaster/">
+   SCons.Taskmaster package
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../SCons.Tool/">
+   SCons.Tool package
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../SCons.Variables/">
+   SCons.Variables package
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1></h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <h1>Source code for SCons.Variables</h1><div class="highlight"><pre>
+<span></span><span class="c1"># MIT License</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright The SCons Foundation</span>
+<span class="c1">#</span>
+<span class="c1"># Permission is hereby granted, free of charge, to any person obtaining</span>
+<span class="c1"># a copy of this software and associated documentation files (the</span>
+<span class="c1"># &quot;Software&quot;), to deal in the Software without restriction, including</span>
+<span class="c1"># without limitation the rights to use, copy, modify, merge, publish,</span>
+<span class="c1"># distribute, sublicense, and/or sell copies of the Software, and to</span>
+<span class="c1"># permit persons to whom the Software is furnished to do so, subject to</span>
+<span class="c1"># the following conditions:</span>
+<span class="c1">#</span>
+<span class="c1"># The above copyright notice and this permission notice shall be included</span>
+<span class="c1"># in all copies or substantial portions of the Software.</span>
+<span class="c1">#</span>
+<span class="c1"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY</span>
+<span class="c1"># KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND</span>
+<span class="c1"># NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE</span>
+<span class="c1"># LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION</span>
+<span class="c1"># OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</span>
+<span class="c1"># WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</span>
+
+<span class="sd">&quot;&quot;&quot;Adds user-friendly customizable variables to an SCons build. &quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">cmp_to_key</span>
+
+<span class="kn">import</span> <span class="nn">SCons.Environment</span>
+<span class="kn">import</span> <span class="nn">SCons.Errors</span>
+<span class="kn">import</span> <span class="nn">SCons.Util</span>
+<span class="kn">import</span> <span class="nn">SCons.Warnings</span>
+
+<span class="kn">from</span> <span class="nn">.BoolVariable</span> <span class="kn">import</span> <span class="n">BoolVariable</span>  <span class="c1"># okay</span>
+<span class="kn">from</span> <span class="nn">.EnumVariable</span> <span class="kn">import</span> <span class="n">EnumVariable</span>  <span class="c1"># okay</span>
+<span class="kn">from</span> <span class="nn">.ListVariable</span> <span class="kn">import</span> <span class="n">ListVariable</span>  <span class="c1"># naja</span>
+<span class="kn">from</span> <span class="nn">.PackageVariable</span> <span class="kn">import</span> <span class="n">PackageVariable</span> <span class="c1"># naja</span>
+<span class="kn">from</span> <span class="nn">.PathVariable</span> <span class="kn">import</span> <span class="n">PathVariable</span> <span class="c1"># okay</span>
+
+
+<div class="viewcode-block" id="Variables"><a class="viewcode-back" href="../../../SCons.Variables/#SCons.Variables.Variables">[docs]</a><span class="k">class</span> <span class="nc">Variables</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Holds all the options, updates the environment with the variables,</span>
+<span class="sd">    and renders the help text.</span>
+
+<span class="sd">    If *is_global* is true, this is a singleton, create only once.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      files (optional): List of option configuration files to load</span>
+<span class="sd">        (backward compatibility). If a single string is passed it is</span>
+<span class="sd">        automatically placed in a file list (Default value = None)</span>
+<span class="sd">      args (optional): dictionary to override values set from *files*.</span>
+<span class="sd">        (Default value = None)</span>
+<span class="sd">      is_global (optional): global instance? (Default value = True)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">instance</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_global</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_List</span><span class="p">(</span><span class="n">files</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">files</span><span class="p">:</span>
+                <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">files</span><span class="p">,]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">files</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">files</span> <span class="o">=</span> <span class="n">files</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unknown</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># create the singleton instance</span>
+        <span class="k">if</span> <span class="n">is_global</span><span class="p">:</span>
+            <span class="bp">self</span> <span class="o">=</span> <span class="n">Variables</span><span class="o">.</span><span class="n">instance</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">Variables</span><span class="o">.</span><span class="n">instance</span><span class="p">:</span>
+                <span class="n">Variables</span><span class="o">.</span><span class="n">instance</span><span class="o">=</span><span class="bp">self</span>
+
+<div class="viewcode-block" id="Variables._do_add"><a class="viewcode-back" href="../../../SCons.Variables/#SCons.Variables.Variables._do_add">[docs]</a>    <span class="k">def</span> <span class="nf">_do_add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">validator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">converter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="k">class</span> <span class="nc">Variable</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="n">option</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">()</span>
+
+        <span class="c1"># If we get a list or a tuple, we take the first element as the</span>
+        <span class="c1"># option key and store the remaining in aliases.</span>
+        <span class="k">if</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_List</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">or</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_Tuple</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+            <span class="n">option</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">option</span><span class="o">.</span><span class="n">aliases</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">option</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span>
+            <span class="c1"># TODO: normalize to not include key in aliases. Currently breaks tests.</span>
+            <span class="n">option</span><span class="o">.</span><span class="n">aliases</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span><span class="p">,]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Environment</span><span class="o">.</span><span class="n">is_valid_construction_var</span><span class="p">(</span><span class="n">option</span><span class="o">.</span><span class="n">key</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">UserError</span><span class="p">(</span><span class="s2">&quot;Illegal Variables key `</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">option</span><span class="o">.</span><span class="n">key</span><span class="p">))</span>
+        <span class="n">option</span><span class="o">.</span><span class="n">help</span> <span class="o">=</span> <span class="n">help</span>
+        <span class="n">option</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="n">default</span>
+        <span class="n">option</span><span class="o">.</span><span class="n">validator</span> <span class="o">=</span> <span class="n">validator</span>
+        <span class="n">option</span><span class="o">.</span><span class="n">converter</span> <span class="o">=</span> <span class="n">converter</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">option</span><span class="p">)</span>
+
+        <span class="c1"># options might be added after the &#39;unknown&#39; dict has been set up,</span>
+        <span class="c1"># so we remove the key and all its aliases from that dict</span>
+        <span class="k">for</span> <span class="n">alias</span> <span class="ow">in</span> <span class="n">option</span><span class="o">.</span><span class="n">aliases</span> <span class="o">+</span> <span class="p">[</span><span class="n">option</span><span class="o">.</span><span class="n">key</span><span class="p">,]:</span>
+            <span class="k">if</span> <span class="n">alias</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">unknown</span><span class="p">:</span>
+                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">unknown</span><span class="p">[</span><span class="n">alias</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Variables.keys"><a class="viewcode-back" href="../../../SCons.Variables/#SCons.Variables.Variables.keys">[docs]</a>    <span class="k">def</span> <span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the keywords for the options.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">o</span><span class="o">.</span><span class="n">key</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Variables.Add"><a class="viewcode-back" href="../../../SCons.Variables/#SCons.Variables.Variables.Add">[docs]</a>    <span class="k">def</span> <span class="nf">Add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot; Adds an option.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">          key: the name of the variable, or a 5-tuple (or list).</span>
+<span class="sd">            If a tuple, and there are no additional arguments,</span>
+<span class="sd">            the tuple is unpacked into the four named kwargs from below.</span>
+<span class="sd">            If a tuple and there are additional arguments, the first word</span>
+<span class="sd">            of the tuple is taken as the key, and the remainder as aliases.</span>
+<span class="sd">          *args: optional positional arguments, corresponding to the four</span>
+<span class="sd">            named kwargs below.</span>
+
+<span class="sd">        Keyword Args:</span>
+<span class="sd">          help: help text for the options (Default value = &quot;&quot;)</span>
+<span class="sd">          default: default value for option (Default value = None)</span>
+<span class="sd">          validator: function called to validate the option&#39;s value</span>
+<span class="sd">            (Default value = None)</span>
+<span class="sd">          converter: function to be called to convert the option&#39;s</span>
+<span class="sd">            value before putting it in the environment. (Default value = None)</span>
+<span class="sd">          **kwargs: arbitrary keyword arguments used by the variable itself.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_List</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">or</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_Tuple</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_add</span><span class="p">(</span><span class="o">*</span><span class="n">key</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_add</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Variables.AddVariables"><a class="viewcode-back" href="../../../SCons.Variables/#SCons.Variables.Variables.AddVariables">[docs]</a>    <span class="k">def</span> <span class="nf">AddVariables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">optlist</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Adds a list of options.</span>
+
+<span class="sd">        Each list element is a tuple/list of arguments to be passed on</span>
+<span class="sd">        to the underlying method for adding options.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            opt.AddVariables(</span>
+<span class="sd">                (&#39;debug&#39;, &#39;&#39;, 0),</span>
+<span class="sd">                (&#39;CC&#39;, &#39;The C compiler&#39;),</span>
+<span class="sd">                (&#39;VALIDATE&#39;, &#39;An option for testing validation&#39;, &#39;notset&#39;, validator, None),</span>
+<span class="sd">            )</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">optlist</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_do_add</span><span class="p">(</span><span class="o">*</span><span class="n">o</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Variables.Update"><a class="viewcode-back" href="../../../SCons.Variables/#SCons.Variables.Variables.Update">[docs]</a>    <span class="k">def</span> <span class="nf">Update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Updates an environment with the option variables.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            env: the environment to update.</span>
+<span class="sd">            args (optional): a dictionary of keys and values to update</span>
+<span class="sd">                in *env*. If omitted, uses the variables from the commandline.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">values</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># first set the defaults:</span>
+        <span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">option</span><span class="o">.</span><span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">values</span><span class="p">[</span><span class="n">option</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">option</span><span class="o">.</span><span class="n">default</span>
+
+        <span class="c1"># next set the value specified in the options file</span>
+        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">files</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+                <span class="nb">dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">filename</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">if</span> <span class="nb">dir</span><span class="p">:</span>
+                    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">dir</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">values</span><span class="p">[</span><span class="s1">&#39;__name__&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">filename</span>
+                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                        <span class="n">contents</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                    <span class="n">exec</span><span class="p">(</span><span class="n">contents</span><span class="p">,</span> <span class="p">{},</span> <span class="n">values</span><span class="p">)</span>
+                <span class="k">finally</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">dir</span><span class="p">:</span>
+                        <span class="k">del</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">del</span> <span class="n">values</span><span class="p">[</span><span class="s1">&#39;__name__&#39;</span><span class="p">]</span>
+
+        <span class="c1"># set the values specified on the command line</span>
+        <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span>
+
+        <span class="k">for</span> <span class="n">arg</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">added</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">option</span><span class="o">.</span><span class="n">aliases</span> <span class="o">+</span> <span class="p">[</span><span class="n">option</span><span class="o">.</span><span class="n">key</span><span class="p">,]:</span>
+                    <span class="n">values</span><span class="p">[</span><span class="n">option</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+                    <span class="n">added</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">added</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">unknown</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+        <span class="c1"># put the variables in the environment:</span>
+        <span class="c1"># (don&#39;t copy over variables that are not declared as options)</span>
+        <span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">env</span><span class="p">[</span><span class="n">option</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="n">option</span><span class="o">.</span><span class="n">key</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+        <span class="c1"># apply converters</span>
+        <span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">option</span><span class="o">.</span><span class="n">converter</span> <span class="ow">and</span> <span class="n">option</span><span class="o">.</span><span class="n">key</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">subst</span><span class="p">(</span><span class="s1">&#39;${</span><span class="si">%s</span><span class="s1">}&#39;</span><span class="o">%</span><span class="n">option</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">env</span><span class="p">[</span><span class="n">option</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">option</span><span class="o">.</span><span class="n">converter</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+                        <span class="n">env</span><span class="p">[</span><span class="n">option</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">option</span><span class="o">.</span><span class="n">converter</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">x</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">UserError</span><span class="p">(</span><span class="s1">&#39;Error converting option: </span><span class="si">%s</span><span class="se">\n</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">option</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span>
+
+
+        <span class="c1"># apply validators</span>
+        <span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">option</span><span class="o">.</span><span class="n">validator</span> <span class="ow">and</span> <span class="n">option</span><span class="o">.</span><span class="n">key</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+                <span class="n">option</span><span class="o">.</span><span class="n">validator</span><span class="p">(</span><span class="n">option</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">subst</span><span class="p">(</span><span class="s1">&#39;${</span><span class="si">%s</span><span class="s1">}&#39;</span><span class="o">%</span><span class="n">option</span><span class="o">.</span><span class="n">key</span><span class="p">),</span> <span class="n">env</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Variables.UnknownVariables"><a class="viewcode-back" href="../../../SCons.Variables/#SCons.Variables.Variables.UnknownVariables">[docs]</a>    <span class="k">def</span> <span class="nf">UnknownVariables</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Returns unknown variables.</span>
+
+<span class="sd">        Identifies options that were not known, declared options in this object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">unknown</span></div>
+
+<div class="viewcode-block" id="Variables.Save"><a class="viewcode-back" href="../../../SCons.Variables/#SCons.Variables.Variables.Save">[docs]</a>    <span class="k">def</span> <span class="nf">Save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Save the options to a file.</span>
+
+<span class="sd">        Saves all the options which have non-default settings</span>
+<span class="sd">        to the given file as Python expressions.  This file can</span>
+<span class="sd">        then be used to load the options for a subsequent run.</span>
+<span class="sd">        This can be used to create an option cache file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            filename: Name of the file to save into</span>
+<span class="sd">            env: the environment get the option values from</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Create the file and write out the header</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+                <span class="c1"># Make an assignment in the file for each option</span>
+                <span class="c1"># within the environment that was assigned a value</span>
+                <span class="c1"># other than the default. We don&#39;t want to save the</span>
+                <span class="c1"># ones set to default: in case the SConscript settings</span>
+                <span class="c1"># change you would then pick up old defaults.</span>
+                <span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">value</span> <span class="o">=</span> <span class="n">env</span><span class="p">[</span><span class="n">option</span><span class="o">.</span><span class="n">key</span><span class="p">]</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">prepare</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">prepare_to_store</span>
+                        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                            <span class="k">try</span><span class="p">:</span>
+                                <span class="nb">eval</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+                            <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+                                <span class="k">raise</span>
+                            <span class="k">except</span><span class="p">:</span>
+                                <span class="c1"># Convert stuff that has a repr() that</span>
+                                <span class="c1"># cannot be evaluated into a string</span>
+                                <span class="n">value</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">to_String</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">value</span> <span class="o">=</span> <span class="n">prepare</span><span class="p">()</span>
+
+                        <span class="n">defaultVal</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">subst</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">to_String</span><span class="p">(</span><span class="n">option</span><span class="o">.</span><span class="n">default</span><span class="p">))</span>
+                        <span class="k">if</span> <span class="n">option</span><span class="o">.</span><span class="n">converter</span><span class="p">:</span>
+                            <span class="k">try</span><span class="p">:</span>
+                                <span class="n">defaultVal</span> <span class="o">=</span> <span class="n">option</span><span class="o">.</span><span class="n">converter</span><span class="p">(</span><span class="n">defaultVal</span><span class="p">)</span>
+                            <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+                                <span class="n">defaultVal</span> <span class="o">=</span> <span class="n">option</span><span class="o">.</span><span class="n">converter</span><span class="p">(</span><span class="n">defaultVal</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span>
+
+                        <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">subst</span><span class="p">(</span><span class="s1">&#39;${</span><span class="si">%s</span><span class="s1">}&#39;</span> <span class="o">%</span> <span class="n">option</span><span class="o">.</span><span class="n">key</span><span class="p">))</span> <span class="o">!=</span> <span class="nb">str</span><span class="p">(</span><span class="n">defaultVal</span><span class="p">):</span>
+                            <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> = </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">option</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">value</span><span class="p">)))</span>
+                    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                        <span class="k">pass</span>
+        <span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">x</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">UserError</span><span class="p">(</span><span class="s1">&#39;Error writing options to file: </span><span class="si">%s</span><span class="se">\n</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Variables.GenerateHelpText"><a class="viewcode-back" href="../../../SCons.Variables/#SCons.Variables.Variables.GenerateHelpText">[docs]</a>    <span class="k">def</span> <span class="nf">GenerateHelpText</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Generates the help text for the options.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            env: an environment that is used to get the current values</span>
+<span class="sd">                of the options.</span>
+<span class="sd">            sort: Either a comparison function used for sorting</span>
+<span class="sd">                (must take two arguments and return -1, 0 or 1)</span>
+<span class="sd">                or a boolean to indicate if it should be sorted.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">sort</span><span class="p">):</span>
+            <span class="n">options</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">cmp_to_key</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">sort</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">key</span><span class="p">)))</span>
+        <span class="k">elif</span> <span class="n">sort</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">options</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">options</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span>
+
+        <span class="k">def</span> <span class="nf">format_opt</span><span class="p">(</span><span class="n">opt</span><span class="p">,</span> <span class="bp">self</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">key</span> <span class="ow">in</span> <span class="n">env</span><span class="p">:</span>
+                <span class="n">actual</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">subst</span><span class="p">(</span><span class="s1">&#39;${</span><span class="si">%s</span><span class="s1">}&#39;</span> <span class="o">%</span> <span class="n">opt</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">actual</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">FormatVariableHelpText</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">help</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">default</span><span class="p">,</span> <span class="n">actual</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">aliases</span><span class="p">)</span>
+
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">_f</span> <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="nb">map</span><span class="p">(</span><span class="n">format_opt</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span> <span class="k">if</span> <span class="n">_f</span><span class="p">]</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
+
+    <span class="n">fmt</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="si">%s</span><span class="s1">: </span><span class="si">%s</span><span class="se">\n</span><span class="s1">    default: </span><span class="si">%s</span><span class="se">\n</span><span class="s1">    actual: </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span>
+    <span class="n">aliasfmt</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="si">%s</span><span class="s1">: </span><span class="si">%s</span><span class="se">\n</span><span class="s1">    default: </span><span class="si">%s</span><span class="se">\n</span><span class="s1">    actual: </span><span class="si">%s</span><span class="se">\n</span><span class="s1">    aliases: </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+<div class="viewcode-block" id="Variables.FormatVariableHelpText"><a class="viewcode-back" href="../../../SCons.Variables/#SCons.Variables.Variables.FormatVariableHelpText">[docs]</a>    <span class="k">def</span> <span class="nf">FormatVariableHelpText</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">help</span><span class="p">,</span> <span class="n">default</span><span class="p">,</span> <span class="n">actual</span><span class="p">,</span> <span class="n">aliases</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">aliases</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">aliases</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># Don&#39;t display the key name itself as an alias.</span>
+        <span class="n">aliases</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">aliases</span> <span class="k">if</span> <span class="n">a</span> <span class="o">!=</span> <span class="n">key</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">aliases</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">aliasfmt</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">help</span><span class="p">,</span> <span class="n">default</span><span class="p">,</span> <span class="n">actual</span><span class="p">,</span> <span class="n">aliases</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fmt</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">help</span><span class="p">,</span> <span class="n">default</span><span class="p">,</span> <span class="n">actual</span><span class="p">)</span></div></div>
+
+<span class="c1"># Local Variables:</span>
+<span class="c1"># tab-width:4</span>
+<span class="c1"># indent-tabs-mode:nil</span>
+<span class="c1"># End:</span>
+<span class="c1"># vim: set expandtab tabstop=4 shiftwidth=4:</span>
+</pre></div>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By SCons Project Team<br/>
+  
+      &copy; Copyright 2022, SCons Project.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

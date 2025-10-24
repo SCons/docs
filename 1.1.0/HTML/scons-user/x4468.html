@@ -1,0 +1,308 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Searching for Files:  the FindFile Function</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 1.1.0"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Miscellaneous Functionality"
+HREF="c4404.html"><LINK
+REL="PREVIOUS"
+TITLE="Explicitly Terminating SCons While Reading SConscript Files:  the Exit Function"
+HREF="x4444.html"><LINK
+REL="NEXT"
+TITLE="Handling Nested Lists:  the Flatten Function"
+HREF="x4497.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 1.1.0</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x4444.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 28. Miscellaneous Functionality</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x4497.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN4468"
+>28.4. Searching for Files:  the <CODE
+CLASS="function"
+>FindFile</CODE
+> Function</A
+></H1
+><P
+>&#13;
+     The <CODE
+CLASS="function"
+>FindFile</CODE
+> function searches for a file in a list of directories.
+     If there is only one directory, it can be given as a simple string.
+     The function returns a File node if a matching file exists,
+     or None if no file is found.
+     (See the documentation for the <CODE
+CLASS="function"
+>Glob</CODE
+> function for an alternative way
+     of searching for entries in a directory.)
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;       # one directory
+       print FindFile('missing', '.')
+       t = FindFile('exists', '.')
+       print t.__class__, t
+    </PRE
+><PRE
+CLASS="screen"
+>&#13;       % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+       None
+       SCons.Node.FS.File exists
+       scons: `.' is up to date.
+    </PRE
+><PRE
+CLASS="programlisting"
+>&#13;       # several directories
+       includes = [ '.', 'include', 'src/include']
+       headers = [ 'nonesuch.h', 'config.h', 'private.h', 'dist.h']
+       for hdr in headers:
+           print '%-12s' % ('%s:' % hdr), FindFile(hdr, includes)
+</PRE
+><PRE
+CLASS="screen"
+>&#13;       % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+       nonesuch.h:  None
+       config.h:    config.h
+       private.h:   src/include/private.h
+       dist.h:      include/dist.h
+       scons: `.' is up to date.
+    </PRE
+><P
+>&#13;
+     If the file exists in more than one directory,
+     only the first occurrence is returned.
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;        print FindFile('multiple', ['sub1', 'sub2', 'sub3'])
+        print FindFile('multiple', ['sub2', 'sub3', 'sub1'])
+        print FindFile('multiple', ['sub3', 'sub1', 'sub2'])
+    </PRE
+><PRE
+CLASS="screen"
+>&#13;       % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+       sub1/multiple
+       sub2/multiple
+       sub3/multiple
+       scons: `.' is up to date.
+    </PRE
+><P
+>&#13;
+    In addition to existing files, <CODE
+CLASS="function"
+>FindFile</CODE
+> will also find derived files
+    (that is, non-leaf files) that haven't been built yet.
+    (Leaf files should already exist, or the build will fail!)
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;       # Neither file exists, so build will fail
+       Command('derived', 'leaf', 'cat &#62;$TARGET $SOURCE')
+       print FindFile('leaf', '.')
+       print FindFile('derived', '.')
+    </PRE
+><PRE
+CLASS="screen"
+>&#13;       % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+       None
+       derived
+       scons: *** Source `leaf' not found, needed by target `derived'.  Stop.
+    </PRE
+><PRE
+CLASS="programlisting"
+>&#13;       # Neither file exists, so build will fail
+       Command('derived', 'leaf', 'cat &#62;$TARGET $SOURCE')
+       print FindFile('leaf', '.')
+       print FindFile('derived', '.')
+
+       # Only 'leaf' exists
+       Command('derived', 'leaf', 'cat &#62;$TARGET $SOURCE')
+       print FindFile('leaf', '.')
+       print FindFile('derived', '.')
+    </PRE
+><PRE
+CLASS="screen"
+>&#13;       % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+       leaf
+       derived
+       cat &#62; derived leaf
+    </PRE
+><P
+>&#13;
+    If a source file exists, <CODE
+CLASS="function"
+>FindFile</CODE
+> will correctly return the name
+    in the build directory.
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;       # Only 'src/leaf' exists
+       VariantDir('build', 'src')
+       print FindFile('leaf', 'build')
+    </PRE
+><PRE
+CLASS="screen"
+>&#13;       % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+       build/leaf
+       scons: `.' is up to date.
+    </PRE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x4444.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x4497.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Explicitly Terminating <SPAN
+CLASS="application"
+>SCons</SPAN
+> While Reading <TT
+CLASS="filename"
+>SConscript</TT
+> Files:  the <CODE
+CLASS="function"
+>Exit</CODE
+> Function</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c4404.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Handling Nested Lists:  the <CODE
+CLASS="function"
+>Flatten</CODE
+> Function</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

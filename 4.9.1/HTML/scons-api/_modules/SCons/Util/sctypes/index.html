@@ -1,0 +1,778 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SCons.Util.sctypes &#8212; SCons 4.9.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../../_static/documentation_options.js?v=95831eda"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/SCons/Util/sctypes';</script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search/"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../../">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SCons 4.9.1 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../SCons/">SCons package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Taskmaster/">SCons.Taskmaster package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Util/">SCons.Util package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.Variables/">SCons.Variables package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../SCons.compat/">SCons.compat package</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.compat/">SCons.compat package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Taskmaster/">SCons.Taskmaster package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Util/">SCons.Util package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SCons.Variables/">SCons.Variables package</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for SCons.Util.sctypes</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: MIT</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright The SCons Foundation</span>
+
+<span class="sd">&quot;&quot;&quot;Various SCons utility functions</span>
+
+<span class="sd">Routines which check types and do type conversions.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">codecs</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pprint</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">UserDict</span><span class="p">,</span> <span class="n">UserList</span><span class="p">,</span> <span class="n">UserString</span><span class="p">,</span> <span class="n">deque</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">MappingView</span><span class="p">,</span> <span class="n">Iterable</span>
+
+<span class="c1"># Functions for deciding if things are like various types, mainly to</span>
+<span class="c1"># handle UserDict, UserList and UserString like their underlying types.</span>
+<span class="c1">#</span>
+<span class="c1"># Yes, all of this manual testing breaks polymorphism, and the real</span>
+<span class="c1"># Pythonic way to do all of this would be to just try it and handle the</span>
+<span class="c1"># exception, but handling the exception when it&#39;s not the right type is</span>
+<span class="c1"># often too slow.</span>
+
+<span class="c1"># A trick is used to speed up these functions. Default arguments are</span>
+<span class="c1"># used to take a snapshot of the global functions and constants used</span>
+<span class="c1"># by these functions. This transforms accesses to global variables into</span>
+<span class="c1"># local variable accesses (i.e. LOAD_FAST instead of LOAD_GLOBAL).</span>
+<span class="c1"># Since checkers dislike this, it&#39;s now annotated for pylint, to flag</span>
+<span class="c1"># (mostly for other readers of this code) we&#39;re doing this intentionally.</span>
+<span class="c1"># TODO: experts affirm this is still faster, but maybe check if worth it?</span>
+
+<span class="n">DictTypes</span> <span class="o">=</span> <span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="n">UserDict</span><span class="p">)</span>
+<span class="n">ListTypes</span> <span class="o">=</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">UserList</span><span class="p">,</span> <span class="n">deque</span><span class="p">)</span>
+
+<span class="c1"># With Python 3, there are view types that are sequences. Other interesting</span>
+<span class="c1"># sequences are range and bytearray.  What we don&#39;t want is strings: while</span>
+<span class="c1"># they are iterable sequences, in SCons usage iterating over a string is</span>
+<span class="c1"># almost never what we want. So basically iterable-but-not-string:</span>
+<span class="n">SequenceTypes</span> <span class="o">=</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">deque</span><span class="p">,</span> <span class="n">UserList</span><span class="p">,</span> <span class="n">MappingView</span><span class="p">)</span>
+
+<span class="c1"># Note that profiling data shows a speed-up when comparing</span>
+<span class="c1"># explicitly with str instead of simply comparing</span>
+<span class="c1"># with basestring. (at least on Python 2.5.1)</span>
+<span class="c1"># TODO: PY3 check this benchmarking is still correct.</span>
+<span class="n">StringTypes</span> <span class="o">=</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">UserString</span><span class="p">)</span>
+
+<span class="c1"># Empirically, it is faster to check explicitly for str than for basestring.</span>
+<span class="n">BaseStringTypes</span> <span class="o">=</span> <span class="nb">str</span>
+
+<span class="c1"># Later Python versions allow us to explicitly apply type hints based off the</span>
+<span class="c1"># return value similar to isinstance(), albeit not as precise.</span>
+<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">13</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TypeAlias</span><span class="p">,</span> <span class="n">TypeIs</span>
+
+    <span class="n">DictTypeRet</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">TypeIs</span><span class="p">[</span><span class="nb">dict</span> <span class="o">|</span> <span class="n">UserDict</span><span class="p">]</span>
+    <span class="n">ListTypeRet</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">TypeIs</span><span class="p">[</span><span class="nb">list</span> <span class="o">|</span> <span class="n">UserList</span> <span class="o">|</span> <span class="n">deque</span><span class="p">]</span>
+    <span class="n">SequenceTypeRet</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">TypeIs</span><span class="p">[</span><span class="nb">list</span> <span class="o">|</span> <span class="nb">tuple</span> <span class="o">|</span> <span class="n">deque</span> <span class="o">|</span> <span class="n">UserList</span> <span class="o">|</span> <span class="n">MappingView</span><span class="p">]</span>
+    <span class="n">TupleTypeRet</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">TypeIs</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]</span>
+    <span class="n">StringTypeRet</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">TypeIs</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">UserString</span><span class="p">]</span>
+<span class="k">elif</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TypeAlias</span><span class="p">,</span> <span class="n">TypeGuard</span>
+
+    <span class="n">DictTypeRet</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">TypeGuard</span><span class="p">[</span><span class="nb">dict</span> <span class="o">|</span> <span class="n">UserDict</span><span class="p">]</span>
+    <span class="n">ListTypeRet</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">TypeGuard</span><span class="p">[</span><span class="nb">list</span> <span class="o">|</span> <span class="n">UserList</span> <span class="o">|</span> <span class="n">deque</span><span class="p">]</span>
+    <span class="n">SequenceTypeRet</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">TypeGuard</span><span class="p">[</span><span class="nb">list</span> <span class="o">|</span> <span class="nb">tuple</span> <span class="o">|</span> <span class="n">deque</span> <span class="o">|</span> <span class="n">UserList</span> <span class="o">|</span> <span class="n">MappingView</span><span class="p">]</span>
+    <span class="n">TupleTypeRet</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">TypeGuard</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]</span>
+    <span class="n">StringTypeRet</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">TypeGuard</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">UserString</span><span class="p">]</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="c1"># Because we have neither `TypeAlias` class nor `type` keyword pre-3.10,</span>
+    <span class="c1"># the boolean fallback type has to be wrapped in the legacy `Union` class.</span>
+    <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+
+    <span class="n">DictTypeRet</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span>
+    <span class="n">ListTypeRet</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span>
+    <span class="n">SequenceTypeRet</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span>
+    <span class="n">TupleTypeRet</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span>
+    <span class="n">StringTypeRet</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="is_Dict">
+<a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.sctypes.is_Dict">[docs]</a>
+<span class="k">def</span> <span class="nf">is_Dict</span><span class="p">(</span>  <span class="c1"># pylint: disable=redefined-outer-name,redefined-builtin</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="nb">isinstance</span><span class="o">=</span><span class="nb">isinstance</span><span class="p">,</span> <span class="n">DictTypes</span><span class="o">=</span><span class="n">DictTypes</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DictTypeRet</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if object is a dict.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">DictTypes</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="is_List">
+<a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.sctypes.is_List">[docs]</a>
+<span class="k">def</span> <span class="nf">is_List</span><span class="p">(</span>  <span class="c1"># pylint: disable=redefined-outer-name,redefined-builtin</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="nb">isinstance</span><span class="o">=</span><span class="nb">isinstance</span><span class="p">,</span> <span class="n">ListTypes</span><span class="o">=</span><span class="n">ListTypes</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ListTypeRet</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if object is a list.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">ListTypes</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="is_Sequence">
+<a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.sctypes.is_Sequence">[docs]</a>
+<span class="k">def</span> <span class="nf">is_Sequence</span><span class="p">(</span>  <span class="c1"># pylint: disable=redefined-outer-name,redefined-builtin</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="nb">isinstance</span><span class="o">=</span><span class="nb">isinstance</span><span class="p">,</span> <span class="n">SequenceTypes</span><span class="o">=</span><span class="n">SequenceTypes</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SequenceTypeRet</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if object is a sequence.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">SequenceTypes</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="is_Tuple">
+<a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.sctypes.is_Tuple">[docs]</a>
+<span class="k">def</span> <span class="nf">is_Tuple</span><span class="p">(</span>  <span class="c1"># pylint: disable=redefined-builtin</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="nb">isinstance</span><span class="o">=</span><span class="nb">isinstance</span><span class="p">,</span> <span class="nb">tuple</span><span class="o">=</span><span class="nb">tuple</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TupleTypeRet</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if object is a tuple.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="is_String">
+<a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.sctypes.is_String">[docs]</a>
+<span class="k">def</span> <span class="nf">is_String</span><span class="p">(</span>  <span class="c1"># pylint: disable=redefined-outer-name,redefined-builtin</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="nb">isinstance</span><span class="o">=</span><span class="nb">isinstance</span><span class="p">,</span> <span class="n">StringTypes</span><span class="o">=</span><span class="n">StringTypes</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StringTypeRet</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if object is a string.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">StringTypes</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="is_Scalar">
+<a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.sctypes.is_Scalar">[docs]</a>
+<span class="k">def</span> <span class="nf">is_Scalar</span><span class="p">(</span>  <span class="c1"># pylint: disable=redefined-outer-name,redefined-builtin</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="nb">isinstance</span><span class="o">=</span><span class="nb">isinstance</span><span class="p">,</span> <span class="n">StringTypes</span><span class="o">=</span><span class="n">StringTypes</span><span class="p">,</span> <span class="n">Iterable</span><span class="o">=</span><span class="n">Iterable</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if object is a scalar: not a container or iterable.&quot;&quot;&quot;</span>
+    <span class="c1"># Profiling shows that there is an impressive speed-up of 2x</span>
+    <span class="c1"># when explicitly checking for strings instead of just not</span>
+    <span class="c1"># sequence when the argument (i.e. obj) is already a string.</span>
+    <span class="c1"># But, if obj is a not string then it is twice as fast to</span>
+    <span class="c1"># check only for &#39;not sequence&#39;. The following code therefore</span>
+    <span class="c1"># assumes that the obj argument is a string most of the time.</span>
+    <span class="c1"># Update: now using collections.abc.Iterable for the 2nd check.</span>
+    <span class="c1"># Note: None is considered a &quot;scalar&quot; for this check, which is correct</span>
+    <span class="c1"># for the usage in SCons.Environment._add_cppdefines.</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">StringTypes</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># From Dinu C. Gherman,</span>
+<span class="c1"># Python Cookbook, second edition, recipe 6.17, p. 277.</span>
+<span class="c1"># Also: https://code.activestate.com/recipes/68205</span>
+<span class="c1"># ASPN: Python Cookbook: Null Object Design Pattern</span>
+
+
+<div class="viewcode-block" id="Null">
+<a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.sctypes.Null">[docs]</a>
+<span class="k">class</span> <span class="nc">Null</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Null objects always and reliably &#39;do nothing&#39;.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s1">&#39;_instance&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_instance</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_instance</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Null(0x</span><span class="si">{</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">:</span><span class="s2">08X</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="fm">__delattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+
+<div class="viewcode-block" id="NullSeq">
+<a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.sctypes.NullSeq">[docs]</a>
+<span class="k">class</span> <span class="nc">NullSeq</span><span class="p">(</span><span class="n">Null</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A Null object that can also be iterated over.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(())</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+
+<div class="viewcode-block" id="to_bytes">
+<a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.sctypes.to_bytes">[docs]</a>
+<span class="k">def</span> <span class="nf">to_bytes</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert object to bytes.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">s</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">b</span><span class="s1">&#39;None&#39;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="p">(</span><span class="nb">bytes</span><span class="p">,</span> <span class="nb">bytearray</span><span class="p">)):</span>
+        <span class="c1"># if already bytes return.</span>
+        <span class="k">return</span> <span class="n">s</span>
+    <span class="k">return</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="to_str">
+<a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.sctypes.to_str">[docs]</a>
+<span class="k">def</span> <span class="nf">to_str</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert object to string.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">s</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;None&#39;</span>
+    <span class="k">if</span> <span class="n">is_String</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">s</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># Generic convert-to-string functions.  The wrapper</span>
+<span class="c1"># to_String_for_signature() will use a for_signature() method if the</span>
+<span class="c1"># specified object has one.</span>
+
+
+<div class="viewcode-block" id="to_String">
+<a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.sctypes.to_String">[docs]</a>
+<span class="k">def</span> <span class="nf">to_String</span><span class="p">(</span>  <span class="c1"># pylint: disable=redefined-outer-name,redefined-builtin</span>
+    <span class="n">obj</span><span class="p">,</span>
+    <span class="nb">isinstance</span><span class="o">=</span><span class="nb">isinstance</span><span class="p">,</span>
+    <span class="nb">str</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+    <span class="n">UserString</span><span class="o">=</span><span class="n">UserString</span><span class="p">,</span>
+    <span class="n">BaseStringTypes</span><span class="o">=</span><span class="n">BaseStringTypes</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a string version of obj.</span>
+
+<span class="sd">    Use this for data likely to be well-behaved. Use</span>
+<span class="sd">    :func:`to_Text` for unknown file data that needs to be decoded.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">BaseStringTypes</span><span class="p">):</span>
+        <span class="c1"># Early out when already a string!</span>
+        <span class="k">return</span> <span class="n">obj</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">UserString</span><span class="p">):</span>
+        <span class="c1"># obj.data can only be a regular string. Please see the UserString initializer.</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">data</span>
+
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="to_String_for_subst">
+<a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.sctypes.to_String_for_subst">[docs]</a>
+<span class="k">def</span> <span class="nf">to_String_for_subst</span><span class="p">(</span>  <span class="c1"># pylint: disable=redefined-outer-name,redefined-builtin</span>
+    <span class="n">obj</span><span class="p">,</span>
+    <span class="nb">isinstance</span><span class="o">=</span><span class="nb">isinstance</span><span class="p">,</span>
+    <span class="nb">str</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+    <span class="n">BaseStringTypes</span><span class="o">=</span><span class="n">BaseStringTypes</span><span class="p">,</span>
+    <span class="n">SequenceTypes</span><span class="o">=</span><span class="n">SequenceTypes</span><span class="p">,</span>
+    <span class="n">UserString</span><span class="o">=</span><span class="n">UserString</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a string version of obj for subst usage.&quot;&quot;&quot;</span>
+    <span class="c1"># Note that the test cases are sorted by order of probability.</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">BaseStringTypes</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">obj</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">SequenceTypes</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">to_String_for_subst</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">UserString</span><span class="p">):</span>
+        <span class="c1"># obj.data can only a regular string. Please see the UserString initializer.</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">data</span>
+
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="to_String_for_signature">
+<a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.sctypes.to_String_for_signature">[docs]</a>
+<span class="k">def</span> <span class="nf">to_String_for_signature</span><span class="p">(</span>  <span class="c1"># pylint: disable=redefined-outer-name,redefined-builtin</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">to_String_for_subst</span><span class="o">=</span><span class="n">to_String_for_subst</span><span class="p">,</span> <span class="ne">AttributeError</span><span class="o">=</span><span class="ne">AttributeError</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a string version of obj for signature usage.</span>
+
+<span class="sd">    Like :func:`to_String_for_subst` but has special handling for</span>
+<span class="sd">    scons objects that have a :meth:`for_signature` method, and for dicts.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">for_signature</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="c1"># pprint will output dictionary in key sorted order</span>
+            <span class="c1"># with py3.5 the order was randomized. Depending on dict order</span>
+            <span class="c1"># which was undefined until py3.6 (where it&#39;s by insertion order)</span>
+            <span class="c1"># was not wise.</span>
+            <span class="c1"># TODO: Change code when floor is raised to PY36</span>
+            <span class="k">return</span> <span class="n">pprint</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1000000</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">to_String_for_subst</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">f</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="to_Text">
+<a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.sctypes.to_Text">[docs]</a>
+<span class="k">def</span> <span class="nf">to_Text</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return bytes data converted to text.</span>
+
+<span class="sd">    Useful for whole-file reads where the data needs some interpretation,</span>
+<span class="sd">    particularly for Scanners.  Attempts to figure out what the encoding of</span>
+<span class="sd">    the text is based upon the BOM bytes, and then decodes the contents so</span>
+<span class="sd">    that it&#39;s a valid python string.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_encoding_map</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">(</span><span class="n">codecs</span><span class="o">.</span><span class="n">BOM_UTF8</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">codecs</span><span class="o">.</span><span class="n">BOM_UTF16_LE</span><span class="p">,</span> <span class="s1">&#39;utf-16le&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">codecs</span><span class="o">.</span><span class="n">BOM_UTF16_BE</span><span class="p">,</span> <span class="s1">&#39;utf-16be&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">codecs</span><span class="o">.</span><span class="n">BOM_UTF32_LE</span><span class="p">,</span> <span class="s1">&#39;utf-32le&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">codecs</span><span class="o">.</span><span class="n">BOM_UTF32_BE</span><span class="p">,</span> <span class="s1">&#39;utf-32be&#39;</span><span class="p">),</span>
+    <span class="p">]</span>
+
+    <span class="c1"># First look for Byte-order-mark sequences to identify the encoding.</span>
+    <span class="c1"># Strip these since some codecs do, some don&#39;t.</span>
+    <span class="k">for</span> <span class="n">bom</span><span class="p">,</span> <span class="n">encoding</span> <span class="ow">in</span> <span class="n">_encoding_map</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">bom</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">bom</span><span class="p">):]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encoding</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;backslashreplace&#39;</span><span class="p">)</span>
+
+    <span class="c1"># If we didn&#39;t see a BOM, try UTF-8, then the &quot;preferred&quot; encoding</span>
+    <span class="c1"># (the files might be written on this system), then finally latin-1.</span>
+    <span class="c1"># TODO: possibly should be a way for the build to set an encoding.</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">UnicodeDecodeError</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="kn">import</span> <span class="nn">locale</span>
+                <span class="n">prefencoding</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">getpreferredencoding</span><span class="p">()</span>
+                <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">prefencoding</span><span class="p">)</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">UnicodeDecodeError</span><span class="p">,</span> <span class="ne">LookupError</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;latin-1&#39;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;backslashreplace&#39;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_env_bool">
+<a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.sctypes.get_env_bool">[docs]</a>
+<span class="k">def</span> <span class="nf">get_env_bool</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a construction variable to bool.</span>
+
+<span class="sd">    If the value of *name* in dict-like object *env* is &#39;true&#39;, &#39;yes&#39;,</span>
+<span class="sd">    &#39;y&#39;, &#39;on&#39; (case insensitive) or anything convertible to int that</span>
+<span class="sd">    yields non-zero, return ``True``; if &#39;false&#39;, &#39;no&#39;, &#39;n&#39;, &#39;off&#39;</span>
+<span class="sd">    (case insensitive) or a number that converts to integer zero return</span>
+<span class="sd">    ``False``.  Otherwise, or if *name* is not found, return the value</span>
+<span class="sd">    of *default*.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        env: construction environment, or any dict-like object.</span>
+<span class="sd">        name: name of the variable.</span>
+<span class="sd">        default: value to return if *name* not in *env* or cannot</span>
+<span class="sd">          be converted (default: False).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">var</span> <span class="o">=</span> <span class="n">env</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">default</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">var</span><span class="p">))</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">var</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;true&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;on&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">var</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;false&#39;</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;off&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="n">default</span></div>
+
+
+
+<div class="viewcode-block" id="get_os_env_bool">
+<a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.sctypes.get_os_env_bool">[docs]</a>
+<span class="k">def</span> <span class="nf">get_os_env_bool</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert an external environment variable to boolean.</span>
+
+<span class="sd">    Like :func:`get_env_bool`, but uses :attr:`os.environ` as the lookup dict.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">get_env_bool</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span></div>
+
+
+
+<span class="n">_get_env_var</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^\$([_a-zA-Z]\w*|{[_a-zA-Z]\w*})$&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="get_environment_var">
+<a class="viewcode-back" href="../../../../SCons.Util/#SCons.Util.sctypes.get_environment_var">[docs]</a>
+<span class="k">def</span> <span class="nf">get_environment_var</span><span class="p">(</span><span class="n">varstr</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return undecorated construction variable string.</span>
+
+<span class="sd">    Determine if *varstr* looks like a reference</span>
+<span class="sd">    to a single environment variable, like ``&quot;$FOO&quot;`` or ``&quot;${FOO}&quot;``.</span>
+<span class="sd">    If so, return that variable with no decorations, like ``&quot;FOO&quot;``.</span>
+<span class="sd">    If not, return ``None``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mo</span> <span class="o">=</span> <span class="n">_get_env_var</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">to_String</span><span class="p">(</span><span class="n">varstr</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">mo</span><span class="p">:</span>
+        <span class="n">var</span> <span class="o">=</span> <span class="n">mo</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">var</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;{&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">var</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">var</span>
+
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+
+<span class="c1"># Local Variables:</span>
+<span class="c1"># tab-width:4</span>
+<span class="c1"># indent-tabs-mode:nil</span>
+<span class="c1"># End:</span>
+<span class="c1"># vim: set expandtab tabstop=4 shiftwidth=4:</span>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SCons Project Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022, SCons Project.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

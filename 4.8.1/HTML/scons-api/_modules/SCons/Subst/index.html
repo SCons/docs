@@ -1,0 +1,1459 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SCons.Subst &#8212; SCons 4.8.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../_static/documentation_options.js?v=f14cce9e"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/SCons/Subst';</script>
+    <link rel="index" title="Index" href="../../../genindex/" />
+    <link rel="search" title="Search" href="../../../search/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search/"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SCons 4.8.1 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../SCons/">SCons package</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Taskmaster/">SCons.Taskmaster package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Util/">SCons.Util package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/">SCons.Variables package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.compat/">SCons.compat package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.compat/">SCons.compat package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Taskmaster/">SCons.Taskmaster package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Util/">SCons.Util package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Variables/">SCons.Variables package</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for SCons.Subst</h1><div class="highlight"><pre>
+<span></span><span class="c1"># MIT License</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright The SCons Foundation</span>
+<span class="c1">#</span>
+<span class="c1"># Permission is hereby granted, free of charge, to any person obtaining</span>
+<span class="c1"># a copy of this software and associated documentation files (the</span>
+<span class="c1"># &quot;Software&quot;), to deal in the Software without restriction, including</span>
+<span class="c1"># without limitation the rights to use, copy, modify, merge, publish,</span>
+<span class="c1"># distribute, sublicense, and/or sell copies of the Software, and to</span>
+<span class="c1"># permit persons to whom the Software is furnished to do so, subject to</span>
+<span class="c1"># the following conditions:</span>
+<span class="c1">#</span>
+<span class="c1"># The above copyright notice and this permission notice shall be included</span>
+<span class="c1"># in all copies or substantial portions of the Software.</span>
+<span class="c1">#</span>
+<span class="c1"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY</span>
+<span class="c1"># KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND</span>
+<span class="c1"># NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE</span>
+<span class="c1"># LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION</span>
+<span class="c1"># OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</span>
+<span class="c1"># WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</span>
+
+<span class="sd">&quot;&quot;&quot;SCons string substitution.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">inspect</span> <span class="kn">import</span> <span class="n">signature</span><span class="p">,</span> <span class="n">Parameter</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">import</span> <span class="nn">SCons.Errors</span>
+<span class="kn">from</span> <span class="nn">SCons.Util</span> <span class="kn">import</span> <span class="n">is_String</span><span class="p">,</span> <span class="n">is_Sequence</span>
+
+<span class="c1"># Indexed by the SUBST_* constants below.</span>
+<span class="n">_strconv</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">to_String_for_subst</span><span class="p">,</span>
+    <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">to_String_for_subst</span><span class="p">,</span>
+    <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">to_String_for_signature</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">AllowableExceptions</span> <span class="o">=</span> <span class="p">(</span><span class="ne">IndexError</span><span class="p">,</span> <span class="ne">NameError</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="SetAllowableExceptions">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.SetAllowableExceptions">[docs]</a>
+<span class="k">def</span> <span class="nf">SetAllowableExceptions</span><span class="p">(</span><span class="o">*</span><span class="n">excepts</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">global</span> <span class="n">AllowableExceptions</span>
+    <span class="n">AllowableExceptions</span> <span class="o">=</span> <span class="p">[</span><span class="n">_f</span> <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="n">excepts</span> <span class="k">if</span> <span class="n">_f</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="raise_exception">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.raise_exception">[docs]</a>
+<span class="k">def</span> <span class="nf">raise_exception</span><span class="p">(</span><span class="n">exception</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">exception</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> `</span><span class="si">%s</span><span class="s2">&#39; trying to evaluate `</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">exception</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">target</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">BuildError</span><span class="p">(</span><span class="n">target</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">msg</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">UserError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="Literal">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.Literal">[docs]</a>
+<span class="k">class</span> <span class="nc">Literal</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A wrapper for a string.  If you use this object wrapped</span>
+<span class="sd">    around a string, then it will be interpreted as literal.</span>
+<span class="sd">    When passed to the command interpreter, all special</span>
+<span class="sd">    characters will be escaped.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lstr</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lstr</span> <span class="o">=</span> <span class="n">lstr</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lstr</span>
+
+<div class="viewcode-block" id="Literal.escape">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.Literal.escape">[docs]</a>
+    <span class="k">def</span> <span class="nf">escape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">escape_func</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">escape_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lstr</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Literal.for_signature">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.Literal.for_signature">[docs]</a>
+    <span class="k">def</span> <span class="nf">for_signature</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lstr</span></div>
+
+
+<div class="viewcode-block" id="Literal.is_literal">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.Literal.is_literal">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_literal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Literal</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lstr</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">lstr</span>
+
+    <span class="k">def</span> <span class="nf">__neq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lstr</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SpecialAttrWrapper">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.SpecialAttrWrapper">[docs]</a>
+<span class="k">class</span> <span class="nc">SpecialAttrWrapper</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This is a wrapper for what we call a &#39;Node special attribute.&#39;</span>
+<span class="sd">    This is any of the attributes of a Node that we can reference from</span>
+<span class="sd">    Environment variable substitution, such as $TARGET.abspath or</span>
+<span class="sd">    $SOURCES[1].filebase.  We implement the same methods as Literal</span>
+<span class="sd">    so we can handle special characters, plus a for_signature method,</span>
+<span class="sd">    such that we can return some canonical string during signature</span>
+<span class="sd">    calculation to avoid unnecessary rebuilds.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lstr</span><span class="p">,</span> <span class="n">for_signature</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The for_signature parameter, if supplied, will be the</span>
+<span class="sd">        canonical string we return from for_signature().  Else</span>
+<span class="sd">        we will simply return lstr.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lstr</span> <span class="o">=</span> <span class="n">lstr</span>
+        <span class="k">if</span> <span class="n">for_signature</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">forsig</span> <span class="o">=</span> <span class="n">for_signature</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">forsig</span> <span class="o">=</span> <span class="n">lstr</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lstr</span>
+
+<div class="viewcode-block" id="SpecialAttrWrapper.escape">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.SpecialAttrWrapper.escape">[docs]</a>
+    <span class="k">def</span> <span class="nf">escape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">escape_func</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">escape_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lstr</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SpecialAttrWrapper.for_signature">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.SpecialAttrWrapper.for_signature">[docs]</a>
+    <span class="k">def</span> <span class="nf">for_signature</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">forsig</span></div>
+
+
+<div class="viewcode-block" id="SpecialAttrWrapper.is_literal">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.SpecialAttrWrapper.is_literal">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_literal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+</div>
+
+
+<div class="viewcode-block" id="quote_spaces">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.quote_spaces">[docs]</a>
+<span class="k">def</span> <span class="nf">quote_spaces</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generic function for putting double quotes around any string that</span>
+<span class="sd">    has white space in it.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s1">&#39; &#39;</span> <span class="ow">in</span> <span class="n">arg</span> <span class="ow">or</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span> <span class="ow">in</span> <span class="n">arg</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">arg</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="CmdStringHolder">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.CmdStringHolder">[docs]</a>
+<span class="k">class</span> <span class="nc">CmdStringHolder</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">UserString</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This is a special class used to hold strings generated by</span>
+<span class="sd">    scons_subst() and scons_subst_list().  It defines a special method</span>
+<span class="sd">    escape().  When passed a function with an escape algorithm for a</span>
+<span class="sd">    particular platform, it will return the contained string with the</span>
+<span class="sd">    proper escape sequences inserted.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">literal</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">literal</span> <span class="o">=</span> <span class="n">literal</span>
+
+<div class="viewcode-block" id="CmdStringHolder.is_literal">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.CmdStringHolder.is_literal">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_literal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">literal</span></div>
+
+
+<div class="viewcode-block" id="CmdStringHolder.escape">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.CmdStringHolder.escape">[docs]</a>
+    <span class="k">def</span> <span class="nf">escape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">escape_func</span><span class="p">,</span> <span class="n">quote_func</span><span class="o">=</span><span class="n">quote_spaces</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Escape the string with the supplied function.  The</span>
+<span class="sd">        function is expected to take an arbitrary string, then</span>
+<span class="sd">        return it with all special characters escaped and ready</span>
+<span class="sd">        for passing to the command interpreter.</span>
+
+<span class="sd">        After calling this function, the next call to str() will</span>
+<span class="sd">        return the escaped string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_literal</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">escape_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s1">&#39; &#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="ow">or</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">quote_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span></div>
+</div>
+
+
+<div class="viewcode-block" id="escape_list">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.escape_list">[docs]</a>
+<span class="k">def</span> <span class="nf">escape_list</span><span class="p">(</span><span class="n">mylist</span><span class="p">,</span> <span class="n">escape_func</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Escape a list of arguments by running the specified escape_func</span>
+<span class="sd">    on every object in the list that has an escape() method.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">escape</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">escape_func</span><span class="o">=</span><span class="n">escape_func</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">e</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">escape</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">obj</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">e</span><span class="p">(</span><span class="n">escape_func</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">escape</span><span class="p">,</span> <span class="n">mylist</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="NLWrapper">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.NLWrapper">[docs]</a>
+<span class="k">class</span> <span class="nc">NLWrapper</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A wrapper class that delays turning a list of sources or targets</span>
+<span class="sd">    into a NodeList until it&#39;s needed.  The specified function supplied</span>
+<span class="sd">    when the object is initialized is responsible for turning raw nodes</span>
+<span class="sd">    into proxies that implement the special attributes like .abspath,</span>
+<span class="sd">    .source, etc.  This way, we avoid creating those proxies just</span>
+<span class="sd">    &quot;in case&quot; someone is going to use $TARGET or the like, and only</span>
+<span class="sd">    go through the trouble if we really have to.</span>
+
+<span class="sd">    In practice, this might be a wash performance-wise, but it&#39;s a little</span>
+<span class="sd">    cleaner conceptually...</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">list</span> <span class="o">=</span> <span class="nb">list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
+<div class="viewcode-block" id="NLWrapper._return_nodelist">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.NLWrapper._return_nodelist">[docs]</a>
+    <span class="k">def</span> <span class="nf">_return_nodelist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodelist</span></div>
+
+<div class="viewcode-block" id="NLWrapper._gen_nodelist">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.NLWrapper._gen_nodelist">[docs]</a>
+    <span class="k">def</span> <span class="nf">_gen_nodelist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">mylist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">list</span>
+        <span class="k">if</span> <span class="n">mylist</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">mylist</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">is_Sequence</span><span class="p">(</span><span class="n">mylist</span><span class="p">):</span>
+            <span class="n">mylist</span> <span class="o">=</span> <span class="p">[</span><span class="n">mylist</span><span class="p">]</span>
+        <span class="c1"># The map(self.func) call is what actually turns</span>
+        <span class="c1"># a list into appropriate proxies.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodelist</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">NodeList</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">,</span> <span class="n">mylist</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_create_nodelist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_return_nodelist</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodelist</span></div>
+
+    <span class="n">_create_nodelist</span> <span class="o">=</span> <span class="n">_gen_nodelist</span></div>
+
+
+
+<div class="viewcode-block" id="Targets_or_Sources">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.Targets_or_Sources">[docs]</a>
+<span class="k">class</span> <span class="nc">Targets_or_Sources</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">UserList</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class that implements $TARGETS or $SOURCES expansions by in turn</span>
+<span class="sd">    wrapping a NLWrapper.  This class handles the different methods used</span>
+<span class="sd">    to access the list, calling the NLWrapper to create proxies on demand.</span>
+
+<span class="sd">    Note that we subclass collections.UserList purely so that the</span>
+<span class="sd">    is_Sequence() function will identify an object of this class as</span>
+<span class="sd">    a list during variable expansion.  We&#39;re not really using any</span>
+<span class="sd">    collections.UserList methods in practice.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nl</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nl</span> <span class="o">=</span> <span class="n">nl</span>
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+        <span class="n">nl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nl</span><span class="o">.</span><span class="n">_create_nodelist</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">nl</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="n">nl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nl</span><span class="o">.</span><span class="n">_create_nodelist</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">nl</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">nl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nl</span><span class="o">.</span><span class="n">_create_nodelist</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">nl</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">nl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nl</span><span class="o">.</span><span class="n">_create_nodelist</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="n">nl</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Target_or_Source">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.Target_or_Source">[docs]</a>
+<span class="k">class</span> <span class="nc">Target_or_Source</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class that implements $TARGET or $SOURCE expansions by in turn</span>
+<span class="sd">    wrapping a NLWrapper.  This class handles the different methods used</span>
+<span class="sd">    to access an individual proxy Node, calling the NLWrapper to create</span>
+<span class="sd">    a proxy on demand.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nl</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nl</span> <span class="o">=</span> <span class="n">nl</span>
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+        <span class="n">nl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nl</span><span class="o">.</span><span class="n">_create_nodelist</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">nl0</span> <span class="o">=</span> <span class="n">nl</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="c1"># If there is nothing in the list, then we have no attributes to</span>
+            <span class="c1"># pass through, so raise AttributeError for everything.</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;NodeList has no attribute: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">attr</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">nl0</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">nl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nl</span><span class="o">.</span><span class="n">_create_nodelist</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">nl</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">nl</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">nl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nl</span><span class="o">.</span><span class="n">_create_nodelist</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">nl</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="n">nl</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span></div>
+
+
+<div class="viewcode-block" id="NullNodeList">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.NullNodeList">[docs]</a>
+<span class="k">class</span> <span class="nc">NullNodeList</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">NullSeq</span><span class="p">):</span>
+  <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span> <span class="k">return</span> <span class="s1">&#39;&#39;</span>
+  <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span> <span class="k">return</span> <span class="s1">&#39;&#39;</span></div>
+
+
+<span class="n">NullNodesList</span> <span class="o">=</span> <span class="n">NullNodeList</span><span class="p">()</span>
+
+<div class="viewcode-block" id="subst_dict">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.subst_dict">[docs]</a>
+<span class="k">def</span> <span class="nf">subst_dict</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a dictionary for substitution of special</span>
+<span class="sd">    construction variables.</span>
+
+<span class="sd">    This translates the following special arguments:</span>
+
+<span class="sd">    target - the target (object or array of objects),</span>
+<span class="sd">             used to generate the TARGET and TARGETS</span>
+<span class="sd">             construction variables</span>
+
+<span class="sd">    source - the source (object or array of objects),</span>
+<span class="sd">             used to generate the SOURCES and SOURCE</span>
+<span class="sd">             construction variables</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">if</span> <span class="n">target</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">get_tgt_subst_proxy</span><span class="p">(</span><span class="n">thing</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">subst_proxy</span> <span class="o">=</span> <span class="n">thing</span><span class="o">.</span><span class="n">get_subst_proxy</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="n">subst_proxy</span> <span class="o">=</span> <span class="n">thing</span> <span class="c1"># probably a string, just return it</span>
+            <span class="k">return</span> <span class="n">subst_proxy</span>
+        <span class="n">tnl</span> <span class="o">=</span> <span class="n">NLWrapper</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">get_tgt_subst_proxy</span><span class="p">)</span>
+        <span class="nb">dict</span><span class="p">[</span><span class="s1">&#39;TARGETS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Targets_or_Sources</span><span class="p">(</span><span class="n">tnl</span><span class="p">)</span>
+        <span class="nb">dict</span><span class="p">[</span><span class="s1">&#39;TARGET&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Target_or_Source</span><span class="p">(</span><span class="n">tnl</span><span class="p">)</span>
+
+        <span class="c1"># This is a total cheat, but hopefully this dictionary goes</span>
+        <span class="c1"># away soon anyway.  We just let these expand to $TARGETS</span>
+        <span class="c1"># because that&#39;s &quot;good enough&quot; for the use of ToolSurrogates</span>
+        <span class="c1"># (see test/ToolSurrogate.py) to generate documentation.</span>
+        <span class="nb">dict</span><span class="p">[</span><span class="s1">&#39;CHANGED_TARGETS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;$TARGETS&#39;</span>
+        <span class="nb">dict</span><span class="p">[</span><span class="s1">&#39;UNCHANGED_TARGETS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;$TARGETS&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">dict</span><span class="p">[</span><span class="s1">&#39;TARGETS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NullNodesList</span>
+        <span class="nb">dict</span><span class="p">[</span><span class="s1">&#39;TARGET&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NullNodesList</span>
+
+    <span class="k">if</span> <span class="n">source</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">get_src_subst_proxy</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">rfile</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">rfile</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">node</span> <span class="o">=</span> <span class="n">rfile</span><span class="p">()</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">get_subst_proxy</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">node</span>     <span class="c1"># probably a String, just return it</span>
+        <span class="n">snl</span> <span class="o">=</span> <span class="n">NLWrapper</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">get_src_subst_proxy</span><span class="p">)</span>
+        <span class="nb">dict</span><span class="p">[</span><span class="s1">&#39;SOURCES&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Targets_or_Sources</span><span class="p">(</span><span class="n">snl</span><span class="p">)</span>
+        <span class="nb">dict</span><span class="p">[</span><span class="s1">&#39;SOURCE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Target_or_Source</span><span class="p">(</span><span class="n">snl</span><span class="p">)</span>
+
+        <span class="c1"># This is a total cheat, but hopefully this dictionary goes</span>
+        <span class="c1"># away soon anyway.  We just let these expand to $TARGETS</span>
+        <span class="c1"># because that&#39;s &quot;good enough&quot; for the use of ToolSurrogates</span>
+        <span class="c1"># (see test/ToolSurrogate.py) to generate documentation.</span>
+        <span class="nb">dict</span><span class="p">[</span><span class="s1">&#39;CHANGED_SOURCES&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;$SOURCES&#39;</span>
+        <span class="nb">dict</span><span class="p">[</span><span class="s1">&#39;UNCHANGED_SOURCES&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;$SOURCES&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">dict</span><span class="p">[</span><span class="s1">&#39;SOURCES&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NullNodesList</span>
+        <span class="nb">dict</span><span class="p">[</span><span class="s1">&#39;SOURCE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NullNodesList</span>
+
+    <span class="k">return</span> <span class="nb">dict</span></div>
+
+
+
+<span class="n">_callable_args_set</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;target&#39;</span><span class="p">,</span> <span class="s1">&#39;source&#39;</span><span class="p">,</span> <span class="s1">&#39;env&#39;</span><span class="p">,</span> <span class="s1">&#39;for_signature&#39;</span><span class="p">}</span>
+
+<div class="viewcode-block" id="StringSubber">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.StringSubber">[docs]</a>
+<span class="k">class</span> <span class="nc">StringSubber</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class to construct the results of a scons_subst() call.</span>
+
+<span class="sd">    This binds a specific construction environment, mode, target and</span>
+<span class="sd">    source with two methods (substitute() and expand()) that handle</span>
+<span class="sd">    the expansion.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">conv</span><span class="p">,</span> <span class="n">gvars</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">env</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">mode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv</span> <span class="o">=</span> <span class="n">conv</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gvars</span> <span class="o">=</span> <span class="n">gvars</span>
+
+<div class="viewcode-block" id="StringSubber.expand">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.StringSubber.expand">[docs]</a>
+    <span class="k">def</span> <span class="nf">expand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">lvars</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Expand a single &quot;token&quot; as necessary, returning an</span>
+<span class="sd">        appropriate string containing the expansion.</span>
+
+<span class="sd">        This handles expanding different types of things (strings,</span>
+<span class="sd">        lists, callables) appropriately.  It calls the wrapper</span>
+<span class="sd">        substitute() method to re-expand things as necessary, so that</span>
+<span class="sd">        the results of expansions of side-by-side strings still get</span>
+<span class="sd">        re-evaluated separately, not smushed together.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">is_String</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">s0</span><span class="p">,</span> <span class="n">s1</span> <span class="o">=</span> <span class="n">s</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">IndexError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">s</span>
+            <span class="k">if</span> <span class="n">s0</span> <span class="o">!=</span> <span class="s1">&#39;$&#39;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">s</span>
+            <span class="k">if</span> <span class="n">s1</span> <span class="o">==</span> <span class="s1">&#39;$&#39;</span><span class="p">:</span>
+                <span class="c1"># In this case keep the double $&#39;s which we&#39;ll later</span>
+                <span class="c1"># swap for a single dollar sign as we need to retain</span>
+                <span class="c1"># this information to properly avoid matching &quot;$(&quot;&quot; when</span>
+                <span class="c1"># the actual text was &quot;$$(&quot;&quot;  (or &quot;$)&quot;&quot; when &quot;$$)&quot;&quot; )</span>
+                <span class="k">return</span> <span class="s1">&#39;$$&#39;</span>
+            <span class="k">elif</span> <span class="n">s1</span> <span class="ow">in</span> <span class="s1">&#39;()&#39;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">s</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+                <span class="k">if</span> <span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;{&#39;</span> <span class="ow">or</span> <span class="s1">&#39;.&#39;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;{&#39;</span><span class="p">:</span>
+                        <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+                <span class="c1"># Store for error messages if we fail to expand the</span>
+                <span class="c1"># value</span>
+                <span class="n">old_s</span> <span class="o">=</span> <span class="n">s</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">lvars</span><span class="p">:</span>
+                     <span class="n">s</span> <span class="o">=</span> <span class="n">lvars</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="k">elif</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gvars</span><span class="p">:</span>
+                     <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gvars</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                     <span class="k">try</span><span class="p">:</span>
+                          <span class="n">s</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gvars</span><span class="p">,</span> <span class="n">lvars</span><span class="p">)</span>
+                     <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+                          <span class="k">raise</span>
+                     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                          <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">in</span> <span class="n">AllowableExceptions</span><span class="p">:</span>
+                               <span class="k">return</span> <span class="s1">&#39;&#39;</span>
+                          <span class="n">raise_exception</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">lvars</span><span class="p">[</span><span class="s1">&#39;TARGETS&#39;</span><span class="p">],</span> <span class="n">old_s</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">s</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ne">NameError</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">AllowableExceptions</span><span class="p">:</span>
+                     <span class="n">raise_exception</span><span class="p">(</span><span class="ne">NameError</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">lvars</span><span class="p">[</span><span class="s1">&#39;TARGETS&#39;</span><span class="p">],</span> <span class="n">old_s</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">s</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                     <span class="k">return</span> <span class="s1">&#39;&#39;</span>
+
+                <span class="c1"># Before re-expanding the result, handle</span>
+                <span class="c1"># recursive expansion by copying the local</span>
+                <span class="c1"># variable dictionary and overwriting a null</span>
+                <span class="c1"># string for the value of the variable name</span>
+                <span class="c1"># we just expanded.</span>
+                <span class="c1">#</span>
+                <span class="c1"># This could potentially be optimized by only</span>
+                <span class="c1"># copying lvars when s contains more expansions,</span>
+                <span class="c1"># but lvars is usually supposed to be pretty</span>
+                <span class="c1"># small, and deeply nested variable expansions</span>
+                <span class="c1"># are probably more the exception than the norm,</span>
+                <span class="c1"># so it should be tolerable for now.</span>
+                <span class="n">lv</span> <span class="o">=</span> <span class="n">lvars</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="n">var</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">lv</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">substitute</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">lv</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">is_Sequence</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+            <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">conv</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">conv</span><span class="p">,</span> <span class="n">substitute</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">substitute</span><span class="p">,</span> <span class="n">lvars</span><span class="o">=</span><span class="n">lvars</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">conv</span><span class="p">(</span><span class="n">substitute</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">lvars</span><span class="p">))</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">s</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+
+            <span class="c1"># SCons has the unusual Null class where any __getattr__ call returns it&#39;s self,</span>
+            <span class="c1"># which does not work the signature module, and the Null class returns an empty</span>
+            <span class="c1"># string if called on, so we make an exception in this condition for Null class</span>
+            <span class="c1"># Also allow callables where the only non default valued args match the expected defaults</span>
+            <span class="c1"># this should also allow functools.partial&#39;s to work.</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">Null</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">signature</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span>
+                                                  <span class="n">k</span> <span class="ow">in</span> <span class="n">_callable_args_set</span> <span class="ow">or</span> <span class="n">v</span><span class="o">.</span><span class="n">default</span> <span class="o">==</span> <span class="n">Parameter</span><span class="o">.</span><span class="n">empty</span><span class="p">}</span> <span class="o">==</span> <span class="n">_callable_args_set</span><span class="p">:</span>
+
+                <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">lvars</span><span class="p">[</span><span class="s1">&#39;TARGETS&#39;</span><span class="p">],</span>
+                     <span class="n">source</span><span class="o">=</span><span class="n">lvars</span><span class="p">[</span><span class="s1">&#39;SOURCES&#39;</span><span class="p">],</span>
+                     <span class="n">env</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">,</span>
+                     <span class="n">for_signature</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="n">SUBST_SIG</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># This probably indicates that it&#39;s a callable</span>
+                <span class="c1"># object that doesn&#39;t match our calling arguments</span>
+                <span class="c1"># (like an Action).</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="n">SUBST_RAW</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">s</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">substitute</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">lvars</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">s</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">s</span></div>
+
+
+<div class="viewcode-block" id="StringSubber.substitute">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.StringSubber.substitute">[docs]</a>
+    <span class="k">def</span> <span class="nf">substitute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">lvars</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Substitute expansions in an argument or list of arguments.</span>
+
+<span class="sd">        This serves as a wrapper for splitting up a string into</span>
+<span class="sd">        separate tokens.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">sub_match</span><span class="p">(</span><span class="n">match</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">lvars</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">is_String</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">CmdStringHolder</span><span class="p">):</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>        <span class="c1"># In case it&#39;s a UserString.</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">_dollar_exps</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">sub_match</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+                <span class="c1"># If the internal conversion routine doesn&#39;t return</span>
+                <span class="c1"># strings (it could be overridden to return Nodes, for</span>
+                <span class="c1"># example), then the 1.5.2 re module will throw this</span>
+                <span class="c1"># exception.  Back off to a slower, general-purpose</span>
+                <span class="c1"># algorithm that works for all data types.</span>
+                <span class="n">args</span> <span class="o">=</span> <span class="n">_separate_args</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">lvars</span><span class="p">)))</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">result</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">result</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">lvars</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ListSubber">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.ListSubber">[docs]</a>
+<span class="k">class</span> <span class="nc">ListSubber</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">UserList</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class to construct the results of a scons_subst_list() call.</span>
+
+<span class="sd">    Like StringSubber, this class binds a specific construction</span>
+<span class="sd">    environment, mode, target and source with two methods</span>
+<span class="sd">    (substitute() and expand()) that handle the expansion.</span>
+
+<span class="sd">    In addition, however, this class is used to track the state of</span>
+<span class="sd">    the result(s) we&#39;re gathering so we can do the appropriate thing</span>
+<span class="sd">    whenever we have to append another word to the result--start a new</span>
+<span class="sd">    line, start a new word, append to the current word, etc.  We do</span>
+<span class="sd">    this by setting the &quot;append&quot; attribute to the right method so</span>
+<span class="sd">    that our wrapper methods only need ever call ListSubber.append(),</span>
+<span class="sd">    and the rest of the object takes care of doing the right thing</span>
+<span class="sd">    internally.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">conv</span><span class="p">,</span> <span class="n">gvars</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">([])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">env</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">mode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv</span> <span class="o">=</span> <span class="n">conv</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gvars</span> <span class="o">=</span> <span class="n">gvars</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="n">SUBST_RAW</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_strip</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_strip</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">in_strip</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">next_line</span><span class="p">()</span>
+
+<div class="viewcode-block" id="ListSubber.expanded">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.ListSubber.expanded">[docs]</a>
+    <span class="k">def</span> <span class="nf">expanded</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Determines if the string s requires further expansion.</span>
+
+<span class="sd">        Due to the implementation of ListSubber expand will call</span>
+<span class="sd">        itself 2 additional times for an already expanded string. This</span>
+<span class="sd">        method is used to determine if a string is already fully</span>
+<span class="sd">        expanded and if so exit the loop early to prevent these</span>
+<span class="sd">        recursive calls.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_String</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">CmdStringHolder</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>  <span class="c1"># in case it&#39;s a UserString</span>
+        <span class="k">return</span> <span class="n">_separate_args</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="ListSubber.expand">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.ListSubber.expand">[docs]</a>
+    <span class="k">def</span> <span class="nf">expand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">lvars</span><span class="p">,</span> <span class="n">within_list</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Expand a single &quot;token&quot; as necessary, appending the</span>
+<span class="sd">        expansion to the current result.</span>
+
+<span class="sd">        This handles expanding different types of things (strings,</span>
+<span class="sd">        lists, callables) appropriately.  It calls the wrapper</span>
+<span class="sd">        substitute() method to re-expand things as necessary, so that</span>
+<span class="sd">        the results of expansions of side-by-side strings still get</span>
+<span class="sd">        re-evaluated separately, not smushed together.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">is_String</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">s0</span><span class="p">,</span> <span class="n">s1</span> <span class="o">=</span> <span class="n">s</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">IndexError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="k">if</span> <span class="n">s0</span> <span class="o">!=</span> <span class="s1">&#39;$&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="k">if</span> <span class="n">s1</span> <span class="o">==</span> <span class="s1">&#39;$&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;$&#39;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">s1</span> <span class="o">==</span> <span class="s1">&#39;(&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">open_strip</span><span class="p">(</span><span class="s1">&#39;$(&#39;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">s1</span> <span class="o">==</span> <span class="s1">&#39;)&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">close_strip</span><span class="p">(</span><span class="s1">&#39;$)&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+                <span class="k">if</span> <span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;{&#39;</span> <span class="ow">or</span> <span class="n">key</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;{&#39;</span><span class="p">:</span>
+                        <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+                <span class="c1"># Store for error messages if we fail to expand the</span>
+                <span class="c1"># value</span>
+                <span class="n">old_s</span> <span class="o">=</span> <span class="n">s</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">lvars</span><span class="p">:</span>
+                     <span class="n">s</span> <span class="o">=</span> <span class="n">lvars</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="k">elif</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gvars</span><span class="p">:</span>
+                     <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gvars</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                     <span class="k">try</span><span class="p">:</span>
+                         <span class="n">s</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gvars</span><span class="p">,</span> <span class="n">lvars</span><span class="p">)</span>
+                     <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+                         <span class="k">raise</span>
+                     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                         <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">in</span> <span class="n">AllowableExceptions</span><span class="p">:</span>
+                             <span class="k">return</span>
+                         <span class="n">raise_exception</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">lvars</span><span class="p">[</span><span class="s1">&#39;TARGETS&#39;</span><span class="p">],</span> <span class="n">old_s</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">s</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ne">NameError</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">AllowableExceptions</span><span class="p">:</span>
+                     <span class="n">raise_exception</span><span class="p">(</span><span class="ne">NameError</span><span class="p">(),</span> <span class="n">lvars</span><span class="p">[</span><span class="s1">&#39;TARGETS&#39;</span><span class="p">],</span> <span class="n">old_s</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">s</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                     <span class="k">return</span>
+
+                <span class="c1"># If the string is already full expanded there&#39;s no</span>
+                <span class="c1"># need to continue recursion.</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">expanded</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+                    <span class="k">return</span>
+
+                <span class="c1"># Before re-expanding the result, handle</span>
+                <span class="c1"># recursive expansion by copying the local</span>
+                <span class="c1"># variable dictionary and overwriting a null</span>
+                <span class="c1"># string for the value of the variable name</span>
+                <span class="c1"># we just expanded.</span>
+                <span class="n">lv</span> <span class="o">=</span> <span class="n">lvars</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="n">var</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">lv</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">substitute</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">lv</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">this_word</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">is_Sequence</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">substitute</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">lvars</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">next_word</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+            <span class="c1"># SCons has the unusual Null class where any __getattr__ call returns it&#39;s self,</span>
+            <span class="c1"># which does not work the signature module, and the Null class returns an empty</span>
+            <span class="c1"># string if called on, so we make an exception in this condition for Null class</span>
+            <span class="c1"># Also allow callables where the only non default valued args match the expected defaults</span>
+            <span class="c1"># this should also allow functools.partial&#39;s to work.</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">Null</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">signature</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span>
+                                                  <span class="n">k</span> <span class="ow">in</span> <span class="n">_callable_args_set</span> <span class="ow">or</span> <span class="n">v</span><span class="o">.</span><span class="n">default</span> <span class="o">==</span> <span class="n">Parameter</span><span class="o">.</span><span class="n">empty</span><span class="p">}</span> <span class="o">==</span> <span class="n">_callable_args_set</span><span class="p">:</span>
+
+                <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">lvars</span><span class="p">[</span><span class="s1">&#39;TARGETS&#39;</span><span class="p">],</span>
+                     <span class="n">source</span><span class="o">=</span><span class="n">lvars</span><span class="p">[</span><span class="s1">&#39;SOURCES&#39;</span><span class="p">],</span>
+                     <span class="n">env</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">,</span>
+                     <span class="n">for_signature</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">!=</span> <span class="n">SUBST_CMD</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># This probably indicates that it&#39;s a callable</span>
+                <span class="c1"># object that doesn&#39;t match our calling arguments</span>
+                <span class="c1"># (like an Action).</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="n">SUBST_RAW</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+                    <span class="k">return</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">substitute</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">lvars</span><span class="p">,</span> <span class="n">within_list</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">s</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">this_word</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ListSubber.substitute">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.ListSubber.substitute">[docs]</a>
+    <span class="k">def</span> <span class="nf">substitute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">lvars</span><span class="p">,</span> <span class="n">within_list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Substitute expansions in an argument or list of arguments.</span>
+
+<span class="sd">        This serves as a wrapper for splitting up a string into</span>
+<span class="sd">        separate tokens.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">is_String</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">CmdStringHolder</span><span class="p">):</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>        <span class="c1"># In case it&#39;s a UserString.</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="n">_separate_args</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="s1">&#39; </span><span class="se">\t\n\r\f\v</span><span class="s1">&#39;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="ow">in</span> <span class="n">a</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">next_line</span><span class="p">()</span>
+                    <span class="k">elif</span> <span class="n">within_list</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">next_word</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">lvars</span><span class="p">,</span> <span class="n">within_list</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">lvars</span><span class="p">,</span> <span class="n">within_list</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ListSubber.next_line">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.ListSubber.next_line">[docs]</a>
+    <span class="k">def</span> <span class="nf">next_line</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Arrange for the next word to start a new line.  This</span>
+<span class="sd">        is like starting a new word, except that we have to append</span>
+<span class="sd">        another line to the result.&quot;&quot;&quot;</span>
+        <span class="n">collections</span><span class="o">.</span><span class="n">UserList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">next_word</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ListSubber.this_word">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.ListSubber.this_word">[docs]</a>
+    <span class="k">def</span> <span class="nf">this_word</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Arrange for the next word to append to the end of the</span>
+<span class="sd">        current last word in the result.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">append</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_to_current_word</span></div>
+
+
+<div class="viewcode-block" id="ListSubber.next_word">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.ListSubber.next_word">[docs]</a>
+    <span class="k">def</span> <span class="nf">next_word</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Arrange for the next word to start a new word.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">append</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_new_word</span></div>
+
+
+<div class="viewcode-block" id="ListSubber.add_to_current_word">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.ListSubber.add_to_current_word">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_to_current_word</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Append the string x to the end of the current last word</span>
+<span class="sd">        in the result.  If that is not possible, then just add</span>
+<span class="sd">        it as a new word.  Make sure the entire concatenated string</span>
+<span class="sd">        inherits the object attributes of x (in particular, the</span>
+<span class="sd">        escape function) by wrapping it as CmdStringHolder.&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">in_strip</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">!=</span> <span class="n">SUBST_SIG</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">current_word</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_new_word</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># All right, this is a hack and it should probably</span>
+                <span class="c1"># be refactored out of existence in the future.</span>
+                <span class="c1"># The issue is that we want to smoosh words together</span>
+                <span class="c1"># and make one file name that gets escaped if</span>
+                <span class="c1"># we&#39;re expanding something like foo$EXTENSION,</span>
+                <span class="c1"># but we don&#39;t want to smoosh them together if</span>
+                <span class="c1"># it&#39;s something like &gt;$TARGET, because then we&#39;ll</span>
+                <span class="c1"># treat the &#39;&gt;&#39; like it&#39;s part of the file name.</span>
+                <span class="c1"># So for now, just hard-code looking for the special</span>
+                <span class="c1"># command-line redirection characters...</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">last_char</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">current_word</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                    <span class="n">last_char</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\0</span><span class="s1">&#39;</span>
+                <span class="k">if</span> <span class="n">last_char</span> <span class="ow">in</span> <span class="s1">&#39;&lt;&gt;|&#39;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">add_new_word</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">y</span> <span class="o">=</span> <span class="n">current_word</span> <span class="o">+</span> <span class="n">x</span>
+
+                    <span class="c1"># We used to treat a word appended to a literal</span>
+                    <span class="c1"># as a literal itself, but this caused problems</span>
+                    <span class="c1"># with interpreting quotes around space-separated</span>
+                    <span class="c1"># targets on command lines.  Removing this makes</span>
+                    <span class="c1"># none of the &quot;substantive&quot; end-to-end tests fail,</span>
+                    <span class="c1"># so we&#39;ll take this out but leave it commented</span>
+                    <span class="c1"># for now in case there&#39;s a problem not covered</span>
+                    <span class="c1"># by the test cases and we need to resurrect this.</span>
+                    <span class="c1">#literal1 = self.literal(self[-1][-1])</span>
+                    <span class="c1">#literal2 = self.literal(x)</span>
+                    <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">is_String</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+                        <span class="c1">#y = CmdStringHolder(y, literal1 or literal2)</span>
+                        <span class="n">y</span> <span class="o">=</span> <span class="n">CmdStringHolder</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span></div>
+
+
+<div class="viewcode-block" id="ListSubber.add_new_word">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.ListSubber.add_new_word">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_new_word</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">in_strip</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">!=</span> <span class="n">SUBST_SIG</span><span class="p">:</span>
+            <span class="n">literal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">literal</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">is_String</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">CmdStringHolder</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">literal</span><span class="p">)</span>
+            <span class="bp">self</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">append</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_to_current_word</span></div>
+
+
+<div class="viewcode-block" id="ListSubber.literal">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.ListSubber.literal">[docs]</a>
+    <span class="k">def</span> <span class="nf">literal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">l</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">is_literal</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">l</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ListSubber.open_strip">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.ListSubber.open_strip">[docs]</a>
+    <span class="k">def</span> <span class="nf">open_strip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle the &quot;open strip&quot; $( token.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_strip</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">in_strip</span> <span class="o">=</span> <span class="mi">1</span></div>
+
+
+<div class="viewcode-block" id="ListSubber.close_strip">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.ListSubber.close_strip">[docs]</a>
+    <span class="k">def</span> <span class="nf">close_strip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle the &quot;close strip&quot; $) token.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_strip</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">in_strip</span> <span class="o">=</span> <span class="kc">None</span></div>
+</div>
+
+
+
+<span class="c1"># Constants for the &quot;mode&quot; parameter to scons_subst_list() and</span>
+<span class="c1"># scons_subst().  SUBST_RAW gives the raw command line.  SUBST_CMD</span>
+<span class="c1"># gives a command line suitable for passing to a shell.  SUBST_SIG</span>
+<span class="c1"># gives a command line appropriate for calculating the signature</span>
+<span class="c1"># of a command line...if this changes, we should rebuild.</span>
+<span class="n">SUBST_CMD</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">SUBST_RAW</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">SUBST_SIG</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="n">_rm</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\$[()]&#39;</span><span class="p">)</span>
+
+<span class="c1"># Note the pattern below only matches $( or $) when there is no</span>
+<span class="c1"># preceeding $. (Thus the (?&lt;!\$))</span>
+<span class="n">_rm_split</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(?&lt;!\$)(\$[()])&#39;</span><span class="p">)</span>
+
+<span class="c1"># Indexed by the SUBST_* constants above.</span>
+<span class="n">_regex_remove</span> <span class="o">=</span> <span class="p">[</span> <span class="n">_rm</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">_rm_split</span> <span class="p">]</span>
+
+<div class="viewcode-block" id="_rm_list">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst._rm_list">[docs]</a>
+<span class="k">def</span> <span class="nf">_rm_list</span><span class="p">(</span><span class="nb">list</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">l</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">list</span> <span class="k">if</span> <span class="n">l</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;$(&#39;</span><span class="p">,</span> <span class="s1">&#39;$)&#39;</span><span class="p">)]</span></div>
+
+
+<div class="viewcode-block" id="_remove_list">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst._remove_list">[docs]</a>
+<span class="k">def</span> <span class="nf">_remove_list</span><span class="p">(</span><span class="nb">list</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">depth</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">l</span> <span class="o">==</span> <span class="s1">&#39;$(&#39;</span><span class="p">:</span>
+            <span class="n">depth</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">l</span> <span class="o">==</span> <span class="s1">&#39;$)&#39;</span><span class="p">:</span>
+            <span class="n">depth</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">depth</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">break</span>
+        <span class="k">elif</span> <span class="n">depth</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">depth</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<span class="c1"># Indexed by the SUBST_* constants above.</span>
+<span class="n">_list_remove</span> <span class="o">=</span> <span class="p">[</span> <span class="n">_rm_list</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">_remove_list</span> <span class="p">]</span>
+
+<span class="c1"># Regular expressions for splitting strings and handling substitutions,</span>
+<span class="c1"># for use by the scons_subst() and scons_subst_list() functions:</span>
+<span class="c1">#</span>
+<span class="c1"># The first expression compiled matches all of the $-introduced tokens</span>
+<span class="c1"># that we need to process in some way, and is used for substitutions.</span>
+<span class="c1"># The expressions it matches are:</span>
+<span class="c1">#</span>
+<span class="c1">#       &quot;$$&quot;</span>
+<span class="c1">#       &quot;$(&quot;</span>
+<span class="c1">#       &quot;$)&quot;</span>
+<span class="c1">#       &quot;$variable&quot;             [must begin with alphabetic or underscore]</span>
+<span class="c1">#       &quot;${any stuff}&quot;</span>
+<span class="c1">#</span>
+<span class="c1"># The second expression compiled is used for splitting strings into tokens</span>
+<span class="c1"># to be processed, and it matches all of the tokens listed above, plus</span>
+<span class="c1"># the following that affect how arguments do or don&#39;t get joined together:</span>
+<span class="c1">#</span>
+<span class="c1">#       &quot;   &quot;                   [white space]</span>
+<span class="c1">#       &quot;non-white-space&quot;       [without any dollar signs]</span>
+<span class="c1">#       &quot;$&quot;                     [single dollar sign]</span>
+<span class="c1">#</span>
+<span class="n">_dollar_exps_str</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;\$[\$\(\)]|\$[_a-zA-Z][\.\w]*|\${[^}]*}&#39;</span>
+<span class="n">_dollar_exps</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="n">_dollar_exps_str</span><span class="p">)</span>
+<span class="n">_separate_args</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(</span><span class="si">%s</span><span class="s1">|\s+|[^\s$]+|\$)&#39;</span> <span class="o">%</span> <span class="n">_dollar_exps_str</span><span class="p">)</span>
+
+<span class="c1"># This regular expression is used to replace strings of multiple white</span>
+<span class="c1"># space characters in the string result from the scons_subst() function.</span>
+<span class="n">_space_sep</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[\t ]+(?![^{]*})&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="scons_subst">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.scons_subst">[docs]</a>
+<span class="k">def</span> <span class="nf">scons_subst</span><span class="p">(</span><span class="n">strSubst</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">SUBST_RAW</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">gvars</span><span class="o">=</span><span class="p">{},</span> <span class="n">lvars</span><span class="o">=</span><span class="p">{},</span> <span class="n">conv</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">overrides</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Expand a string or list containing construction variable</span>
+<span class="sd">    substitutions.</span>
+
+<span class="sd">    This is the work-horse function for substitutions in file names</span>
+<span class="sd">    and the like.  The companion scons_subst_list() function (below)</span>
+<span class="sd">    handles separating command lines into lists of arguments, so see</span>
+<span class="sd">    that function if that&#39;s what you&#39;re looking for.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">strSubst</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;$&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">strSubst</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">strSubst</span><span class="p">,</span> <span class="n">CmdStringHolder</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">strSubst</span>
+
+    <span class="k">if</span> <span class="n">conv</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">conv</span> <span class="o">=</span> <span class="n">_strconv</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span>
+
+    <span class="c1"># Doing this every time is a bit of a waste, since the Executor</span>
+    <span class="c1"># has typically already populated the OverrideEnvironment with</span>
+    <span class="c1"># $TARGET/$SOURCE variables.  We&#39;re keeping this (for now), though,</span>
+    <span class="c1"># because it supports existing behavior that allows us to call</span>
+    <span class="c1"># an Action directly with an arbitrary target+source pair, which</span>
+    <span class="c1"># we use in Tool/tex.py to handle calling $BIBTEX when necessary.</span>
+    <span class="c1"># If we dropped that behavior (or found another way to cover it),</span>
+    <span class="c1"># we could get rid of this call completely and just rely on the</span>
+    <span class="c1"># Executor setting the variables.</span>
+    <span class="k">if</span> <span class="s1">&#39;TARGET&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lvars</span><span class="p">:</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">subst_dict</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">d</span><span class="p">:</span>
+            <span class="n">lvars</span> <span class="o">=</span> <span class="n">lvars</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">lvars</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+    <span class="c1"># Allow last ditch chance to override lvars</span>
+    <span class="k">if</span> <span class="n">overrides</span><span class="p">:</span>
+        <span class="n">lvars</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">overrides</span><span class="p">)</span>
+
+    <span class="c1"># We&#39;re (most likely) going to eval() things.  If Python doesn&#39;t</span>
+    <span class="c1"># find a __builtins__ value in the global dictionary used for eval(),</span>
+    <span class="c1"># it copies the current global values for you.  Avoid this by</span>
+    <span class="c1"># setting it explicitly and then deleting, so we don&#39;t pollute the</span>
+    <span class="c1"># construction environment Dictionary(ies) that are typically used</span>
+    <span class="c1"># for expansion.</span>
+    <span class="n">gvars</span><span class="p">[</span><span class="s1">&#39;__builtins__&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">__builtins__</span>
+
+    <span class="n">ss</span> <span class="o">=</span> <span class="n">StringSubber</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">conv</span><span class="p">,</span> <span class="n">gvars</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">ss</span><span class="o">.</span><span class="n">substitute</span><span class="p">(</span><span class="n">strSubst</span><span class="p">,</span> <span class="n">lvars</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">gvars</span><span class="p">[</span><span class="s1">&#39;__builtins__&#39;</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">result</span>
+    <span class="k">if</span> <span class="n">is_String</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+        <span class="c1"># Remove $(-$) pairs and any stuff in between,</span>
+        <span class="c1"># if that&#39;s appropriate.</span>
+        <span class="n">remove</span> <span class="o">=</span> <span class="n">_regex_remove</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">remove</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="n">SUBST_SIG</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">_list_remove</span><span class="p">[</span><span class="n">mode</span><span class="p">](</span><span class="n">remove</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">UserError</span><span class="p">(</span><span class="s2">&quot;Unbalanced $(/$) in: &quot;</span> <span class="o">+</span> <span class="n">res</span><span class="p">)</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">remove</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">!=</span> <span class="n">SUBST_RAW</span><span class="p">:</span>
+            <span class="c1"># Compress strings of white space characters into</span>
+            <span class="c1"># a single space.</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">_space_sep</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="c1"># Now replace escaped $&#39;s currently &quot;$$&quot;</span>
+        <span class="c1"># This is needed because we now retain $$ instead of</span>
+        <span class="c1"># replacing them during substition to avoid</span>
+        <span class="c1"># improperly trying to escape &quot;$$(&quot; as being &quot;$(&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;$$&#39;</span><span class="p">,</span><span class="s1">&#39;$&#39;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">is_Sequence</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+        <span class="n">remove</span> <span class="o">=</span> <span class="n">_list_remove</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">remove</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">remove</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Errors</span><span class="o">.</span><span class="n">UserError</span><span class="p">(</span><span class="s2">&quot;Unbalanced $(/$) in: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">res</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="scons_subst_list">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.scons_subst_list">[docs]</a>
+<span class="k">def</span> <span class="nf">scons_subst_list</span><span class="p">(</span><span class="n">strSubst</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">SUBST_RAW</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">gvars</span><span class="o">=</span><span class="p">{},</span> <span class="n">lvars</span><span class="o">=</span><span class="p">{},</span> <span class="n">conv</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">overrides</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Substitute construction variables in a string (or list or other</span>
+<span class="sd">    object) and separate the arguments into a command list.</span>
+
+<span class="sd">    The companion scons_subst() function (above) handles basic</span>
+<span class="sd">    substitutions within strings, so see that function instead</span>
+<span class="sd">    if that&#39;s what you&#39;re looking for.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">conv</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">conv</span> <span class="o">=</span> <span class="n">_strconv</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span>
+
+    <span class="c1"># Doing this every time is a bit of a waste, since the Executor</span>
+    <span class="c1"># has typically already populated the OverrideEnvironment with</span>
+    <span class="c1"># $TARGET/$SOURCE variables.  We&#39;re keeping this (for now), though,</span>
+    <span class="c1"># because it supports existing behavior that allows us to call</span>
+    <span class="c1"># an Action directly with an arbitrary target+source pair, which</span>
+    <span class="c1"># we use in Tool/tex.py to handle calling $BIBTEX when necessary.</span>
+    <span class="c1"># If we dropped that behavior (or found another way to cover it),</span>
+    <span class="c1"># we could get rid of this call completely and just rely on the</span>
+    <span class="c1"># Executor setting the variables.</span>
+    <span class="k">if</span> <span class="s1">&#39;TARGET&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lvars</span><span class="p">:</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">subst_dict</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">d</span><span class="p">:</span>
+            <span class="n">lvars</span> <span class="o">=</span> <span class="n">lvars</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">lvars</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+    <span class="c1"># Allow caller to specify last ditch override of lvars</span>
+    <span class="k">if</span> <span class="n">overrides</span><span class="p">:</span>
+        <span class="n">lvars</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">overrides</span><span class="p">)</span>
+
+    <span class="c1"># We&#39;re (most likely) going to eval() things.  If Python doesn&#39;t</span>
+    <span class="c1"># find a __builtins__ value in the global dictionary used for eval(),</span>
+    <span class="c1"># it copies the current global values for you.  Avoid this by</span>
+    <span class="c1"># setting it explicitly and then deleting, so we don&#39;t pollute the</span>
+    <span class="c1"># construction environment Dictionary(ies) that are typically used</span>
+    <span class="c1"># for expansion.</span>
+    <span class="n">gvars</span><span class="p">[</span><span class="s1">&#39;__builtins__&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">__builtins__</span>
+
+    <span class="n">ls</span> <span class="o">=</span> <span class="n">ListSubber</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">conv</span><span class="p">,</span> <span class="n">gvars</span><span class="p">)</span>
+    <span class="n">ls</span><span class="o">.</span><span class="n">substitute</span><span class="p">(</span><span class="n">strSubst</span><span class="p">,</span> <span class="n">lvars</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">gvars</span><span class="p">[</span><span class="s1">&#39;__builtins__&#39;</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="k">return</span> <span class="n">ls</span><span class="o">.</span><span class="n">data</span></div>
+
+
+<div class="viewcode-block" id="scons_subst_once">
+<a class="viewcode-back" href="../../../SCons/#SCons.Subst.scons_subst_once">[docs]</a>
+<span class="k">def</span> <span class="nf">scons_subst_once</span><span class="p">(</span><span class="n">strSubst</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform single (non-recursive) substitution of a single</span>
+<span class="sd">    construction variable keyword.</span>
+
+<span class="sd">    This is used when setting a variable when copying or overriding values</span>
+<span class="sd">    in an Environment.  We want to capture (expand) the old value before</span>
+<span class="sd">    we override it, so people can do things like:</span>
+
+<span class="sd">        env2 = env.Clone(CCFLAGS = &#39;$CCFLAGS -g&#39;)</span>
+
+<span class="sd">    We do this with some straightforward, brute-force code here...</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">strSubst</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">strSubst</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;$&#39;</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">strSubst</span>
+
+    <span class="n">matchlist</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;$&#39;</span> <span class="o">+</span> <span class="n">key</span><span class="p">,</span> <span class="s1">&#39;${&#39;</span> <span class="o">+</span> <span class="n">key</span> <span class="o">+</span> <span class="s1">&#39;}&#39;</span><span class="p">]</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">sub_match</span><span class="p">(</span><span class="n">match</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="n">val</span><span class="p">,</span> <span class="n">matchlist</span><span class="o">=</span><span class="n">matchlist</span><span class="p">):</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">matchlist</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">if</span> <span class="n">is_Sequence</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">a</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">is_Sequence</span><span class="p">(</span><span class="n">strSubst</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">strSubst</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">is_String</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">matchlist</span><span class="p">:</span>
+                    <span class="n">arg</span> <span class="o">=</span> <span class="n">val</span>
+                    <span class="k">if</span> <span class="n">is_Sequence</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+                        <span class="n">result</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_dollar_exps</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">sub_match</span><span class="p">,</span> <span class="n">arg</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">elif</span> <span class="n">is_String</span><span class="p">(</span><span class="n">strSubst</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_dollar_exps</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">sub_match</span><span class="p">,</span> <span class="n">strSubst</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">strSubst</span></div>
+
+
+<span class="c1"># Local Variables:</span>
+<span class="c1"># tab-width:4</span>
+<span class="c1"># indent-tabs-mode:nil</span>
+<span class="c1"># End:</span>
+<span class="c1"># vim: set expandtab tabstop=4 shiftwidth=4:</span>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SCons Project Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022, SCons Project.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

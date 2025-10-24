@@ -1,0 +1,38 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>26.3. Explicitly Terminating SCons While Reading SConscript Files: the Exit Function</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.7.0"><link rel="up" href="ch26.html" title="Chapter 26. Miscellaneous Functionality"><link rel="prev" href="ch26s02.html" title="26.2. Verifying the SCons Version: the EnsureSConsVersion Function"><link rel="next" href="ch26s04.html" title="26.4. Searching for Files: the FindFile Function"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">26.3. Explicitly Terminating <span class="application">SCons</span> While Reading <code class="filename">SConscript</code> Files:  the <code class="function">Exit</code> Function</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch26s02.html">Prev</a> </td><th width="60%" align="center">Chapter 26. Miscellaneous Functionality</th><td width="20%" align="right"> <a accesskey="n" href="ch26s04.html">Next</a></td></tr></table><hr></div><div class="section" title="26.3. Explicitly Terminating SCons While Reading SConscript Files: the Exit Function"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id6709"></a>26.3. Explicitly Terminating <span class="application">SCons</span> While Reading <code class="filename">SConscript</code> Files:  the <code class="function">Exit</code> Function</h2></div></div></div><p>
+
+    <span class="application">SCons</span> supports an <code class="function">Exit</code> function
+    which can be used to terminate <span class="application">SCons</span>
+    while reading the <code class="filename">SConscript</code> files,
+    usually because you've detected a condition
+    under which it doesn't make sense to proceed:
+
+    </p><pre class="programlisting">
+if ARGUMENTS.get('FUTURE'):
+    print("The FUTURE option is not supported yet!")
+    Exit(2)
+env = Environment()
+env.Program('hello.c')
+      </pre><pre class="screen">% <strong class="userinput"><code>scons -Q FUTURE=1</code></strong>
+The FUTURE option is not supported yet!
+% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o hello.o -c hello.c
+cc -o hello hello.o
+</pre><p>
+
+    The <code class="function">Exit</code> function takes as an argument
+    the (numeric) exit status that you want <span class="application">SCons</span> to exit with.
+    If you don't specify a value,
+    the default is to exit with <code class="literal">0</code>,
+    which indicates successful execution.
+
+    </p><p>
+
+    Note that the <code class="function">Exit</code> function
+    is equivalent to calling the Python
+    <code class="function">sys.exit</code> function
+    (which the it actually calls),
+    but because <code class="function">Exit</code> is a <span class="application">SCons</span> function,
+    you don't have to import the Python
+    <code class="literal">sys</code> module to use it.
+
+    </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch26s02.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch26.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch26s04.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">26.2. Verifying the SCons Version:  the <code class="function">EnsureSConsVersion</code> Function </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 26.4. Searching for Files:  the <code class="function">FindFile</code> Function</td></tr></table></div></body></html>

@@ -1,0 +1,54 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>16.2. Finding source files in repositories</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.8.0"><link rel="up" href="ch16.html" title="Chapter 16. Building From Code Repositories"><link rel="prev" href="ch16.html" title="Chapter 16. Building From Code Repositories"><link rel="next" href="ch16s03.html" title="16.3. Finding #include files in repositories"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">16.2. Finding source files in repositories</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch16.html">Prev</a> </td><th width="60%" align="center">Chapter 16. Building From Code Repositories</th><td width="20%" align="right"> <a accesskey="n" href="ch16s03.html">Next</a></td></tr></table><hr></div><div class="section" title="16.2. Finding source files in repositories"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id5376"></a>16.2. Finding source files in repositories</h2></div></div></div><p>
+
+    The above example
+    specifies that <span class="application">SCons</span>
+    will first search for files under
+    the <code class="filename">/usr/repository1</code> tree
+    and next under the <code class="filename">/usr/repository2</code> tree.
+    <span class="application">SCons</span> expects that any files it searches
+    for will be found in the same position
+    relative to the top-level directory.
+    In the above example, if the <code class="filename">hello.c</code> file is not
+    found in the local build tree,
+    <span class="application">SCons</span> will search first for
+    a <code class="filename">/usr/repository1/hello.c</code> file
+    and then for a <code class="filename">/usr/repository2/hello.c</code> file
+    to use in its place.
+
+    </p><p>
+
+    So given the <code class="filename">SConstruct</code> file above,
+    if the <code class="filename">hello.c</code> file exists in the local
+    build directory,
+    <span class="application">SCons</span> will rebuild the <code class="filename">hello</code> program
+    as normal:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o hello.o -c hello.c
+cc -o hello hello.o
+</pre><p>
+
+    If, however, there is no local <code class="filename">hello.c</code> file,
+    but one exists in <code class="filename">/usr/repository1</code>,
+    <span class="application">SCons</span> will recompile the <code class="filename">hello</code> program
+    from the source file it finds in the repository:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o hello.o -c /usr/repository1/hello.c
+cc -o hello hello.o
+</pre><p>
+
+    And similarly, if there is no local <code class="filename">hello.c</code> file
+    and no <code class="filename">/usr/repository1/hello.c</code>,
+    but one exists in <code class="filename">/usr/repository2</code>:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o hello.o -c /usr/repository2/hello.c
+cc -o hello hello.o
+</pre><p>
+
+    The <a class="link" href="apd.html#f-Glob"><code class="function">Glob</code></a> function understands about repositories,
+    and will use the same matching algorithm as described for
+    explicitly-listed sources.
+
+    </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch16.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch16.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch16s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 16. Building From Code Repositories </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 16.3. Finding <code class="literal">#include</code> files in repositories</td></tr></table></div></body></html>

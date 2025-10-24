@@ -1,0 +1,87 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>4.7. Customizing output</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.0.0"><link rel="up" href="ch04.html" title="Chapter 4. Build Engine API"><link rel="prev" href="ch04s06.html" title="4.6. Targets"><link rel="next" href="ch04s08.html" title="4.8. Separate source and build trees"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">4.7. Customizing output</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s06.html">Prev</a> </td><th width="60%" align="center">Chapter 4. Build Engine API</th><td width="20%" align="right"> <a accesskey="n" href="ch04s08.html">Next</a></td></tr></table><hr></div><div class="section" title="4.7. Customizing output"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="sect-custom"></a>4.7. Customizing output</h2></div></div></div><p>
+
+  The <span class="application">SCons</span> API supports the ability to customize, redirect, or
+  suppress its printed output through user-defined functions.
+  <span class="application">SCons</span> has several pre-defined points in its build process at
+  which it calls a function to (potentially) print output.  User-defined
+  functions can be specified for these call-back points when <code class="function">Build</code>
+  or <code class="function">Clean</code>is invoked:
+
+ </p><pre class="programlisting">
+	env.Build(target = '.',
+	       on_analysis = dump_dependency,
+	       pre_update = my_print_command,
+	       post_update = my_error_handler)
+	       on_error = my_error_handler)
+	</pre><p>
+
+  The specific call-back points are:
+
+ </p><div class="variablelist"><dl><dt><span class="term"><code class="literal">on_analysis</code></span></dt><dd><p>
+
+     Called for every object, immediately after the object has been
+     analyzed to see if it's out-of-date.  Typically used to print a
+     trace of considered objects for debugging of unexpected dependencies.
+
+    </p></dd><dt><span class="term"><code class="literal">pre_update</code></span></dt><dd><p>
+
+     Called for every object that has been determined to be out-of-date
+     before its update function or command is executed.  Typically used
+     to print the command being called to update a target.
+
+    </p></dd><dt><span class="term"><code class="literal">post_update</code></span></dt><dd><p>
+
+     Called for every object after its update function or command has
+     been executed.  Typically used to report that a top-level specified
+     target is up-to-date or was not remade.
+
+    </p></dd><dt><span class="term"><code class="literal">on_error</code></span></dt><dd><p>
+
+     Called for every error returned by an update function or command.
+     Typically used to report errors with some string that will be
+     identifiable to build-analysis tools.
+
+    </p></dd></dl></div><p>
+
+  Functions for each of these call-back points all take the same
+  arguments:
+
+ </p><pre class="programlisting">
+	my_dump_dependency(target, level, status, update, dependencies)
+	</pre><p>
+
+  where the arguments are:
+
+ </p><div class="variablelist"><dl><dt><span class="term"><code class="literal">target</code></span></dt><dd><p>
+
+     The target object being considered.
+
+    </p></dd><dt><span class="term"><code class="literal">level</code></span></dt><dd><p>
+
+     Specifies how many levels the dependency analysis has
+     recursed in order to consider the <code class="literal">target</code>.
+     A value of <code class="literal">0</code> specifies a top-level
+     <code class="literal">target</code> (that is, one passed to the
+     <code class="function">Build</code> or <code class="function">Clean</code> method).  Objects which a top-level
+     <code class="literal">target</code> is directly dependent upon have a
+     <code class="literal">level</code> of &lt;1&gt;, their direct dependencies have a
+     <code class="literal">level</code> of &lt;2&gt;, etc.  Typically used to indent
+     output to reflect the recursive levels.
+
+    </p></dd><dt><span class="term"><code class="literal">status</code></span></dt><dd><p>
+
+     A string specifying the current status of the target
+     (<code class="literal">"unknown"</code>, <code class="literal">"built"</code>,
+     <code class="literal">"error"</code>, <code class="literal">"analyzed"</code>, etc.).  A
+     complete list will be enumerated and described during implementation.
+
+    </p></dd><dt><span class="term"><code class="literal">update</code></span></dt><dd><p>
+
+     The command line or function name that will be (or has been) executed
+     to update the <code class="literal">target</code>.
+
+    </p></dd><dt><span class="term"><code class="literal">dependencies</code></span></dt><dd><p>
+
+     A list of direct dependencies of the target.
+
+    </p></dd></dl></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch04s06.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch04.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch04s08.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">4.6. Targets </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 4.8. Separate source and build trees</td></tr></table></div></body></html>

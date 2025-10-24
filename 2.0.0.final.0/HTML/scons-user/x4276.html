@@ -1,0 +1,235 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Populating a Shared Cache With Already-Built Files</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 2.0.0.final.0"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Caching Built Files"
+HREF="c4213.html"><LINK
+REL="PREVIOUS"
+TITLE="Disabling the Shared Cache"
+HREF="x4264.html"><LINK
+REL="NEXT"
+TITLE="Minimizing Cache Contention:  the --random Option"
+HREF="x4293.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 2.0.0.final.0</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x4264.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 25. Caching Built Files</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x4293.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN4276"
+>25.5. Populating a Shared Cache With Already-Built Files</A
+></H1
+><P
+>&#13;
+    Sometimes, you may have one or more derived files
+    already built in your local build tree
+    that you wish to make available to other people doing builds.
+    For example, you may find it more effective to perform
+    integration builds with the cache disabled
+    (per the previous section)
+    and only populate the shared cache directory
+    with the built files after the integration build
+    has completed successfully.
+    This way, the cache will only get filled up
+    with derived files that are part of a complete, successful build
+    not with files that might be later overwritten
+    while you debug integration problems.
+
+    </P
+><P
+>&#13;
+    In this case, you can use the
+    the <TT
+CLASS="literal"
+>--cache-force</TT
+> option
+    to tell <SPAN
+CLASS="application"
+>SCons</SPAN
+> to put all derived files in the cache,
+    even if the files already exist in your local tree
+    from having been built by a previous invocation:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q --cache-disable</KBD
+>
+      cc -o hello.o -c hello.c
+      cc -o hello hello.o
+      % <KBD
+CLASS="userinput"
+>scons -Q -c</KBD
+>
+      Removed hello.o
+      Removed hello
+      % <KBD
+CLASS="userinput"
+>scons -Q --cache-disable</KBD
+>
+      cc -o hello.o -c hello.c
+      cc -o hello hello.o
+      % <KBD
+CLASS="userinput"
+>scons -Q --cache-force</KBD
+>
+      scons: `.' is up to date.
+      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      scons: `.' is up to date.
+    </PRE
+><P
+>&#13;
+    Notice how the above sample run
+    demonstrates that the <TT
+CLASS="literal"
+>--cache-disable</TT
+>
+    option avoids putting the built
+    <TT
+CLASS="filename"
+>hello.o</TT
+>
+    and
+    <TT
+CLASS="filename"
+>hello</TT
+> files in the cache,
+    but after using the <TT
+CLASS="literal"
+>--cache-force</TT
+> option,
+    the files have been put in the cache
+    for the next invocation to retrieve.
+
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x4264.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x4293.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Disabling the Shared Cache</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c4213.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Minimizing Cache Contention:  the <TT
+CLASS="literal"
+>--random</TT
+> Option</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

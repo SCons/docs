@@ -1,0 +1,517 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Finding #include files in repositories</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 1.1.0"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Building From Code Repositories"
+HREF="c3797.html"><LINK
+REL="PREVIOUS"
+TITLE="Finding source files in repositories"
+HREF="x3812.html"><LINK
+REL="NEXT"
+TITLE="Finding the SConstruct file in repositories"
+HREF="x3926.html"></HEAD
+><BODY
+CLASS="section"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 1.1.0</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x3812.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 23. Building From Code Repositories</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x3926.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN3844"
+>23.3. Finding <TT
+CLASS="literal"
+>#include</TT
+> files in repositories</A
+></H1
+><P
+>&#13;
+    We've already seen that SCons will scan the contents of
+    a source file for <TT
+CLASS="literal"
+>#include</TT
+> file names
+    and realize that targets built from that source file
+    also depend on the <TT
+CLASS="literal"
+>#include</TT
+> file(s).
+    For each directory in the <A
+HREF="a4761.html#cv-CPPPATH"
+><CODE
+CLASS="envar"
+>$CPPPATH</CODE
+></A
+> list,
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> will actually search the corresponding directories
+    in any repository trees and establish the
+    correct dependencies on any
+    <TT
+CLASS="literal"
+>#include</TT
+> files that it finds
+    in repository directory.
+
+    </P
+><P
+>&#13;
+    Unless the C compiler also knows about these directories
+    in the repository trees, though,
+    it will be unable to find the <TT
+CLASS="literal"
+>#include</TT
+> files.
+    If, for example, the <TT
+CLASS="filename"
+>hello.c</TT
+> file in
+    our previous example includes the <SPAN
+CLASS="application"
+>hello</SPAN
+>.h;
+    in its current directory,
+    and the <SPAN
+CLASS="application"
+>hello</SPAN
+>.h; only exists in the repository:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      cc -o hello.o -c hello.c
+      hello.c:1: hello.h: No such file or directory
+    </PRE
+><P
+>&#13;
+    In order to inform the C compiler about the repositories,
+    <SPAN
+CLASS="application"
+>SCons</SPAN
+> will add appropriate
+    <TT
+CLASS="literal"
+>-I</TT
+> flags to the compilation commands
+    for each directory in the <CODE
+CLASS="envar"
+>$CPPPATH</CODE
+> list.
+    So if we add the current directory to the
+    construction environment <CODE
+CLASS="envar"
+>$CPPPATH</CODE
+> like so:
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;       env = Environment(CPPPATH = ['.'])
+       env.Program('hello.c')
+       Repository('/usr/repository1')
+    </PRE
+><P
+>&#13;
+    Then re-executing <SPAN
+CLASS="application"
+>SCons</SPAN
+> yields:
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      cc -o hello.o -c -I. -I/usr/repository1 hello.c
+      cc -o hello hello.o
+    </PRE
+><P
+>&#13;
+    The order of the <TT
+CLASS="literal"
+>-I</TT
+> options replicates,
+    for the C preprocessor,
+    the same repository-directory search path
+    that <SPAN
+CLASS="application"
+>SCons</SPAN
+> uses for its own dependency analysis.
+    If there are multiple repositories and multiple <CODE
+CLASS="envar"
+>$CPPPATH</CODE
+>
+    directories, <SPAN
+CLASS="application"
+>SCons</SPAN
+> will add the repository directories
+    to the beginning of each <CODE
+CLASS="envar"
+>$CPPPATH</CODE
+> directory,
+    rapidly multiplying the number of <TT
+CLASS="literal"
+>-I</TT
+> flags.
+    If, for example, the <CODE
+CLASS="envar"
+>$CPPPATH</CODE
+> contains three directories
+    (and shorter repository path names!):
+
+    </P
+><PRE
+CLASS="programlisting"
+>&#13;       env = Environment(CPPPATH = ['dir1', 'dir2', 'dir3'])
+       env.Program('hello.c')
+       Repository('/r1', '/r2')
+    </PRE
+><P
+>&#13;
+    Then we'll end up with nine <TT
+CLASS="literal"
+>-I</TT
+> options
+    on the command line,
+    three (for each of the <CODE
+CLASS="envar"
+>$CPPPATH</CODE
+> directories)
+    times three (for the local directory plus the two repositories):
+
+    </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+      cc -o hello.o -c -Idir1 -I/r1/dir1 -I/r2/dir1 -Idir2 -I/r1/dir2 -I/r2/dir2 -Idir3 -I/r1/dir3 -I/r2/dir3 hello.c
+      cc -o hello hello.o
+    </PRE
+><DIV
+CLASS="section"
+><H2
+CLASS="section"
+><A
+NAME="AEN3885"
+>23.3.1. Limitations on <TT
+CLASS="literal"
+>#include</TT
+> files in repositories</A
+></H2
+><P
+>&#13;
+      <SPAN
+CLASS="application"
+>SCons</SPAN
+> relies on the C compiler's
+      <TT
+CLASS="literal"
+>-I</TT
+> options to control the order in which
+      the preprocessor will search the repository directories
+      for <TT
+CLASS="literal"
+>#include</TT
+> files.
+      This causes a problem, however, with how the C preprocessor
+      handles <TT
+CLASS="literal"
+>#include</TT
+> lines with
+      the file name included in double-quotes.
+
+      </P
+><P
+>&#13;
+      As we've seen,
+      <SPAN
+CLASS="application"
+>SCons</SPAN
+> will compile the <TT
+CLASS="filename"
+>hello.c</TT
+> file from
+      the repository if it doesn't exist in
+      the local directory.
+      If, however, the <TT
+CLASS="filename"
+>hello.c</TT
+> file in the repository contains
+      a <TT
+CLASS="literal"
+>#include</TT
+> line with the file name in
+      double quotes:
+
+      </P
+><PRE
+CLASS="programlisting"
+>&#13;        #include "hello.h"
+        int
+        main(int argc, char *argv[])
+        {
+            printf(HELLO_MESSAGE);
+            return (0);
+        }
+      </PRE
+><P
+>&#13;
+      Then the C preprocessor will <SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>always</I
+></SPAN
+>
+      use a <TT
+CLASS="filename"
+>hello.h</TT
+> file from the repository directory first,
+      even if there is a <TT
+CLASS="filename"
+>hello.h</TT
+> file in the local directory,
+      despite the fact that the command line specifies
+      <TT
+CLASS="literal"
+>-I</TT
+> as the first option:
+
+      </P
+><PRE
+CLASS="screen"
+>&#13;        % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+        cc -o hello.o -c -I. -I/usr/repository1 /usr/repository1/hello.c
+        cc -o hello hello.o
+      </PRE
+><P
+>&#13;
+      This behavior of the C preprocessor--always search
+      for a <TT
+CLASS="literal"
+>#include</TT
+> file in double-quotes
+      first in the same directory as the source file,
+      and only then search the <TT
+CLASS="literal"
+>-I</TT
+>--can
+      not, in general, be changed.
+      In other words, it's a limitation
+      that must be lived with if you want to use
+      code repositories in this way.
+      There are three ways you can possibly
+      work around this C preprocessor behavior:
+
+      </P
+><P
+></P
+><OL
+TYPE="1"
+><LI
+><P
+>&#13;
+        Some modern versions of C compilers do have an option
+        to disable or control this behavior.
+        If so, add that option to <A
+HREF="a4761.html#cv-CFLAGS"
+><CODE
+CLASS="envar"
+>$CFLAGS</CODE
+></A
+>
+        (or <A
+HREF="a4761.html#cv-CXXFLAGS"
+><CODE
+CLASS="envar"
+>$CXXFLAGS</CODE
+></A
+> or both) in your construction environment(s).
+        Make sure the option is used for all construction
+        environments that use C preprocessing!
+
+        </P
+></LI
+><LI
+><P
+>&#13;
+        Change all occurrences of <TT
+CLASS="literal"
+>#include "file.h"</TT
+>
+        to <TT
+CLASS="literal"
+>#include &#60;file.h&#62;</TT
+>.
+        Use of <TT
+CLASS="literal"
+>#include</TT
+> with angle brackets
+        does not have the same behavior--the <TT
+CLASS="literal"
+>-I</TT
+>
+        directories are searched first
+        for <TT
+CLASS="literal"
+>#include</TT
+> files--which
+        gives <SPAN
+CLASS="application"
+>SCons</SPAN
+> direct control over the list of
+        directories the C preprocessor will search.
+
+        </P
+></LI
+><LI
+><P
+>&#13;
+        Require that everyone working with compilation from
+        repositories check out and work on entire directories of files,
+        not individual files.
+        (If you use local wrapper scripts around
+        your source code control system's command,
+        you could add logic to enforce this restriction there.
+
+        </P
+></LI
+></OL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x3812.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x3926.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Finding source files in repositories</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c3797.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Finding the <TT
+CLASS="filename"
+>SConstruct</TT
+> file in repositories</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

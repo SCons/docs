@@ -1,0 +1,68 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>17.7. Modifying a Builder by adding an Emitter</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.9.1"><link rel="up" href="ch17.html" title="Chapter 17. Extending SCons: Writing Your Own Builders"><link rel="prev" href="ch17s06.html" title="17.6. Builders That Modify the Target or Source Lists Using an Emitter"><link rel="next" href="ch17s08.html" title="17.8. Where To Put Your Custom Builders and Tools"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">17.7. Modifying a Builder by adding an Emitter</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch17s06.html">Prev</a> </td><th width="60%" align="center">Chapter 17. Extending <span class="application">SCons</span>: Writing Your Own Builders</th><td width="20%" align="right"> <a accesskey="n" href="ch17s08.html">Next</a></td></tr></table><hr></div><div class="section" title="17.7. Modifying a Builder by adding an Emitter"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id5875"></a>17.7. Modifying a Builder by adding an Emitter</h2></div></div></div><p>
+
+    Defining an emitter to work with a custom Builder
+    is a powerful concept, but sometimes all you really want
+    is to be able to use an existing builder but change its
+    concept of what targets are created.
+    In this case,
+    trying to recreate the logic of an existing Builder to
+    supply a special emitter can be a lot of work.
+    The typical case for this is when you want to use a compiler flag
+    that causes additional files to be generated.
+    For example the GNU linker accepts an option
+    <code class="option">-Map</code> which outputs a link map
+    to the file specified by the option's argument.
+    If this option is just supplied to the build,
+    <span class="application">SCons</span> will not consider the link map file a tracked target,
+    which has various undesirable effects.
+
+    </p><p>
+
+    To help with this, <span class="application">SCons</span> provides <span>construction variables</span> which correspond
+    to a few standard builders:
+    <a class="link" href="apa.html#cv-PROGEMITTER"><code class="envar">$PROGEMITTER</code></a> for <a class="link" href="apb.html#b-Program"><code class="function">Program</code></a>;
+    <a class="link" href="apa.html#cv-LIBEMITTER"><code class="envar">$LIBEMITTER</code></a> for <a class="link" href="apb.html#b-Library"><code class="function">Library</code></a>;
+    <a class="link" href="apa.html#cv-SHLIBEMITTER"><code class="envar">$SHLIBEMITTER</code></a> for <a class="link" href="apb.html#b-SharedLibrary"><code class="function">SharedLibrary</code></a> and
+    <a class="link" href="apa.html#cv-LDMODULEEMITTER"><code class="envar">$LDMODULEEMITTER</code></a> for <a class="link" href="apb.html#b-LoadableModule"><code class="function">LoadableModule</code></a>;.
+    Adding an emitter to one of these will cause it to be
+    invoked in addition to any existing emitter for the
+    corresponding builder.
+
+    </p><p>
+
+    This example adds map creation as a linker flag,
+    and modifies the standard <a class="link" href="apb.html#b-Program"><code class="function">Program</code></a>
+    emitter to know that map generation is a side-effect:
+
+    </p><pre class="programlisting">
+env = Environment()
+map_filename = "${TARGET.name}.map"
+
+def map_emitter(target, source, env):
+    target.append(map_filename)
+    return target, source
+
+env.Append(LINKFLAGS="-Wl,-Map={},--cref".format(map_filename))
+env.Append(PROGEMITTER=map_emitter)
+env.Program('hello.c')
+      </pre><p>
+
+    If you run this example, adding an option to tell <span class="application">SCons</span> to
+    dump some information about the dependencies it knows,
+    it shows the map file option in use, and that <span class="application">SCons</span> indeed
+    knows about the map file,
+    it's not just a silent side effect of the compiler:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q --tree=prune</code></strong>
+cc -o hello.o -c hello.c
+cc -o hello -Wl,-Map=hello.map,--cref hello.o
++-.
+  +-SConstruct
+  +-hello
+  | +-hello.o
+  |   +-hello.c
+  +-hello.c
+  +-hello.map
+  | +-[hello.o]
+  +-[hello.o]
+</pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch17s06.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch17.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch17s08.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">17.6. Builders That Modify the Target or Source Lists Using an <span>Emitter</span> </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 17.8. Where To Put Your Custom Builders and Tools</td></tr></table></div></body></html>

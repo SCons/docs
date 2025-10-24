@@ -1,0 +1,320 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Simple Builds</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 1.3.1"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Building and Installing SCons on Any System"
+HREF="x170.html"><LINK
+REL="NEXT"
+TITLE="Building Object Files"
+HREF="x298.html"></HEAD
+><BODY
+CLASS="chapter"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 1.3.1</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x170.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x298.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="chapter"
+><H1
+><A
+NAME="chap-simple"
+></A
+>Chapter 2. Simple Builds</H1
+><P
+>&#13;
+ In this chapter,
+ you will see several examples of
+ very simple build configurations using <SPAN
+CLASS="application"
+>SCons</SPAN
+>,
+ which will demonstrate how easy
+ it is to use <SPAN
+CLASS="application"
+>SCons</SPAN
+> to
+ build programs from several different programming languages
+ on different types of systems.
+
+ </P
+><DIV
+CLASS="section"
+><H1
+CLASS="section"
+><A
+NAME="AEN266"
+>2.1. Building Simple C / C++ Programs</A
+></H1
+><P
+>&#13;
+   Here's the famous "Hello, World!" program in C:
+
+   </P
+><PRE
+CLASS="programlisting"
+>&#13;      int
+      main()
+      {
+          printf("Hello, world!\n");
+      }
+   </PRE
+><P
+>&#13;
+   And here's how to build it using <SPAN
+CLASS="application"
+>SCons</SPAN
+>.
+   Enter the following into a file named <TT
+CLASS="filename"
+>SConstruct</TT
+>:
+
+   </P
+><PRE
+CLASS="programlisting"
+>&#13;      Program('hello.c')
+   </PRE
+><P
+>&#13;
+   This minimal configuration file gives
+   <SPAN
+CLASS="application"
+>SCons</SPAN
+> two pieces of information:
+   what you want to build
+   (an executable program),
+   and the input file from
+   which you want it built
+   (the <TT
+CLASS="filename"
+>hello.c</TT
+> file).
+   <A
+HREF="a8465.html#b-Program"
+><CODE
+CLASS="function"
+>Program</CODE
+></A
+> is a <I
+CLASS="firstterm"
+>builder_method</I
+>,
+   a Python call that tells <SPAN
+CLASS="application"
+>SCons</SPAN
+> that you want to build an
+   executable program.
+
+   </P
+><P
+>&#13;
+   That's it.  Now run the <TT
+CLASS="filename"
+>scons</TT
+> command to build the program.
+   On a POSIX-compliant system like Linux or UNIX,
+   you'll see something like:
+
+   </P
+><PRE
+CLASS="screen"
+>&#13;      % <KBD
+CLASS="userinput"
+>scons</KBD
+>
+      scons: Reading SConscript files ...
+      scons: done reading SConscript files.
+      scons: Building targets ...
+      cc -o hello.o -c hello.c
+      cc -o hello hello.o
+      scons: done building targets.
+   </PRE
+><P
+>&#13;
+   On a Windows system with the Microsoft Visual C++ compiler,
+   you'll see something like:
+
+   </P
+><PRE
+CLASS="screen"
+>&#13;      C:\&#62;<KBD
+CLASS="userinput"
+>scons</KBD
+>
+      scons: Reading SConscript files ...
+      scons: done reading SConscript files.
+      scons: Building targets ...
+      cl /Fohello.obj /c hello.c /nologo
+      link /nologo /OUT:hello.exe hello.obj
+      scons: done building targets.
+   </PRE
+><P
+>&#13;
+   First, notice that you only need
+   to specify the name of the source file,
+   and that <SPAN
+CLASS="application"
+>SCons</SPAN
+> correctly deduces the names of
+   the object and executable files to be built
+   from the base of the source file name.
+
+   </P
+><P
+>&#13;
+   Second, notice that the same input <TT
+CLASS="filename"
+>SConstruct</TT
+> file,
+   without any changes,
+   generates the correct output file names on both systems:
+   <TT
+CLASS="filename"
+>hello.o</TT
+> and <TT
+CLASS="filename"
+>hello</TT
+>
+   on POSIX systems,
+   <TT
+CLASS="filename"
+>hello.obj</TT
+> and <TT
+CLASS="filename"
+>hello.exe</TT
+>
+   on Windows systems.
+   This is a simple example of how <SPAN
+CLASS="application"
+>SCons</SPAN
+>
+   makes it extremely easy to
+   write portable software builds.
+
+   </P
+><P
+>&#13;
+   (Note that we won't provide duplicate side-by-side
+   POSIX and Windows output for all of the examples in this guide;
+   just keep in mind that, unless otherwise specified,
+   any of the examples should work equally well on both types of systems.)
+
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x170.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x298.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Building and Installing <SPAN
+CLASS="application"
+>SCons</SPAN
+> on Any System</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Building Object Files</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

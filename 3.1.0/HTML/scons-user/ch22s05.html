@@ -1,0 +1,56 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>22.5. Finding derived files in repositories</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 3.1.0"><link rel="up" href="ch22.html" title="Chapter 22. Building From Code Repositories"><link rel="prev" href="ch22s04.html" title="22.4. Finding the SConstruct file in repositories"><link rel="next" href="ch22s06.html" title="22.6. Guaranteeing local copies of files"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">22.5. Finding derived files in repositories</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch22s04.html">Prev</a> </td><th width="60%" align="center">Chapter 22. Building From Code Repositories</th><td width="20%" align="right"> <a accesskey="n" href="ch22s06.html">Next</a></td></tr></table><hr></div><div class="section" title="22.5. Finding derived files in repositories"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idm4232"></a>22.5. Finding derived files in repositories</h2></div></div></div><p>
+
+    If a repository contains not only source files,
+    but also derived files (such as object files,
+    libraries, or executables), <span class="application">SCons</span> will perform
+    its normal MD5 signature calculation to
+    decide if a derived file in a repository is up-to-date,
+    or the derived file must be rebuilt in the local build directory.
+    For the <span class="application">SCons</span> signature calculation to work correctly,
+    a repository tree must contain the <code class="filename">.sconsign</code> files
+    that <span class="application">SCons</span> uses to keep track of signature information.
+
+    </p><p>
+
+    Usually, this would be done by a build integrator
+    who would run <span class="application">SCons</span> in the repository
+    to create all of its derived files and <code class="filename">.sconsign</code> files,
+    or who would run <span class="application">SCons</span> in a separate build directory
+    and copy the resulting tree to the desired repository:
+
+    </p><pre class="screen">% <strong class="userinput"><code>cd /usr/repository1</code></strong>
+% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o file1.o -c file1.c
+cc -o file2.o -c file2.c
+cc -o hello.o -c hello.c
+cc -o hello hello.o file1.o file2.o
+</pre><p>
+    
+    (Note that this is safe even if the <code class="filename">SConstruct</code> file
+    lists <code class="filename">/usr/repository1</code> as a repository,
+    because <span class="application">SCons</span> will remove the current build directory
+    from its repository list for that invocation.)
+
+    </p><p>
+
+    Now, with the repository populated,
+    we only need to create the one local source file
+    we're interested in working with at the moment,
+    and use the <code class="literal">-Y</code> option to
+    tell <span class="application">SCons</span> to fetch any other files it needs
+    from the repository:
+
+    </p><pre class="screen">
+% <strong class="userinput"><code>cd $HOME/build</code></strong>
+% <strong class="userinput"><code>edit hello.c</code></strong>
+% <strong class="userinput"><code>scons -Q -Y /usr/repository1</code></strong>
+cc -c -o hello.o hello.c
+cc -o hello hello.o /usr/repository1/file1.o /usr/repository1/file2.o
+    </pre><p>
+
+    Notice that <span class="application">SCons</span> realizes that it does not need to
+    rebuild local copies <code class="filename">file1.o</code> and <code class="filename">file2.o</code> files,
+    but instead uses the already-compiled files
+    from the repository.
+
+    </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch22s04.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch22.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch22s06.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">22.4. Finding the <code class="filename">SConstruct</code> file in repositories </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 22.6. Guaranteeing local copies of files</td></tr></table></div></body></html>

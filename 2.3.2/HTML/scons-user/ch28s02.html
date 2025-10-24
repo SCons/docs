@@ -1,0 +1,268 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>28.2. What's in That Construction Environment? the Dump Method</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 2.3.2"><link rel="up" href="ch28.html" title="Chapter 28. Troubleshooting"><link rel="prev" href="ch28.html" title="Chapter 28. Troubleshooting"><link rel="next" href="ch28s03.html" title="28.3. What Dependencies Does SCons Know About? the --tree Option"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">28.2. What's in That Construction Environment?  the <code class="function">Dump</code> Method</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch28.html">Prev</a> </td><th width="60%" align="center">Chapter 28. Troubleshooting</th><td width="20%" align="right"> <a accesskey="n" href="ch28s03.html">Next</a></td></tr></table><hr></div><div class="section" title="28.2. What's in That Construction Environment? the Dump Method"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idm28933104"></a>28.2. What's in That Construction Environment?  the <code class="function">Dump</code> Method</h2></div></div></div><p>
+
+    When you create a construction environment,
+    <span class="application">SCons</span> populates it
+    with construction variables that are set up
+    for various compilers, linkers and utilities
+    that it finds on your system.
+    Although this is usually helpful and what you want,
+    it might be frustrating if <span class="application">SCons</span>
+    doesn't set certain variables that you
+    expect to be set.
+    In situations like this,
+    it's sometimes helpful to use the
+    construction environment <code class="function">Dump</code> method
+    to print all or some of
+    the construction variables.
+    Note that the <code class="function">Dump</code> method
+    <span class="emphasis"><em>returns</em></span>
+    the representation of the variables
+    in the environment
+    for you to print (or otherwise manipulate):
+
+    </p><pre class="programlisting">
+env = Environment()
+print env.Dump()
+      </pre><p>
+
+    On a POSIX system with gcc installed,
+    this might generate:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons</code></strong>
+scons: Reading SConscript files ...
+{ 'BUILDERS': {'_InternalInstall': &lt;function InstallBuilderWrapper at 0x700000&gt;, '_InternalInstallVersionedLib': &lt;function InstallVersionedBuilderWrapper at 0x700000&gt;, '_InternalInstallAs': &lt;function InstallAsBuilderWrapper at 0x700000&gt;},
+  'CONFIGUREDIR': '#/.sconf_temp',
+  'CONFIGURELOG': '#/config.log',
+  'CPPSUFFIXES': [ '.c',
+                   '.C',
+                   '.cxx',
+                   '.cpp',
+                   '.c++',
+                   '.cc',
+                   '.h',
+                   '.H',
+                   '.hxx',
+                   '.hpp',
+                   '.hh',
+                   '.F',
+                   '.fpp',
+                   '.FPP',
+                   '.m',
+                   '.mm',
+                   '.S',
+                   '.spp',
+                   '.SPP',
+                   '.sx'],
+  'DSUFFIXES': ['.d'],
+  'Dir': &lt;SCons.Defaults.Variable_Method_Caller object at 0x700000&gt;,
+  'Dirs': &lt;SCons.Defaults.Variable_Method_Caller object at 0x700000&gt;,
+  'ENV': { 'PATH': '/usr/local/bin:/opt/bin:/bin:/usr/bin'},
+  'ESCAPE': &lt;function escape at 0x700000&gt;,
+  'File': &lt;SCons.Defaults.Variable_Method_Caller object at 0x700000&gt;,
+  'HOST_ARCH': None,
+  'HOST_OS': None,
+  'IDLSUFFIXES': ['.idl', '.IDL'],
+  'INSTALL': &lt;function copyFunc at 0x700000&gt;,
+  'INSTALLVERSIONEDLIB': &lt;function copyFuncVersionedLib at 0x700000&gt;,
+  'LIBPREFIX': 'lib',
+  'LIBPREFIXES': ['$LIBPREFIX'],
+  'LIBSUFFIX': '.a',
+  'LIBSUFFIXES': ['$LIBSUFFIX', '$SHLIBSUFFIX'],
+  'MAXLINELENGTH': 128072,
+  'OBJPREFIX': '',
+  'OBJSUFFIX': '.o',
+  'PLATFORM': 'posix',
+  'PROGPREFIX': '',
+  'PROGSUFFIX': '',
+  'PSPAWN': &lt;function piped_env_spawn at 0x700000&gt;,
+  'RDirs': &lt;SCons.Defaults.Variable_Method_Caller object at 0x700000&gt;,
+  'SCANNERS': [],
+  'SHELL': 'sh',
+  'SHLIBPREFIX': '$LIBPREFIX',
+  'SHLIBSUFFIX': '.so',
+  'SHOBJPREFIX': '$OBJPREFIX',
+  'SHOBJSUFFIX': '$OBJSUFFIX',
+  'SPAWN': &lt;function subprocess_spawn at 0x700000&gt;,
+  'TARGET_ARCH': None,
+  'TARGET_OS': None,
+  'TEMPFILE': &lt;class 'SCons.Platform.TempFileMunge'&gt;,
+  'TEMPFILEPREFIX': '@',
+  'TOOLS': ['install', 'install'],
+  '_CPPDEFFLAGS': '${_defines(CPPDEFPREFIX, CPPDEFINES, CPPDEFSUFFIX, __env__)}',
+  '_CPPINCFLAGS': '$( ${_concat(INCPREFIX, CPPPATH, INCSUFFIX, __env__, RDirs, TARGET, SOURCE)} $)',
+  '_LIBDIRFLAGS': '$( ${_concat(LIBDIRPREFIX, LIBPATH, LIBDIRSUFFIX, __env__, RDirs, TARGET, SOURCE)} $)',
+  '_LIBFLAGS': '${_concat(LIBLINKPREFIX, LIBS, LIBLINKSUFFIX, __env__)}',
+  '__DRPATH': '$_DRPATH',
+  '__RPATH': '$_RPATH',
+  '_concat': &lt;function _concat at 0x700000&gt;,
+  '_defines': &lt;function _defines at 0x700000&gt;,
+  '_stripixes': &lt;function _stripixes at 0x700000&gt;}
+scons: done reading SConscript files.
+scons: Building targets ...
+scons: `.' is up to date.
+scons: done building targets.
+</pre><p>
+
+    On a Windows system with Visual C++
+    the output might look like:
+
+    </p><pre class="screen">C:\&gt;<strong class="userinput"><code>scons</code></strong>
+scons: Reading SConscript files ...
+{ 'BUILDERS': {'_InternalInstallVersionedLib': &lt;function InstallVersionedBuilderWrapper at 0x700000&gt;, '_InternalInstall': &lt;function InstallBuilderWrapper at 0x700000&gt;, 'Object': &lt;SCons.Builder.CompositeBuilder object at 0x700000&gt;, 'PCH': &lt;SCons.Builder.BuilderBase object at 0x700000&gt;, 'RES': &lt;SCons.Builder.BuilderBase object at 0x700000&gt;, 'SharedObject': &lt;SCons.Builder.CompositeBuilder object at 0x700000&gt;, 'StaticObject': &lt;SCons.Builder.CompositeBuilder object at 0x700000&gt;, '_InternalInstallAs': &lt;function InstallAsBuilderWrapper at 0x700000&gt;},
+  'CC': 'cl',
+  'CCCOM': &lt;SCons.Action.FunctionAction object at 0x700000&gt;,
+  'CCFLAGS': ['/nologo'],
+  'CCPCHFLAGS': ['${(PCH and "/Yu%s \\"/Fp%s\\""%(PCHSTOP or "",File(PCH))) or ""}'],
+  'CCPDBFLAGS': ['${(PDB and "/Z7") or ""}'],
+  'CFILESUFFIX': '.c',
+  'CFLAGS': [],
+  'CONFIGUREDIR': '#/.sconf_temp',
+  'CONFIGURELOG': '#/config.log',
+  'CPPDEFPREFIX': '/D',
+  'CPPDEFSUFFIX': '',
+  'CPPSUFFIXES': [ '.c',
+                   '.C',
+                   '.cxx',
+                   '.cpp',
+                   '.c++',
+                   '.cc',
+                   '.h',
+                   '.H',
+                   '.hxx',
+                   '.hpp',
+                   '.hh',
+                   '.F',
+                   '.fpp',
+                   '.FPP',
+                   '.m',
+                   '.mm',
+                   '.S',
+                   '.spp',
+                   '.SPP',
+                   '.sx'],
+  'CXX': '$CC',
+  'CXXCOM': '${TEMPFILE("$CXX $_MSVC_OUTPUT_FLAG /c $CHANGED_SOURCES $CXXFLAGS $CCFLAGS $_CCCOMCOM")}',
+  'CXXFILESUFFIX': '.cc',
+  'CXXFLAGS': ['$(', '/TP', '$)'],
+  'DSUFFIXES': ['.d'],
+  'Dir': &lt;SCons.Defaults.Variable_Method_Caller object at 0x700000&gt;,
+  'Dirs': &lt;SCons.Defaults.Variable_Method_Caller object at 0x700000&gt;,
+  'ENV': { 'PATH': 'C:\\WINDOWS\\System32',
+           'PATHEXT': '.COM;.EXE;.BAT;.CMD',
+           'SystemRoot': 'C:\\WINDOWS'},
+  'ESCAPE': &lt;function escape at 0x700000&gt;,
+  'File': &lt;SCons.Defaults.Variable_Method_Caller object at 0x700000&gt;,
+  'HOST_ARCH': '',
+  'HOST_OS': 'win32',
+  'IDLSUFFIXES': ['.idl', '.IDL'],
+  'INCPREFIX': '/I',
+  'INCSUFFIX': '',
+  'INSTALL': &lt;function copyFunc at 0x700000&gt;,
+  'INSTALLVERSIONEDLIB': &lt;function copyFuncVersionedLib at 0x700000&gt;,
+  'LIBPREFIX': '',
+  'LIBPREFIXES': ['$LIBPREFIX'],
+  'LIBSUFFIX': '.lib',
+  'LIBSUFFIXES': ['$LIBSUFFIX'],
+  'MAXLINELENGTH': 2048,
+  'MSVC_SETUP_RUN': True,
+  'OBJPREFIX': '',
+  'OBJSUFFIX': '.obj',
+  'PCHCOM': '$CXX /Fo${TARGETS[1]} $CXXFLAGS $CCFLAGS $CPPFLAGS $_CPPDEFFLAGS $_CPPINCFLAGS /c $SOURCES /Yc$PCHSTOP /Fp${TARGETS[0]} $CCPDBFLAGS $PCHPDBFLAGS',
+  'PCHPDBFLAGS': ['${(PDB and "/Yd") or ""}'],
+  'PLATFORM': 'win32',
+  'PROGPREFIX': '',
+  'PROGSUFFIX': '.exe',
+  'PSPAWN': &lt;function piped_spawn at 0x700000&gt;,
+  'RC': 'rc',
+  'RCCOM': &lt;SCons.Action.FunctionAction object at 0x700000&gt;,
+  'RCFLAGS': [],
+  'RCSUFFIXES': ['.rc', '.rc2'],
+  'RDirs': &lt;SCons.Defaults.Variable_Method_Caller object at 0x700000&gt;,
+  'SCANNERS': [],
+  'SHCC': '$CC',
+  'SHCCCOM': &lt;SCons.Action.FunctionAction object at 0x700000&gt;,
+  'SHCCFLAGS': ['$CCFLAGS'],
+  'SHCFLAGS': ['$CFLAGS'],
+  'SHCXX': '$CXX',
+  'SHCXXCOM': '${TEMPFILE("$SHCXX $_MSVC_OUTPUT_FLAG /c $CHANGED_SOURCES $SHCXXFLAGS $SHCCFLAGS $_CCCOMCOM")}',
+  'SHCXXFLAGS': ['$CXXFLAGS'],
+  'SHELL': None,
+  'SHLIBPREFIX': '',
+  'SHLIBSUFFIX': '.dll',
+  'SHOBJPREFIX': '$OBJPREFIX',
+  'SHOBJSUFFIX': '$OBJSUFFIX',
+  'SPAWN': &lt;function spawn at 0x700000&gt;,
+  'STATIC_AND_SHARED_OBJECTS_ARE_THE_SAME': 1,
+  'TARGET_ARCH': None,
+  'TARGET_OS': None,
+  'TEMPFILE': &lt;class 'SCons.Platform.TempFileMunge'&gt;,
+  'TEMPFILEPREFIX': '@',
+  'TOOLS': ['msvc', 'install', 'install'],
+  '_CCCOMCOM': '$CPPFLAGS $_CPPDEFFLAGS $_CPPINCFLAGS $CCPCHFLAGS $CCPDBFLAGS',
+  '_CPPDEFFLAGS': '${_defines(CPPDEFPREFIX, CPPDEFINES, CPPDEFSUFFIX, __env__)}',
+  '_CPPINCFLAGS': '$( ${_concat(INCPREFIX, CPPPATH, INCSUFFIX, __env__, RDirs, TARGET, SOURCE)} $)',
+  '_LIBDIRFLAGS': '$( ${_concat(LIBDIRPREFIX, LIBPATH, LIBDIRSUFFIX, __env__, RDirs, TARGET, SOURCE)} $)',
+  '_LIBFLAGS': '${_concat(LIBLINKPREFIX, LIBS, LIBLINKSUFFIX, __env__)}',
+  '_MSVC_OUTPUT_FLAG': &lt;function msvc_output_flag at 0x700000&gt;,
+  '_concat': &lt;function _concat at 0x700000&gt;,
+  '_defines': &lt;function _defines at 0x700000&gt;,
+  '_stripixes': &lt;function _stripixes at 0x700000&gt;}
+scons: done reading SConscript files.
+scons: Building targets ...
+scons: `.' is up to date.
+scons: done building targets.
+</pre><p>
+
+    The construction environments in these examples have
+    actually been restricted to just gcc and Visual C++,
+    respectively.
+    In a real-life situation,
+    the construction environments will
+    likely contain a great many more variables.
+    Also note that we've massaged the example output above
+    to make the memory address of all objects a constant 0x700000.
+    In reality, you would see a different hexadecimal
+    number for each object.
+
+    </p><p>
+
+    To make it easier to see just what you're
+    interested in,
+    the <code class="function">Dump</code> method allows you to
+    specify a specific constrcution variable
+    that you want to disply.
+    For example,
+    it's not unusual to want to verify
+    the external environment used to execute build commands,
+    to make sure that the PATH and other
+    environment variables are set up the way they should be.
+    You can do this as follows:
+
+    </p><pre class="programlisting">
+env = Environment()
+print env.Dump('ENV')
+      </pre><p>
+
+    Which might display the following when executed on a POSIX system:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons</code></strong>
+scons: Reading SConscript files ...
+{ 'PATH': '/usr/local/bin:/opt/bin:/bin:/usr/bin'}
+scons: done reading SConscript files.
+scons: Building targets ...
+scons: `.' is up to date.
+scons: done building targets.
+</pre><p>
+
+    And the following when executed on a Windows system:
+
+    </p><pre class="screen">C:\&gt;<strong class="userinput"><code>scons</code></strong>
+scons: Reading SConscript files ...
+{ 'PATH': 'C:\\WINDOWS\\System32',
+  'PATHEXT': '.COM;.EXE;.BAT;.CMD',
+  'SystemRoot': 'C:\\WINDOWS'}
+scons: done reading SConscript files.
+scons: Building targets ...
+scons: `.' is up to date.
+scons: done building targets.
+</pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch28.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch28.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch28s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 28. Troubleshooting </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 28.3. What Dependencies Does <span class="application">SCons</span> Know About?  the <code class="literal">--tree</code> Option</td></tr></table></div></body></html>

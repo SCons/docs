@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>SCons.Memoize</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="SCons-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://www.scons.org/">SCons</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="SCons-module.html">Package&nbsp;SCons</a> ::
+        Module&nbsp;Memoize
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="SCons.Memoize-module.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== MODULE DESCRIPTION ==================== -->
+<h1 class="epydoc">Module Memoize</h1><p class="nomargin-top"><span class="codelink"><a href="SCons.Memoize-pysrc.html">source&nbsp;code</a></span></p>
+<p>Memoizer</p>
+<p>A decorator-based implementation to count hits and misses of the computed
+values that various methods cache in memory.</p>
+<p>Use of this modules assumes that wrapped methods be coded to cache their
+values in a consistent way. In particular, it requires that the class uses a
+dictionary named &quot;_memo&quot; to store the cached values.</p>
+<p>Here is an example of wrapping a method that returns a computed value,
+with no input parameters:</p>
+<pre class="rst-literal-block">
+&#64;SCons.Memoize.CountMethodCall
+def foo(self):
+
+    try:                                                    # Memoization
+        return self._memo['foo']                            # Memoization
+    except KeyError:                                        # Memoization
+        pass                                                # Memoization
+
+    result = self.compute_foo_value()
+
+    self._memo['foo'] = result                              # Memoization
+
+    return result
+</pre>
+<p>Here is an example of wrapping a method that will return different values
+based on one or more input arguments:</p>
+<pre class="rst-literal-block">
+def _bar_key(self, argument):                               # Memoization
+    return argument                                         # Memoization
+
+&#64;SCons.Memoize.CountDictCall(_bar_key)
+def bar(self, argument):
+
+    memo_key = argument                                     # Memoization
+    try:                                                    # Memoization
+        memo_dict = self._memo['bar']                       # Memoization
+    except KeyError:                                        # Memoization
+        memo_dict = {}                                      # Memoization
+        self._memo['dict'] = memo_dict                      # Memoization
+    else:                                                   # Memoization
+        try:                                                # Memoization
+            return memo_dict[memo_key]                      # Memoization
+        except KeyError:                                    # Memoization
+            pass                                            # Memoization
+
+    result = self.compute_bar_value(argument)
+
+    memo_dict[memo_key] = result                            # Memoization
+
+    return result
+</pre>
+<p>Deciding what to cache is tricky, because different configurations
+can have radically different performance tradeoffs, and because the
+tradeoffs involved are often so non-obvious.  Consequently, deciding
+whether or not to cache a given method will likely be more of an art than
+a science, but should still be based on available data from this module.
+Here are some VERY GENERAL guidelines about deciding whether or not to
+cache return values from a method that's being called a lot:</p>
+<blockquote>
+<dl class="rst-docutils">
+<dt>--  The first question to ask is, &quot;Can we change the calling code</dt>
+<dd>so this method isn't called so often?&quot;  Sometimes this can be
+done by changing the algorithm.  Sometimes the <em>caller</em> should
+be memoized, not the method you're looking at.</dd>
+</dl>
+<p class="rst-attribution">&mdash;The memoized function should be timed with multiple configurations
+to make sure it doesn't inadvertently slow down some other
+configuration.</p>
+</blockquote>
+<blockquote>
+<dl class="rst-docutils">
+<dt>--  When memoizing values based on a dictionary key composed of</dt>
+<dd>input arguments, you don't need to use all of the arguments
+if some of them don't affect the return values.</dd>
+</dl>
+</blockquote>
+
+<!-- ==================== CLASSES ==================== -->
+<a name="section-Classes"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Classes"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="SCons.Memoize.Counter-class.html" class="summary-name">Counter</a><br />
+      Base class for counting memoization hits and misses.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="SCons.Memoize.CountValue-class.html" class="summary-name">CountValue</a><br />
+      A counter class for simple, atomic memoized values.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="SCons.Memoize.CountDict-class.html" class="summary-name">CountDict</a><br />
+      A counter class for memoized values stored in a dictionary, with
+keys based on the method's input arguments.
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTIONS ==================== -->
+<a name="section-Functions"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Functions</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Functions"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="Dump"></a><span class="summary-sig-name">Dump</span>(<span class="summary-sig-arg">title</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Dump the hit/miss count for all the counters
+collected so far.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Memoize-pysrc.html#Dump">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="EnableMemoization"></a><span class="summary-sig-name">EnableMemoization</span>()</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Memoize-pysrc.html#EnableMemoization">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="CountMethodCall"></a><span class="summary-sig-name">CountMethodCall</span>(<span class="summary-sig-arg">fn</span>)</span><br />
+      Decorator for counting memoizer hits/misses while retrieving
+a simple value in a class method. It wraps the given method
+fn and uses a CountValue object to keep track of the
+caching statistics.
+Wrapping gets enabled by calling EnableMemoization().</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Memoize-pysrc.html#CountMethodCall">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="CountDictCall"></a><span class="summary-sig-name">CountDictCall</span>(<span class="summary-sig-arg">keyfunc</span>)</span><br />
+      Decorator for counting memoizer hits/misses while accessing
+dictionary values with a key-generating function. Like
+CountMethodCall above, it wraps the given method
+fn and uses a CountDict object to keep track of the
+caching statistics. The dict-key function keyfunc has to
+get passed in the decorator call and gets stored in the
+CountDict instance.
+Wrapping gets enabled by calling EnableMemoization().</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Memoize-pysrc.html#CountDictCall">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== VARIABLES ==================== -->
+<a name="section-Variables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Variables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="SCons.Memoize-module.html#__revision__" class="summary-name">__revision__</a> = <code title="'src/engine/SCons/Memoize.py 27552f9e8d59c13c3567f2bd380b74e34ee25324 \
+2019-01-08 02:59:02 bdbaddog'"><code class="variable-quote">'</code><code class="variable-string">src/engine/SCons/Memoize.py 27552f9e8d59c13c35</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="SCons.Memoize-module.html#__doc__" class="summary-name">__doc__</a> = <code title="&quot;&quot;&quot;Memoizer
+
+A decorator-based implementation to count hits and misses of the compu\
+ted
+values that various methods cache in memory.
+
+Use of this modules assumes that wrapped methods be coded to cache the\
+ir
+...">&quot;&quot;&quot;Memoi<code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="use_memoizer"></a><span class="summary-name">use_memoizer</span> = <code title="None">None</code><br />
+      hash(x)
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="CounterList"></a><span class="summary-name">CounterList</span> = <code title="{}"><code class="variable-group">{</code><code class="variable-group">}</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="__package__"></a><span class="summary-name">__package__</span> = <code title="'SCons'"><code class="variable-quote">'</code><code class="variable-string">SCons</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== VARIABLES DETAILS ==================== -->
+<a name="section-VariablesDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Variables Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-VariablesDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__revision__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">__revision__</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">src/engine/SCons/Memoize.py 27552f9e8d59c13c3567f2bd380b74e34ee25324 </code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-string">2019-01-08 02:59:02 bdbaddog</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__doc__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">__doc__</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+&quot;&quot;&quot;Memoizer
+
+A decorator-based implementation to count hits and misses of the compu<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+ted
+values that various methods cache in memory.
+
+Use of this modules assumes that wrapped methods be coded to cache the<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+ir
+<code class="variable-ellipsis">...</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="SCons-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://www.scons.org/">SCons</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Mon Jan  7 19:03:28 2019
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

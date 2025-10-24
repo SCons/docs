@@ -1,0 +1,302 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Handling Common Tasks</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="SCons User Guide 2.2.0"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Functions and Environment Methods"
+HREF="a11700.html"></HEAD
+><BODY
+CLASS="appendix"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>SCons User Guide 2.2.0</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="a11700.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+>&nbsp;</TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="appendix"
+><H1
+><A
+NAME="app-tasks"
+></A
+>Appendix E. Handling Common Tasks</H1
+><P
+>&#13;There is a common set of simple tasks that many build configurations rely
+on as they become more complex. Most build tools have special
+purpose constructs for performing these tasks, but since <TT
+CLASS="filename"
+>SConscript</TT
+>
+files are <SPAN
+CLASS="application"
+>Python</SPAN
+> scripts, you can use more flexible built-in <SPAN
+CLASS="application"
+>Python</SPAN
+>
+services to perform these tasks. This appendix lists a number of these
+tasks and how to implement them in <SPAN
+CLASS="application"
+>Python</SPAN
+> and <SPAN
+CLASS="application"
+>SCons</SPAN
+>.
+</P
+><DIV
+CLASS="example"
+><A
+NAME="AEN13728"
+></A
+><P
+><B
+>Example E-1. Wildcard globbing to create a list of filenames</B
+></P
+><PRE
+CLASS="programlisting"
+>&#13;files = Glob(wildcard)
+</PRE
+></DIV
+><DIV
+CLASS="example"
+><A
+NAME="AEN13731"
+></A
+><P
+><B
+>Example E-2. Filename extension substitution</B
+></P
+><PRE
+CLASS="programlisting"
+>&#13;import os.path
+filename = os.path.splitext(filename)[0]+extension
+</PRE
+></DIV
+><DIV
+CLASS="example"
+><A
+NAME="AEN13734"
+></A
+><P
+><B
+>Example E-3. Appending a path prefix to a list of filenames</B
+></P
+><PRE
+CLASS="programlisting"
+>&#13;import os.path
+filenames = [os.path.join(prefix, x) for x in filenames]
+</PRE
+></DIV
+><DIV
+CLASS="example"
+><A
+NAME="AEN13737"
+></A
+><P
+><B
+>Example E-4. Substituting a path prefix with another one</B
+></P
+><PRE
+CLASS="programlisting"
+>&#13;if filename.find(old_prefix) == 0:
+    filename = filename.replace(old_prefix, new_prefix)
+</PRE
+></DIV
+><DIV
+CLASS="example"
+><A
+NAME="AEN13740"
+></A
+><P
+><B
+>Example E-5. Filtering a filename list to exclude/retain only a specific set
+of extensions</B
+></P
+><PRE
+CLASS="programlisting"
+>&#13;import os.path
+filenames = [x for x in filenames if os.path.splitext(x)[1] in extensions]
+</PRE
+></DIV
+><DIV
+CLASS="example"
+><A
+NAME="AEN13743"
+></A
+><P
+><B
+>Example E-6. The "backtick function": run a shell command and capture the
+output</B
+></P
+><PRE
+CLASS="programlisting"
+>import os
+output = os.popen(command).read()
+</PRE
+></DIV
+><DIV
+CLASS="example"
+><A
+NAME="AEN13746"
+></A
+><P
+><B
+>Example E-7. Generating source code: how code can be generated and used by SCons</B
+></P
+><P
+>&#13;
+The Copy builders here could be any arbitrary shell or python function
+that produces one or more files.  This example shows how to create
+those files and use them in <SPAN
+CLASS="application"
+>SCons</SPAN
+>.
+
+</P
+><PRE
+CLASS="programlisting"
+>&#13;#### SConstruct
+env = Environment()
+env.Append(CPPPATH = "#")
+
+## Header example
+env.Append(BUILDERS =
+   {'Copy1' : Builder(action = 'cat &#60; $SOURCE &#62; $TARGET',
+                      suffix='.h', src_suffix='.bar')})
+env.Copy1('test.bar') # produces test.h from test.bar. 
+env.Program('app','main.cpp') # indirectly depends on test.bar
+
+## Source file example
+env.Append(BUILDERS =
+  {'Copy2' : Builder(action = 'cat &#60; $SOURCE &#62; $TARGET',
+                     suffix='.cpp', src_suffix='.bar2')})
+foo = env.Copy2('foo.bar2') # produces foo.cpp from foo.bar2. 
+env.Program('app2',['main2.cpp'] + foo) # compiles main2.cpp and foo.cpp into app2.
+</PRE
+><P
+>&#13;
+Where main.cpp looks like this:
+
+</P
+><PRE
+CLASS="programlisting"
+>&#13;#include "test.h"
+</PRE
+><P
+>&#13;produces this:
+</P
+><PRE
+CLASS="screen"
+>&#13;    % <KBD
+CLASS="userinput"
+>scons -Q</KBD
+>
+    cc -o app main.cpp
+    cat &#60; foo.bar2 &#62; foo.cpp
+    cc -o app2 main2.cpp foo.cpp
+    cat &#60; test.bar &#62; test.h
+ </PRE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="a11700.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Functions and Environment Methods</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>&nbsp;</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

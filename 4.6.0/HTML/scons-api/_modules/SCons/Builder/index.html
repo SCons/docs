@@ -1,0 +1,1229 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SCons.Builder &#8212; SCons 4.6.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/SCons/Builder';</script>
+    <link rel="index" title="Index" href="../../../genindex/" />
+    <link rel="search" title="Search" href="../../../search/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search/"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../../">
+  
+  
+  
+  
+  
+    <p class="title logo__title">SCons 4.6.0 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../SCons/">SCons package</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Taskmaster/">SCons.Taskmaster package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Util/">SCons.Util package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.Variables/">SCons.Variables package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../SCons.compat/">SCons.compat package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.compat/">SCons.compat package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Node/">SCons.Node package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Platform/">SCons.Platform package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Scanner/">SCons.Scanner package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Script/">SCons.Script package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Taskmaster/">SCons.Taskmaster package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Tool/">SCons.Tool package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Util/">SCons.Util package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SCons.Variables/">SCons.Variables package</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <h1>Source code for SCons.Builder</h1><div class="highlight"><pre>
+<span></span><span class="c1"># MIT License</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright The SCons Foundation</span>
+<span class="c1">#</span>
+<span class="c1"># Permission is hereby granted, free of charge, to any person obtaining</span>
+<span class="c1"># a copy of this software and associated documentation files (the</span>
+<span class="c1"># &quot;Software&quot;), to deal in the Software without restriction, including</span>
+<span class="c1"># without limitation the rights to use, copy, modify, merge, publish,</span>
+<span class="c1"># distribute, sublicense, and/or sell copies of the Software, and to</span>
+<span class="c1"># permit persons to whom the Software is furnished to do so, subject to</span>
+<span class="c1"># the following conditions:</span>
+<span class="c1">#</span>
+<span class="c1"># The above copyright notice and this permission notice shall be included</span>
+<span class="c1"># in all copies or substantial portions of the Software.</span>
+<span class="c1">#</span>
+<span class="c1"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY</span>
+<span class="c1"># KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND</span>
+<span class="c1"># NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE</span>
+<span class="c1"># LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION</span>
+<span class="c1"># OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</span>
+<span class="c1"># WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">SCons.Builder</span>
+
+<span class="sd">Builder object subsystem.</span>
+
+<span class="sd">A Builder object is a callable that encapsulates information about how</span>
+<span class="sd">to execute actions to create a target Node (file) from source Nodes</span>
+<span class="sd">(files), and how to create those dependencies for tracking.</span>
+
+<span class="sd">The main entry point here is the Builder() factory method.  This provides</span>
+<span class="sd">a procedural interface that creates the right underlying Builder object</span>
+<span class="sd">based on the keyword arguments supplied and the types of the arguments.</span>
+
+<span class="sd">The goal is for this external interface to be simple enough that the</span>
+<span class="sd">vast majority of users can create new Builders as necessary to support</span>
+<span class="sd">building new types of files in their configurations, without having to</span>
+<span class="sd">dive any deeper into this subsystem.</span>
+
+<span class="sd">The base class here is BuilderBase.  This is a concrete base class which</span>
+<span class="sd">does, in fact, represent the Builder objects that we (or users) create.</span>
+
+<span class="sd">There is also a proxy that looks like a Builder:</span>
+
+<span class="sd">    CompositeBuilder</span>
+
+<span class="sd">        This proxies for a Builder with an action that is actually a</span>
+<span class="sd">        dictionary that knows how to map file suffixes to a specific</span>
+<span class="sd">        action.  This is so that we can invoke different actions</span>
+<span class="sd">        (compilers, compile options) for different flavors of source</span>
+<span class="sd">        files.</span>
+
+<span class="sd">Builders and their proxies have the following public interface methods</span>
+<span class="sd">used by other modules:</span>
+
+<span class="sd">    - __call__()</span>
+<span class="sd">        THE public interface.  Calling a Builder object (with the</span>
+<span class="sd">        use of internal helper methods) sets up the target and source</span>
+<span class="sd">        dependencies, appropriate mapping to a specific action, and the</span>
+<span class="sd">        environment manipulation necessary for overridden construction</span>
+<span class="sd">        variable.  This also takes care of warning about possible mistakes</span>
+<span class="sd">        in keyword arguments.</span>
+
+<span class="sd">    - add_emitter()</span>
+<span class="sd">        Adds an emitter for a specific file suffix, used by some Tool</span>
+<span class="sd">        modules to specify that (for example) a yacc invocation on a .y</span>
+<span class="sd">        can create a .h *and* a .c file.</span>
+
+<span class="sd">    - add_action()</span>
+<span class="sd">        Adds an action for a specific file suffix, heavily used by</span>
+<span class="sd">        Tool modules to add their specific action(s) for turning</span>
+<span class="sd">        a source file into an object file to the global static</span>
+<span class="sd">        and shared object file Builders.</span>
+
+<span class="sd">There are the following methods for internal use within this module:</span>
+
+<span class="sd">    - _execute()</span>
+<span class="sd">        The internal method that handles the heavily lifting when a</span>
+<span class="sd">        Builder is called.  This is used so that the __call__() methods</span>
+<span class="sd">        can set up warning about possible mistakes in keyword-argument</span>
+<span class="sd">        overrides, and *then* execute all of the steps necessary so that</span>
+<span class="sd">        the warnings only occur once.</span>
+
+<span class="sd">    - get_name()</span>
+<span class="sd">        Returns the Builder&#39;s name within a specific Environment,</span>
+<span class="sd">        primarily used to try to return helpful information in error</span>
+<span class="sd">        messages.</span>
+
+<span class="sd">    - adjust_suffix()</span>
+<span class="sd">    - get_prefix()</span>
+<span class="sd">    - get_suffix()</span>
+<span class="sd">    - get_src_suffix()</span>
+<span class="sd">    - set_src_suffix()</span>
+<span class="sd">        Miscellaneous stuff for handling the prefix and suffix</span>
+<span class="sd">        manipulation we use in turning source file names into target</span>
+<span class="sd">        file names.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">UserDict</span><span class="p">,</span> <span class="n">UserList</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">suppress</span>
+
+<span class="kn">import</span> <span class="nn">SCons.Action</span>
+<span class="kn">import</span> <span class="nn">SCons.Debug</span>
+<span class="kn">import</span> <span class="nn">SCons.Executor</span>
+<span class="kn">import</span> <span class="nn">SCons.Memoize</span>
+<span class="kn">import</span> <span class="nn">SCons.Util</span>
+<span class="kn">import</span> <span class="nn">SCons.Warnings</span>
+<span class="kn">from</span> <span class="nn">SCons.Debug</span> <span class="kn">import</span> <span class="n">logInstanceCreation</span>
+<span class="kn">from</span> <span class="nn">SCons.Errors</span> <span class="kn">import</span> <span class="n">InternalError</span><span class="p">,</span> <span class="n">UserError</span>
+
+<div class="viewcode-block" id="_Null"><a class="viewcode-back" href="../../../SCons/#SCons.Builder._Null">[docs]</a><span class="k">class</span> <span class="nc">_Null</span><span class="p">:</span>
+    <span class="k">pass</span></div>
+
+<span class="n">_null</span> <span class="o">=</span> <span class="n">_Null</span>
+
+<div class="viewcode-block" id="match_splitext"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.match_splitext">[docs]</a><span class="k">def</span> <span class="nf">match_splitext</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">suffixes</span> <span class="o">=</span> <span class="p">[]):</span>
+    <span class="k">if</span> <span class="n">suffixes</span><span class="p">:</span>
+        <span class="n">matchsuf</span> <span class="o">=</span> <span class="p">[</span><span class="n">S</span> <span class="k">for</span> <span class="n">S</span> <span class="ow">in</span> <span class="n">suffixes</span> <span class="k">if</span> <span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">S</span><span class="p">):]</span> <span class="o">==</span> <span class="n">S</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">matchsuf</span><span class="p">:</span>
+            <span class="n">suf</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([(</span><span class="nb">len</span><span class="p">(</span><span class="n">_f</span><span class="p">),</span><span class="n">_f</span><span class="p">)</span> <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="n">matchsuf</span><span class="p">])[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">path</span><span class="p">[:</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">suf</span><span class="p">)],</span> <span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">suf</span><span class="p">):]]</span>
+    <span class="k">return</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DictCmdGenerator"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.DictCmdGenerator">[docs]</a><span class="k">class</span> <span class="nc">DictCmdGenerator</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">Selector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This is a callable class that can be used as a</span>
+<span class="sd">    command generator function.  It holds on to a dictionary</span>
+<span class="sd">    mapping file suffixes to Actions.  It uses that dictionary</span>
+<span class="sd">    to return the proper action based on the file suffix of</span>
+<span class="sd">    the source file.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">source_ext_match</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">mapping</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_ext_match</span> <span class="o">=</span> <span class="n">source_ext_match</span>
+
+<div class="viewcode-block" id="DictCmdGenerator.src_suffixes"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.DictCmdGenerator.src_suffixes">[docs]</a>    <span class="k">def</span> <span class="nf">src_suffixes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="DictCmdGenerator.add_action"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.DictCmdGenerator.add_action">[docs]</a>    <span class="k">def</span> <span class="nf">add_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">suffix</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a suffix-action pair to the mapping.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="p">[</span><span class="n">suffix</span><span class="p">]</span> <span class="o">=</span> <span class="n">action</span></div>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">for_signature</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">source</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_ext_match</span><span class="p">:</span>
+            <span class="n">suffixes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">src_suffixes</span><span class="p">()</span>
+            <span class="n">ext</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">for</span> <span class="n">src</span> <span class="ow">in</span> <span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+                <span class="n">my_ext</span> <span class="o">=</span> <span class="n">match_splitext</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">suffixes</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">ext</span> <span class="ow">and</span> <span class="n">my_ext</span> <span class="o">!=</span> <span class="n">ext</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">UserError</span><span class="p">(</span><span class="s2">&quot;While building `</span><span class="si">%s</span><span class="s2">&#39; from `</span><span class="si">%s</span><span class="s2">&#39;: Cannot build multiple sources with different extensions: </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">&quot;</span>
+                             <span class="o">%</span> <span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">target</span><span class="p">))),</span> <span class="n">src</span><span class="p">,</span> <span class="n">ext</span><span class="p">,</span> <span class="n">my_ext</span><span class="p">))</span>
+                <span class="n">ext</span> <span class="o">=</span> <span class="n">my_ext</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ext</span> <span class="o">=</span> <span class="n">match_splitext</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">source</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="bp">self</span><span class="o">.</span><span class="n">src_suffixes</span><span class="p">())[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ext</span><span class="p">:</span>
+            <span class="c1">#return ext</span>
+            <span class="k">raise</span> <span class="n">UserError</span><span class="p">(</span><span class="s2">&quot;While building `</span><span class="si">%s</span><span class="s2">&#39;: &quot;</span>
+                            <span class="s2">&quot;Cannot deduce file extension from source files: </span><span class="si">%s</span><span class="s2">&quot;</span>
+                 <span class="o">%</span> <span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">target</span><span class="p">))),</span> <span class="nb">repr</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">source</span><span class="p">)))))</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">Selector</span><span class="o">.</span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">UserError</span><span class="p">(</span><span class="s2">&quot;Ambiguous suffixes after environment substitution: </span><span class="si">%s</span><span class="s2"> == </span><span class="si">%s</span><span class="s2"> == </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">e</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">e</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+        <span class="k">if</span> <span class="n">ret</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">UserError</span><span class="p">(</span><span class="s2">&quot;While building `</span><span class="si">%s</span><span class="s2">&#39; from `</span><span class="si">%s</span><span class="s2">&#39;: Don&#39;t know how to build from a source file with suffix `</span><span class="si">%s</span><span class="s2">&#39;.  Expected a suffix in this list: </span><span class="si">%s</span><span class="s2">.&quot;</span> <span class="o">%</span> \
+                            <span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">target</span><span class="p">))),</span> <span class="nb">repr</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">source</span><span class="p">))),</span> <span class="n">ext</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()))))</span>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
+<div class="viewcode-block" id="CallableSelector"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.CallableSelector">[docs]</a><span class="k">class</span> <span class="nc">CallableSelector</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">Selector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A callable dictionary that will, in turn, call the value it</span>
+<span class="sd">    finds if it can.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">Selector</span><span class="o">.</span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">value</span></div>
+
+<div class="viewcode-block" id="DictEmitter"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.DictEmitter">[docs]</a><span class="k">class</span> <span class="nc">DictEmitter</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">Selector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A callable dictionary that maps file suffixes to emitters.</span>
+<span class="sd">    When called, it finds the right emitter in its dictionary for the</span>
+<span class="sd">    suffix of the first source file, and calls that emitter to get the</span>
+<span class="sd">    right lists of targets and sources to return.  If there&#39;s no emitter</span>
+<span class="sd">    for the suffix in its dictionary, the original target and source are</span>
+<span class="sd">    returned.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+        <span class="n">emitter</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">Selector</span><span class="o">.</span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">emitter</span><span class="p">:</span>
+            <span class="n">target</span><span class="p">,</span> <span class="n">source</span> <span class="o">=</span> <span class="n">emitter</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ListEmitter"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.ListEmitter">[docs]</a><span class="k">class</span> <span class="nc">ListEmitter</span><span class="p">(</span><span class="n">UserList</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A callable list of emitters that calls each in sequence,</span>
+<span class="sd">    returning the result.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="n">target</span><span class="p">,</span> <span class="n">source</span> <span class="o">=</span> <span class="n">e</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span></div>
+
+<span class="c1"># These are a common errors when calling a Builder;</span>
+<span class="c1"># they are similar to the &#39;target&#39; and &#39;source&#39; keyword args to builders,</span>
+<span class="c1"># so we issue warnings when we see them.  The warnings can, of course,</span>
+<span class="c1"># be disabled.</span>
+<span class="n">misleading_keywords</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;targets&#39;</span>   <span class="p">:</span> <span class="s1">&#39;target&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;sources&#39;</span>   <span class="p">:</span> <span class="s1">&#39;source&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<div class="viewcode-block" id="OverrideWarner"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.OverrideWarner">[docs]</a><span class="k">class</span> <span class="nc">OverrideWarner</span><span class="p">(</span><span class="n">UserDict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class for warning about keyword arguments that we use as</span>
+<span class="sd">    overrides in a Builder call.</span>
+
+<span class="sd">    This class exists to handle the fact that a single Builder call</span>
+<span class="sd">    can actually invoke multiple builders.  This class only emits the</span>
+<span class="sd">    warnings once, no matter how many Builders are invoked.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">mapping</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Debug</span><span class="o">.</span><span class="n">track_instances</span><span class="p">:</span> <span class="n">logInstanceCreation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;Builder.OverrideWarner&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">already_warned</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="OverrideWarner.warn"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.OverrideWarner.warn">[docs]</a>    <span class="k">def</span> <span class="nf">warn</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">already_warned</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">misleading_keywords</span><span class="p">:</span>
+                <span class="n">alt</span> <span class="o">=</span> <span class="n">misleading_keywords</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Did you mean to use `</span><span class="si">%s</span><span class="s2">&#39; instead of `</span><span class="si">%s</span><span class="s2">&#39;?&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">alt</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+                <span class="n">SCons</span><span class="o">.</span><span class="n">Warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Warnings</span><span class="o">.</span><span class="n">MisleadingKeywordsWarning</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">already_warned</span> <span class="o">=</span> <span class="mi">1</span></div></div>
+
+<div class="viewcode-block" id="Builder"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.Builder">[docs]</a><span class="k">def</span> <span class="nf">Builder</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A factory for builder objects.&quot;&quot;&quot;</span>
+    <span class="n">composite</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="s1">&#39;generator&#39;</span> <span class="ow">in</span> <span class="n">kw</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s1">&#39;action&#39;</span> <span class="ow">in</span> <span class="n">kw</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">UserError</span><span class="p">(</span><span class="s2">&quot;You must not specify both an action and a generator.&quot;</span><span class="p">)</span>
+        <span class="n">kw</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Action</span><span class="o">.</span><span class="n">CommandGeneratorAction</span><span class="p">(</span><span class="n">kw</span><span class="p">[</span><span class="s1">&#39;generator&#39;</span><span class="p">],</span> <span class="p">{})</span>
+        <span class="k">del</span> <span class="n">kw</span><span class="p">[</span><span class="s1">&#39;generator&#39;</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="s1">&#39;action&#39;</span> <span class="ow">in</span> <span class="n">kw</span><span class="p">:</span>
+        <span class="n">source_ext_match</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;source_ext_match&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;source_ext_match&#39;</span> <span class="ow">in</span> <span class="n">kw</span><span class="p">:</span>
+            <span class="k">del</span> <span class="n">kw</span><span class="p">[</span><span class="s1">&#39;source_ext_match&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_Dict</span><span class="p">(</span><span class="n">kw</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">]):</span>
+            <span class="n">composite</span> <span class="o">=</span> <span class="n">DictCmdGenerator</span><span class="p">(</span><span class="n">kw</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">],</span> <span class="n">source_ext_match</span><span class="p">)</span>
+            <span class="n">kw</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Action</span><span class="o">.</span><span class="n">CommandGeneratorAction</span><span class="p">(</span><span class="n">composite</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="n">kw</span><span class="p">[</span><span class="s1">&#39;src_suffix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">composite</span><span class="o">.</span><span class="n">src_suffixes</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">kw</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Action</span><span class="o">.</span><span class="n">Action</span><span class="p">(</span><span class="n">kw</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="s1">&#39;emitter&#39;</span> <span class="ow">in</span> <span class="n">kw</span><span class="p">:</span>
+        <span class="n">emitter</span> <span class="o">=</span> <span class="n">kw</span><span class="p">[</span><span class="s1">&#39;emitter&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_String</span><span class="p">(</span><span class="n">emitter</span><span class="p">):</span>
+            <span class="c1"># This allows users to pass in an Environment</span>
+            <span class="c1"># variable reference (like &quot;$FOO&quot;) as an emitter.</span>
+            <span class="c1"># We will look in that Environment variable for</span>
+            <span class="c1"># a callable to use as the actual emitter.</span>
+            <span class="n">var</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">get_environment_var</span><span class="p">(</span><span class="n">emitter</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">var</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">UserError</span><span class="p">(</span><span class="s2">&quot;Supplied emitter &#39;</span><span class="si">%s</span><span class="s2">&#39; does not appear to refer to an Environment variable&quot;</span> <span class="o">%</span> <span class="n">emitter</span><span class="p">)</span>
+            <span class="n">kw</span><span class="p">[</span><span class="s1">&#39;emitter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">EmitterProxy</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_Dict</span><span class="p">(</span><span class="n">emitter</span><span class="p">):</span>
+            <span class="n">kw</span><span class="p">[</span><span class="s1">&#39;emitter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">DictEmitter</span><span class="p">(</span><span class="n">emitter</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_List</span><span class="p">(</span><span class="n">emitter</span><span class="p">):</span>
+            <span class="n">kw</span><span class="p">[</span><span class="s1">&#39;emitter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ListEmitter</span><span class="p">(</span><span class="n">emitter</span><span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">BuilderBase</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">composite</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">CompositeBuilder</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">composite</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">result</span></div>
+
+<div class="viewcode-block" id="_node_errors"><a class="viewcode-back" href="../../../SCons/#SCons.Builder._node_errors">[docs]</a><span class="k">def</span> <span class="nf">_node_errors</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">tlist</span><span class="p">,</span> <span class="n">slist</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate that the lists of target and source nodes are</span>
+<span class="sd">    legal for this builder and environment.  Raise errors or</span>
+<span class="sd">    issue warnings as appropriate.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># First, figure out if there are any errors in the way the targets</span>
+    <span class="c1"># were specified.</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tlist</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">side_effect</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">UserError</span><span class="p">(</span><span class="s2">&quot;Multiple ways to build the same target were specified for: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">t</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">has_explicit_builder</span><span class="p">():</span>
+            <span class="c1"># Check for errors when the environments are different</span>
+            <span class="c1"># No error if environments are the same Environment instance</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">env</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">t</span><span class="o">.</span><span class="n">env</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">env</span> <span class="ow">and</span>
+                    <span class="c1"># Check OverrideEnvironment case - no error if wrapped Environments</span>
+                    <span class="c1"># are the same instance, and overrides lists match</span>
+                    <span class="ow">not</span> <span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">env</span><span class="p">,</span> <span class="s1">&#39;__subject&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s1">&#39;__subject&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">and</span>
+                         <span class="nb">getattr</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">env</span><span class="p">,</span> <span class="s1">&#39;overrides&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s1">&#39;overrides&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">and</span>
+                         <span class="ow">not</span> <span class="n">builder</span><span class="o">.</span><span class="n">multi</span><span class="p">)):</span>
+                <span class="n">action</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">action</span>
+                <span class="n">t_contents</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">get_contents</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">slist</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">env</span><span class="p">)</span>
+                <span class="n">contents</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">get_contents</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">slist</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">t_contents</span> <span class="o">==</span> <span class="n">contents</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Two different environments were specified for target </span><span class="si">%s</span><span class="s2">,</span><span class="se">\n\t</span><span class="s2">but they appear to have the same action: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">action</span><span class="o">.</span><span class="n">genstring</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">slist</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">env</span><span class="p">))</span>
+                    <span class="n">SCons</span><span class="o">.</span><span class="n">Warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Warnings</span><span class="o">.</span><span class="n">DuplicateEnvironmentWarning</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Two environments with different actions were specified for the same target: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">(action 1: </span><span class="si">%s</span><span class="s2">)</span><span class="se">\n</span><span class="s2">(action 2: </span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">t_contents</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span><span class="n">contents</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+                    <span class="k">except</span> <span class="ne">UnicodeDecodeError</span><span class="p">:</span>
+                        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Two environments with different actions were specified for the same target: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="n">t</span>
+                    <span class="k">raise</span> <span class="n">UserError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">builder</span><span class="o">.</span><span class="n">multi</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">builder</span> <span class="o">!=</span> <span class="n">builder</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Two different builders (</span><span class="si">%s</span><span class="s2"> and </span><span class="si">%s</span><span class="s2">) were specified for the same target: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_name</span><span class="p">(</span><span class="n">env</span><span class="p">),</span> <span class="n">builder</span><span class="o">.</span><span class="n">get_name</span><span class="p">(</span><span class="n">env</span><span class="p">),</span> <span class="n">t</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="n">UserError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="c1"># TODO(batch):  list constructed each time!</span>
+                <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">get_executor</span><span class="p">()</span><span class="o">.</span><span class="n">get_all_targets</span><span class="p">()</span> <span class="o">!=</span> <span class="n">tlist</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Two different target lists have a target in common: </span><span class="si">%s</span><span class="s2">  (from </span><span class="si">%s</span><span class="s2"> and from </span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">get_executor</span><span class="p">()</span><span class="o">.</span><span class="n">get_all_targets</span><span class="p">())),</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">tlist</span><span class="p">)))</span>
+                    <span class="k">raise</span> <span class="n">UserError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">t</span><span class="o">.</span><span class="n">sources</span> <span class="o">!=</span> <span class="n">slist</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Multiple ways to build the same target were specified for: </span><span class="si">%s</span><span class="s2">  (from </span><span class="si">%s</span><span class="s2"> and from </span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">sources</span><span class="p">)),</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">slist</span><span class="p">)))</span>
+                <span class="k">raise</span> <span class="n">UserError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">builder</span><span class="o">.</span><span class="n">single_source</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">slist</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">UserError</span><span class="p">(</span><span class="s2">&quot;More than one source given for single-source builder: targets=</span><span class="si">%s</span><span class="s2"> sources=</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="n">tlist</span><span class="p">)),</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="n">slist</span><span class="p">))))</span></div>
+
+<div class="viewcode-block" id="EmitterProxy"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.EmitterProxy">[docs]</a><span class="k">class</span> <span class="nc">EmitterProxy</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This is a callable class that can act as a</span>
+<span class="sd">    Builder emitter.  It holds on to a string that</span>
+<span class="sd">    is a key into an Environment dictionary, and will</span>
+<span class="sd">    look there at actual build time to see if it holds</span>
+<span class="sd">    a callable.  If so, we will call that as the actual</span>
+<span class="sd">    emitter.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">var</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">to_String</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+        <span class="n">emitter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span>
+
+        <span class="c1"># Recursively substitute the variable.</span>
+        <span class="c1"># We can&#39;t use env.subst() because it deals only</span>
+        <span class="c1"># in strings.  Maybe we should change that?</span>
+        <span class="k">while</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_String</span><span class="p">(</span><span class="n">emitter</span><span class="p">)</span> <span class="ow">and</span> <span class="n">emitter</span> <span class="ow">in</span> <span class="n">env</span><span class="p">:</span>
+            <span class="n">emitter</span> <span class="o">=</span> <span class="n">env</span><span class="p">[</span><span class="n">emitter</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">emitter</span><span class="p">):</span>
+            <span class="n">target</span><span class="p">,</span> <span class="n">source</span> <span class="o">=</span> <span class="n">emitter</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_List</span><span class="p">(</span><span class="n">emitter</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">emitter</span><span class="p">:</span>
+                <span class="n">target</span><span class="p">,</span> <span class="n">source</span> <span class="o">=</span> <span class="n">e</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">var</span>
+
+    <span class="k">def</span> <span class="fm">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span> <span class="o">&lt;</span> <span class="n">other</span><span class="o">.</span><span class="n">var</span>
+
+    <span class="k">def</span> <span class="fm">__le__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span> <span class="o">&lt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">var</span>
+
+    <span class="k">def</span> <span class="fm">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span> <span class="o">&gt;</span> <span class="n">other</span><span class="o">.</span><span class="n">var</span>
+
+    <span class="k">def</span> <span class="fm">__ge__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span> <span class="o">&gt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">var</span></div>
+
+<div class="viewcode-block" id="BuilderBase"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.BuilderBase">[docs]</a><span class="k">class</span> <span class="nc">BuilderBase</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for Builders, objects that create output</span>
+<span class="sd">    nodes (files) from input nodes (files).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>  <span class="n">action</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+                        <span class="n">suffix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+                        <span class="n">src_suffix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+                        <span class="n">target_factory</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="n">source_factory</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="n">target_scanner</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="n">source_scanner</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="n">emitter</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="n">multi</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+                        <span class="n">env</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="n">single_source</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                        <span class="n">name</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="n">chdir</span> <span class="o">=</span> <span class="n">_null</span><span class="p">,</span>
+                        <span class="n">is_explicit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                        <span class="n">src_builder</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="n">ensure_suffix</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                        <span class="o">**</span><span class="n">overrides</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Debug</span><span class="o">.</span><span class="n">track_instances</span><span class="p">:</span> <span class="n">logInstanceCreation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;Builder.BuilderBase&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_memo</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">=</span> <span class="n">action</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">multi</span> <span class="o">=</span> <span class="n">multi</span>
+        <span class="k">if</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_Dict</span><span class="p">(</span><span class="n">prefix</span><span class="p">):</span>
+            <span class="n">prefix</span> <span class="o">=</span> <span class="n">CallableSelector</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="o">=</span> <span class="n">prefix</span>
+        <span class="k">if</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_Dict</span><span class="p">(</span><span class="n">suffix</span><span class="p">):</span>
+            <span class="n">suffix</span> <span class="o">=</span> <span class="n">CallableSelector</span><span class="p">(</span><span class="n">suffix</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">env</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">single_source</span> <span class="o">=</span> <span class="n">single_source</span>
+        <span class="k">if</span> <span class="s1">&#39;overrides&#39;</span> <span class="ow">in</span> <span class="n">overrides</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span>  <span class="s2">&quot;The </span><span class="se">\&quot;</span><span class="s2">overrides</span><span class="se">\&quot;</span><span class="s2"> keyword to Builder() creation has been removed;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>\
+                <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">specify the items as keyword arguments to the Builder() call instead.&quot;</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;scanner&#39;</span> <span class="ow">in</span> <span class="n">overrides</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;The </span><span class="se">\&quot;</span><span class="s2">scanner</span><span class="se">\&quot;</span><span class="s2"> keyword to Builder() creation has been removed;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>\
+                <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">use: source_scanner or target_scanner as appropriate.&quot;</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">overrides</span> <span class="o">=</span> <span class="n">overrides</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_suffix</span><span class="p">(</span><span class="n">suffix</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_src_suffix</span><span class="p">(</span><span class="n">src_suffix</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ensure_suffix</span> <span class="o">=</span> <span class="n">ensure_suffix</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">target_factory</span> <span class="o">=</span> <span class="n">target_factory</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_factory</span> <span class="o">=</span> <span class="n">source_factory</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target_scanner</span> <span class="o">=</span> <span class="n">target_scanner</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_scanner</span> <span class="o">=</span> <span class="n">source_scanner</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">emitter</span> <span class="o">=</span> <span class="n">emitter</span>
+
+        <span class="c1"># Optional Builder name should only be used for Builders</span>
+        <span class="c1"># that don&#39;t get attached to construction environments.</span>
+        <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">executor_kw</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">chdir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">_null</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">executor_kw</span><span class="p">[</span><span class="s1">&#39;chdir&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">chdir</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_explicit</span> <span class="o">=</span> <span class="n">is_explicit</span>
+
+        <span class="k">if</span> <span class="n">src_builder</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">src_builder</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_List</span><span class="p">(</span><span class="n">src_builder</span><span class="p">):</span>
+            <span class="n">src_builder</span> <span class="o">=</span> <span class="p">[</span> <span class="n">src_builder</span> <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">src_builder</span> <span class="o">=</span> <span class="n">src_builder</span>
+
+    <span class="k">def</span> <span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">InternalError</span><span class="p">(</span><span class="s2">&quot;Do not test for the Node.builder attribute directly; use Node.has_builder() instead&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BuilderBase.get_name"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.BuilderBase.get_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Attempts to get the name of the Builder.</span>
+
+<span class="sd">        Look at the BUILDERS variable of env, expecting it to be a</span>
+<span class="sd">        dictionary containing this Builder, and return the key of the</span>
+<span class="sd">        dictionary.  If there&#39;s no key, then return a directly-configured</span>
+<span class="sd">        name (if there is one) or the name of the class (by default).&quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;BUILDERS&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;BUILDERS&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="n">index</span><span class="p">]</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="vm">__dict__</span>
+
+<div class="viewcode-block" id="BuilderBase.splitext"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.BuilderBase.splitext">[docs]</a>    <span class="k">def</span> <span class="nf">splitext</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">env</span><span class="p">:</span>
+            <span class="n">env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span>
+        <span class="k">if</span> <span class="n">env</span><span class="p">:</span>
+            <span class="n">suffixes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">src_suffixes</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">suffixes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="n">match_splitext</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">suffixes</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BuilderBase._adjustixes"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.BuilderBase._adjustixes">[docs]</a>    <span class="k">def</span> <span class="nf">_adjustixes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">files</span><span class="p">,</span> <span class="n">pre</span><span class="p">,</span> <span class="n">suf</span><span class="p">,</span> <span class="n">ensure_suffix</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">files</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_List</span><span class="p">(</span><span class="n">files</span><span class="p">):</span>
+            <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">files</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+            <span class="c1"># fspath() is to catch PathLike paths. We avoid the simpler</span>
+            <span class="c1"># str(f) so as not to &quot;lose&quot; files that are already Nodes:</span>
+            <span class="c1"># TypeError: expected str, bytes or os.PathLike object, not File</span>
+            <span class="k">with</span> <span class="n">suppress</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">):</span>
+                <span class="n">f</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_String</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+                <span class="n">f</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">adjustixes</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">pre</span><span class="p">,</span> <span class="n">suf</span><span class="p">,</span> <span class="n">ensure_suffix</span><span class="p">)</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+<div class="viewcode-block" id="BuilderBase._create_nodes"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.BuilderBase._create_nodes">[docs]</a>    <span class="k">def</span> <span class="nf">_create_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">source</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create and return lists of target and source nodes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">src_suf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_src_suffix</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+
+        <span class="n">target_factory</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get_factory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target_factory</span><span class="p">)</span>
+        <span class="n">source_factory</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get_factory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_factory</span><span class="p">)</span>
+
+        <span class="n">source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_adjustixes</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">src_suf</span><span class="p">)</span>
+        <span class="n">slist</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">arg2nodes</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">source_factory</span><span class="p">)</span>
+
+        <span class="n">pre</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_prefix</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">slist</span><span class="p">)</span>
+        <span class="n">suf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_suffix</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">slist</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">target</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">t_from_s</span> <span class="o">=</span> <span class="n">slist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">target_from_source</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">UserError</span><span class="p">(</span><span class="s2">&quot;Do not know how to create a target from source `</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">slist</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                <span class="n">tlist</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">splitext</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">S</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">S</span><span class="p">,</span><span class="n">env</span><span class="p">)</span>
+                <span class="n">tlist</span> <span class="o">=</span> <span class="p">[</span> <span class="n">t_from_s</span><span class="p">(</span><span class="n">pre</span><span class="p">,</span> <span class="n">suf</span><span class="p">,</span> <span class="n">splitext</span><span class="p">)</span> <span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># orig_target = target</span>
+            <span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_adjustixes</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">pre</span><span class="p">,</span> <span class="n">suf</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ensure_suffix</span><span class="p">)</span>
+            <span class="n">tlist</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">arg2nodes</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">target_factory</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">emitter</span><span class="p">:</span>
+            <span class="c1"># The emitter is going to do str(node), but because we&#39;re</span>
+            <span class="c1"># being called *from* a builder invocation, the new targets</span>
+            <span class="c1"># don&#39;t yet have a builder set on them and will look like</span>
+            <span class="c1"># source files.  Fool the emitter&#39;s str() calls by setting</span>
+            <span class="c1"># up a temporary builder on the new targets.</span>
+            <span class="n">new_targets</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tlist</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">t</span><span class="o">.</span><span class="n">is_derived</span><span class="p">():</span>
+                    <span class="n">t</span><span class="o">.</span><span class="n">builder_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+                    <span class="n">new_targets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+
+            <span class="n">orig_tlist</span> <span class="o">=</span> <span class="n">tlist</span><span class="p">[:]</span>
+            <span class="n">orig_slist</span> <span class="o">=</span> <span class="n">slist</span><span class="p">[:]</span>
+
+            <span class="n">target</span><span class="p">,</span> <span class="n">source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">emitter</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">tlist</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">slist</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">)</span>
+
+            <span class="c1"># Now delete the temporary builders that we attached to any</span>
+            <span class="c1"># new targets, so that _node_errors() doesn&#39;t do weird stuff</span>
+            <span class="c1"># to them because it thinks they already have builders.</span>
+            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">new_targets</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">builder</span> <span class="ow">is</span> <span class="bp">self</span><span class="p">:</span>
+                    <span class="c1"># Only delete the temporary builder if the emitter</span>
+                    <span class="c1"># didn&#39;t change it on us.</span>
+                    <span class="n">t</span><span class="o">.</span><span class="n">builder_set</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+
+            <span class="c1"># Have to call arg2nodes yet again, since it is legal for</span>
+            <span class="c1"># emitters to spit out strings as well as Node instances.</span>
+            <span class="n">tlist</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">arg2nodes</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">target_factory</span><span class="p">,</span>
+                                  <span class="n">target</span><span class="o">=</span><span class="n">orig_tlist</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">orig_slist</span><span class="p">)</span>
+            <span class="n">slist</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">arg2nodes</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">source_factory</span><span class="p">,</span>
+                                  <span class="n">target</span><span class="o">=</span><span class="n">orig_tlist</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">orig_slist</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">tlist</span><span class="p">,</span> <span class="n">slist</span></div>
+
+<div class="viewcode-block" id="BuilderBase._execute"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.BuilderBase._execute">[docs]</a>    <span class="k">def</span> <span class="nf">_execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">overwarn</span><span class="o">=</span><span class="p">{},</span> <span class="n">executor_kw</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="c1"># We now assume that target and source are lists or None.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">src_builder</span><span class="p">:</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">src_builder_sources</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">overwarn</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">single_source</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">target</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="n">target</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">target</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">tgt</span><span class="p">,</span> <span class="n">src</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">tgt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">tgt</span> <span class="o">=</span> <span class="p">[</span><span class="n">tgt</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">src</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">src</span> <span class="o">=</span> <span class="p">[</span><span class="n">src</span><span class="p">]</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">tgt</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">overwarn</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">NodeList</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+        <span class="n">overwarn</span><span class="o">.</span><span class="n">warn</span><span class="p">()</span>
+
+        <span class="n">tlist</span><span class="p">,</span> <span class="n">slist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_nodes</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+
+        <span class="c1"># If there is more than one target ensure that if we need to reset</span>
+        <span class="c1"># the implicit list to new scan of dependency all targets implicit lists</span>
+        <span class="c1"># are cleared. (SCons GH Issue #2811 and MongoDB SERVER-33111)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tlist</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tlist</span><span class="p">:</span>
+                <span class="n">t</span><span class="o">.</span><span class="n">target_peers</span> <span class="o">=</span> <span class="n">tlist</span>
+
+        <span class="c1"># Check for errors with the specified target/source lists.</span>
+        <span class="n">_node_errors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">tlist</span><span class="p">,</span> <span class="n">slist</span><span class="p">)</span>
+
+        <span class="c1"># The targets are fine, so find or make the appropriate Executor to</span>
+        <span class="c1"># build this particular list of targets from this particular list of</span>
+        <span class="c1"># sources.</span>
+
+        <span class="n">executor</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">multi</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">executor</span> <span class="o">=</span> <span class="n">tlist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_executor</span><span class="p">(</span><span class="n">create</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">IndexError</span><span class="p">):</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">executor</span><span class="o">.</span><span class="n">add_sources</span><span class="p">(</span><span class="n">slist</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">executor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span><span class="p">:</span>
+                <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;Builder </span><span class="si">%s</span><span class="s2"> must have an action to build </span><span class="si">%s</span><span class="s2">.&quot;</span>
+                <span class="k">raise</span> <span class="n">UserError</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">(</span><span class="n">env</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">),</span>
+                                        <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="n">tlist</span><span class="p">))))</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">batch_key</span><span class="p">(</span><span class="n">env</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">,</span> <span class="n">tlist</span><span class="p">,</span> <span class="n">slist</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">key</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">executor</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Executor</span><span class="o">.</span><span class="n">GetBatchExecutor</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                    <span class="k">pass</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">executor</span><span class="o">.</span><span class="n">add_batch</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">slist</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">executor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">executor</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Executor</span><span class="o">.</span><span class="n">Executor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">action</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="p">[],</span>
+                                               <span class="n">tlist</span><span class="p">,</span> <span class="n">slist</span><span class="p">,</span> <span class="n">executor_kw</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">key</span><span class="p">:</span>
+                <span class="n">SCons</span><span class="o">.</span><span class="n">Executor</span><span class="o">.</span><span class="n">AddBatchExecutor</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">executor</span><span class="p">)</span>
+
+        <span class="c1"># Now set up the relevant information in the target Nodes themselves.</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tlist</span><span class="p">:</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">cwd</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">fs</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">builder_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">env_set</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">add_source</span><span class="p">(</span><span class="n">slist</span><span class="p">)</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">set_executor</span><span class="p">(</span><span class="n">executor</span><span class="p">)</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">set_explicit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">is_explicit</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SCONF_NODE&quot;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">tlist</span><span class="p">:</span>
+                <span class="n">node</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">conftest_node</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">NodeList</span><span class="p">(</span><span class="n">tlist</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">chdir</span><span class="o">=</span><span class="n">_null</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="c1"># We now assume that target and source are lists or None.</span>
+        <span class="c1"># The caller (typically Environment.BuilderWrapper) is</span>
+        <span class="c1"># responsible for converting any scalar values to lists.</span>
+        <span class="k">if</span> <span class="n">chdir</span> <span class="ow">is</span> <span class="n">_null</span><span class="p">:</span>
+            <span class="n">ekw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">executor_kw</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ekw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">executor_kw</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">ekw</span><span class="p">[</span><span class="s1">&#39;chdir&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">chdir</span>
+        <span class="k">if</span> <span class="s1">&#39;chdir&#39;</span> <span class="ow">in</span> <span class="n">ekw</span> <span class="ow">and</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_String</span><span class="p">(</span><span class="n">ekw</span><span class="p">[</span><span class="s1">&#39;chdir&#39;</span><span class="p">]):</span>
+            <span class="n">ekw</span><span class="p">[</span><span class="s1">&#39;chdir&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">subst</span><span class="p">(</span><span class="n">ekw</span><span class="p">[</span><span class="s1">&#39;chdir&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">kw</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;srcdir&#39;</span> <span class="ow">in</span> <span class="n">kw</span><span class="p">:</span>
+                <span class="k">def</span> <span class="nf">prependDirIfRelative</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">srcdir</span><span class="o">=</span><span class="n">kw</span><span class="p">[</span><span class="s1">&#39;srcdir&#39;</span><span class="p">]):</span>
+                    <span class="kn">import</span> <span class="nn">os.path</span>
+                    <span class="k">if</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_String</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+                        <span class="n">f</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">srcdir</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="n">f</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_List</span><span class="p">(</span><span class="n">source</span><span class="p">):</span>
+                    <span class="n">source</span> <span class="o">=</span> <span class="p">[</span><span class="n">source</span><span class="p">]</span>
+                <span class="n">source</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">prependDirIfRelative</span><span class="p">,</span> <span class="n">source</span><span class="p">))</span>
+                <span class="k">del</span> <span class="n">kw</span><span class="p">[</span><span class="s1">&#39;srcdir&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">overrides</span><span class="p">:</span>
+                <span class="n">env_kw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">overrides</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="n">env_kw</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kw</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">env_kw</span> <span class="o">=</span> <span class="n">kw</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">env_kw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">overrides</span>
+
+        <span class="c1"># TODO if env_kw: then the following line. there&#39;s no purpose in calling if no overrides.</span>
+        <span class="n">env</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">Override</span><span class="p">(</span><span class="n">env_kw</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">OverrideWarner</span><span class="p">(</span><span class="n">kw</span><span class="p">),</span> <span class="n">ekw</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BuilderBase.adjust_suffix"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.BuilderBase.adjust_suffix">[docs]</a>    <span class="k">def</span> <span class="nf">adjust_suffix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">suff</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">suff</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">suff</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39;$&#39;</span> <span class="p">]:</span>
+            <span class="k">return</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="n">suff</span>
+        <span class="k">return</span> <span class="n">suff</span></div>
+
+<div class="viewcode-block" id="BuilderBase.get_prefix"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.BuilderBase.get_prefix">[docs]</a>    <span class="k">def</span> <span class="nf">get_prefix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">sources</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span>
+        <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">prefix</span><span class="p">):</span>
+            <span class="n">prefix</span> <span class="o">=</span> <span class="n">prefix</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">sources</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">env</span><span class="o">.</span><span class="n">subst</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BuilderBase.set_suffix"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.BuilderBase.set_suffix">[docs]</a>    <span class="k">def</span> <span class="nf">set_suffix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">suffix</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">suffix</span><span class="p">):</span>
+            <span class="n">suffix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adjust_suffix</span><span class="p">(</span><span class="n">suffix</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">suffix</span> <span class="o">=</span> <span class="n">suffix</span></div>
+
+<div class="viewcode-block" id="BuilderBase.get_suffix"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.BuilderBase.get_suffix">[docs]</a>    <span class="k">def</span> <span class="nf">get_suffix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">sources</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="n">suffix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">suffix</span>
+        <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">suffix</span><span class="p">):</span>
+            <span class="n">suffix</span> <span class="o">=</span> <span class="n">suffix</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">sources</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">env</span><span class="o">.</span><span class="n">subst</span><span class="p">(</span><span class="n">suffix</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BuilderBase.set_src_suffix"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.BuilderBase.set_src_suffix">[docs]</a>    <span class="k">def</span> <span class="nf">set_src_suffix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_suffix</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">src_suffix</span><span class="p">:</span>
+            <span class="n">src_suffix</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_List</span><span class="p">(</span><span class="n">src_suffix</span><span class="p">):</span>
+            <span class="n">src_suffix</span> <span class="o">=</span> <span class="p">[</span> <span class="n">src_suffix</span> <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">src_suffix</span> <span class="o">=</span> <span class="p">[</span><span class="nb">callable</span><span class="p">(</span><span class="n">suf</span><span class="p">)</span> <span class="ow">and</span> <span class="n">suf</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">adjust_suffix</span><span class="p">(</span><span class="n">suf</span><span class="p">)</span> <span class="k">for</span> <span class="n">suf</span> <span class="ow">in</span> <span class="n">src_suffix</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="BuilderBase.get_src_suffix"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.BuilderBase.get_src_suffix">[docs]</a>    <span class="k">def</span> <span class="nf">get_src_suffix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the first src_suffix in the list of src_suffixes.&quot;&quot;&quot;</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">src_suffixes</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ret</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">ret</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="BuilderBase.add_emitter"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.BuilderBase.add_emitter">[docs]</a>    <span class="k">def</span> <span class="nf">add_emitter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">suffix</span><span class="p">,</span> <span class="n">emitter</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a suffix-emitter mapping to this Builder.</span>
+
+<span class="sd">        This assumes that emitter has been initialized with an</span>
+<span class="sd">        appropriate dictionary type, and will throw a TypeError if</span>
+<span class="sd">        not, so the caller is responsible for knowing that this is an</span>
+<span class="sd">        appropriate method to call for the Builder in question.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">emitter</span><span class="p">[</span><span class="n">suffix</span><span class="p">]</span> <span class="o">=</span> <span class="n">emitter</span></div>
+
+<div class="viewcode-block" id="BuilderBase.add_src_builder"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.BuilderBase.add_src_builder">[docs]</a>    <span class="k">def</span> <span class="nf">add_src_builder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a new Builder to the list of src_builders.</span>
+
+<span class="sd">        This requires wiping out cached values so that the computed</span>
+<span class="sd">        lists of source suffixes get re-calculated.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_memo</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">src_builder</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">builder</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BuilderBase._get_sdict"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.BuilderBase._get_sdict">[docs]</a>    <span class="k">def</span> <span class="nf">_get_sdict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a dictionary mapping all of the source suffixes of all</span>
+<span class="sd">        src_builders of this Builder to the underlying Builder that</span>
+<span class="sd">        should be called first.</span>
+
+<span class="sd">        This dictionary is used for each target specified, so we save a</span>
+<span class="sd">        lot of extra computation by memoizing it for each construction</span>
+<span class="sd">        environment.</span>
+
+<span class="sd">        Note that this is re-computed each time, not cached, because there</span>
+<span class="sd">        might be changes to one of our source Builders (or one of their</span>
+<span class="sd">        source Builders, and so on, and so on...) that we can&#39;t &quot;see.&quot;</span>
+
+<span class="sd">        The underlying methods we call cache their computed values,</span>
+<span class="sd">        though, so we hope repeatedly aggregating them into a dictionary</span>
+<span class="sd">        like this won&#39;t be too big a hit.  We may need to look for a</span>
+<span class="sd">        better way to do this if performance data show this has turned</span>
+<span class="sd">        into a significant bottleneck.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sdict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">bld</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_src_builders</span><span class="p">(</span><span class="n">env</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">suf</span> <span class="ow">in</span> <span class="n">bld</span><span class="o">.</span><span class="n">src_suffixes</span><span class="p">(</span><span class="n">env</span><span class="p">):</span>
+                <span class="n">sdict</span><span class="p">[</span><span class="n">suf</span><span class="p">]</span> <span class="o">=</span> <span class="n">bld</span>
+        <span class="k">return</span> <span class="n">sdict</span></div>
+
+<div class="viewcode-block" id="BuilderBase.src_builder_sources"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.BuilderBase.src_builder_sources">[docs]</a>    <span class="k">def</span> <span class="nf">src_builder_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">overwarn</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="n">sdict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_sdict</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+
+        <span class="n">src_suffixes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">src_suffixes</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+
+        <span class="n">lengths</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">len</span><span class="p">,</span> <span class="n">src_suffixes</span><span class="p">)))</span>
+
+        <span class="k">def</span> <span class="nf">match_src_suffix</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">src_suffixes</span><span class="o">=</span><span class="n">src_suffixes</span><span class="p">,</span> <span class="n">lengths</span><span class="o">=</span><span class="n">lengths</span><span class="p">):</span>
+            <span class="n">node_suffixes</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span><span class="p">[</span><span class="o">-</span><span class="n">l</span><span class="p">:]</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">lengths</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">suf</span> <span class="ow">in</span> <span class="n">src_suffixes</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">suf</span> <span class="ow">in</span> <span class="n">node_suffixes</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">suf</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">source</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_String</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+                <span class="n">match_suffix</span> <span class="o">=</span> <span class="n">match_src_suffix</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">subst</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">match_suffix</span> <span class="ow">and</span> <span class="s1">&#39;.&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
+                    <span class="n">src_suf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_src_suffix</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+                    <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_adjustixes</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">src_suf</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">match_suffix</span> <span class="o">=</span> <span class="n">match_src_suffix</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">match_suffix</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">bld</span> <span class="o">=</span> <span class="n">sdict</span><span class="p">[</span><span class="n">match_suffix</span><span class="p">]</span>
+                <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">tlist</span> <span class="o">=</span> <span class="n">bld</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="n">s</span><span class="p">],</span> <span class="n">overwarn</span><span class="p">)</span>
+                    <span class="c1"># If the subsidiary Builder returned more than one</span>
+                    <span class="c1"># target, then filter out any sources that this</span>
+                    <span class="c1"># Builder isn&#39;t capable of building.</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tlist</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">tlist</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tlist</span> <span class="k">if</span> <span class="n">match_src_suffix</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">name</span><span class="p">)]</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">tlist</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+        <span class="n">source_factory</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get_factory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_factory</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">env</span><span class="o">.</span><span class="n">arg2nodes</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">source_factory</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BuilderBase._get_src_builders_key"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.BuilderBase._get_src_builders_key">[docs]</a>    <span class="k">def</span> <span class="nf">_get_src_builders_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">id</span><span class="p">(</span><span class="n">env</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BuilderBase.get_src_builders"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.BuilderBase.get_src_builders">[docs]</a>    <span class="nd">@SCons</span><span class="o">.</span><span class="n">Memoize</span><span class="o">.</span><span class="n">CountDictCall</span><span class="p">(</span><span class="n">_get_src_builders_key</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">get_src_builders</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the list of source Builders for this Builder.</span>
+
+<span class="sd">        This exists mainly to look up Builders referenced as</span>
+<span class="sd">        strings in the &#39;BUILDER&#39; variable of the construction</span>
+<span class="sd">        environment and cache the result.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">memo_key</span> <span class="o">=</span> <span class="nb">id</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">memo_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_memo</span><span class="p">[</span><span class="s1">&#39;get_src_builders&#39;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">memo_dict</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_memo</span><span class="p">[</span><span class="s1">&#39;get_src_builders&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">memo_dict</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">memo_dict</span><span class="p">[</span><span class="n">memo_key</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+        <span class="n">builders</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">bld</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">src_builder</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">is_String</span><span class="p">(</span><span class="n">bld</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">bld</span> <span class="o">=</span> <span class="n">env</span><span class="p">[</span><span class="s1">&#39;BUILDERS&#39;</span><span class="p">][</span><span class="n">bld</span><span class="p">]</span>
+                <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                    <span class="k">continue</span>
+            <span class="n">builders</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bld</span><span class="p">)</span>
+
+        <span class="n">memo_dict</span><span class="p">[</span><span class="n">memo_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">builders</span>
+        <span class="k">return</span> <span class="n">builders</span></div>
+
+<div class="viewcode-block" id="BuilderBase._subst_src_suffixes_key"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.BuilderBase._subst_src_suffixes_key">[docs]</a>    <span class="k">def</span> <span class="nf">_subst_src_suffixes_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">id</span><span class="p">(</span><span class="n">env</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BuilderBase.subst_src_suffixes"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.BuilderBase.subst_src_suffixes">[docs]</a>    <span class="nd">@SCons</span><span class="o">.</span><span class="n">Memoize</span><span class="o">.</span><span class="n">CountDictCall</span><span class="p">(</span><span class="n">_subst_src_suffixes_key</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">subst_src_suffixes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The suffix list may contain construction variable expansions,</span>
+<span class="sd">        so we have to evaluate the individual strings.  To avoid doing</span>
+<span class="sd">        this over and over, we memoize the results for each construction</span>
+<span class="sd">        environment.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">memo_key</span> <span class="o">=</span> <span class="nb">id</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">memo_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_memo</span><span class="p">[</span><span class="s1">&#39;subst_src_suffixes&#39;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">memo_dict</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_memo</span><span class="p">[</span><span class="s1">&#39;subst_src_suffixes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">memo_dict</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">memo_dict</span><span class="p">[</span><span class="n">memo_key</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="n">suffixes</span> <span class="o">=</span> <span class="p">[</span><span class="n">env</span><span class="o">.</span><span class="n">subst</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">src_suffix</span><span class="p">]</span>
+        <span class="n">memo_dict</span><span class="p">[</span><span class="n">memo_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">suffixes</span>
+        <span class="k">return</span> <span class="n">suffixes</span></div>
+
+<div class="viewcode-block" id="BuilderBase.src_suffixes"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.BuilderBase.src_suffixes">[docs]</a>    <span class="k">def</span> <span class="nf">src_suffixes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the list of source suffixes for all src_builders of this</span>
+<span class="sd">        Builder.</span>
+
+<span class="sd">        This is essentially a recursive descent of the src_builder &quot;tree.&quot;</span>
+<span class="sd">        (This value isn&#39;t cached because there may be changes in a</span>
+<span class="sd">        src_builder many levels deep that we can&#39;t see.)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sdict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">suffixes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subst_src_suffixes</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">suffixes</span><span class="p">:</span>
+            <span class="n">sdict</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">builder</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_src_builders</span><span class="p">(</span><span class="n">env</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">builder</span><span class="o">.</span><span class="n">src_suffixes</span><span class="p">(</span><span class="n">env</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">s</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sdict</span><span class="p">:</span>
+                    <span class="n">sdict</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+                    <span class="n">suffixes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">suffixes</span></div></div>
+
+<div class="viewcode-block" id="CompositeBuilder"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.CompositeBuilder">[docs]</a><span class="k">class</span> <span class="nc">CompositeBuilder</span><span class="p">(</span><span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">Proxy</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A Builder Proxy whose main purpose is to always have</span>
+<span class="sd">    a DictCmdGenerator as its action, and to provide access</span>
+<span class="sd">    to the DictCmdGenerator&#39;s add_action() method.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">,</span> <span class="n">cmdgen</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Debug</span><span class="o">.</span><span class="n">track_instances</span><span class="p">:</span> <span class="n">logInstanceCreation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;Builder.CompositeBuilder&#39;</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">builder</span><span class="p">)</span>
+
+        <span class="c1"># cmdgen should always be an instance of DictCmdGenerator.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmdgen</span> <span class="o">=</span> <span class="n">cmdgen</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">builder</span> <span class="o">=</span> <span class="n">builder</span>
+
+    <span class="fm">__call__</span> <span class="o">=</span> <span class="n">SCons</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">Delegate</span><span class="p">(</span><span class="s1">&#39;__call__&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CompositeBuilder.add_action"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.CompositeBuilder.add_action">[docs]</a>    <span class="k">def</span> <span class="nf">add_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">suffix</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmdgen</span><span class="o">.</span><span class="n">add_action</span><span class="p">(</span><span class="n">suffix</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_src_suffix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cmdgen</span><span class="o">.</span><span class="n">src_suffixes</span><span class="p">())</span></div></div>
+
+<div class="viewcode-block" id="is_a_Builder"><a class="viewcode-back" href="../../../SCons/#SCons.Builder.is_a_Builder">[docs]</a><span class="k">def</span> <span class="nf">is_a_Builder</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;Returns True if the specified obj is one of our Builder classes.</span>
+
+<span class="sd">    The test is complicated a bit by the fact that CompositeBuilder</span>
+<span class="sd">    is a proxy, not a subclass of BuilderBase.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">BuilderBase</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">CompositeBuilder</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="nb">callable</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span></div>
+
+<span class="c1"># Local Variables:</span>
+<span class="c1"># tab-width:4</span>
+<span class="c1"># indent-tabs-mode:nil</span>
+<span class="c1"># End:</span>
+<span class="c1"># vim: set expandtab tabstop=4 shiftwidth=4:</span>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SCons Project Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022, SCons Project.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

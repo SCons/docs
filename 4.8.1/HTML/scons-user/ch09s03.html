@@ -1,0 +1,198 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>9.3. Providing Build Progress Output: the Progress Function</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.8.1"><link rel="up" href="ch09.html" title="Chapter 9. Controlling Build Output"><link rel="prev" href="ch09s02.html" title="9.2. Controlling How SCons Prints Build Commands: the $*COMSTR Variables"><link rel="next" href="ch09s04.html" title="9.4. Printing Detailed Build Status: the GetBuildFailures Function"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">9.3. Providing Build Progress Output:  the <code class="function">Progress</code> Function</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch09s02.html">Prev</a> </td><th width="60%" align="center">Chapter 9. Controlling Build Output</th><td width="20%" align="right"> <a accesskey="n" href="ch09s04.html">Next</a></td></tr></table><hr></div><div class="section" title="9.3. Providing Build Progress Output: the Progress Function"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="sect-build-progress"></a>9.3. Providing Build Progress Output:  the <code class="function">Progress</code> Function</h2></div></div></div><p>
+
+    Another aspect of providing good build output
+    is to give the user feedback
+    about what <span class="application">SCons</span> is doing
+    even when nothing is being built at the moment.
+    This can be especially true for large builds
+    when most of the targets are already up-to-date.
+    Because <span class="application">SCons</span> can take a long time
+    making absolutely sure that every
+    target is, in fact, up-to-date
+    with respect to a lot of dependency files,
+    it can be easy for users to mistakenly
+    conclude that <span class="application">SCons</span> is hung
+    or that there is some other problem with the build.
+
+    </p><p>
+
+    One way to deal with this perception
+    is to configure <span class="application">SCons</span> to print something to
+    let the user know what it's "thinking about."
+    The <code class="function">Progress</code> function
+    allows you to specify a string
+    that will be printed for every file
+    that <span class="application">SCons</span> is "considering"
+    while it is traversing the dependency graph
+    to decide what targets are or are not up-to-date.
+
+    </p><pre class="programlisting">
+Progress('Evaluating $TARGET\n')
+Program('f1.c')
+Program('f2.c')
+      </pre><p>
+
+    Note that the <code class="function">Progress</code> function does not
+    arrange for a newline to be printed automatically
+    at the end of the string (as does the Python
+    <code class="function">print</code> function),
+    and we must specify the
+    <code class="literal">\n</code>
+    that we want printed at the end of the configured string.
+    This configuration, then,
+    will have <span class="application">SCons</span>
+    print that it is <code class="literal">Evaluating</code>
+    each file that it encounters
+    in turn as it traverses the dependency graph:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+Evaluating SConstruct
+Evaluating f1.c
+Evaluating f1.o
+cc -o f1.o -c f1.c
+Evaluating f1
+cc -o f1 f1.o
+Evaluating f2.c
+Evaluating f2.o
+cc -o f2.o -c f2.c
+Evaluating f2
+cc -o f2 f2.o
+Evaluating .
+</pre><p>
+
+    Of course, normally you don't want to add
+    all of these additional lines to your build output,
+    as that can make it difficult for the user
+    to find errors or other important messages.
+    A more useful way to display
+    this progress might be
+    to have the file names printed
+    directly to the user's screen,
+    not to the same standard output
+    stream where build output is printed,
+    and to use a carriage return character
+    (<code class="literal">\r</code>)
+    so that each file name gets re-printed on the same line.
+    Such a configuration would look like:
+
+    </p><pre class="programlisting">
+Progress('$TARGET\r',
+         file=open('/dev/tty', 'w'),
+         overwrite=True)
+Program('f1.c')
+Program('f2.c')
+    </pre><p>
+
+    Note that we also specified the
+    <em class="parameter"><code>overwrite=True</code></em> argument
+    to the <code class="function">Progress</code> function,
+    which causes <span class="application">SCons</span> to
+    "wipe out" the previous string with space characters
+    before printing the next <code class="function">Progress</code> string.
+    Without the
+    <em class="parameter"><code>overwrite=True</code></em> argument,
+    a shorter file name would not overwrite
+    all of the charactes in a longer file name that
+    precedes it,
+    making it difficult to tell what the
+    actual file name is on the output.
+    Also note that we opened up the
+    <code class="filename">/dev/tty</code> file
+    for direct access (on POSIX) to
+    the user's screen.
+    On Windows, the equivalent would be to open
+    the <code class="filename">con:</code> file name.
+
+    </p><p>
+
+    Also, it's important to know that although you can use
+    <code class="literal">$TARGET</code> to substitute the name of
+    the node in the string,
+    the <code class="function">Progress</code> function does <span class="emphasis"><em>not</em></span>
+    perform general variable substitution
+    (because there's not necessarily a construction
+    environment involved in evaluating a node
+    like a source file, for example).
+
+    </p><p>
+
+    You can also specify a list of strings
+    to the <code class="function">Progress</code> function,
+    in which case <span class="application">SCons</span> will
+    display each string in turn.
+    This can be used to implement a "spinner"
+    by having <span class="application">SCons</span> cycle through a
+    sequence of strings:
+
+    </p><pre class="programlisting">
+Progress(['-\r', '\\\r', '|\r', '/\r'], interval=5)
+Program('f1.c')
+Program('f2.c')
+    </pre><p>
+
+    Note that here we have also used the
+    <em class="parameter"><code>interval=</code></em>
+    keyword argument to have <span class="application">SCons</span>
+    only print a new "spinner" string
+    once every five evaluated nodes.
+    Using an <em class="parameter"><code>interval=</code></em> count,
+    even with strings that use <code class="literal">$TARGET</code> like
+    our examples above,
+    can be a good way to lessen the
+    work that <span class="application">SCons</span> expends printing <code class="function">Progress</code> strings,
+    while still giving the user feedback
+    that indicates <span class="application">SCons</span> is still
+    working on evaluating the build.
+
+    </p><p>
+
+    Lastly, you can have direct control
+    over how to print each evaluated node
+    by passing a Python function
+    (or other Python callable)
+    to the <code class="function">Progress</code> function.
+    Your function will be called
+    for each evaluated node,
+    allowing you to
+    implement more sophisticated logic
+    like adding a counter:
+
+    </p><pre class="programlisting">
+screen = open('/dev/tty', 'w')
+count = 0
+def progress_function(node)
+    count += 1
+    screen.write('Node %4d: %s\r' % (count, node))
+
+Progress(progress_function)
+      </pre><p>
+
+    Of course, if you choose,
+    you could completely ignore the
+    <code class="varname">node</code> argument to the function,
+    and just print a count,
+    or anything else you wish.
+
+    </p><p>
+
+    (Note that there's an obvious follow-on question here:
+    how would you find the total number of nodes
+    that <span class="emphasis"><em>will be</em></span>
+    evaluated so you can tell the user how
+    close the build is to finishing?
+    Unfortunately, in the general case,
+    there isn't a good way to do that,
+    short of having <span class="application">SCons</span> evaluate its
+    dependency graph twice,
+    first to count the total and
+    the second time to actually build the targets.
+    This would be necessary because
+    you can't know in advance which
+    target(s) the user actually requested
+    to be built.
+    The entire build may consist of thousands of Nodes,
+    for example,
+    but maybe the user specifically requested
+    that only a single object file be built.)
+
+    </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch09s02.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch09.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch09s04.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">9.2. Controlling How <span class="application">SCons</span> Prints Build Commands:  the <code class="envar">$*COMSTR</code> Variables </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 9.4. Printing Detailed Build Status:  the <code class="function">GetBuildFailures</code> Function</td></tr></table></div></body></html>

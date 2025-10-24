@@ -1,0 +1,1271 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>SCons.Node.FS.Base</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="SCons-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://www.scons.org/">SCons</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="SCons-module.html">Package&nbsp;SCons</a> ::
+        <a href="SCons.Node-module.html">Package&nbsp;Node</a> ::
+        <a href="SCons.Node.FS-module.html">Module&nbsp;FS</a> ::
+        Class&nbsp;Base
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="SCons.Node.FS.Base-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class Base</h1><p class="nomargin-top"><span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base">source&nbsp;code</a></span></p>
+<pre class="base-tree">
+object --+    
+         |    
+      <a href="SCons.Node.Node-class.html">Node</a> --+
+             |
+            <strong class="uidshort">Base</strong>
+</pre>
+
+<dl><dt>Known Subclasses:</dt>
+<dd>
+      <ul class="subclass-list">
+<li><a href="SCons.Node.FS.Dir-class.html">Dir</a></li><li class="private">, <a href="SCons.Node.FS.Entry-class.html" onclick="show_private();">Entry</a></li><li>, <a href="SCons.Node.FS.File-class.html">File</a></li>  </ul>
+</dd></dl>
+
+<hr />
+<p>A generic class for file system entries.  This class is for
+when we don't know yet whether the entry being looked up is a file
+or a directory.  Instances of this class can morph into either
+Dir or File objects by a later, more precise lookup.</p>
+<p>Note: this class does not define __cmp__ and __hash__ for
+efficiency reasons.  SCons does a lot of comparing of
+Node.FS.{Base,Entry,File,Dir} objects, so those operations must be
+as fast as possible, which means we want to use Python's built-in
+object identity comparisons.</p>
+
+<!-- ==================== NESTED CLASSES ==================== -->
+<a name="section-NestedClasses"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Nested Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-NestedClasses"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="SCons.Node.Node-class.html">Node</a></code></b>:
+      <code><a href="SCons.Node.Node.Attrs-class.html">Attrs</a></code>,
+      <code><a href="SCons.Node.BuildInfoBase-class.html">BuildInfo</a></code>,
+      <code><a href="SCons.Node.NodeInfoBase-class.html">NodeInfo</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="SCons.Node.FS.Base-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>,
+        <span class="summary-sig-arg">directory</span>,
+        <span class="summary-sig-arg">fs</span>)</span><br />
+      Initialize a generic Node.FS.Base object.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="str_for_display"></a><span class="summary-sig-name">str_for_display</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.str_for_display">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="must_be_same"></a><span class="summary-sig-name">must_be_same</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">klass</span>)</span><br />
+      This node, which already existed, is being looked up as the
+specified klass.  Raise an exception if it isn't.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.must_be_same">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_dir"></a><span class="summary-sig-name">get_dir</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.get_dir">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="SCons.Node.FS.Base-class.html#get_suffix" class="summary-sig-name">get_suffix</a>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.get_suffix">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="rfile"></a><span class="summary-sig-name">rfile</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.rfile">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="SCons.Node.FS.Base-class.html#__str__" class="summary-sig-name">__str__</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      A Node.FS.Base object's string representation is its path
+name.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.__str__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_save_str"></a><span class="summary-sig-name">_save_str</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base._save_str">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_get_str"></a><span class="summary-sig-name">_get_str</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base._get_str">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="rstr"></a><span class="summary-sig-name">rstr</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      A Node.FS.Base object's string representation is its path
+name.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.__str__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="stat"></a><span class="summary-sig-name">stat</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.stat">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="SCons.Node.FS.Base-class.html#exists" class="summary-sig-name">exists</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Does this node exists?</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.exists">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="SCons.Node.FS.Base-class.html#rexists" class="summary-sig-name">rexists</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Does this node exist locally or in a repositiory?</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.rexists">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getmtime"></a><span class="summary-sig-name">getmtime</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.getmtime">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getsize"></a><span class="summary-sig-name">getsize</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.getsize">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="isdir"></a><span class="summary-sig-name">isdir</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.isdir">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="isfile"></a><span class="summary-sig-name">isfile</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.isfile">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="islink"></a><span class="summary-sig-name">islink</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.islink">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="is_under"></a><span class="summary-sig-name">is_under</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">dir</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.is_under">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="set_local"></a><span class="summary-sig-name">set_local</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.set_local">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="srcnode"></a><span class="summary-sig-name">srcnode</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      If this node is in a build path, return the node
+corresponding to its source file.  Otherwise, return
+ourself.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.srcnode">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_path"></a><span class="summary-sig-name">get_path</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">dir</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Return path relative to the current working directory of the
+Node.FS.Base object that owns us.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.get_path">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="set_src_builder"></a><span class="summary-sig-name">set_src_builder</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">builder</span>)</span><br />
+      Set the source code builder for this node.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.set_src_builder">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="SCons.Node.FS.Base-class.html#src_builder" class="summary-sig-name">src_builder</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Fetch the source code builder for this node.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.src_builder">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="SCons.Node.FS.Base-class.html#get_abspath" class="summary-sig-name">get_abspath</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Get the absolute path of the file.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.get_abspath">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="SCons.Node.FS.Base-class.html#for_signature" class="summary-sig-name">for_signature</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return a string representation of the Node that will always
+be the same for this particular Node, no matter what.  This
+is by contrast to the __str__() method, which might, for
+instance, return a relative path for a file Node.  The purpose
+of this method is to generate a value to be used in signature
+calculation for the command line used to build a target, and
+we use this method instead of str() to avoid unnecessary
+rebuilds.  This method does not need to return something that
+would actually work in a command line; it can return any kind of
+nonsense, so long as it does not change.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.for_signature">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="SCons.Node.FS.Base-class.html#get_subst_proxy" class="summary-sig-name">get_subst_proxy</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      This method is expected to return an object that will function
+exactly like this Node, except that it implements any additional
+special features that we would like to be in effect for
+Environment variable substitution.  The principle use is that
+some Nodes would like to implement a __getattr__() method,
+but putting that in the Node type itself has a tendency to kill
+performance.  We instead put it in a proxy and return it from
+this method.  It is legal for this method to return self
+if no new functionality is needed for Environment substitution.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.get_subst_proxy">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="SCons.Node.FS.Base-class.html#target_from_source" class="summary-sig-name">target_from_source</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">prefix</span>,
+        <span class="summary-sig-arg">suffix</span>,
+        <span class="summary-sig-arg">splitext</span>=<span class="summary-sig-default">&lt;function splitext at 0x921f9cc&gt;</span>)</span><br />
+      Generates a target entry that corresponds to this entry (usually
+a source file) with the specified prefix and suffix.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.target_from_source">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_Rfindalldirs_key"></a><span class="summary-sig-name">_Rfindalldirs_key</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">pathlist</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base._Rfindalldirs_key">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="SCons.Node.FS.Base-class.html#Rfindalldirs" class="summary-sig-name">Rfindalldirs</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">pathlist</span>)</span><br />
+      Return all of the directories for a given path list, including
+corresponding &quot;backing&quot; directories in any repositories.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.Rfindalldirs">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="RDirs"></a><span class="summary-sig-name">RDirs</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">pathlist</span>)</span><br />
+      Search for a list of directories in the Repository list.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.RDirs">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="rentry"></a><span class="summary-sig-name">rentry</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.rentry">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_glob1"></a><span class="summary-sig-name">_glob1</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">pattern</span>,
+        <span class="summary-sig-arg">ondisk</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">source</span>=<span class="summary-sig-default">False</span>,
+        <span class="summary-sig-arg">strings</span>=<span class="summary-sig-default">False</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base._glob1">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="SCons.Node.Node-class.html">Node</a></code></b>:
+      <code><a href="SCons.Node.Node-class.html#Decider">Decider</a></code>,
+      <code><a href="SCons.Node.Node-class.html#add_dependency">add_dependency</a></code>,
+      <code><a href="SCons.Node.Node-class.html#add_ignore">add_ignore</a></code>,
+      <code><a href="SCons.Node.Node-class.html#add_prerequisite">add_prerequisite</a></code>,
+      <code><a href="SCons.Node.Node-class.html#add_source">add_source</a></code>,
+      <code><a href="SCons.Node.Node-class.html#add_to_implicit">add_to_implicit</a></code>,
+      <code><a href="SCons.Node.Node-class.html#add_to_waiting_parents">add_to_waiting_parents</a></code>,
+      <code><a href="SCons.Node.Node-class.html#add_to_waiting_s_e">add_to_waiting_s_e</a></code>,
+      <code><a href="SCons.Node.Node-class.html#add_wkid">add_wkid</a></code>,
+      <code><a href="SCons.Node.Node-class.html#all_children">all_children</a></code>,
+      <code><a href="SCons.Node.Node-class.html#alter_targets">alter_targets</a></code>,
+      <code><a href="SCons.Node.Node-class.html#build">build</a></code>,
+      <code><a href="SCons.Node.Node-class.html#builder_set">builder_set</a></code>,
+      <code><a href="SCons.Node.Node-class.html#built">built</a></code>,
+      <code><a href="SCons.Node.Node-class.html#changed">changed</a></code>,
+      <code><a href="SCons.Node.Node-class.html#changed_since_last_build">changed_since_last_build</a></code>,
+      <code><a href="SCons.Node.Node-class.html#children">children</a></code>,
+      <code><a href="SCons.Node.Node-class.html#children_are_up_to_date">children_are_up_to_date</a></code>,
+      <code><a href="SCons.Node.Node-class.html#clear">clear</a></code>,
+      <code><a href="SCons.Node.Node-class.html#clear_memoized_values">clear_memoized_values</a></code>,
+      <code><a href="SCons.Node.Node-class.html#del_binfo">del_binfo</a></code>,
+      <code><a href="SCons.Node.Node-class.html#disambiguate">disambiguate</a></code>,
+      <code><a href="SCons.Node.Node-class.html#do_not_store_info">do_not_store_info</a></code>,
+      <code><a href="SCons.Node.Node-class.html#env_set">env_set</a></code>,
+      <code><a href="SCons.Node.Node-class.html#executor_cleanup">executor_cleanup</a></code>,
+      <code><a href="SCons.Node.Node-class.html#explain">explain</a></code>,
+      <code><a href="SCons.Node.Node-class.html#get_binfo">get_binfo</a></code>,
+      <code><a href="SCons.Node.Node-class.html#get_build_env">get_build_env</a></code>,
+      <code><a href="SCons.Node.Node-class.html#get_build_scanner_path">get_build_scanner_path</a></code>,
+      <code><a href="SCons.Node.Node-class.html#get_builder">get_builder</a></code>,
+      <code><a href="SCons.Node.Node-class.html#get_cachedir_csig">get_cachedir_csig</a></code>,
+      <code><a href="SCons.Node.Node-class.html#get_csig">get_csig</a></code>,
+      <code><a href="SCons.Node.Node-class.html#get_env">get_env</a></code>,
+      <code><a href="SCons.Node.Node-class.html#get_env_scanner">get_env_scanner</a></code>,
+      <code><a href="SCons.Node.Node-class.html#get_executor">get_executor</a></code>,
+      <code><a href="SCons.Node.Node-class.html#get_found_includes">get_found_includes</a></code>,
+      <code><a href="SCons.Node.Node-class.html#get_implicit_deps">get_implicit_deps</a></code>,
+      <code><a href="SCons.Node.Node-class.html#get_ninfo">get_ninfo</a></code>,
+      <code><a href="SCons.Node.Node-class.html#get_source_scanner">get_source_scanner</a></code>,
+      <code><a href="SCons.Node.Node-class.html#get_state">get_state</a></code>,
+      <code><a href="SCons.Node.Node-class.html#get_stored_implicit">get_stored_implicit</a></code>,
+      <code><a href="SCons.Node.Node-class.html#get_stored_info">get_stored_info</a></code>,
+      <code><a href="SCons.Node.Node-class.html#get_string">get_string</a></code>,
+      <code><a href="SCons.Node.Node-class.html#get_target_scanner">get_target_scanner</a></code>,
+      <code><a href="SCons.Node.Node-class.html#has_builder">has_builder</a></code>,
+      <code><a href="SCons.Node.Node-class.html#has_explicit_builder">has_explicit_builder</a></code>,
+      <code><a href="SCons.Node.Node-class.html#is_derived">is_derived</a></code>,
+      <code><a href="SCons.Node.Node-class.html#is_literal">is_literal</a></code>,
+      <code><a href="SCons.Node.Node-class.html#is_up_to_date">is_up_to_date</a></code>,
+      <code><a href="SCons.Node.Node-class.html#make_ready">make_ready</a></code>,
+      <code><a href="SCons.Node.Node-class.html#missing">missing</a></code>,
+      <code><a href="SCons.Node.Node-class.html#multiple_side_effect_has_builder">multiple_side_effect_has_builder</a></code>,
+      <code><a href="SCons.Node.Node-class.html#new_binfo">new_binfo</a></code>,
+      <code><a href="SCons.Node.Node-class.html#new_ninfo">new_ninfo</a></code>,
+      <code><a href="SCons.Node.Node-class.html#postprocess">postprocess</a></code>,
+      <code><a href="SCons.Node.Node-class.html#prepare">prepare</a></code>,
+      <code><a href="SCons.Node.Node-class.html#push_to_cache">push_to_cache</a></code>,
+      <code><a href="SCons.Node.Node-class.html#release_target_info">release_target_info</a></code>,
+      <code><a href="SCons.Node.Node-class.html#remove">remove</a></code>,
+      <code><a href="SCons.Node.Node-class.html#render_include_tree">render_include_tree</a></code>,
+      <code><a href="SCons.Node.Node-class.html#reset_executor">reset_executor</a></code>,
+      <code><a href="SCons.Node.Node-class.html#retrieve_from_cache">retrieve_from_cache</a></code>,
+      <code><a href="SCons.Node.Node-class.html#scan">scan</a></code>,
+      <code><a href="SCons.Node.Node-class.html#scanner_key">scanner_key</a></code>,
+      <code><a href="SCons.Node.Node-class.html#select_scanner">select_scanner</a></code>,
+      <code><a href="SCons.Node.Node-class.html#set_always_build">set_always_build</a></code>,
+      <code><a href="SCons.Node.Node-class.html#set_executor">set_executor</a></code>,
+      <code><a href="SCons.Node.Node-class.html#set_explicit">set_explicit</a></code>,
+      <code><a href="SCons.Node.Node-class.html#set_nocache">set_nocache</a></code>,
+      <code><a href="SCons.Node.Node-class.html#set_noclean">set_noclean</a></code>,
+      <code><a href="SCons.Node.Node-class.html#set_precious">set_precious</a></code>,
+      <code><a href="SCons.Node.Node-class.html#set_pseudo">set_pseudo</a></code>,
+      <code><a href="SCons.Node.Node-class.html#set_specific_source">set_specific_source</a></code>,
+      <code><a href="SCons.Node.Node-class.html#set_state">set_state</a></code>,
+      <code><a href="SCons.Node.Node-class.html#state_has_changed">state_has_changed</a></code>,
+      <code><a href="SCons.Node.Node-class.html#store_info">store_info</a></code>,
+      <code><a href="SCons.Node.Node-class.html#visited">visited</a></code>
+      </p>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="SCons.Node.Node-class.html">Node</a></code></b> (private):
+      <code><a href="SCons.Node.Node-class.html#_add_child" onclick="show_private();">_add_child</a></code>,
+      <code><a href="SCons.Node.Node-class.html#_children_get" onclick="show_private();">_children_get</a></code>,
+      <code><a href="SCons.Node.Node-class.html#_children_reset" onclick="show_private();">_children_reset</a></code>
+      </p></div>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="memoizer_counters"></a><span class="summary-name">memoizer_counters</span> = <code title="[]">[]</code>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="SCons.Node.Node-class.html">Node</a></code></b>:
+      <code><a href="SCons.Node.Node-class.html#__metaclass__">__metaclass__</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE VARIABLES ==================== -->
+<a name="section-InstanceVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="name"></a><span class="summary-name">name</span><br />
+      Filename with extension as it was specified when the object was
+created; to obtain filesystem path, use Python str() function
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="suffix"></a><span class="summary-name">suffix</span><br />
+      Cached filename extension
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="fs"></a><span class="summary-name">fs</span><br />
+      Reference to parent Node.FS object
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">name</span>,
+        <span class="sig-arg">directory</span>,
+        <span class="sig-arg">fs</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Initialize a generic Node.FS.Base object.</p>
+<p>Call the superclass initialization, take care of setting up
+our relative and absolute paths, identify our parent
+directory, and indicate that this node should use
+signatures.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__init__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_suffix"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_suffix</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.get_suffix">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="SCons.Node.Node-class.html#get_suffix">Node.get_suffix</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__str__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__str__</span>(<span class="sig-arg">self</span>)</span>
+    <br /><em class="fname">(Informal representation operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.__str__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  A Node.FS.Base object's string representation is its path
+name.
+  <dl class="fields">
+    <dt>Overrides:
+        object.__str__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="exists"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">exists</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.exists">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Does this node exists?
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="SCons.Node.Node-class.html#exists">Node.exists</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="rexists"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">rexists</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.rexists">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Does this node exist locally or in a repositiory?
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="SCons.Node.Node-class.html#rexists">Node.rexists</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="src_builder"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">src_builder</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.src_builder">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Fetch the source code builder for this node.</p>
+<p>If there isn't one, we cache the source code builder specified
+for the directory (which in turn will cache the value from its
+parent directory, and so on up to the file system root).</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_abspath"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_abspath</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.get_abspath">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Get the absolute path of the file.
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="SCons.Node.Node-class.html#get_abspath">Node.get_abspath</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="for_signature"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">for_signature</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.for_signature">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Return a string representation of the Node that will always
+be the same for this particular Node, no matter what.  This
+is by contrast to the __str__() method, which might, for
+instance, return a relative path for a file Node.  The purpose
+of this method is to generate a value to be used in signature
+calculation for the command line used to build a target, and
+we use this method instead of str() to avoid unnecessary
+rebuilds.  This method does not need to return something that
+would actually work in a command line; it can return any kind of
+nonsense, so long as it does not change.
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="SCons.Node.Node-class.html#for_signature">Node.for_signature</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_subst_proxy"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_subst_proxy</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.get_subst_proxy">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  This method is expected to return an object that will function
+exactly like this Node, except that it implements any additional
+special features that we would like to be in effect for
+Environment variable substitution.  The principle use is that
+some Nodes would like to implement a __getattr__() method,
+but putting that in the Node type itself has a tendency to kill
+performance.  We instead put it in a proxy and return it from
+this method.  It is legal for this method to return self
+if no new functionality is needed for Environment substitution.
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="SCons.Node.Node-class.html#get_subst_proxy">Node.get_subst_proxy</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="target_from_source"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">target_from_source</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">prefix</span>,
+        <span class="sig-arg">suffix</span>,
+        <span class="sig-arg">splitext</span>=<span class="sig-default">&lt;function splitext at 0x921f9cc&gt;</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.target_from_source">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Generates a target entry that corresponds to this entry (usually
+a source file) with the specified prefix and suffix.</p>
+<p>Note that this method can be overridden dynamically for generated
+files that need different behavior.  See Tool/swig.py for
+an example.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="Rfindalldirs"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">Rfindalldirs</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">pathlist</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="SCons.Node.FS-pysrc.html#Base.Rfindalldirs">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return all of the directories for a given path list, including
+corresponding &quot;backing&quot; directories in any repositories.</p>
+<p>The Node lookups are relative to this Node (typically a
+directory), so memoizing result saves cycles from looking
+up the same path for each target in a given directory.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="SCons-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://www.scons.org/">SCons</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Jul  5 09:44:03 2014
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

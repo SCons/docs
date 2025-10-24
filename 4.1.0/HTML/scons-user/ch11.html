@@ -1,0 +1,100 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Chapter 11. Installing Files in Other Directories: the Install Builder</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.1.0"><link rel="up" href="index.html" title="SCons 4.1.0"><link rel="prev" href="ch10s03.html" title="10.3. Command-Line Targets"><link rel="next" href="ch11s02.html" title="11.2. Installing a File Under a Different Name"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 11. Installing Files in Other Directories:  the <code class="function">Install</code> Builder</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch10s03.html">Prev</a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="ch11s02.html">Next</a></td></tr></table><hr></div><div class="chapter" title="Chapter 11. Installing Files in Other Directories: the Install Builder"><div class="titlepage"><div><div><h2 class="title"><a name="chap-install"></a>Chapter 11. Installing Files in Other Directories:  the <code class="function">Install</code> Builder</h2></div></div></div><p>
+
+  Once a program is built,
+  it is often appropriate to install it in another
+  directory for public use.
+  You use the <code class="function">Install</code> method
+  to arrange for a program, or any other file,
+  to be copied into a destination directory:
+
+  </p><pre class="programlisting">
+env = Environment()
+hello = env.Program('hello.c')
+env.Install('/usr/bin', hello)
+     </pre><p>
+
+  Note, however, that installing a file is
+  still considered a type of file "build."
+  This is important when you remember that
+  the default behavior of <span class="application">SCons</span> is
+  to build files in or below the current directory.
+  If, as in the example above,
+  you are installing files in a directory
+  outside of the top-level <code class="filename">SConstruct</code> file's directory tree,
+  you must specify that directory
+  (or a higher directory, such as <code class="literal">/</code>)
+  for it to install anything there:
+
+  </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o hello.o -c hello.c
+cc -o hello hello.o
+% <strong class="userinput"><code>scons -Q /usr/bin</code></strong>
+Install file: "hello" as "/usr/bin/hello"
+</pre><p>
+
+  It can, however, be cumbersome to remember
+  (and type) the specific destination directory
+  in which the program (or other file)
+  should be installed.  A call to <code class="function">Default</code> can be used to
+  add the directory to the list of default targets,
+  removing the need to type it,
+  but sometimes you don't want to install on every build.
+  This is an area where the <code class="function">Alias</code>
+  function comes in handy,
+  allowing you, for example,
+  to create a pseudo-target named <code class="literal">install</code>
+  that can expand to the specified destination directory:
+
+  </p><pre class="programlisting">
+env = Environment()
+hello = env.Program('hello.c')
+env.Install('/usr/bin', hello)
+env.Alias('install', '/usr/bin')
+    </pre><p>
+
+  This then yields the more natural
+  ability to install the program
+  in its destination as a separate
+  invocation, as follows:
+
+  </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o hello.o -c hello.c
+cc -o hello hello.o
+% <strong class="userinput"><code>scons -Q install</code></strong>
+Install file: "hello" as "/usr/bin/hello"
+</pre><div class="section" title="11.1. Installing Multiple Files in a Directory"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idp140637533233968"></a>11.1. Installing Multiple Files in a Directory</h2></div></div></div><p>
+
+    You can install multiple files into a directory
+    simply by calling the <code class="function">Install</code> function multiple times:
+
+    </p><pre class="programlisting">
+env = Environment()
+hello = env.Program('hello.c')
+goodbye = env.Program('goodbye.c')
+env.Install('/usr/bin', hello)
+env.Install('/usr/bin', goodbye)
+env.Alias('install', '/usr/bin')
+      </pre><p>
+
+    Or, more succinctly, listing the multiple input
+    files in a list
+    (just like you can do with any other builder):
+
+    </p><pre class="programlisting">
+env = Environment()
+hello = env.Program('hello.c')
+goodbye = env.Program('goodbye.c')
+env.Install('/usr/bin', [hello, goodbye])
+env.Alias('install', '/usr/bin')
+    </pre><p>
+
+    Either of these two examples yields:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q install</code></strong>
+cc -o goodbye.o -c goodbye.c
+cc -o goodbye goodbye.o
+Install file: "goodbye" as "/usr/bin/goodbye"
+cc -o hello.o -c hello.c
+cc -o hello hello.o
+Install file: "hello" as "/usr/bin/hello"
+</pre></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch10s03.html">Prev</a> </td><td width="20%" align="center"> </td><td width="40%" align="right"> <a accesskey="n" href="ch11s02.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">10.3. Command-Line Targets </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 11.2. Installing a File Under a Different Name</td></tr></table></div></body></html>

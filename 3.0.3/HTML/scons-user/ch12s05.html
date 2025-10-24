@@ -1,0 +1,32 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>12.5. Creating a Directory: The Mkdir Factory</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 3.0.3"><link rel="up" href="ch12.html" title="Chapter 12. Platform-Independent File System Manipulation"><link rel="prev" href="ch12s04.html" title="12.4. Updating the Modification Time of a File: The Touch Factory"><link rel="next" href="ch12s06.html" title="12.6. Changing File or Directory Permissions: The Chmod Factory"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">12.5. Creating a Directory:  The <code class="function">Mkdir</code> Factory</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch12s04.html">Prev</a> </td><th width="60%" align="center">Chapter 12. Platform-Independent File System Manipulation</th><td width="20%" align="right"> <a accesskey="n" href="ch12s06.html">Next</a></td></tr></table><hr></div><div class="section" title="12.5. Creating a Directory: The Mkdir Factory"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idm140095967419328"></a>12.5. Creating a Directory:  The <code class="function">Mkdir</code> Factory</h2></div></div></div><p>
+
+    If you need to create a directory,
+    use the <code class="function">Mkdir</code> factory.
+    For example, if we need to process
+    a file in a temporary directory
+    in which the processing tool
+    will create other files that we don't care about, 
+    you could use:
+
+    </p><pre class="programlisting">
+Command("file.out", "file.in",
+        [
+          Delete("tempdir"),
+          Mkdir("tempdir"),
+          Copy("tempdir/${SOURCE.file}", "$SOURCE"),
+          "process tempdir",
+          Move("$TARGET", "tempdir/output_file"),
+          Delete("tempdir"),
+        ])
+      </pre><p>
+
+    Which executes as:
+
+    </p><pre class="screen">% <strong class="userinput"><code>scons -Q</code></strong>
+Delete("tempdir")
+Mkdir("tempdir")
+Copy("tempdir/file.in", "file.in")
+process tempdir
+Move("file.out", "tempdir/output_file")
+scons: *** [file.out] tempdir/output_file: No such file or directory
+</pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch12s04.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch12.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch12s06.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">12.4. Updating the Modification Time of a File:  The <code class="function">Touch</code> Factory </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 12.6. Changing File or Directory Permissions:  The <code class="function">Chmod</code> Factory</td></tr></table></div></body></html>

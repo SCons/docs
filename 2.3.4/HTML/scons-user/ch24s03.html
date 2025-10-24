@@ -1,0 +1,38 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>24.3. Not Using the Shared Cache for Specific Files</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 2.3.4"><link rel="up" href="ch24.html" title="Chapter 24. Caching Built Files"><link rel="prev" href="ch24s02.html" title="24.2. Keeping Build Output Consistent"><link rel="next" href="ch24s04.html" title="24.4. Disabling the Shared Cache"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">24.3. Not Using the Shared Cache for Specific Files</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch24s02.html">Prev</a> </td><th width="60%" align="center">Chapter 24. Caching Built Files</th><td width="20%" align="right"> <a accesskey="n" href="ch24s04.html">Next</a></td></tr></table><hr></div><div class="section" title="24.3. Not Using the Shared Cache for Specific Files"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idp12068608"></a>24.3. Not Using the Shared Cache for Specific Files</h2></div></div></div><p>
+
+    You may want to disable caching for certain
+    specific files in your configuration.
+    For example, if you only want to put
+    executable files in a central cache,
+    but not the intermediate object files,
+    you can use the <code class="function">NoCache</code>
+    function to specify that the
+    object files should not be cached:
+
+    </p><pre class="programlisting">
+env = Environment()
+obj = env.Object('hello.c')
+env.Program('hello.c')
+CacheDir('cache')
+NoCache('hello.o')
+       </pre><p>
+
+    Then when you run <code class="filename">scons</code> after cleaning
+    the built targets,
+    it will recompile the object file locally
+    (since it doesn't exist in the shared cache directory),
+    but still realize that the shared cache directory
+    contains an up-to-date executable program
+    that can be retrieved instead of re-linking:
+
+    </p><pre class="screen">
+% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o hello.o -c hello.c
+cc -o hello hello.o
+% <strong class="userinput"><code>scons -Q -c</code></strong>
+Removed hello.o
+Removed hello
+% <strong class="userinput"><code>scons -Q</code></strong>
+cc -o hello.o -c hello.c
+Retrieved `hello' from cache
+    </pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch24s02.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch24.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch24s04.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">24.2. Keeping Build Output Consistent </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 24.4. Disabling the Shared Cache</td></tr></table></div></body></html>

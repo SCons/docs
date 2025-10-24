@@ -1,0 +1,137 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>2.5. The SConstruct File</title><link rel="stylesheet" type="text/css" href="scons.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="index.html" title="SCons 4.1.0"><link rel="up" href="ch02.html" title="Chapter 2. Simple Builds"><link rel="prev" href="ch02s04.html" title="2.4. Cleaning Up After a Build"><link rel="next" href="ch02s06.html" title="2.6. Making the SCons Output Less Verbose"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">2.5. The <code class="filename">SConstruct</code> File</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02s04.html">Prev</a> </td><th width="60%" align="center">Chapter 2. Simple Builds</th><td width="20%" align="right"> <a accesskey="n" href="ch02s06.html">Next</a></td></tr></table><hr></div><div class="section" title="2.5. The SConstruct File"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="idp140637533416032"></a>2.5. The <code class="filename">SConstruct</code> File</h2></div></div></div><p>
+
+   If you're used to build systems like <span class="application">Make</span>
+   you've already figured out that the <code class="filename">SConstruct</code> file
+   is the <span class="application">SCons</span> equivalent of a <code class="filename">Makefile</code>.
+   That is, the <code class="filename">SConstruct</code> file is the input file
+   that <span class="application">SCons</span> reads to control the build.
+
+   </p><div class="section" title="2.5.1. SConstruct Files Are Python Scripts"><div class="titlepage"><div><div><h3 class="title"><a name="idp140637533419744"></a>2.5.1. <code class="filename">SConstruct</code> Files Are Python Scripts</h3></div></div></div><p>
+
+     There is, however, an important difference between
+     an <code class="filename">SConstruct</code> file and a <code class="filename">Makefile</code>:
+     the <code class="filename">SConstruct</code> file is actually a Python script.
+     If you're not already familiar with Python, don't worry.
+     This User's Guide will introduce you step-by-step
+     to the relatively small amount of Python you'll
+     need to know to be able to use <span class="application">SCons</span> effectively.
+     And Python is very easy to learn.
+
+     </p><p>
+
+     One aspect of using Python as the
+     scripting language is that you can put comments
+     in your <code class="filename">SConstruct</code> file using Python's commenting convention;
+     that is, everything between a '#' and the end of the line
+     will be ignored:
+
+     </p><pre class="programlisting">
+# Arrange to build the "hello" program.
+Program('hello.c')    # "hello.c" is the source file.
+     </pre><p>
+
+     You'll see throughout the remainder of this Guide
+     that being able to use the power of a
+     real scripting language
+     can greatly simplify the solutions
+     to complex requirements of real-world builds.
+
+     </p></div><div class="section" title="2.5.2. SCons Functions Are Order-Independent"><div class="titlepage"><div><div><h3 class="title"><a name="idp140637533425088"></a>2.5.2. <span class="application">SCons</span> Functions Are Order-Independent</h3></div></div></div><p>
+
+     One important way in which the <code class="filename">SConstruct</code>
+     file is not exactly like a normal Python script,
+     and is more like a <code class="filename">Makefile</code>,
+     is that the order in which
+     the <span class="application">SCons</span> functions are called in
+     the <code class="filename">SConstruct</code> file
+     does <span class="emphasis"><em>not</em></span>
+     affect the order in which <span class="application">SCons</span>
+     actually builds the programs and object files
+     you want it to build
+     <sup>[<a name="idp140637533428640" href="#ftn.idp140637533428640" class="footnote">1</a>]</sup>.
+     In other words, when you call the <a class="link" href="apb.html#b-Program"><code class="function">Program</code></a> builder
+     (or any other builder method),
+     you're not telling <span class="application">SCons</span> to build
+     the program at that moment.
+     Instead, you're telling <span class="application">SCons</span> what you want accomplished,
+     and it's up to <span class="application">SCons</span> to figure out how to do that, and to
+     take those steps if/when it's necessary.
+     We'll learn more about how
+     <span class="application">SCons</span> decides when building or rebuilding a target
+     is necessary in <a class="xref" href="ch06.html" title="Chapter 6. Dependencies">Chapter 6, <i>Dependencies</i></a>, below.
+
+     </p><p>
+
+     <span class="application">SCons</span> reflects this distinction between
+     <span class="emphasis"><em>calling a builder method like</em></span> <code class="function">Program</code>
+     and <span class="emphasis"><em>actually building the program</em></span>
+     by printing the status messages that indicate
+     when it's "just reading" the <code class="filename">SConstruct</code> file,
+     and when it's actually building the target files.
+     This is to make it clear when <span class="application">SCons</span> is
+     executing the Python statements that make up the <code class="filename">SConstruct</code> file,
+     and when <span class="application">SCons</span> is actually executing the
+     commands or other actions to
+     build the necessary files.
+
+     </p><p>
+
+     Let's clarify this with an example.
+     Python has a <code class="function">print</code> function that
+     prints a string of characters to the screen.
+     If we put <code class="function">print</code> calls around
+     our calls to the <code class="function">Program</code> builder method:
+
+     </p><pre class="programlisting">
+print("Calling Program('hello.c')")
+Program('hello.c')
+print("Calling Program('goodbye.c')")
+Program('goodbye.c')
+print("Finished calling Program()")
+       </pre><p>
+
+     Then when we execute <span class="application">SCons</span>,
+     we see the output from calling the <code class="function">print</code>
+     function in between the messages about
+     reading the <code class="filename">SConscript</code> files,
+     indicating that is when the
+     Python statements are being executed:
+
+     </p><pre class="screen">% <strong class="userinput"><code>scons</code></strong>
+scons: Reading SConscript files ...
+Calling Program('hello.c')
+Calling Program('goodbye.c')
+Finished calling Program()
+scons: done reading SConscript files.
+scons: Building targets ...
+cc -o goodbye.o -c goodbye.c
+cc -o goodbye goodbye.o
+cc -o hello.o -c hello.c
+cc -o hello hello.o
+scons: done building targets.
+</pre><p>
+
+     Notice that <span class="application">SCons</span> built the <code class="filename">goodbye</code> program first,
+     even though the "reading <code class="filename">SConscript</code>" output
+     shows that we called <code class="function">Program('hello.c')</code>
+     first in the <code class="filename">SConstruct</code> file.
+
+     </p><p>
+
+     Notice also that <span class="application">SCons</span> was able to infer a lot of information
+     from the two <code class="function">Program</code> calls.  Because
+     <code class="filename">hello.c</code> and <code class="filename">goodbye.c</code>
+     were recognized as C-language source files, it knew to build
+     the intermediate target files <code class="filename">hello.o</code> and <code class="filename">goodbye.o</code>
+     and the final files <code class="filename">hello</code> and <code class="filename">goodbye</code>
+     It was not necessary to program <span class="command"><strong>scons</strong></span> beyond just calling <code class="function">Program</code>.
+
+     </p></div><div class="footnotes"><br><hr width="100" align="left"><div class="footnote"><p><sup>[<a id="ftn.idp140637533428640" href="#idp140637533428640" class="para">1</a>] </sup>In programming parlance,
+     the <code class="filename">SConstruct</code> file is
+     <span class="emphasis"><em>declarative</em></span>,
+     meaning you tell <span class="application">SCons</span> what you want done
+     and let it figure out the order in which to do it,
+     rather than strictly <span class="emphasis"><em>imperative</em></span>,
+     where you specify explicitly the order in
+     which to do things.
+     </p></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch02s04.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch02.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch02s06.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">2.4. Cleaning Up After a Build </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 2.6. Making the <span class="application">SCons</span> Output Less Verbose</td></tr></table></div></body></html>

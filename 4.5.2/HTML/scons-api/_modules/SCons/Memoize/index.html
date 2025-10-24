@@ -1,0 +1,544 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SCons.Memoize &#8212; SCons 4.5.2 documentation</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <link rel="index" title="Index" href="../../../genindex/" />
+    <link rel="search" title="Search" href="../../../search/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">SCons 4.5.2 documentation</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../search/" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Contents:
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../SCons/">
+   SCons package
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../SCons.Node/">
+     SCons.Node package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../SCons.Platform/">
+     SCons.Platform package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../SCons.Scanner/">
+     SCons.Scanner package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../SCons.Script/">
+     SCons.Script package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../SCons.Taskmaster/">
+     SCons.Taskmaster package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../SCons.Tool/">
+     SCons.Tool package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../SCons.Variables/">
+     SCons.Variables package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../SCons.compat/">
+     SCons.compat package
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../SCons.compat/">
+   SCons.compat package
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../SCons.Node/">
+   SCons.Node package
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../SCons.Platform/">
+   SCons.Platform package
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../SCons.Scanner/">
+   SCons.Scanner package
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../SCons.Script/">
+   SCons.Script package
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../SCons.Taskmaster/">
+   SCons.Taskmaster package
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../SCons.Tool/">
+   SCons.Tool package
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../SCons.Variables/">
+   SCons.Variables package
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1></h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <h1>Source code for SCons.Memoize</h1><div class="highlight"><pre>
+<span></span><span class="c1"># MIT License</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright The SCons Foundation</span>
+<span class="c1">#</span>
+<span class="c1"># Permission is hereby granted, free of charge, to any person obtaining</span>
+<span class="c1"># a copy of this software and associated documentation files (the</span>
+<span class="c1"># &quot;Software&quot;), to deal in the Software without restriction, including</span>
+<span class="c1"># without limitation the rights to use, copy, modify, merge, publish,</span>
+<span class="c1"># distribute, sublicense, and/or sell copies of the Software, and to</span>
+<span class="c1"># permit persons to whom the Software is furnished to do so, subject to</span>
+<span class="c1"># the following conditions:</span>
+<span class="c1">#</span>
+<span class="c1"># The above copyright notice and this permission notice shall be included</span>
+<span class="c1"># in all copies or substantial portions of the Software.</span>
+<span class="c1">#</span>
+<span class="c1"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY</span>
+<span class="c1"># KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND</span>
+<span class="c1"># NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE</span>
+<span class="c1"># LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION</span>
+<span class="c1"># OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</span>
+<span class="c1"># WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</span>
+
+<span class="sd">&quot;&quot;&quot;Decorator-based memoizer to count caching stats.</span>
+
+<span class="sd">A decorator-based implementation to count hits and misses of the computed</span>
+<span class="sd">values that various methods cache in memory.</span>
+
+<span class="sd">Use of this modules assumes that wrapped methods be coded to cache their</span>
+<span class="sd">values in a consistent way. In particular, it requires that the class uses a</span>
+<span class="sd">dictionary named &quot;_memo&quot; to store the cached values.</span>
+
+<span class="sd">Here is an example of wrapping a method that returns a computed value,</span>
+<span class="sd">with no input parameters::</span>
+
+<span class="sd">    @SCons.Memoize.CountMethodCall</span>
+<span class="sd">    def foo(self):</span>
+
+<span class="sd">        try:                                                    # Memoization</span>
+<span class="sd">            return self._memo[&#39;foo&#39;]                            # Memoization</span>
+<span class="sd">        except KeyError:                                        # Memoization</span>
+<span class="sd">            pass                                                # Memoization</span>
+
+<span class="sd">        result = self.compute_foo_value()</span>
+
+<span class="sd">        self._memo[&#39;foo&#39;] = result                              # Memoization</span>
+
+<span class="sd">        return result</span>
+
+<span class="sd">Here is an example of wrapping a method that will return different values</span>
+<span class="sd">based on one or more input arguments::</span>
+
+<span class="sd">    def _bar_key(self, argument):                               # Memoization</span>
+<span class="sd">        return argument                                         # Memoization</span>
+
+<span class="sd">    @SCons.Memoize.CountDictCall(_bar_key)</span>
+<span class="sd">    def bar(self, argument):</span>
+
+<span class="sd">        memo_key = argument                                     # Memoization</span>
+<span class="sd">        try:                                                    # Memoization</span>
+<span class="sd">            memo_dict = self._memo[&#39;bar&#39;]                       # Memoization</span>
+<span class="sd">        except KeyError:                                        # Memoization</span>
+<span class="sd">            memo_dict = {}                                      # Memoization</span>
+<span class="sd">            self._memo[&#39;dict&#39;] = memo_dict                      # Memoization</span>
+<span class="sd">        else:                                                   # Memoization</span>
+<span class="sd">            try:                                                # Memoization</span>
+<span class="sd">                return memo_dict[memo_key]                      # Memoization</span>
+<span class="sd">            except KeyError:                                    # Memoization</span>
+<span class="sd">                pass                                            # Memoization</span>
+
+<span class="sd">        result = self.compute_bar_value(argument)</span>
+
+<span class="sd">        memo_dict[memo_key] = result                            # Memoization</span>
+
+<span class="sd">        return result</span>
+
+<span class="sd">Deciding what to cache is tricky, because different configurations</span>
+<span class="sd">can have radically different performance tradeoffs, and because the</span>
+<span class="sd">tradeoffs involved are often so non-obvious.  Consequently, deciding</span>
+<span class="sd">whether or not to cache a given method will likely be more of an art than</span>
+<span class="sd">a science, but should still be based on available data from this module.</span>
+<span class="sd">Here are some VERY GENERAL guidelines about deciding whether or not to</span>
+<span class="sd">cache return values from a method that&#39;s being called a lot:</span>
+
+<span class="sd">    --  The first question to ask is, &quot;Can we change the calling code</span>
+<span class="sd">        so this method isn&#39;t called so often?&quot;  Sometimes this can be</span>
+<span class="sd">        done by changing the algorithm.  Sometimes the *caller* should</span>
+<span class="sd">        be memoized, not the method you&#39;re looking at.</span>
+
+<span class="sd">    --  The memoized function should be timed with multiple configurations</span>
+<span class="sd">        to make sure it doesn&#39;t inadvertently slow down some other</span>
+<span class="sd">        configuration.</span>
+
+<span class="sd">    --  When memoizing values based on a dictionary key composed of</span>
+<span class="sd">        input arguments, you don&#39;t need to use all of the arguments</span>
+<span class="sd">        if some of them don&#39;t affect the return values.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># A flag controlling whether or not we actually use memoization.</span>
+<span class="n">use_memoizer</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1"># Global list of counter objects</span>
+<span class="n">CounterList</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="Counter"><a class="viewcode-back" href="../../../SCons/#SCons.Memoize.Counter">[docs]</a><span class="k">class</span> <span class="nc">Counter</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base class for counting memoization hits and misses.</span>
+
+<span class="sd">    We expect that the initialization in a matching decorator will</span>
+<span class="sd">    fill in the correct class name and method name that represents</span>
+<span class="sd">    the name of the function being counted.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cls_name</span><span class="p">,</span> <span class="n">method_name</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cls_name</span> <span class="o">=</span> <span class="n">cls_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span> <span class="o">=</span> <span class="n">method_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hit</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">miss</span> <span class="o">=</span> <span class="mi">0</span>
+<div class="viewcode-block" id="Counter.key"><a class="viewcode-back" href="../../../SCons/#SCons.Memoize.Counter.key">[docs]</a>    <span class="k">def</span> <span class="nf">key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cls_name</span><span class="o">+</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">method_name</span></div>
+<div class="viewcode-block" id="Counter.display"><a class="viewcode-back" href="../../../SCons/#SCons.Memoize.Counter.display">[docs]</a>    <span class="k">def</span> <span class="nf">display</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    </span><span class="si">{:7d}</span><span class="s2"> hits </span><span class="si">{:7d}</span><span class="s2"> misses    </span><span class="si">{}</span><span class="s2">()&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hit</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">miss</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">()))</span></div>
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">key</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="CountValue"><a class="viewcode-back" href="../../../SCons/#SCons.Memoize.CountValue">[docs]</a><span class="k">class</span> <span class="nc">CountValue</span><span class="p">(</span><span class="n">Counter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A counter class for simple, atomic memoized values.</span>
+
+<span class="sd">    A CountValue object should be instantiated in a decorator for each of</span>
+<span class="sd">    the class&#39;s methods that memoizes its return value by simply storing</span>
+<span class="sd">    the return value in its _memo dictionary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="CountValue.count"><a class="viewcode-back" href="../../../SCons/#SCons.Memoize.CountValue.count">[docs]</a>    <span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Counts whether the memoized value has already been</span>
+<span class="sd">            set (a hit) or not (a miss).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">_memo</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hit</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">miss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">miss</span> <span class="o">+</span> <span class="mi">1</span></div></div>
+
+<div class="viewcode-block" id="CountDict"><a class="viewcode-back" href="../../../SCons/#SCons.Memoize.CountDict">[docs]</a><span class="k">class</span> <span class="nc">CountDict</span><span class="p">(</span><span class="n">Counter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A counter class for memoized values stored in a dictionary, with</span>
+<span class="sd">    keys based on the method&#39;s input arguments.</span>
+
+<span class="sd">    A CountDict object is instantiated in a decorator for each of the</span>
+<span class="sd">    class&#39;s methods that memoizes its return value in a dictionary,</span>
+<span class="sd">    indexed by some key that can be computed from one or more of</span>
+<span class="sd">    its input arguments.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cls_name</span><span class="p">,</span> <span class="n">method_name</span><span class="p">,</span> <span class="n">keymaker</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cls_name</span><span class="p">,</span> <span class="n">method_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keymaker</span> <span class="o">=</span> <span class="n">keymaker</span>
+<div class="viewcode-block" id="CountDict.count"><a class="viewcode-back" href="../../../SCons/#SCons.Memoize.CountDict.count">[docs]</a>    <span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Counts whether the computed key value is already present</span>
+<span class="sd">           in the memoization dictionary (a hit) or not (a miss).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">memo_dict</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">_memo</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">method_name</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">miss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">miss</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">keymaker</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">memo_dict</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">hit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hit</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">miss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">miss</span> <span class="o">+</span> <span class="mi">1</span></div></div>
+
+<div class="viewcode-block" id="Dump"><a class="viewcode-back" href="../../../SCons/#SCons.Memoize.Dump">[docs]</a><span class="k">def</span> <span class="nf">Dump</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Dump the hit/miss count for all the counters</span>
+<span class="sd">        collected so far.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">title</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">counter</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">CounterList</span><span class="p">):</span>
+        <span class="n">CounterList</span><span class="p">[</span><span class="n">counter</span><span class="p">]</span><span class="o">.</span><span class="n">display</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="EnableMemoization"><a class="viewcode-back" href="../../../SCons/#SCons.Memoize.EnableMemoization">[docs]</a><span class="k">def</span> <span class="nf">EnableMemoization</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">use_memoizer</span>
+    <span class="n">use_memoizer</span> <span class="o">=</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="CountMethodCall"><a class="viewcode-back" href="../../../SCons/#SCons.Memoize.CountMethodCall">[docs]</a><span class="k">def</span> <span class="nf">CountMethodCall</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Decorator for counting memoizer hits/misses while retrieving</span>
+<span class="sd">        a simple value in a class method. It wraps the given method</span>
+<span class="sd">        fn and uses a CountValue object to keep track of the</span>
+<span class="sd">        caching statistics.</span>
+<span class="sd">        Wrapping gets enabled by calling EnableMemoization().</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">use_memoizer</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="k">global</span> <span class="n">CounterList</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="o">+</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="n">fn</span><span class="o">.</span><span class="vm">__name__</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">CounterList</span><span class="p">:</span>
+                <span class="n">CounterList</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">CountValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">fn</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+            <span class="n">CounterList</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">wrapper</span><span class="o">.</span><span class="vm">__name__</span><span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="k">return</span> <span class="n">wrapper</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">fn</span></div>
+
+<div class="viewcode-block" id="CountDictCall"><a class="viewcode-back" href="../../../SCons/#SCons.Memoize.CountDictCall">[docs]</a><span class="k">def</span> <span class="nf">CountDictCall</span><span class="p">(</span><span class="n">keyfunc</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Decorator for counting memoizer hits/misses while accessing</span>
+<span class="sd">        dictionary values with a key-generating function. Like</span>
+<span class="sd">        CountMethodCall above, it wraps the given method</span>
+<span class="sd">        fn and uses a CountDict object to keep track of the</span>
+<span class="sd">        caching statistics. The dict-key function keyfunc has to</span>
+<span class="sd">        get passed in the decorator call and gets stored in the</span>
+<span class="sd">        CountDict instance.</span>
+<span class="sd">        Wrapping gets enabled by calling EnableMemoization().</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">use_memoizer</span><span class="p">:</span>
+            <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                <span class="k">global</span> <span class="n">CounterList</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="o">+</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="n">fn</span><span class="o">.</span><span class="vm">__name__</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">CounterList</span><span class="p">:</span>
+                    <span class="n">CounterList</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">CountDict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">fn</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">keyfunc</span><span class="p">)</span>
+                <span class="n">CounterList</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">wrapper</span><span class="o">.</span><span class="vm">__name__</span><span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="vm">__name__</span>
+            <span class="k">return</span> <span class="n">wrapper</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">fn</span>
+    <span class="k">return</span> <span class="n">decorator</span></div>
+
+<span class="c1"># Local Variables:</span>
+<span class="c1"># tab-width:4</span>
+<span class="c1"># indent-tabs-mode:nil</span>
+<span class="c1"># End:</span>
+<span class="c1"># vim: set expandtab tabstop=4 shiftwidth=4:</span>
+</pre></div>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By SCons Project Team<br/>
+  
+      &copy; Copyright 2022, SCons Project.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
